@@ -62,7 +62,7 @@ namespace Medical.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=Medical;Integrated Security=True");
             }
         }
@@ -226,7 +226,7 @@ namespace Medical.Models
 
                 entity.Property(e => e.ClinicDetailId).HasColumnName("ClinicDetailID");
 
-                entity.Property(e => e.ClinicDate).HasMaxLength(50);
+                entity.Property(e => e.ClinicDate).HasColumnType("datetime");
 
                 entity.Property(e => e.DepartmentId).HasColumnName("DepartmentID");
 
@@ -713,9 +713,7 @@ namespace Medical.Models
 
                 entity.Property(e => e.RemarkPatient).HasColumnName("Remark_Patient");
 
-                entity.Property(e => e.ReserveDate)
-                    .IsRequired()
-                    .HasMaxLength(50);
+                entity.Property(e => e.ReserveDate).HasColumnType("datetime");
 
                 entity.Property(e => e.SequenceNumber).HasColumnName("sequence_number");
 
