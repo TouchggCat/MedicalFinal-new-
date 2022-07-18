@@ -229,10 +229,28 @@
 
             let clearCart = document.getElementById("clearCart");
             let inputNum = $(".inputNum");
-            let getMemId = $("#getMemid");
-            let mySelect = $("#mySelect");
+            let getMemId = $("#getMemid").val();
+            const mySelect = document.querySelector("#mySelect");
             //console.log(clearCart);
             //console.log(myform)
+            // console.log(getMemId);
+
+            async function GetCoupon(memId) {
+                const reponse = await fetch('@Url.Content("~/Product/GetCoupon")' + `?id=${memId}`);
+                const datas = await reponse.json();
+                console.log(datas);
+                datas.forEach(coupon => {
+                    const OptCoupon = new Option(`滿${coupon.couponRequireNum}折${coupon.couponDiscountNum}券`,coupon.couponDetailId)
+                    mySelect.options.add(OptCoupon);
+                    //console.log(coupon.couponDetailId);
+                    //console.log(coupon.couponId);
+                    //console.log(coupon.couponRequireNum);
+                    //console.log(coupon.couponDiscountNum);
+                });
+            }
+            //執行 取得使用者Coupon
+            GetCoupon(getMemId);
+
 
             inputNum.on("change", function (event) {
                 let prodname = $(event.target).parents(".prod").children("p")[0].innerText;
@@ -285,17 +303,11 @@
 
         //})
 
-            $("#mySelect").on("click", function () {
-                let memId = parseInt(getMemId.val());
-                GetCoupon(memId);
-            })
+            //$("#mySelect").on("click", function () {
+            //    let memId = parseInt(getMemId.val());
+            //    GetCoupon(memId);
+            //})
 
-            async function GetCoupon(memberId) {
-                const response = await fetch('@Url.Content("~/Product/GetCoupon")' + `?memId=${memberId}`);
-                const datas = await response.json();
-                console.log(datas);
-
-            }
 
 
 

@@ -8,6 +8,7 @@ namespace Medical.ViewModel
 {
     public class CAddToCartViewModel
     {
+        public int MemberID { get; set; }
         public int txtCount { get; set; }
         public int txtPId { get; set; }
     }

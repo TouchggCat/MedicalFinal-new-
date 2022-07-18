@@ -144,6 +144,17 @@ namespace Medical.Controllers
         }
         public IActionResult ProductDetail(string productName)
         {
+            CMemberAdminViewModel vm = null;
+
+            int showID2 = 0;
+            string logJson = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USE);
+
+            if(logJson!=null)
+            { 
+                vm = JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
+                showID2 = vm.MemberId;
+            }
+
             Product p = _medicalContext.Products.FirstOrDefault(p => p.ProductName == productName);
 
             if (p == null)
@@ -169,7 +180,8 @@ namespace Medical.Controllers
                 ratingList = ratings,
                 memList = memList,
                 brandList = brandList,
-                cateList = cateList
+                cateList = cateList,
+                MemberID = showID2
 
             };
 
@@ -182,6 +194,10 @@ namespace Medical.Controllers
         {
             bool isSuccess = true;
 
+            if(AddToCartvModel.MemberID==0)
+                return Json(Url.Action("Login","Login"));
+
+
             if (AddToCartvModel.txtCount == 0)
                 return RedirectToAction("ProductDetail");
 
@@ -193,7 +209,7 @@ namespace Medical.Controllers
             var IsSuccess = isSuccess;
 
 
-            ShoppingCart hasCart = (_medicalContext.ShoppingCarts.Where(c => c.Product.ProductId == AddToCartvModel.txtPId && c.MemberId == 1)).FirstOrDefault();
+            ShoppingCart hasCart = (_medicalContext.ShoppingCarts.Where(c => c.Product.ProductId == AddToCartvModel.txtPId && c.MemberId == AddToCartvModel.MemberID)).FirstOrDefault();
             if (hasCart != null)
             {
                 int beforeAmount = hasCart.ProductAmount;
@@ -216,7 +232,7 @@ namespace Medical.Controllers
             {
                 ShoppingCart cart = new ShoppingCart()
                 {
-                    MemberId = 1,
+                    MemberId = AddToCartvModel.MemberID,
                     ProductId = AddToCartvModel.txtPId,
                     ProductAmount = AddToCartvModel.txtCount
                 };
@@ -234,10 +250,21 @@ namespace Medical.Controllers
 
         public IActionResult CartViewList(int? id)
         {
-            if (id == null)
-                id = 1;
+            CMemberAdminViewModel vm = null;
 
-            List<ShoppingCart> cartList = _medicalContext.ShoppingCarts.Where(c => c.MemberId == id).ToList();
+            int showID2 = 0;
+            string logJson = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USE);
+
+            if (logJson != null)
+            {
+                vm = JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
+                showID2 = vm.MemberId;
+            }
+
+            if (showID2 == 0)
+                return RedirectToAction("Login", "Login");
+
+            List<ShoppingCart> cartList = _medicalContext.ShoppingCarts.Where(c => c.MemberId == showID2).ToList();
 
             if (cartList.Count == 0)
             {
@@ -254,16 +281,15 @@ namespace Medical.Controllers
             foreach (ShoppingCart cart in cartList)
             {
                 CShoppingCartItem item = new CShoppingCartItem();
-                item.MemberId = (int)id;
+                item.MemberId = showID2;
                 item.cart = cart;
                 item.prod = prodList.FirstOrDefault(p => p.ProductId == cart.ProductId);
                 item.prodspec = prodspecList.FirstOrDefault(ps => ps.ProductId == cart.ProductId);
                 cartForShowList.Add(item);
             }
-
-
             return View(cartForShowList);
         }
+
         [HttpPost]
         public IActionResult DeleteCartItem(int ShoppingCartId)
         {
@@ -283,10 +309,18 @@ namespace Medical.Controllers
 
             return Content("成功");
         }
-        public IActionResult GetCoupon(int? memId)
+        public IActionResult GetCoupon(int? id)
         {
-            List<CouponDetail> cd = _medicalContext.CouponDetails.Where(cd => cd.MemberId == memId && cd.CouponUsed==false).ToList();
-            return Json(cd);
+            List<CGetUserCoupon>GetUserC = _medicalContext.CouponDetails.Include(cd=>cd.Coupon).Where(cd => cd.MemberId == id && cd.CouponUsed==false).Select(cd=>new CGetUserCoupon {
+            
+            CouponDetailId = cd.CouponDetailId,
+            CouponDiscountNum =cd.Coupon.CouponDiscountNum,
+            CouponId = cd.CouponId,
+            CouponRequireNum =cd.Coupon.CouponRequireNum
+            }).ToList();
+
+            string a = "";
+            return Json(GetUserC);
         }
 
         public IActionResult CheckViewList(int? id)
@@ -350,14 +384,14 @@ namespace Medical.Controllers
 
         public IActionResult ReceiveCoupon(int? id)
         {
-            if (id == null)
-                id = 2;
+            if (id == null || id == 0)
+                return RedirectToAction("Login", "Login");
 
             var cGet = _medicalContext.Coupons.Select(c => new CGetCouponViewModel
             {
                 MemId = (int)id,
                 coupon = c,
-                couponDetail = c.CouponDetails.FirstOrDefault(cd=>cd.MemberId==id&&cd.CouponId==c.CouponId)
+                couponDetail = c.CouponDetails.FirstOrDefault(cd => cd.MemberId == id && cd.CouponId == c.CouponId)
             });
 
             return View(cGet);
@@ -373,6 +407,8 @@ namespace Medical.Controllers
             _medicalContext.SaveChanges();
             return RedirectToAction("ReceiveCoupon");
         }
+
+
         //========================= 臨時用=========================
 
         public IActionResult tempList()

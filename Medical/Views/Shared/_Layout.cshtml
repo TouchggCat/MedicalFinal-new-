@@ -10,6 +10,7 @@
     string logJson = "";
     string showID = "";
     string logState = "";
+    int showID2 = 0;
     string LoginbuttonValue = "";
     string LogoutbuttonValue = "";
 
@@ -26,6 +27,7 @@
         logJson = Context.Session.GetString(CDictionary.SK_LOGINED_USE);
         vm = JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
         showID = vm.MemberName;
+        showID2 = vm.MemberId;
         logState = "";
         LogoutbuttonValue = "登出";
 
@@ -143,6 +145,7 @@
                         <div class="dropdown-menu m-0">
                             <a href="/Product/ProductList" class="dropdown-item">產品列表</a>
                             <a href="/Product/CartViewList" class="dropdown-item">我的購物車</a>
+                            <a href="/Product/ReceiveCoupon?id=@showID2" class="dropdown-item">優惠券專區</a>
                             <a href="/Product/CheckViewList" class="dropdown-item">結帳</a>
                             <a href="/Product/QueryOrder" class="dropdown-item">訂單查看</a>
                         </div>

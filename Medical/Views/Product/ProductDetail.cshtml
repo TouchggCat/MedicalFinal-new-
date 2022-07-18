@@ -34,6 +34,7 @@
                 <div style="width: 90%; display: flex ; justify-content: space-between;">
                     <span style="font-weight: bold;font-size: 20px;"> 數量: <input id="inputNum" type="number" style="width: 100px;height: 30px;" value="1" name="txtCount" min="1" max="@Model.prod.Stock" oninput="if(value>@Model.prod.Stock)value=@Model.prod.Stock;if(value<1)value=1" required> &nbsp; <span style="font-size:16px">庫存:@Model.prod.Stock</span> </span>
                     <input value="@Model.prod.ProductId" name="txtPid" hidden>
+                    <input type="hidden" name="MemberID" value="@Model.MemberID" id="mID"/>
                     <button class="btn btn-outline-danger" style="width: 120px;height: 32px;">直接購買</button>
                 </div>
                 <div class="mt-1"><span style="font-size:14px">(數量不可超過庫存)</span></div>
@@ -113,7 +114,7 @@
         let inputNum = $("#inputNum");
         let myForm = $("#myform");
         console.log(myForm)
-
+        console.log($("#mID").val());
 
 
         $("#btnAddToCart").click(() => {
@@ -150,13 +151,16 @@
                             }
                         })
                     }
-                    else
+
+                    else if (message === "失敗")
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
                             text: '請確認購物車商品總數是否超出庫存!',
                         })
-               
+                    else
+                        window.alert("請先登入會員");
+                        //window.location.href = message;  todo 為什麼成功也跳轉
                 }
             })
         });
