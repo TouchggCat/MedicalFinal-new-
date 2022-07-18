@@ -2,6 +2,7 @@
 using Medical.ViewModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -54,7 +55,7 @@ namespace Medical.Controllers
         }
 
         public void Method(CClinicDetailViewModel cVM) {
-            var result = _medicalContext.ClinicDetails.Where(x => x.ClinicDetailId.Equals(cVM.clinicDetailId));
+            var result = _medicalContext.ClinicDetails.Where(x => x.ClinicDetailId.Equals(cVM.clinicId));
             var resultDoctor = _medicalContext.Doctors.Where(x => x.DoctorName.Equals(cVM.doctorname)).SingleOrDefault();
             cVM.DoctorId = resultDoctor.DoctorId;
             cVM.DepartmentId = resultDoctor.DepartmentId;
@@ -67,6 +68,21 @@ namespace Medical.Controllers
             {
                 Create(cVM);
             }
+        }
+
+        public IActionResult Preview(List<string> list) 
+        {
+            string doctor = list[0];
+            string dept = list[1];
+            string room = list[2];
+            
+            DateTime dtForm = DateTime.Parse(list[3]);
+            DateTime dtTo = DateTime.Parse(list[4]);
+
+            List<CClinicDetailAdminViewModel> c = new List<CClinicDetailAdminViewModel>();
+
+
+            return PartialView("Preview", c);
         }
 
         public void Create(CClinicDetailViewModel cVM) 
@@ -87,7 +103,7 @@ namespace Medical.Controllers
         }
         public void Update(CClinicDetailViewModel cVM)
         {
-            ClinicDetail clinicDetail = _medicalContext.ClinicDetails.Where(x => x.ClinicDetailId.Equals(cVM.clinicDetailId)).FirstOrDefault();
+            ClinicDetail clinicDetail = _medicalContext.ClinicDetails.Where(x => x.ClinicDetailId.Equals(cVM.clinicId)).FirstOrDefault();
             
             if(clinicDetail != null)
             {
@@ -98,10 +114,21 @@ namespace Medical.Controllers
                 _medicalContext.SaveChanges();
             }
         }
-
-        public IActionResult doctorList()
+        public IActionResult Dept()
         {
-            var doctors = _medicalContext.Doctors.Select( x => x.DoctorName );
+            var dept = _medicalContext.Departments.Select(x => new { x.DeptName, x.DepartmentId });
+            return Json(dept);
+        }
+        public IActionResult doctorList(int? deptid)
+        {
+            var doctors = from q in _medicalContext.Doctors select q;
+            if (deptid>0)
+            {
+                doctors = doctors.Where(x => x.DepartmentId.Equals(deptid));
+            }
+
+            doctors.Select(x=>new { x.DoctorName, x.DoctorId });
+
             return Json(doctors);
         }
 
@@ -110,5 +137,12 @@ namespace Medical.Controllers
             var rooms = _medicalContext.ClinicRooms.Select(x => x.RoomName);
             return Json(rooms);
         }
+
+        public IActionResult List()
+        {
+            return View();
+        }
+
+        
     }
 }

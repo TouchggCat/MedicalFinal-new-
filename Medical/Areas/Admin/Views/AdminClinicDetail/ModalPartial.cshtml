@@ -1,0 +1,47 @@
+﻿@model Medical.ViewModel.CClinicDetailAdminViewModel
+@{
+    Layout = null;
+}
+
+@*<table id="tbl_result" width="100%" border="1" cellpadding="0" cellspacing="0" bordercolor="#CCCCCC" style="border-collapse: collapse;">
+    <tr class="ti_blue titHeight">
+        <td width="6%" class="ti_green">序號</td>
+        <td width="10%" class="ti_green">@Html.LabelFor(m => m.doctor)</td>
+        <td width="10%" class="ti_green">@Html.LabelFor(m => m.tblPriorityModel.PartNo)</td>
+        <td width="15%" class="ti_green">@Html.LabelFor(m => m.tblPriorityModel.PurchaseOrderNo)</td>
+        <td width="10%" class="ti_green">@Html.LabelFor(m => m.tblPriorityModel.SupplierName)</td>
+        <td class="ti_green">@Html.LabelFor(m => m.tblPriorityModel.Quantity)</td>
+        <td>修改</td>
+    </tr>
+    @if (Model.tblPrioritylist != null)
+    {
+        int i = 0;
+        foreach (var item in Model.tblPrioritylist)
+        {
+            i++;
+            <tr>
+
+                <td>@i</td>
+                <td>@item.OrderNumber</td>
+                <td>@item.PartNo</td>
+                <td>@item.PurchaseOrderNo</td>
+                <td>@item.SupplierName</td>
+                <td>@item.Quantity</td>
+                <td nowrap="nowrap" class="f_word_mid">
+                    <input id="btnEdit" name="btnEdit" type="button" value="修改" onclick="Edit(@item.PkID)" />
+                    <input id="btnDEL" name="btnDEL" type="button" value="刪除" onclick="DeleteData(@item.PkID)" />
+                </td>
+
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td class="f_word_left" colspan="7">
+                查無資料！
+            </td>
+        </tr>
+    }
+
+</table>*@
