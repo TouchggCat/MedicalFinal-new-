@@ -34,6 +34,8 @@
     <link rel="stylesheet" href="~/plugins/fullcalendar/main.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
+    <!-- SweetAlert style -->
+    <link rel="stylesheet" href="sweetalert2.min.css">
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -68,7 +70,7 @@
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <li class="nav-item">
-                            <a href="~/Doctors/Consultation/List" class="nav-link">
+                            <a href="~/Doctor/Consultation/List" class="nav-link">
                                 <i class="nav-icon fas fa-edit"></i>
                                 <p>
                                     醫生工作平台
@@ -168,8 +170,8 @@
     <!-- fullCalendar 2.2.5 -->
     <script src="~/plugins/moment/moment.min.js"></script>
     <script src="~/plugins/fullcalendar/main.js"></script>
-
-    
+    <!-- SweetAlert -->
+    <script src="sweetalert2.all.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

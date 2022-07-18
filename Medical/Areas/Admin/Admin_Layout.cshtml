@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>漢斯眼科 |後台管理系統</title>
+    <title>漢克斯智能眼科 | 後臺管理系統</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -34,6 +34,9 @@
     <link rel="stylesheet" href="~/plugins/fullcalendar/main.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="~/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="~/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -67,14 +70,32 @@
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <li class="nav-item">
-                            <a href="~/Admin/AdminClinicDetail/Index" class="nav-link">
-                                <i class="nav-icon fas fa-edit"></i>
+                        <li class="nav-item menu-open">
+                            <a href="#" class="nav-link active">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     門診維護
-                                    <i class="fas fa-angle-left right"></i>
+                                    <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="~/Admin/AdminClinicDetail/List" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>
+                                            新增門診
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="~/Admin/AdminClinicDetail/Index" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>
+                                            編輯門診
+                                        </p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -107,9 +128,9 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="~/Admin/AdminProduct/ChooseView" class="nav-link">
+                                    <a href="" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>管理</p>
+                                        <p>列表1</p>
                                     </a>
                                 </li>
                             </ul>
@@ -164,9 +185,9 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="~/Admin/AdminMemberList/AdminMemberList" class="nav-link">
+                                    <a href="" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>會員管理</p>
+                                        <p>列表1</p>
                                     </a>
                                 </li>
                             </ul>
@@ -220,7 +241,7 @@
                             </div>
                             <!-- /.card -->
 
-                            
+
                         </section>
                         <!-- /.Left col -->
                     </div>
@@ -275,6 +296,12 @@
     <!-- fullCalendar 2.2.5 -->
     <script src="~/plugins/moment/moment.min.js"></script>
     <script src="~/plugins/fullcalendar/main.js"></script>
+
+    <script src="~/plugins/select2/js/select2.full.min.js"></script>
+    <!-- BS-Stepper -->
+    <script src="~/plugins/bs-stepper/js/bs-stepper.min.js"></script>
+    <!-- dropzonejs -->
+    <script src="~/plugins/dropzone/min/dropzone.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -71,6 +71,11 @@ namespace Medical.ViewModel
             set { _clinicDetail.LimitNum = value; }
         }
 
+        public string clinicId
+        {
+            set; get;
+        }
+
         public string doctorname
         {
             set; get;

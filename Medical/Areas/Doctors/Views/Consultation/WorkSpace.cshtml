@@ -5,168 +5,179 @@
     Layout = "~/Areas/Doctors/Doctor_Layout.cshtml";
 }
 
-@section Styles{
-    <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.10.3/sweetalert2.css" />
+@section Styles{ 
+    <link rel="stylesheet" href="~/dist/css/adminlte.min.css" >
 }
 
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-12 col-md-6">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">門診名單</h3>
+                <div class="col-6 col-md-4">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">門診名單</h3>
 
-                            <div class="card-tools">
-                                <div class="input-group input-group-sm" style="width: 150px;">
+                                    <div class="card-tools">
+                                        <div class="input-group input-group-sm" style="width: 150px;">
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <!-- /.card-header -->
-                        <div class="card-body table-responsive p-0 " style="height: 500px;">
+                                <!-- /.card-header -->
+                                <div class="card-body table-responsive p-0 " style="height: 500px;">
 
-                            <table class="table table-head-fixed text-nowrap">
-                                <thead>
-                                </thead>
-                                <tbody>
-                                    @{
-                                        int count = 0;
-                                        foreach (var item in Model)
-                                        {
-                                            count++;
-                                            <tr>
-                                                <td id=@count>
-                                                    @count
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Member.MemberName)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Member.Gender.Gender1)
-                                                </td>
-                                                <td>
-                                                    @{
-                                                        DateTime now = DateTime.Now;
-                                                        var array = item.Member.BirthDay.ToString().Split('/');
-                                                        int month = int.Parse(array[1]);
-                                                        int day = int.Parse(array[2]);
-                                                        int age = now.Year - int.Parse(array[0]);
-                                                        if (now.Month < month || (now.Month == month && now.Day < day))
-                                                        {
-                                                            age--;
+                                    <table class="table table-head-fixed text-nowrap">
+                                        <thead>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                int count = 0;
+                                                foreach (var item in Model)
+                                                {
+                                                    count++;
+                                                <tr>
+                                                    <td id=@count>
+                                                        @count
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Member.MemberName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Member.Gender)
+                                                    </td>
+                                                    <td>
+                                                        @{
+                                                            DateTime now = DateTime.Now;
+                                                            var array = item.Member.BirthDay.ToString().Split('/');
+                                                            int month = int.Parse(array[1]);
+                                                            int day = int.Parse(array[2]);
+                                                            int age = now.Year - int.Parse(array[0]);
+                                                            if (now.Month < month || (now.Month == month && now.Day < day))
+                                                            {
+                                                                age--;
 
+                                                            }
                                                         }
-                                                    }
-                                                    <a>@age 歲</a>
+                                                        <a>@age 歲</a>
 
-                                                </td>
+                                                    </td>
 
-                                                <td>
-                                                    <div class="btn-group" style="float:right">
-                                                        <button id="dropdown" type="button" class="dropdown-toggle btn" data-toggle="dropdown" aria-expanded="false">
-                                                            候診中
-                                                        </button>
-                                                        <div class="dropdown-menu" role="menu" style="">
-                                                            <a class="dropdown-item" href="#">
+                                                    <td>
+                                                        <div class="btn-group" style="float:right">
+                                                            <button type="button" class="btn btn-warning">
+
                                                                 <font style="vertical-align: inherit;">
                                                                     <font style="vertical-align: inherit;">
-                                                                        過號候補
+                                                                        候診中
                                                                     </font>
                                                                 </font>
-                                                            </a>
+                                                            </button>
+
+                                                            <button type="button" class="btn btn-warning dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
+                                                                <span class="sr-only">
+                                                                    <font style="vertical-align: inherit;">
+                                                                        <font style="vertical-align: inherit;">
+                                                                            切換下拉
+                                                                        </font>
+                                                                    </font>
+
+                                                                </span>
+                                                            </button>
+                                                            <div class="dropdown-menu" role="menu" style="">
+                                                                <a class="dropdown-item" href="#">
+                                                                    <font style="vertical-align: inherit;">
+                                                                        <font style="vertical-align: inherit;">
+                                                                            過號候補
+                                                                            @*@Html.ActionLink("過號候補", "Edit", new { id = item.reServe.ReserveId })*@
+                                                                        </font>
+                                                                    </font>
+                                                                </a>
+                                                            </div>
                                                         </div>
-                                                    </div>
 
-                                                </td>
-                                            </tr>
-                                        }
-                                    }
-                                </tbody>
-                            </table>
+                                                    </td>
+                                                </tr>
+                                                } 
+                                             }
+                                        </tbody>
+                                    </table>
 
+                                </div>
+                                
+                                <!-- /.card-body -->
+                            </div>
+                            <div>
+                            <input type="button" class="btn btn-block btn-info btn-lg" id="nextNum" value="叫號" />
                         </div>
-
-                        <!-- /.card-body -->
+                            <!-- /.card -->
+                        </div>
                     </div>
-                    <div>
-                        <input type="button" class="btn btn-block btn-info btn-lg" id="nextNum" value="叫號" />
-                    </div>
-                    <!-- /.card -->
                 </div>
-            </div>
-        </div>
-        <div class="col-12 col-md-6">
-            <div class="card card-primary card-outline card-outline-tabs">
-                <div class="card-header p-0 border-bottom-0">
-                    <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="custom-tabs-four-home-tab" data-toggle="pill" href="#custom-tabs-four-home" role="tab" aria-controls="custom-tabs-four-home" aria-selected="true">看診</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill" href="#custom-tabs-four-profile" role="tab" aria-controls="custom-tabs-four-profile" aria-selected="false">病患病歷紀錄</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="card-body" style="height: 500px;">
-                    <div class="tab-content" id="custom-tabs-four-tabContent">
-                        <div class="tab-pane fade show active" id="custom-tabs-four-home" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
-                            <textarea id="inputMessage" class="form-control" rows="18">
+                <div class="col-12 col-md-8">
+                    <div class="card card-primary card-outline card-outline-tabs">
+                        <div class="card-header p-0 border-bottom-0">
+                            <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="custom-tabs-four-home-tab" data-toggle="pill" href="#custom-tabs-four-home" role="tab" aria-controls="custom-tabs-four-home" aria-selected="true">看診</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill" href="#custom-tabs-four-profile" role="tab" aria-controls="custom-tabs-four-profile" aria-selected="false">病患病歷紀錄</a>
+                                </li>
+                                @*<li class="nav-item">
+                                    <a class="nav-link" id="custom-tabs-four-messages-tab" data-toggle="pill" href="#custom-tabs-four-messages" role="tab" aria-controls="custom-tabs-four-messages" aria-selected="false">XXX</a>
+                                </li>*@
+                                @*<li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-four-settings-tab" data-toggle="pill" href="#custom-tabs-four-settings" role="tab" aria-controls="custom-tabs-four-settings" aria-selected="false">Settings</a>
+                    </li>*@
+                            </ul>
+                        </div>
+                        <div class="card-body" style="height: 500px;">
+                            <div class="tab-content" id="custom-tabs-four-tabContent">
+                                <div class="tab-pane fade show active" id="custom-tabs-four-home" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
+                                    <textarea id="inputMessage" class="form-control" rows="18">
                                          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin malesuada lacus ullamcorper dui molestie, sit amet congue quam finibus. Etiam ultricies nunc non magna feugiat commodo. Etiam odio magna, mollis auctor felis vitae, ullamcorper ornare ligula. Proin pellentesque tincidunt nisi, vitae ullamcorper felis aliquam id. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin id orci eu lectus blandit suscipit. Phasellus porta, ante et varius ornare, sem enim sollicitudin eros, at commodo leo est vitae lacus. Etiam ut porta sem. Proin porttitor porta nisl, id tempor risus rhoncus quis. In in quam a nibh cursus pulvinar non consequat neque. Mauris lacus elit, condimentum ac condimentum at, semper vitae lectus. Cras lacinia erat eget sapien porta consectetur.
                                     </textarea>
-                        </div>
-                        <div class="tab-pane fade" id="custom-tabs-four-profile" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tab">
+                                  </div>
+                                <div class="tab-pane fade" id="custom-tabs-four-profile" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tab">
+                                   
+                                    
+                                </div>
+                                <div class="tab-pane fade" id="custom-tabs-four-messages" role="tabpanel" aria-labelledby="custom-tabs-four-messages-tab">
+                                </div>
+                            </div>
 
-
                         </div>
-                        <div class="tab-pane fade" id="custom-tabs-four-messages" role="tabpanel" aria-labelledby="custom-tabs-four-messages-tab">
+
+                        <!-- /.card -->
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <button type="button" class="btn btn-block btn-outline-secondary btn-lg">未報到</button>
+                            </div>
+                            <div class="col">
+                                <button type="button" class="btn btn-block btn-outline-info btn-lg">Demo</button>
+                            </div>
+                            <div class="col">
+                                <button type="button" class="btn btn-block btn-outline-info btn-lg">Demo</button>
+                            </div>
+                            <div class="col">
+                                <button type="button" class="btn btn-block bg-gradient-primary btn-lg">儲存</button>
+                            </div>
                         </div>
                     </div>
-
                 </div>
-
-                <!-- /.card -->
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col">
-                        <button id="btnNotReport" type="button" class="btn btn-block btn-outline-secondary btn-lg">未報到</button>
-                    </div>
-
-                    <div class="col">
-                        <button id="btnSave" type="button" class="btn btn-block bg-gradient-primary btn-lg">儲存</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 
-@section Scripts{
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+@section Scripts{ 
     <script>
     var count = 1;
     $('#nextNum').click(function () {
         let pre = count - 1;
-
-        $("#" + pre + "").parent().css("background-color", "white").find("#dropdown").removeClass("btn-danger").addClass("btn-success disabled").html("完成看診");
-        $("#" + count + "").parent().css("background-color", "#FFDFBF").find("#dropdown").addClass("btn-danger").html("看診中");
-
-        if (count > 1)
-            removeData();
-
-        loadPatientDetial();
-
-        count++;
-    });
-
-    $('#btnNotReport').click(function () {
-        let pre = count - 1;
-        
-        $("#" + pre + "").parent().css("background-color", "white").find("#dropdown").removeClass("btn-danger").addClass("btn-warning").html("未報到");
-        $("#" + count + "").parent().css("background-color", "#FFDFBF").find("#dropdown").addClass("btn-danger").html("看診中");
+        $("#" + count + "").parent().css("background-color", "pink");
+        $("#" + pre + "").parent().css("background-color", "white");
 
         if (count > 1)
             removeData();
@@ -176,16 +187,14 @@
         count++;
     });
 
-        $('#btnSave').click(function () { Swal.fire('儲存成功', '', 'success') } );
-
-    function removeData() {
+        function removeData() {
             let card = document.querySelector("#card");
             //let tab = document.querySelector("#custom-tabs-four-profile")
             //tab.removeChild(card);
             card.remove();
         }
 
-    async function loadPatientDetial() {
+        async function loadPatientDetial() {
             const response = await fetch('@Url.Content("~/Doctors/Consultation/user")' + `?id=${count}`);
             const datas = await response.json();
 
@@ -233,7 +242,7 @@
                 });
                 tbody.append(tr);
             });
-
+            
             table.append(thead);
             table.append(tbody);
 

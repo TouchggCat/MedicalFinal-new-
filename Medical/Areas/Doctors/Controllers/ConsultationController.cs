@@ -36,7 +36,7 @@ namespace Medical.Areas.Doctors.Controllers
         public IActionResult WorkSpace(int id)
         {
             List<CReserveViewModel> list = new List<CReserveViewModel>();
-            var result = _medicalContext.Reserves.Include(x => x.Member).Include(x => x.Member.Gender).Where(x => x.ClinicDetailId.Equals(id));
+            var result = _medicalContext.Reserves.Include(x => x.Member).Where(x => x.ClinicDetailId.Equals(id));
 
             foreach (var c in result)
             {
@@ -49,6 +49,8 @@ namespace Medical.Areas.Doctors.Controllers
 
         public IActionResult History()
         {
+            //int id = 1;
+
             return View();
         }
 
