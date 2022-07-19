@@ -24,14 +24,12 @@ namespace Medical.Areas.Admin.Controllers
             {
                 if (string.IsNullOrEmpty(keyVModel.txtKeyword))
                 {
-                    if (Role!=null||Role!=0)   //目前沒用
+                    if (Role!=null)   //目前沒用
                     {
                         CRegisterViewModel memVModel = new CRegisterViewModel();
 
-                        memVModel.mem = _context.Members.ToList();
-                        memVModel.roleTypes = _context.RoleTypes.Where(n => n.Role == Role).ToList();
-
-
+                        memVModel.mem = _context.Members.Where(n => n.Role == Role).ToList();  //清單篩選顯示
+                        memVModel.roleTypes = _context.RoleTypes.ToList();  //下拉選單顯示
                         return View(memVModel);
                     }
                     else
@@ -39,13 +37,15 @@ namespace Medical.Areas.Admin.Controllers
                         CRegisterViewModel memVModel = new CRegisterViewModel()
                         {
                             mem = _context.Members.ToList(),
-                            roleTypes = _context.RoleTypes.ToList()
-                        };  
+                            roleTypes = _context.RoleTypes.ToList(),
+                            MemGender = _context.Genders.ToList(),
+                            MemCity = _context.Cities.ToList()
+                    };  
                         return View(memVModel);
                     }
                  
                 }
-                else
+                else  //有關鍵字時
                 {
                     CRegisterViewModel AdVModel = new CRegisterViewModel()
                     {

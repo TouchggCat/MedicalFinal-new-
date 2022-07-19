@@ -54,12 +54,25 @@
                 <input asp-for="Phone" class="form-control mb-2" id="phone" />
                 <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
-            <div class="form-group" hidden="hidden">
+
+            <!--<div class="form-group" hidden="hidden">-->
                 @*設定隱藏並給預設身分1後台修改*@
-                <label asp-for="Role" class="control-label"></label>
+                <!--<label asp-for="Role" class="control-label"></label>
                 <input asp-for="Role" class="form-control mb-2" value="1" />
                 <span asp-validation-for="Role" class="text-danger"></span>
-            </div>
+            </div>-->
+
+>
+                <div class="form-group">
+                    <select asp-for="Role">
+                        <option>權限篩選</option>
+                        @foreach (var item in Model.roleTypes)
+                        {
+                            <option value="@item.Role">@item.RoleName</option>
+                        }
+                    </select>
+                </div>
+
             <div class="form-group">
                 <select asp-for="CityId">
                     <option>縣市</option>

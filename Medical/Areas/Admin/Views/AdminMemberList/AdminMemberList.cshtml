@@ -16,139 +16,119 @@
 
         <a>權限篩選</a>
 
-
-        @using (Html.BeginForm())
-        {
+        @*下拉選單篩選，method="post" action="AdminMemberList"*@
+        <form name="Role" method="post" action="AdminMemberList">
             <div class="form-group">
                 <select asp-for="Role">
-                    <option>權限篩選</option>
+                    <option value="2">權限篩選</option>
                     @foreach (var item in Model.roleTypes)
                     {
                         <option value="@item.Role">@item.RoleName</option>
                     }
                 </select>
-                @*<input type="submit" value="篩選" class="btn btn-primary" />*@
+                <input type="submit" value="篩選" class="btn btn-primary" />
             </div>
-        }
+        </form>
     </div>
 </div>
-@*<div class="row">
-        <div class="col-md-3">
-            @foreach (var item in Model.roleTypes)
-            {
-                <a>1</a>
-                <p>@Html.ActionLink(item.RoleName, "AdminMemberList", new { Rolegg = item.Role })</p>
+
+
+
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    序號
+                </th>
+                <th>
+                    使用者ID
+                </th>
+                <th>
+                    密碼
+                </th>
+                <th>
+                    姓名
+                </th>
+                <th>
+                    生日
+                </th>
+                <th>
+                    性別
+                </th>
+                <th>
+                    健保卡
+                </th>
+                <th>
+                    信箱
+                </th>
+                <th>
+                    電話
+                </th>
+                <th>
+                    權限
+                </th>
+                <th>
+                    城市
+                </th>
+                <th>
+                    地址
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int count = 0;
+                @foreach (var item in Model.mem)
+                {
+                    count++;
+                    <tr>
+                        <td>
+                            @count
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IdentityId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Password)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MemberName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BirthDay)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.GenderId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IcCardNo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Phone)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Role)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CityId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Address)
+                        </td>
+                        <td>
+                            @Html.ActionLink("", "Edit", "AdminMemberList", new { id = item.MemberId }, new { Class = "fas fa-edit" })
+                            @Html.ActionLink("", "Delete", "AdminMemberList", new { id = item.MemberId }, new { onclick = "return confirm('確定要刪除資料嗎?')", Class = "fas fa-trash" })
+                        </td>
+                    </tr>
+                }
             }
-        </div>
-    </div>*@
-
-
-<!--<form asp-action="AdminMemberList">
-    <div class="form-group" hidden="hidden">-->
-@*設定隱藏並給預設身分1後台修改*@
-<!--<label asp-for="Role" class="control-label"></label>
-        <input asp-for="Role" class="form-control mb-2" value="1" />
-        <span asp-validation-for="Role" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <input type="submit" value="測試" class="btn btn-primary" />
-    </div>
-</form>-->
-
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                序號
-            </th>
-            <th>
-                使用者ID
-            </th>
-            <th>
-                密碼
-            </th>
-            <th>
-                姓名
-            </th>
-            <th>
-                生日
-            </th>
-            <th>
-                性別
-            </th>
-            <th>
-                健保卡
-            </th>
-            <th>
-                信箱
-            </th>
-            <th>
-                電話
-            </th>
-            <th>
-                權限
-            </th>
-            <th>
-                城市
-            </th>
-            <th>
-                地址
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @{
-            int count = 0;
-            @foreach (var item in Model.mem)
-            {
-                count++;
-                <tr>
-                    <td>
-                        @count
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IdentityId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Password)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.MemberName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.BirthDay)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.GenderId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IcCardNo)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Email)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Phone)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Role)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CityId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Address)
-                    </td>
-                    <td>
-                        @Html.ActionLink("", "Edit", "AdminMemberList", new { id = item.MemberId }, new { Class = "fas fa-edit" })
-                        @Html.ActionLink("", "Delete", "AdminMemberList", new { id = item.MemberId }, new { onclick = "return confirm('確定要刪除資料嗎?')", Class = "fas fa-trash" })
-                    </td>
-                </tr>
-            }
-        }
-    </tbody>
-</table>
-<br />
-<br />
+        </tbody>
+    </table>
+    <br />
+    <br />
