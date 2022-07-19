@@ -52,9 +52,9 @@
                         }
                     </select>
                 </div>
-                @*<div class="col-12 col-sm-6">
-                    <input type="date" class="form-control bg-light border-0" placeholder="選擇日期" style="height: 55px;">
-                </div>*@
+                <div class="col-12 col-sm-6">
+                    <input id="date" type="date" name="txtdate" class="form-control bg-light border-0" placeholder="選擇日期" style="height: 55px;">
+                </div>
                 <div class="col-12">
                     <button id="submit" class="btn btn-dark w-100 py-3" type="submit">查詢門診</button>
                 </div>
@@ -74,9 +74,9 @@
                 <th>人數上限(要改剩餘人數)</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="clinic">
             @{
-                foreach (var item in Model.clinicDetailList)
+                @*foreach (var item in Model.clinicDetailList)
                 {
                     <tr>
                         <td>@item.Doctor.DoctorName</td>
@@ -86,7 +86,7 @@
                         <td>@item.ClinicDate</td>
                         <td>@item.LimitNum</td>
                     </tr>
-                }
+                }*@
             }
         </tbody>
     </table>
@@ -98,38 +98,46 @@
 {
     <script>
 
-
-
-
-        @*$('#submit').click(function (evt) {
-            evt.preventDefault();
-            const doc = $("#doc").val();
-            $.post('@Url.Content("~/Reserve/ReserveList1")', {"doctorname":doc},
-                function (data) //取得伺服器回傳的結果
-                {
-
-                    $('#divAlert').text(data);
-
-                })
-
-        })*@
-
-
+        //查詢預約
         $('#submit').click(function (evt) {
             evt.preventDefault();
             const doc = $("#doc").val();
             const tre = $("#tre").val();
             const dep = $("#dep").val();
+            const date = $("#date").val();
+            /*console.log(date);*/
+            let result = "";
+
+            if (doc == "選擇醫生" || dep == "選擇科別" )
+            {
+                alert("請選擇篩選項目");
+            }
             $.ajax({
                 url: '@Url.Content("~/Reserve/ReserveResult")',
-                type: "post", //post
-                data: { "doctorname": doc, "departmentname": dep,"treatmentDetailname":tre},
-                dataType: "json"
-            }).done((datas) => {
-                console.log(datas);
+                type: "post",
+                data: { "doctorname": doc, "departmentname": dep, "treatmentDetailname": tre,"txtdate":date},
+                dataType: "json",
+                success: function (datas) {                   
+                    $.each(datas, function (index, item) {
+                        console.log(item.department)
 
+                        result += `<tr><td>${item.department}</td></tr>`
+                        result += `<td>${item.doctor}</td>`
+                        
+                        
+                        
+                    })
+                    $("#clinic").html(result)
+
+                }
+
+
+                    
+                    
+
+                
             })
-            
+
         })
     </script>
 

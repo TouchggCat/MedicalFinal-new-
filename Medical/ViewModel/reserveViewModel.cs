@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Medical.ViewModel
 {
-    public class test
+    public class reserveViewModel
     {
         public string departmentname { get; set; }
 
         public string doctorname { get; set; }
         public string treatmentDetailname{ get; set; }
 
-        
+        public DateTime txtdate { get; set; }
 
     }
 }
