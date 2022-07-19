@@ -44,15 +44,12 @@ namespace Medical.Controllers
                 .Select(a => a.DepartmentId).FirstOrDefault();
             int doctorId = _context.Doctors.Where(a => a.DoctorName == result.doctorname)
                 .Select(a => a.DoctorId).FirstOrDefault();
-            int treatmentDetailId = _context.TreatmentDetails.Where(a => a.TreatmentDetail1 == result.treatmentDetailname)
-                .Select(a => a.TreatmentDetailId).FirstOrDefault();
-
-
-            
-
+            //int treatmentDetailId = _context.TreatmentDetails.Where(a => a.TreatmentDetail1 == result.treatmentDetailname)
+            //    .Select(a => a.TreatmentDetailId).FirstOrDefault();
+           
             var id = _context.ClinicDetails.Where(a => a.DoctorId == doctorId)
                 .Where(a => a.DepartmentId == departmentId)
-                .Where(a => a.ClinicDate.Value.Date == result.txtdate);
+                .Where(a => a.ClinicDate.Value.Date > result.txtdate);
             //.Select(a => a.ClinicDetailId);
             List<reserverSearch> list = new List<reserverSearch>();
             foreach (var item in id)
@@ -61,24 +58,16 @@ namespace Medical.Controllers
                 {
                     doctorid = item.DoctorId,
                     departmentid = item.DepartmentId,
-                    periodid = item.PeriodId
+                    periodid = item.PeriodId,
+                    roomid=item.RoomId,
+                    day=item.ClinicDate.Value.Day,                
+                    clinicDetailid = item.ClinicDetailId,                    
                 };
-                //var ans = _context.ClinicDetails.Where(c => c.ClinicDetailId == item)
-                //    .Include(a => a.Doctor)
-                //    .Include(a => a.Department)
-                //    .Select(a => new test(_context)
-                //    {
-
-                //        doctorid = a.DoctorId,
-                //        departmentid = a.DepartmentId,
-                //        periodid = a.PeriodId,
-                //    //roomname = a.Room.RoomName,
-                //    //PeriodDetail = a.Period.PeriodDetail
-
-                //});
+                
                 list.Add(t);
 
             }
+            
             return Json(list);
         }
 

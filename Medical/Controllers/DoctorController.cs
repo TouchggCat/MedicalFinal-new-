@@ -93,7 +93,7 @@ namespace Medical.Controllers
 
         //==========冠名==========
         //瀏覽醫生評論
-        //id寫死
+        
         public IActionResult RatingDoctorpartail(int id)
         {
             ViewBag.name = _db.RatingDoctors.Where(a => a.DoctorId == id).Select(a => a.Doctor.DoctorName).FirstOrDefault();
