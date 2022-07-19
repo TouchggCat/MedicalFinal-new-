@@ -21,21 +21,8 @@ namespace Medical.Controllers
             _context = context;
         }
         //======================================================================
-        //public IActionResult AdminLoginMemberList()   //管理員帳號登入=>會員清單管理
-        //{
-        //    if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USE))  //TODO 還需要寫一個getSession(登出)/未驗證身分
-        //    {
-        //        MedicalContext medicalContext = new MedicalContext();
-        //        //CMemberAdminViewModel vModel = new CMemberAdminViewModel();
-        //        IEnumerable<Member> datas = null;
 
-        //        datas = from t in medicalContext.Members
-        //                select t;
 
-        //        return View(datas);
-        //    }
-        //    return RedirectToAction("Index", "Home");
-        //}
         public IActionResult LoginSuccess()
         {
             return View();
@@ -87,18 +74,18 @@ namespace Medical.Controllers
 
         public IActionResult Register()
         {
-            CRegisterViewModel regVModel = new CRegisterViewModel()
+            CMemberViewModel memVModel = new CMemberViewModel()
             {
                 mem = _context.Members.ToList(),
                 roleTypes = _context.RoleTypes.ToList(),
                 MemCity=_context.Cities.ToList(),
                 MemGender=_context.Genders.ToList()
             };
-            return View(regVModel);
+            return View(memVModel);
         }
 
         [HttpPost]
-        public IActionResult Register(CRegisterViewModel vModel)
+        public IActionResult Register(CMemberViewModel vModel)
         {
             if (vModel != null)
             {
@@ -124,17 +111,7 @@ namespace Medical.Controllers
 
 
 
-        //public IActionResult Delete(int? id)
-        //{
-        //    MedicalContext db = new MedicalContext();
-        //    Member mem = db.Members.FirstOrDefault(c => c.MemberId == id);
-        //    if (mem != null)
-        //    {
-        //        db.Members.Remove(mem);
-        //        db.SaveChanges();
-        //    }
-        //    return RedirectToAction("AdminLoginMemberList", "Login");
-        //}
+ 
 
 
         public IActionResult Logout()
@@ -149,6 +126,8 @@ namespace Medical.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        //================================================
+
         public IActionResult ForgetPassword()
         {
             return View();
@@ -159,7 +138,7 @@ namespace Medical.Controllers
             Member x =_context.Members.FirstOrDefault(q => q.Email.Contains(email));
             if (x != null)
             {
-                CRegisterViewModel.gmail = email;
+                CMemberViewModel.gmail = email;
                 string account = "giraffegtest@gmail.com";
                 string password = "ahhpp5000";    
                 SmtpClient client = new SmtpClient();

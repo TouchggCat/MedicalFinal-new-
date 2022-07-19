@@ -1,4 +1,4 @@
-﻿@model Medical.ViewModel.CRegisterViewModel
+﻿@model Medical.ViewModel.CMemberViewModel
 @{
     ViewData["Title"] = "AdminMemberList";
     Layout = "~/Areas/Admin/Admin_Layout.cshtml";
@@ -43,13 +43,16 @@
                     序號
                 </th>
                 <th>
+                    信箱
+                </th>
+                <th>
+                    姓名
+                </th>
+                <th>
                     使用者ID
                 </th>
                 <th>
                     密碼
-                </th>
-                <th>
-                    姓名
                 </th>
                 <th>
                     生日
@@ -59,9 +62,6 @@
                 </th>
                 <th>
                     健保卡
-                </th>
-                <th>
-                    信箱
                 </th>
                 <th>
                     電話
@@ -81,54 +81,79 @@
         <tbody>
             @{
                 int count = 0;
+                
                 @foreach (var item in Model.mem)
                 {
                     count++;
-                    <tr>
-                        <td>
-                            @count
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.IdentityId)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Password)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.MemberName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.BirthDay)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.GenderId)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.IcCardNo)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Email)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Phone)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Role)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.CityId)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Address)
-                        </td>
-                        <td>
-                            @Html.ActionLink("", "Edit", "AdminMemberList", new { id = item.MemberId }, new { Class = "fas fa-edit" })
-                            @Html.ActionLink("", "Delete", "AdminMemberList", new { id = item.MemberId }, new { onclick = "return confirm('確定要刪除資料嗎?')", Class = "fas fa-trash" })
-                        </td>
-                    </tr>
+
+                    //前端篩選value=============================================================
+                    var ro=Model.roleTypes.Where(t => t.Role == item.Role).Select(n => n.RoleName);  //篩選權限
+                    string showRole = "";
+                    foreach(var r in ro)
+                    {
+                        showRole = r;          //只會有一個
+                    }
+                    //========================
+                    var gen = Model.MemGender.Where(t => t.GenderId == item.GenderId).Select(n => n.Gender1);
+                    string showGen = "";
+                    foreach(var g in gen)
+                    {
+                        showGen = g;
+                    }
+                    //========================
+                    var ci = Model.MemCity.Where(t => t.CityId == item.CityId).Select(n => n.CityName);
+                    string showCity = "";
+                    foreach (var c in ci)
+                    {
+                        showCity = c;
+                    }
+                    //======================================================================
+            <tr>
+                <td>
+                    @count
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MemberName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IdentityId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Password)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BirthDay)
+                </td>
+                <td>
+                    @showGen
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IcCardNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Phone)
+                </td>
+                <td>
+                    @showRole
+                </td>
+                <td>
+                    @showCity
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.ActionLink("", "Edit", "AdminMemberList", new { id = item.MemberId }, new { Class = "fas fa-edit" })
+                    @Html.ActionLink("", "Delete", "AdminMemberList", new { id = item.MemberId }, new { onclick = "return confirm('確定要刪除資料嗎?')", Class = "fas fa-trash" })
+                </td>
+            </tr>
                 }
             }
         </tbody>
     </table>
+
     <br />
     <br />

@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace Medical.ViewModel
 {
-    public class CRegisterViewModel
+    public class CMemberViewModel
     {
         public static string gmail { get; set; }
         public List<Member> mem { get; set; }
         public List<RoleType> roleTypes { get; set; }
         public List<Gender> MemGender { get; set; }
         public List<City> MemCity { get; set; }
-        public CRegisterViewModel()
+        public CMemberViewModel()
         {
             _member = new Member();
             _gender = new Gender();
@@ -71,6 +71,7 @@ namespace Medical.ViewModel
         }
 
         [DisplayName("郵件信箱")]
+        [Required(ErrorMessage = "必填")]
         public string Email
         {
             get { return _member.Email; }

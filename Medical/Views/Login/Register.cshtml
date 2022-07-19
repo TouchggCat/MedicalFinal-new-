@@ -1,4 +1,4 @@
-﻿@model Medical.ViewModel.CRegisterViewModel
+﻿@model Medical.ViewModel.CMemberViewModel
 
 
 @{
@@ -19,6 +19,11 @@
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="MemberName" class="control-label"></label>
+                <input asp-for="MemberName" class="form-control mb-2" id="memName" />
+                <span asp-validation-for="MemberName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="IdentityId" class="control-label"></label>
                 @*每個input class加一個button margin 2  (mb-2)*@
                 <input asp-for="IdentityId" class="form-control mb-2" id="idid" />
@@ -28,11 +33,6 @@
                 <label asp-for="Password" class="control-label"></label>
                 <input asp-for="Password" class="form-control mb-2" id="pass" />
                 <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MemberName" class="control-label"></label>
-                <input asp-for="MemberName" class="form-control mb-2" id="memName" />
-                <span asp-validation-for="MemberName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="BirthDay" class="control-label"></label>
@@ -54,25 +54,12 @@
                 <input asp-for="Phone" class="form-control mb-2" id="phone" />
                 <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
-
-            <!--<div class="form-group" hidden="hidden">-->
+            <div class="form-group" hidden="hidden">
                 @*設定隱藏並給預設身分1後台修改*@
-                <!--<label asp-for="Role" class="control-label"></label>
+                <label asp-for="Role" class="control-label"></label>
                 <input asp-for="Role" class="form-control mb-2" value="1" />
                 <span asp-validation-for="Role" class="text-danger"></span>
-            </div>-->
-
->
-                <div class="form-group">
-                    <select asp-for="Role">
-                        <option>權限篩選</option>
-                        @foreach (var item in Model.roleTypes)
-                        {
-                            <option value="@item.Role">@item.RoleName</option>
-                        }
-                    </select>
-                </div>
-
+            </div>
             <div class="form-group">
                 <select asp-for="CityId">
                     <option>縣市</option>

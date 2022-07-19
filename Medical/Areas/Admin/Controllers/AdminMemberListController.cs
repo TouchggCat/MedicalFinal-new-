@@ -22,19 +22,19 @@ namespace Medical.Areas.Admin.Controllers
         {
             if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USE))  
             {
-                if (string.IsNullOrEmpty(keyVModel.txtKeyword))
+                if (string.IsNullOrEmpty(keyVModel.txtKeyword))    //沒關鍵字時
                 {
-                    if (Role!=null)   //目前沒用
+                    if (Role!=null)   //使用下拉選單時
                     {
-                        CRegisterViewModel memVModel = new CRegisterViewModel();
+                        CMemberViewModel memVModel = new CMemberViewModel();
 
-                        memVModel.mem = _context.Members.Where(n => n.Role == Role).ToList();  //清單篩選顯示
+                        memVModel.mem = _context.Members.Where(n => n.Role == Role).ToList();  //清單篩選顯示!!
                         memVModel.roleTypes = _context.RoleTypes.ToList();  //下拉選單顯示
                         return View(memVModel);
                     }
                     else
                     {
-                        CRegisterViewModel memVModel = new CRegisterViewModel()
+                        CMemberViewModel memVModel = new CMemberViewModel()
                         {
                             mem = _context.Members.ToList(),
                             roleTypes = _context.RoleTypes.ToList(),
@@ -47,17 +47,17 @@ namespace Medical.Areas.Admin.Controllers
                 }
                 else  //有關鍵字時
                 {
-                    CRegisterViewModel AdVModel = new CRegisterViewModel()
+                    CMemberViewModel VModel = new CMemberViewModel()
                     {
                         mem = _context.Members.Where(t => t.MemberName.Contains(keyVModel.txtKeyword) ||
                           t.Email.Contains(keyVModel.txtKeyword) || t.Phone.Contains(keyVModel.txtKeyword)).ToList(),
                                 roleTypes = _context.RoleTypes.ToList()
                     };
-                    return View(AdVModel);
+                    return View(VModel);
                 }
 
             }
-            else
+            else   //沒登入或登入失效時
                 return RedirectToAction("Index", "Home");
         }
 
@@ -65,17 +65,26 @@ namespace Medical.Areas.Admin.Controllers
 
         public IActionResult AdminCreate()
         {
-            return View();
+            CMemberViewModel memVModel = new CMemberViewModel()
+            {
+                mem = _context.Members.ToList(),
+                roleTypes = _context.RoleTypes.ToList(),
+                MemCity = _context.Cities.ToList(),
+                MemGender = _context.Genders.ToList()
+            };
+            return View(memVModel);
         }
         [HttpPost]
-        public IActionResult AdminCreate(CRegisterViewModel vModel)
+        public IActionResult AdminCreate(CMemberViewModel vModel)
         {
-            MedicalContext medicalDb = new MedicalContext();
-            medicalDb.Members.Add(vModel.member);
-
-            medicalDb.SaveChanges();
+            if (vModel != null)
+            {
+                _context.Members.Add(vModel.member);
+                _context.SaveChanges();
+            }
             return RedirectToAction("AdminMemberList", "AdminMemberList");
         }
+
         public IActionResult Delete(int? id)
         {
             MedicalContext db = new MedicalContext();
@@ -127,19 +136,6 @@ namespace Medical.Areas.Admin.Controllers
             return RedirectToAction("AdminMemberList","AdminMemberList");
         }
 
-        public IActionResult TestRole(CKeyWordViewModel keyVModel)
-        {
-            IEnumerable<CMemberAdminViewModel> list = null;
-            list = _context.Members.Where(n => n.Role == 1).Select(n => new CMemberAdminViewModel
-            {
-                MemberId=n.MemberId,
-                MemberName=n.MemberName,
-                Role=n.Role,
-                Address=n.Address
-            });
-
-            return View(list);
-        }
         //=================for Ajax API
   
         //public IActionResult showRolebyAjax(CMemberAdminViewModel AdminVModel)
