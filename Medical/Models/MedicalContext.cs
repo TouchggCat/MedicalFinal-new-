@@ -450,6 +450,8 @@ namespace Medical.Models
 
                 entity.Property(e => e.CityId).HasColumnName("CityID");
 
+                entity.Property(e => e.CouponDetailId).HasColumnName("CouponDetailID");
+
                 entity.Property(e => e.MemberId).HasColumnName("MemberID");
 
                 entity.Property(e => e.OrderDate).HasMaxLength(50);
@@ -470,7 +472,7 @@ namespace Medical.Models
                 entity.HasOne(d => d.CouponDetail)
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.CouponDetailId)
-                    .HasConstraintName("FK_Order_CouponDetail");
+                    .HasConstraintName("FK_Order_CouponDetail1");
 
                 entity.HasOne(d => d.Member)
                     .WithMany(p => p.Orders)
@@ -534,10 +536,9 @@ namespace Medical.Models
 
                 entity.Property(e => e.OtherProductImageId).HasColumnName("OtherProductImageID");
 
-                entity.Property(e => e.OtherProductImage1)
+                entity.Property(e => e.OtherProductPhoto)
                     .IsRequired()
-                    .HasMaxLength(50)
-                    .HasColumnName("OtherProductImage");
+                    .HasMaxLength(50);
 
                 entity.Property(e => e.ProductId).HasColumnName("ProductID");
 

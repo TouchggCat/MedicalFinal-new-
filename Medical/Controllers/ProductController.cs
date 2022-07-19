@@ -499,7 +499,12 @@ namespace Medical.Controllers
         }
 
 
+        public IActionResult tempOtherPic()
+        {
+            var q = _medicalContext.OtherProductImages.ToList();
 
+            return View(q);
+        }
 
 
         public IActionResult tempAddProduct()

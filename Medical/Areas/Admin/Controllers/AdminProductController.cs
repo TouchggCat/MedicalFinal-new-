@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -122,6 +124,39 @@ namespace Medical.Areas.Admin.Controllers
             mps.ProductMaterial = cSelected.ProductMaterial;
             mps.UnitPrice = cSelected.UnitPrice;
             db.SaveChanges();
+
+            return Content("成功");
+        }
+
+
+        public IActionResult test()
+        {
+            return View();
+        }
+
+        public IActionResult test64(String str64)
+        {
+         
+
+
+
+
+            byte[] bit = Convert.FromBase64String(str64);
+            MemoryStream ms = new MemoryStream(bit);
+            Bitmap bmp = new Bitmap(ms);
+            string mpName = Guid.NewGuid().ToString() + ".jpg";
+            string FilePath = _environment.WebRootPath + "/images/" + mpName;
+
+            bmp.Save(FilePath, ImageFormat.Jpeg);
+
+            OtherProductImage other = new OtherProductImage();
+            other.ProductId = 1;
+            other.OtherProductPhoto = mpName;
+
+            db.OtherProductImages.Add(other);
+            db.SaveChanges();
+
+            //cSelected.photo.CopyTo(new FileStream(_environment.WebRootPath + "/images/" + mpName, FileMode.Create));
 
             return Content("成功");
         }
