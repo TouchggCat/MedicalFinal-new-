@@ -101,5 +101,34 @@ namespace Medical.ViewModel
             get { return _member.Address; }
             set { _member.Address = value; }
         }
+
+        public string IcCardNo
+        {
+            get { return _member.IcCardNo; }
+            set { _member.IcCardNo = value; }
+        }
+        public int MemberId
+        {
+            get { return _member.MemberId; }
+            set { _member.MemberId = value; }
+        }
+        //=================以下給Edit功能使用   (導覽屬性)
+        public virtual RoleType RoleT
+        {
+            get { return _member.RoleNavigation; }
+            set { _member.RoleNavigation = value; }
+        }
+        public virtual Gender GenD
+        {
+            get { return _member.Gender; }
+            set { _member.Gender = value; }
+        }
+
+        public virtual City City
+        {
+            get { return _member.City; }
+            set { _member.City = value; }
+        }
+        //=====================
     }
 }

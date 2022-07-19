@@ -2,6 +2,7 @@
 using Medical.ViewModel;
 using Medical.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,7 @@ namespace Medical.Areas.Admin.Controllers
                     if (Role!=null)   //使用下拉選單時
                     {
                         CMemberViewModel memVModel = new CMemberViewModel();
-
+                   
                         memVModel.mem = _context.Members.Where(n => n.Role == Role).ToList();  //清單篩選顯示!!
                         memVModel.roleTypes = _context.RoleTypes.ToList();  //下拉選單顯示
                         return View(memVModel);
@@ -102,15 +103,18 @@ namespace Medical.Areas.Admin.Controllers
         {      
             if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USE))
             {
-              MedicalContext db = new MedicalContext();
-                Member mem = db.Members.FirstOrDefault(c => c.MemberId == id);
-        
-             return View(mem);
+                // MedicalContext db = new MedicalContext();
+                //   Member mem = db.Members.FirstOrDefault(c => c.MemberId == id);
+
+                //return View(mem);
+                CMemberViewModel vm = new CMemberViewModel();
+                vm.member = _context.Members.Include(x => x.RoleNavigation).FirstOrDefault(a => a.MemberId == id);
+                return View(vm);
             }
               return RedirectToAction("AdminMemberList", "AdminMemberList");
         }
         [HttpPost]
-        public IActionResult Edit(Member p)
+        public IActionResult Edit(CMemberViewModel p)
         {
             MedicalContext db = new MedicalContext();
             Member mem = db.Members.FirstOrDefault(c => c.MemberId == p.MemberId);
@@ -121,8 +125,6 @@ namespace Medical.Areas.Admin.Controllers
                 mem.MemberName = p.MemberName;
                 mem.BirthDay = p.BirthDay;
                 mem.GenderId = p.GenderId;
-                mem.BloodType = p.BloodType;
-                mem.Weight = p.Weight;
                 mem.IcCardNo = p.IcCardNo;
                 mem.Phone = p.Phone;
                 mem.Email = p.Email;
@@ -137,7 +139,12 @@ namespace Medical.Areas.Admin.Controllers
         }
 
         //=================for Ajax API
-  
+
+        public IActionResult AdstatueCheckBox()
+        {
+            var data = _context.Members.Select(a => a.RoleNavigation.RoleName).Distinct();
+            return Json(data);
+        }
         //public IActionResult showRolebyAjax(CMemberAdminViewModel AdminVModel)
         //{
 
