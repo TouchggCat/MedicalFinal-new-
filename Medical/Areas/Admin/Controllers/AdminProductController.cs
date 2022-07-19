@@ -1,6 +1,7 @@
 ﻿using Medical.Models;
 using Medical.ViewModel;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -88,14 +89,13 @@ namespace Medical.Areas.Admin.Controllers
             return Json(prod);
         }
         [HttpPost]
-        public IActionResult ChangeSave(CSelectedProductViewModel cSelected /*string myJson*/)
+        public IActionResult ChangeSave(CSelectedProductViewModel cSelected/*,IFormFile photo*/ /*string myJson*/)
         {
             // CSelectedProductViewModel cSelected = JsonSerializer.Deserialize<CSelectedProductViewModel>(myJson);
             Product mp = db.Products.FirstOrDefault(p => p.ProductId == cSelected.ProductId);
             ProductSpecification mps = db.ProductSpecifications.FirstOrDefault(m => m.ProductSpecificationId == cSelected.ProductSpecificationId);
 
 
-            var file = Request.Form.Files["photo"];
 
 
             //"{\"Discontinued\":\"false\",\"ProductId\":\"0\",\"ProductAppearance\":\"最新款黑色太陽眼鏡\",\"ProductImage\":" +
