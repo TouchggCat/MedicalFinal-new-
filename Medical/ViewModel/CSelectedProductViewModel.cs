@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Medical.Models;
 namespace Medical.ViewModel
 {
     public class CSelectedProductViewModel
@@ -28,6 +28,7 @@ namespace Medical.ViewModel
         public int ProductBrandId { get; set; }
         public int ProductCategoryId { get; set; }
 
+        public List<string>otherP{get;set;}
         public IFormFile photo { get; set; }
 
     }

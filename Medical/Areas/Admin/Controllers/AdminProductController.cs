@@ -67,6 +67,16 @@ namespace Medical.Areas.Admin.Controllers
         public IActionResult SelectedProduct(int? id)
         {
             ProductSpecification ps = db.ProductSpecifications.FirstOrDefault(ps => ps.ProductId == id);
+            List<OtherProductImage> op = db.OtherProductImages.Where(op => op.ProductId == id).ToList();
+
+            List<string> myop = new List<string>(); ;
+
+            foreach(var a in op)
+            {
+                string optxt = a.OtherProductPhoto;
+                myop.Add(optxt);
+            }
+
             Product p = db.Products.FirstOrDefault(p => p.ProductId == id);
             CSelectedProductViewModel prod = new CSelectedProductViewModel()
             {
@@ -84,7 +94,8 @@ namespace Medical.Areas.Admin.Controllers
                 Discontinued = p.Discontinued,
                 UnitPrice = ps.UnitPrice,
                 ProductBrandId = p.ProductBrandId,
-                ProductCategoryId = p.ProductCategoryId
+                ProductCategoryId = p.ProductCategoryId,
+                otherP = myop
 
             };
 
@@ -134,29 +145,61 @@ namespace Medical.Areas.Admin.Controllers
             return View();
         }
 
-        public IActionResult test64(String str64)
+        public IActionResult test64(string [] multipleImgsArray,string productBeforeName)
         {
-         
+            if(multipleImgsArray.Length==0 || productBeforeName == "")
+            {
+                return Content("失敗");
+            }
+            int count = 0;
+            List<OtherProductImage> others = db.OtherProductImages.Where(o => o.Product.ProductName == productBeforeName).ToList();
+            int pId = db.Products.FirstOrDefault(p => p.ProductName == productBeforeName).ProductId;
+            if (others.Count == 0)
+            {
+                foreach (var arr in multipleImgsArray)
+                {
+
+                    byte[] bit = Convert.FromBase64String(arr);
+                    MemoryStream ms = new MemoryStream(bit);
+                    Bitmap bmp = new Bitmap(ms);
+                    string mpName = Guid.NewGuid().ToString() + ".jpg";
+                    string FilePath = _environment.WebRootPath + "/images/" + mpName;
+
+                    bmp.Save(FilePath, ImageFormat.Jpeg);
+
+                    OtherProductImage other = new OtherProductImage();
+                    other.ProductId = pId;
+                    other.OtherProductPhoto = mpName;
+                    db.OtherProductImages.Add(other);
+                    db.SaveChanges();
+                    count++;
+                }
+            }
+            else
+            {
+                foreach(var arr in multipleImgsArray)
+                {
+                
+                    byte[] bit = Convert.FromBase64String(arr);
+                    MemoryStream ms = new MemoryStream(bit);
+                    Bitmap bmp = new Bitmap(ms);
+                    string mpName = Guid.NewGuid().ToString() + ".jpg";
+                    string FilePath = _environment.WebRootPath + "/images/" + mpName;
+
+                    bmp.Save(FilePath, ImageFormat.Jpeg);
+
+                    others[count].OtherProductPhoto = mpName;
+
+                    //OtherProductImage other = new OtherProductImage();
+                    //other.ProductId = 1;
+                    //other.OtherProductPhoto = mpName;
+                    db.SaveChanges();
+                    count++;
+                } 
+            }
 
 
 
-
-            byte[] bit = Convert.FromBase64String(str64);
-            MemoryStream ms = new MemoryStream(bit);
-            Bitmap bmp = new Bitmap(ms);
-            string mpName = Guid.NewGuid().ToString() + ".jpg";
-            string FilePath = _environment.WebRootPath + "/images/" + mpName;
-
-            bmp.Save(FilePath, ImageFormat.Jpeg);
-
-            OtherProductImage other = new OtherProductImage();
-            other.ProductId = 1;
-            other.OtherProductPhoto = mpName;
-
-            db.OtherProductImages.Add(other);
-            db.SaveChanges();
-
-            //cSelected.photo.CopyTo(new FileStream(_environment.WebRootPath + "/images/" + mpName, FileMode.Create));
 
             return Content("成功");
         }

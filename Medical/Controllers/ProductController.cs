@@ -192,9 +192,20 @@ namespace Medical.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult AddToCart(CAddToCartViewModel AddToCartvModel)
         {
+            CMemberAdminViewModel vm = null;
+
+            int showID2 = 0;
+            string logJson = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USE);
+
+            if (logJson != null)
+            {
+                vm = JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
+                showID2 = vm.MemberId;
+            }
+
             bool isSuccess = true;
 
-            if(AddToCartvModel.MemberID==0)
+            if(showID2==0)
                 return Json(Url.Action("Login","Login"));
 
 
@@ -209,7 +220,7 @@ namespace Medical.Controllers
             var IsSuccess = isSuccess;
 
 
-            ShoppingCart hasCart = (_medicalContext.ShoppingCarts.Where(c => c.Product.ProductId == AddToCartvModel.txtPId && c.MemberId == AddToCartvModel.MemberID)).FirstOrDefault();
+            ShoppingCart hasCart = (_medicalContext.ShoppingCarts.Where(c => c.Product.ProductId == AddToCartvModel.txtPId && c.MemberId == showID2)).FirstOrDefault();
             if (hasCart != null)
             {
                 int beforeAmount = hasCart.ProductAmount;
@@ -232,7 +243,7 @@ namespace Medical.Controllers
             {
                 ShoppingCart cart = new ShoppingCart()
                 {
-                    MemberId = AddToCartvModel.MemberID,
+                    MemberId = showID2,
                     ProductId = AddToCartvModel.txtPId,
                     ProductAmount = AddToCartvModel.txtCount
                 };

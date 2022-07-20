@@ -5,6 +5,10 @@
 }
 
 
+@section css{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+}
+
 <!-- Hero Start -->
 
 <ul class="breadcrumb mt-5" style="background-color:white;font-size:18px">
@@ -88,7 +92,7 @@
             <br />
             <hr />
             @*========== 商品表 ==========*@
-            <div class="row" id="prodRow" >
+            <div class="row" id="prodRow">
                 @{ int count = 0;}
                 @foreach (var cprod in Model.prodSpec)
                 {
@@ -97,14 +101,25 @@
                     string aa = "b" + cprod.Product.ProductBrandId;
                     string bb = "c" + cprod.Product.ProductCategoryId;
 
-                    <div class="col-md-3 col-sm-6 mt-4 @aa @bb mycard" >
-                        <div class="card h-100">
-                            <img src="~/images/@cprod.ProductImage" width="140" height="200" class="card-img-top" />
-                            <div class="card-body">
+                    <div class="col-md-3 col-sm-6 mt-4 @aa @bb mycard myhover" style="border-bottom:1px solid gray">
+                        <form method="post">
+                            <div class="position-relative rounded-top" style="z-index: 1;text-align:center">
+                                <img class="img-fluid rounded-top w-75" src="~/images/@cprod.ProductImage" alt="">
+                                <div class="position-absolute top-100 start-50 translate-middle rounded p-2 d-flex">
+                                    <button type="button" class="btn btn-primary btn-square m-1 btnAddToCart" hidden><i class="fa-solid fa-cart-shopping"></i></button>                            
+                                    <a class="btn btn-primary btn-square m-1" href="~/Product/ProductDetail?productName=@cprod.Product.ProductName" hidden><i class="fa-brands fa-shirtsinbulk"></i></a>
+
+                                </div>
+                            </div>
+                            <input type="hidden" name="txtPId" value="@cprod.ProductId" />
+                            <input type="hidden" name="txtCount" value="1" />
+
+
+                            <div class="team-text position-relative text-center rounded-bottom p-4 pt-5">
                                 <a href="~/Product/ProductDetail?productName=@cprod.Product.ProductName" id="@cprod.ProductId" onclick="detail(event)"> <h5 class="prodName">@Html.DisplayFor(modelItem => cprod.Product.ProductName)</h5> </a>
                                 NT$<span class="SPrice"> @Html.DisplayFor(modelItem => cprod.UnitPrice)</span>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 }
             </div>
@@ -165,7 +180,7 @@
 
 
         mySearch.on("blur", function () {
-            $(":checkbox").prop("checked",false)
+            $(":checkbox").prop("checked", false)
             var myKeyword = (this).value;
             $(".mycard").hide();
 
@@ -175,19 +190,97 @@
             }
             else
                 $("#spShow").text("");
-                $(`h5:contains(${myKeyword})`).parents(".mycard").show();
-               
+            $(`h5:contains(${myKeyword})`).parents(".mycard").show();
+
 
         })
 
         console.log($(".SPprice").text());
+
+        //shopIcon hover
+
+        $(".myhover").hover(
+            function () {
+                //$(this).children("div:first-child").children("div").children("button").prop("hidden", false);
+                $(this).find("button").first().prop("hidden", false);
+                $(this).find("a").first().prop("hidden", false);
+            },
+            function () {
+                //$(this).children("div:first-child").children("div").children("button").prop("hidden", true);
+                $(this).find("button").first().prop("hidden", true);
+                $(this).find("a").first().prop("hidden", true);
+            }
+
+        )
+
+
+        // 直接加入購物車 ajax
+
+
+        $(".btnAddToCart").click(() => {
+
+            let myform = $(event.target).parents("form");
+
+            console.log(myform);
+
+            $.ajax({
+                url: "@Url.Content("~/Product/AddToCart")",
+                type: 'POST',
+                enctype: "multipart/form-data",
+                data: myform.serialize(),
+
+
+                success: function (message) {
+                    if (message === "成功") {
+                        let timerInterval
+                        Swal.fire({
+                            icon: 'success',
+                            title: '成功',
+                            html: '已將商品加入至購物車',
+                            timer: 1000,
+                            timerProgressBar: true,
+                            didOpen: () => {
+                                Swal.showLoading()
+                                const b = Swal.getHtmlContainer().querySelector('b')
+                                timerInterval = setInterval(() => {
+                                    b.textContent = Swal.getTimerLeft()
+                                }, 100)
+                            },
+                            willClose: () => {
+                                clearInterval(timerInterval)
+                            }
+                        }).then((result) => {
+                            /* Read more about handling dismissals below */
+                            if (result.dismiss === Swal.DismissReason.timer) {
+                                console.log('I was closed by the timer')
+                            }
+                        })
+                    }
+
+                    else if (message === "失敗")
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: '請確認購物車商品總數是否超出庫存!',
+                        })
+                    else
+                        window.alert("請先登入會員");
+                        //window.location.href = message;  todo 為什麼成功也跳轉
+                }
+            })
+        });
+
+
+
+
+
 
 
         //排序
         $("#orderby").change(function () {
 
 
-            $(function (){
+            $(function () {
                 var Pasc = function (a, b) {
                     return parseInt($(a).find(".SPrice").text()) > parseInt($(b).find(".SPrice").text()) ? 1 : -1;
                 }
@@ -237,7 +330,7 @@
 
             })
 
-           
+
         });
 
 
@@ -277,4 +370,5 @@
 
 
     </script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 }
