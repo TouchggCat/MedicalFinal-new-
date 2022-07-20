@@ -40,8 +40,9 @@
                 <span asp-validation-for="BirthDay" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="GenderId" class="control-label"></label><br />
                 <select asp-for="GenderId">
-                    <option>性別</option>
+                    <option>您的性別</option>
                     @foreach (var item in Model.MemGender)
                     {
                         <option value="@item.GenderId">@item.Gender1</option>
@@ -61,8 +62,9 @@
                 <span asp-validation-for="Role" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <select asp-for="CityId">
-                    <option>縣市</option>
+                <label asp-for="CityId" class="control-label"></label><br />
+                <select asp-for="CityId" id="citySelect">
+                    <option>居住縣市</option>
                     @foreach (var item in Model.MemCity)
                     {
                         <option value="@item.CityId">@item.CityName</option>
@@ -78,6 +80,7 @@
             <div class="form-group">
                 <input type="submit" value="註冊" class="btn btn-primary" />
             </div>
+            <br />
             <div class="form-group">
                 <input type="button" value="RegisterDemo" class="btn btn-primary mb-2" id="regiDemo" />
 
@@ -98,12 +101,12 @@
 @section Scripts {
     <script>
         $("#regiDemo").click(() => {
-            $("#email").val("msit14199@gmail.com");
+            $("#email").val("giraffegod@gmail.com");
             $("#pass").val("1234")
             $("#idid").val("A123456789")
-            $("#memName").val("王小白")
-            $("#phone").val("0911999999")
-            $("#address").val("大安區復興南路一段390號")
+            $("#memName").val("湛士華")
+            $("#phone").val("0900999999")
+            $("#address").val("新店區中正路1號1樓")
         })
         //const genderOption = document.querySelector("#genderSelect");
         /*用index傳入*/

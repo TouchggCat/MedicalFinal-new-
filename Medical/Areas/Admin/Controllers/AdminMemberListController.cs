@@ -104,7 +104,8 @@ namespace Medical.Areas.Admin.Controllers
             {
                 CMemberViewModel memVModel = new CMemberViewModel();
                 memVModel.MemberId = _context.Members.FirstOrDefault(c => c.MemberId == id).MemberId;
-                memVModel.MemberName = _context.Members.FirstOrDefault(c => c.MemberId == id).MemberName;  //單欄項目顯示!!
+                //=============================================//單欄項目顯示!!
+                memVModel.MemberName = _context.Members.FirstOrDefault(c => c.MemberId == id).MemberName;  
                 memVModel.Password= _context.Members.FirstOrDefault(c => c.MemberId == id).Password;
                 memVModel.Email = _context.Members.FirstOrDefault(c => c.MemberId == id).Email;
                 memVModel.IcCardNo = _context.Members.FirstOrDefault(c => c.MemberId == id).IcCardNo;
