@@ -13,7 +13,9 @@ namespace Medical.ViewModel
         public string doctorname { get; set; }
         public string treatmentDetailname{ get; set; }
 
-        public DateTime txtdate { get; set; }
+        public DateTime? txtdate { get; set; }
+
+        public int? clinicDetailid { get; set; }
 
     }
 }

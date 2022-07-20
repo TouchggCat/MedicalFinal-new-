@@ -13,9 +13,13 @@ namespace Medical.ViewModel
         {
             _context = db;
         }
+        //會員專區開始
+        public int? memberid { get; set; }
 
-        public int? day { get; set; }
-       
+        public string email { get; set; }
+        public string membername { get; set; }
+        //會員專區結束
+        public DateTime? date { get; set; }     
         public int? doctorid { get; set; }
         public int? departmentid { get; set; }
         public int? periodid { get; set; }
@@ -23,16 +27,19 @@ namespace Medical.ViewModel
         
         public int? clinicDetailid { get; set; }
 
-        
+        public string clinicdate { get { return ((DateTime)_context.ClinicDetails.FirstOrDefault(n => n.ClinicDate==date).ClinicDate).ToString("yyyy/MM/dd"); } }
         public string doctor { get { return _context.Doctors.FirstOrDefault(n => n.DoctorId == doctorid).DoctorName; } }
         public string department { get { return _context.Departments.FirstOrDefault(n => n.DepartmentId == departmentid).DeptName; } }
+
+        public int? online { get { return _context.ClinicDetails.FirstOrDefault(n => n.ClinicDetailId == clinicDetailid).Online; } }
+        
         public string period { get { return _context.Periods.FirstOrDefault(n => n.PeriodId == periodid).PeriodDetail; } }
 
         public string roomName { get { return _context.ClinicRooms.FirstOrDefault(n => n.RoomId == roomid).RoomName; } }
 
-        public int? treatmentDetailId { get { return _context.Treatments.FirstOrDefault(n => n.DoctorId==doctorid).TreatmentDetailId; } }
+        //public int? treatmentDetailId { get { return _context.Treatments.FirstOrDefault(n => n.DoctorId==doctorid).TreatmentDetailId; } }
 
-        public string treatmentDetail { get { return _context.TreatmentDetails.FirstOrDefault(n => n.TreatmentDetailId == treatmentDetailId).TreatmentDetail1; } }
+        //public string treatmentDetail { get { return _context.TreatmentDetails.FirstOrDefault(n => n.TreatmentDetailId == treatmentDetailId).TreatmentDetail1; } }
         
         //剩餘的可預約人數
         public int? sequence_number 

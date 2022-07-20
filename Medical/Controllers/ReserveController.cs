@@ -1,10 +1,13 @@
 ﻿using Medical.Models;
 using Medical.ViewModel;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Medical.Controllers
@@ -18,7 +21,7 @@ namespace Medical.Controllers
         {
             _context = context;
         }
-        // GET:各表的內容
+        // 得到篩選表資料(醫生 專科 門診日期)
         public IActionResult ReserveList()
         {
 
@@ -36,7 +39,8 @@ namespace Medical.Controllers
             return View(datas);
 
         }
-
+        
+        //條件查詢門診
         public IActionResult ReserveResult(reserveViewModel result)
         {
 
@@ -44,13 +48,56 @@ namespace Medical.Controllers
                 .Select(a => a.DepartmentId).FirstOrDefault();
             int doctorId = _context.Doctors.Where(a => a.DoctorName == result.doctorname)
                 .Select(a => a.DoctorId).FirstOrDefault();
-            //int treatmentDetailId = _context.TreatmentDetails.Where(a => a.TreatmentDetail1 == result.treatmentDetailname)
-            //    .Select(a => a.TreatmentDetailId).FirstOrDefault();
-           
-            var id = _context.ClinicDetails.Where(a => a.DoctorId == doctorId)
-                .Where(a => a.DepartmentId == departmentId)
-                .Where(a => a.ClinicDate.Value.Date > result.txtdate);
-            //.Select(a => a.ClinicDetailId);
+            // 還有 result.txtdate
+
+            var id = _context.ClinicDetails;
+
+            if (departmentId > 0 && doctorId > 0 && result.txtdate != null)
+            {
+                id.Where(a => a.DoctorId == doctorId)
+                 .Where(a => a.DepartmentId == departmentId)
+                 .Where(a => a.ClinicDate.Value.Date > result.txtdate);
+            }
+            else if (departmentId > 0 && doctorId > 0)
+            {
+                id.Where(a => a.DoctorId == doctorId)
+                 .Where(a => a.DepartmentId == departmentId);
+            }
+            else if (departmentId > 0 && result.txtdate != null)
+            {
+                id.Where(a => a.ClinicDate.Value.Date > result.txtdate)
+                 .Where(a => a.DepartmentId == departmentId);
+            }
+            else if (doctorId > 0 && result.txtdate != null)
+            {
+                id.Where(a => a.DoctorId == doctorId)
+                 .Where(a => a.ClinicDate.Value.Date > result.txtdate);
+            }
+            else if (doctorId > 0 && departmentId == 0)
+            {
+                id.Where(a => a.DoctorId == doctorId);
+
+            }
+            else if (departmentId > 0 && doctorId == 0)
+            {
+                id.Where(a => a.DepartmentId == departmentId);
+
+            }
+            else if (result.txtdate != null)
+            {
+                id.Where(a => a.ClinicDate.Value.Date > result.txtdate);
+
+            }
+            else
+            {
+                id.Where(a => a.DoctorId == doctorId)
+                 .Where(a => a.DepartmentId == departmentId)
+                 .Where(a => a.ClinicDate.Value.Date > result.txtdate);
+            }
+            //.Where(a => a.ClinicDate.Value.Date > result.txtdate);.Where(a => a.DoctorId == doctorId)
+            //.Where(a => a.DepartmentId == departmentId)
+            //.Where(a => a.ClinicDate.Value.Date > result.txtdate);
+
             List<reserverSearch> list = new List<reserverSearch>();
             foreach (var item in id)
             {
@@ -60,7 +107,7 @@ namespace Medical.Controllers
                     departmentid = item.DepartmentId,
                     periodid = item.PeriodId,
                     roomid=item.RoomId,
-                    day=item.ClinicDate.Value.Day,                
+                    date = item.ClinicDate,                
                     clinicDetailid = item.ClinicDetailId,                    
                 };
                 
@@ -70,6 +117,59 @@ namespace Medical.Controllers
             
             return Json(list);
         }
+
+        //判斷登入狀況  取得門診資料 進入預約畫面 
+        public IActionResult CreateReserve(reserveViewModel result)
+        {
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USE))
+            {
+                CMemberAdminViewModel vm = null;
+                string logJson = "";
+                logJson = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USE);
+                vm = JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
+                int memberid = vm.MemberId;
+                string member = vm.MemberName;
+                string email = vm.Email;
+
+
+                var id = _context.ClinicDetails.Where(n => n.ClinicDetailId == result.clinicDetailid);
+                List<reserverSearch> list = new List<reserverSearch>();
+                foreach (var item in id)
+                {
+                    reserverSearch t = new reserverSearch(_context)
+                    {
+                        doctorid = item.DoctorId,
+                        departmentid = item.DepartmentId,
+                        periodid = item.PeriodId,
+                        roomid = item.RoomId,
+                        date = item.ClinicDate,
+                        clinicDetailid = item.ClinicDetailId,
+                        memberid= memberid,
+                        membername= member,
+                        email=email
+                    };
+
+                    list.Add(t);                  
+                }
+                return Json(list);
+            }
+
+            return Content("null", "text/plain", Encoding.UTF8);  
+        }
+
+        //開始預約
+        //public IActionResult CreateReserve(reserveViewModel result)
+        //{
+
+
+
+        //    return RedirectToAction("Login", "Login");
+        //}
+
+
+
+
+
 
 
 
