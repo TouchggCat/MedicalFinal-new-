@@ -128,7 +128,7 @@ namespace Medical.Areas.Admin.Controllers
         public IActionResult Edit(CMemberViewModel vm)
         {
             //_context.Members.Add(vm.member);   //這樣寫會新增一筆
-            Member mem = _context.Members.FirstOrDefault(c => c.MemberId == vm.MemberId);
+            Member mem = _context.Members.FirstOrDefault(c => c.MemberId == vm.MemberId);//這裡要等於vm.MemberId而不是@Html.ActionLink的id
             if (mem != null)
             {
                 mem.MemberId = vm.MemberId;

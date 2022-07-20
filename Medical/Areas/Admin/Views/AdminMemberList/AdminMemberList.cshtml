@@ -3,8 +3,10 @@
     ViewData["Title"] = "AdminMemberList";
     Layout = "~/Areas/Admin/Admin_Layout.cshtml";
 }
+<div class="btn btn-outline-secondary">
+    <a asp-action="AdminCreate" class="fas fa-user-plus">新增會員</a>
+</div>
 
-<a asp-action="AdminCreate" class="fas fa-user-plus">新增會員</a>
 <h1>會員資料管理頁面</h1>
 <div class="col-md-3">
     <div>
