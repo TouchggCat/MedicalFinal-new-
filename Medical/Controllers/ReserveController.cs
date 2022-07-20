@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -119,7 +120,7 @@ namespace Medical.Controllers
         }
 
         //判斷登入狀況  取得門診資料 進入預約畫面 
-        public IActionResult CreateReserve(reserveViewModel result)
+        public IActionResult GoReserve(reserveViewModel result)
         {
             if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USE))
             {
@@ -158,14 +159,42 @@ namespace Medical.Controllers
         }
 
         //開始預約
-        //public IActionResult CreateReserve(reserveViewModel result)
-        //{
+        public IActionResult CreateReserve(reserveViewModel result)
+        {
+
+            CMemberAdminViewModel vm = null;
+            string logJson = "";
+            logJson = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USE);
+            vm = JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
+
+            int id = result.clinicDetailid;
+            int? sequence_number = result.rank;
+            string remark = result.Remark_Patient;          
+            int memberid = vm.MemberId;
+            DateTime time = DateTime.Now;
+
+            Reserve reserve = new Reserve();
+            reserve.ClinicDetailId = id;
+            reserve.State = 4;
+            reserve.MemberId = memberid;
+            reserve.ReserveDate = time;
+            reserve.RemarkPatient = remark;
+            reserve.Source = 1;
+            reserve.SequenceNumber = sequence_number;
+
+            _context.Add(reserve);
+            _context.SaveChanges();
+
+            
+
+            return Content("成功預約", "text/plain", Encoding.UTF8);
+        }
 
 
-
-        //    return RedirectToAction("Login", "Login");
-        //}
-
+        
+            
+       
+    
 
 
 

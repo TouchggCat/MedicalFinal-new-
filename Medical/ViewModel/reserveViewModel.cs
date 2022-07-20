@@ -15,7 +15,12 @@ namespace Medical.ViewModel
 
         public DateTime? txtdate { get; set; }
 
-        public int? clinicDetailid { get; set; }
+        public int clinicDetailid { get; set; }
+
+        public string Remark_Patient { get; set; }
+
+        //代表預約順位
+        public int? rank { get; set; }
 
     }
 }
