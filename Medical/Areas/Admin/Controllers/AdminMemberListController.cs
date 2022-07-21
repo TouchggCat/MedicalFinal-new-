@@ -30,7 +30,10 @@ namespace Medical.Areas.Admin.Controllers
                         CMemberViewModel memVModel = new CMemberViewModel();
                    
                         memVModel.mem = _context.Members.Where(n => n.Role == Role).ToList();  //清單篩選顯示!!
-                        memVModel.roleTypes = _context.RoleTypes.ToList();  //下拉選單顯示
+                        memVModel.roleTypes = _context.RoleTypes.ToList();  //下拉選單&表格權限顯示
+                        memVModel.MemGender = _context.Genders.ToList();
+                        //性別名稱顯示，因為view有關連Model.MemGender所以要傳入(否則viewModel的MemGender為null)，無關聯則不需要
+                        memVModel.MemCity = _context.Cities.ToList();
                         return View(memVModel);
                     }
                     else

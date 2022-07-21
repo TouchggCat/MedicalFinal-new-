@@ -36,7 +36,8 @@
             </div>
             <div class="form-group">
                 <label asp-for="BirthDay" class="control-label"></label>
-                <input asp-for="BirthDay" class="form-control mb-2" />
+                @*日期格式type="date" 預設值value="2000-01-01"*@
+                <input asp-for="BirthDay" class="form-control mb-2" type="date" value="2000-01-01" id="bday"/>
                 <span asp-validation-for="BirthDay" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -111,6 +112,8 @@
             //====================自動跳出下拉選單!!!
             $('#citySelect').val("2");
             $('#genSelect').val("1");
+            //生日值顯示
+            $('#bday').val("2012-02-06");
 
         })
 

@@ -109,7 +109,10 @@
                     {
                         showCity = c;
                     }
-                    //======================================================================
+                    //========================日期格式化，避免生日空值
+                    string happyBD = "";
+                    if(item.BirthDay!=null)
+                    happyBD = item.BirthDay.Value.ToString("yyyy/MM/dd");
             <tr>
                 <td>
                     @count
@@ -127,7 +130,7 @@
                     @Html.DisplayFor(modelItem => item.Password)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.BirthDay)
+                    @happyBD
                 </td>
                 <td>
                     @showGen

@@ -35,13 +35,13 @@
             </div>
             <div class="form-group">
                 <label asp-for="BirthDay" class="control-label"></label>
-                <input asp-for="BirthDay" class="form-control" />
+                <input asp-for="BirthDay" class="form-control" type="date" value="2000-01-01" id="bday"/>
                 <span asp-validation-for="BirthDay" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="GenderId" class="control-label"></label>
                 <br />
-                <select asp-for="GenderId">
+                <select asp-for="GenderId" id="genSelect">
                     <option>性別</option>
                     @foreach (var item in Model.MemGender)
                     {
@@ -62,7 +62,7 @@
             <div class="form-group">
                 <label asp-for="Role" class="control-label"></label>
                 <br />
-                <select asp-for="Role">
+                <select asp-for="Role" id="roleSelect">
                     <option>權限</option>
                     @foreach (var item in Model.roleTypes)
                     {
@@ -73,7 +73,7 @@
             <div class="form-group">
                 <label asp-for="CityId" class="control-label"></label>
                 <br />
-                <select asp-for="CityId">
+                <select asp-for="CityId" id="citySelect">
                     <option>縣市</option>
                     @foreach (var item in Model.MemCity)
                     {
@@ -110,6 +110,11 @@
             $("#memName").val("管理員")
             $("#phone").val("0911333999")
             $("#address").val("台北市信義區市府路1號")
+            //====================自動跳出下拉選單!!!
+            $('#citySelect').val("2");
+            $('#genSelect').val("1");
+            $('#roleSelect').val("3");
+            $('#bday').val("1999-09-09");
         })
     </script>
 
