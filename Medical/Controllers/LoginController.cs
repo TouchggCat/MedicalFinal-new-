@@ -34,7 +34,7 @@ namespace Medical.Controllers
             {
                 return RedirectToAction("LoginSuccess");   //已登入的證明
             }
-            return View();
+            return View(new CLoginViewModel());
         }
         [HttpPost]
         public IActionResult Login(CLoginViewModel vModel)
@@ -87,7 +87,7 @@ namespace Medical.Controllers
         [HttpPost]
         public IActionResult Register(CMemberViewModel vModel)
         {
-            if (vModel != null)
+            if (vModel.Email != null && vModel.Password!= null)
             {
 
                 sendMail();
@@ -104,13 +104,7 @@ namespace Medical.Controllers
           //待寫入內容,註冊成功發送信件
         }
 
-
-
-
-
  
-
-
         public IActionResult Logout()
         {
             if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USE))
