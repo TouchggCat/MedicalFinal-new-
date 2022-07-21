@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <None Include="Views\ClinicDetail\List.cshtml" />
+    <None Include="wwwroot\img\emptyCart.gif" />
     <None Include="wwwroot\js\site.js" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map" />

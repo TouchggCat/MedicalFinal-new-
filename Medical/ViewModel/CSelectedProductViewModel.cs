@@ -24,10 +24,11 @@ namespace Medical.ViewModel
         public string ProductColor { get; set; }
         public string ProductAppearance { get; set; }
         public string ProductMaterial { get; set; }
-
+        public string ProductBrandName { get; set; }
+        public string ProductCategoryName { get; set; }
         public int ProductBrandId { get; set; }
         public int ProductCategoryId { get; set; }
-
+        public int Cost { get; set; }
         public List<string>otherP{get;set;}
         public IFormFile photo { get; set; }
 

@@ -32,7 +32,6 @@ namespace Medical.Areas.Admin.Controllers
         }
 
         public IActionResult productManage()
-
         {
             CProductViewModel model = new CProductViewModel
             {
@@ -78,6 +77,11 @@ namespace Medical.Areas.Admin.Controllers
             }
 
             Product p = db.Products.FirstOrDefault(p => p.ProductId == id);
+
+            string pbName = db.ProductBrands.FirstOrDefault(pb => pb.ProductBrandId == p.ProductBrandId).ProductBrandName; 
+            string pcName = db.ProductCategories.FirstOrDefault(pc => pc.ProductCategoryId== p.ProductCategoryId).ProductCategoryName;
+
+
             CSelectedProductViewModel prod = new CSelectedProductViewModel()
             {
 
@@ -93,6 +97,8 @@ namespace Medical.Areas.Admin.Controllers
                 ProductName = ps.Product.ProductName,
                 Discontinued = p.Discontinued,
                 UnitPrice = ps.UnitPrice,
+                ProductBrandName = pbName,
+                ProductCategoryName = pcName,
                 ProductBrandId = p.ProductBrandId,
                 ProductCategoryId = p.ProductCategoryId,
                 otherP = myop
@@ -138,6 +144,43 @@ namespace Medical.Areas.Admin.Controllers
 
             return Content("成功");
         }
+
+        public IActionResult AddNewProd(CSelectedProductViewModel cSelected/*,IFormFile photo*/ /*string myJson*/)
+        {
+            // CSelectedProductViewModel cSelected = JsonSerializer.Deserialize<CSelectedProductViewModel>(myJson);
+            Product mp = new Product();
+            ProductSpecification mps = new ProductSpecification();
+
+            if (cSelected.photo != null)
+            {
+                string mpName = Guid.NewGuid().ToString() + ".jpg";
+                cSelected.photo.CopyTo(new FileStream(_environment.WebRootPath + "/images/" + mpName, FileMode.Create));
+                mps.ProductImage = mpName;
+            }
+
+            mp.Discontinued = cSelected.Discontinued;
+            mp.ProductBrandId = cSelected.ProductBrandId;
+            mp.ProductCategoryId = cSelected.ProductCategoryId;
+            mp.ProductName = cSelected.ProductName;
+            mp.Shelfdate = cSelected.Shelfdate;
+            mp.Stock = cSelected.Stock;
+            mp.Cost = cSelected.Cost;
+            db.Products.Add(mp);
+            db.SaveChanges();
+
+            mps.ProductAppearance = cSelected.ProductAppearance;
+            mps.ProductColor = cSelected.ProductColor;
+            mps.ProductMaterial = cSelected.ProductMaterial;
+            mps.UnitPrice = cSelected.UnitPrice;
+            mps.ProductId = mp.ProductId;
+            db.ProductSpecifications.Add(mps);
+
+            db.SaveChanges();
+
+
+            return Content(mp.ProductId.ToString());
+        }
+
 
 
         public IActionResult test()
@@ -198,9 +241,6 @@ namespace Medical.Areas.Admin.Controllers
                 } 
             }
 
-
-
-
             return Content("成功");
         }
 
@@ -208,6 +248,21 @@ namespace Medical.Areas.Admin.Controllers
         // 新增商品
         public IActionResult AddNewProduct()
         {
+            IEnumerable<SelectListItem> brandSelectListItem = (from p in db.ProductBrands
+                                                               where p.ProductBrandName != null
+                                                               select p).ToList().Select(p => new SelectListItem
+                                                               { Value = p.ProductBrandId.ToString(), Text = p.ProductBrandName });
+
+            ViewBag.brandSelectListItem = brandSelectListItem;
+
+
+            IEnumerable<SelectListItem> cateSelectListItem = (from p in db.ProductCategories
+                                                              where p.ProductCategoryName != null
+                                                              select p).ToList().Select(p => new SelectListItem
+                                                              { Value = p.ProductCategoryId.ToString(), Text = p.ProductCategoryName });
+
+            ViewBag.cateSelectListItem = cateSelectListItem;
+
 
 
             return View();
@@ -216,10 +271,24 @@ namespace Medical.Areas.Admin.Controllers
         // 刪除/下架商品
         public IActionResult RemoveProduct()
         {
+            CProductViewModel model = new CProductViewModel
+            {
+                productList = db.Products.ToList(),
+                brandList = db.ProductBrands.ToList(),
+                cateList = db.ProductCategories.ToList(),
+                prodSpecList = db.ProductSpecifications.ToList()
 
+            };
 
-            return View();
+            return View(model);
         }
+
+        public IActionResult MultipleDiscontinue(string[] multipleD)
+        {
+
+            return Content("成功");
+        }
+
 
         // 查詢訂單
         public IActionResult QueryAllOrders()

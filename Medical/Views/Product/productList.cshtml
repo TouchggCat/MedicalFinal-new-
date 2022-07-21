@@ -47,14 +47,14 @@
                 @foreach (var cprod in Model.brandList)
                 {
                     //string test = "b" + cprod.ProductBrandId;
-                    <input id="" class="mt-3" onchange="test()" type="checkbox" name="brand" value="@cprod.ProductBrandId" />@:&nbsp<label style="font-size:21px">@cprod.ProductBrandName</label>
+                    <input id="" class="mt-3 myBrand" onchange="test()" type="checkbox" name="brand" value="@cprod.ProductBrandId" />@:&nbsp<label style="font-size:21px">@cprod.ProductBrandName (@cprod.Products.Where(p=>p.ProductBrand.ProductBrandName==cprod.ProductBrandName).Count())</label>
                     <br />
                 }
                 <hr />
                 <h4>種類</h4>
                 @foreach (var cprod in Model.cateList)
                 {
-                    <input class="mt-3" onchange="test()" type="checkbox" name="cate" value="@cprod.ProductCategoryId" />@:&nbsp<label style="font-size:21px">@cprod.ProductCategoryName</label>
+                    <input class="mt-3 myCate" onchange="test()" type="checkbox" name="cate" value="@cprod.ProductCategoryId" />@:&nbsp<label style="font-size:21px">@cprod.ProductCategoryName (@cprod.Products.Where(p => p.ProductCategory.ProductCategoryName == cprod.ProductCategoryName).Count())</label>
                     <br />
                 }
                 <hr />

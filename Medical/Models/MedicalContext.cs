@@ -454,7 +454,7 @@ namespace Medical.Models
 
                 entity.Property(e => e.MemberId).HasColumnName("MemberID");
 
-                entity.Property(e => e.OrderDate).HasMaxLength(50);
+                entity.Property(e => e.OrderDate).HasColumnType("datetime");
 
                 entity.Property(e => e.OrderStateId).HasColumnName("OrderStateID");
 

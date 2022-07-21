@@ -122,8 +122,8 @@ namespace Medical.Controllers
             CProductForShowViewModel prodModel = new CProductForShowViewModel()
             {
                 productList = _medicalContext.Products.ToList(),
-                brandList = _medicalContext.ProductBrands.ToList(),
-                cateList = _medicalContext.ProductCategories.ToList(),
+                brandList = _medicalContext.ProductBrands.Include(b=>b.Products).ToList(),
+                cateList = _medicalContext.ProductCategories.Include(c => c.Products).ToList(),
                 prodSpec = _medicalContext.ProductSpecifications.ToList()
 
             };
@@ -165,12 +165,20 @@ namespace Medical.Controllers
 
             ProductSpecification ps = _medicalContext.ProductSpecifications.FirstOrDefault(
                 ps => ps.Product.ProductName == productName);
+            
             List<Review> reviewList = _medicalContext.Reviews.Where(rw => rw.Product.ProductName == productName).ToList();
             List<Member> memList = _medicalContext.Members.ToList();
             List<RatingType> ratings = _medicalContext.RatingTypes.ToList();
             List<ProductBrand> brandList = _medicalContext.ProductBrands.ToList();
             List<ProductCategory> cateList = _medicalContext.ProductCategories.ToList();
+            List<OtherProductImage> otherP = _medicalContext.OtherProductImages.Where(op => op.Product.ProductName == productName).ToList();
+            List<string> myop = new List<string>(); ;
 
+            foreach (var o in otherP)
+            {
+                string optxt = o.OtherProductPhoto;
+                myop.Add(optxt);
+            }
 
             CShoppingCartViewModel cartView = new CShoppingCartViewModel()
             {
@@ -181,11 +189,25 @@ namespace Medical.Controllers
                 memList = memList,
                 brandList = brandList,
                 cateList = cateList,
-                MemberID = showID2
+                MemberID = showID2,
+                otherP = myop
+                
 
             };
 
             return View(cartView);
+        }
+
+        public IActionResult GetOthersProduct()
+        {
+
+            var otherProds = _medicalContext.ProductSpecifications.Include(ps=>ps.Product).OrderBy(ps => Guid.NewGuid()).Select(ps =>new CGetOthersProduct { 
+            ProductImage = ps.ProductImage,
+            ProductName = ps.Product.ProductName,
+            UnitPrice = ps.UnitPrice
+            }).Take(9);
+
+            return Json(otherProds);
         }
 
         [HttpPost]
@@ -255,10 +277,8 @@ namespace Medical.Controllers
 
                 return Content("成功");
             }
-
-            
         }
-
+     
         public IActionResult CartViewList(int? id)
         {
             CMemberAdminViewModel vm = null;
@@ -279,7 +299,7 @@ namespace Medical.Controllers
 
             if (cartList.Count == 0)
             {
-                return RedirectToAction("productList");
+                return RedirectToAction("emptyCart");
             }
 
             List<Product> prodList = _medicalContext.Products.ToList();
@@ -336,8 +356,24 @@ namespace Medical.Controllers
 
         public IActionResult CheckViewList(int? id)
         {
+            CMemberAdminViewModel vm = null;
 
-            List<ShoppingCart> cartList = _medicalContext.ShoppingCarts.Where(c => c.MemberId == 1).ToList();
+            int showID2 = 0;
+            string logJson = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USE);
+
+            if (logJson != null)
+            {
+                vm = JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
+                showID2 = vm.MemberId;
+            }
+
+            if (showID2 == 0)
+                return RedirectToAction("Login", "Login");
+
+
+
+
+            List<ShoppingCart> cartList = _medicalContext.ShoppingCarts.Where(c => c.MemberId == showID2).ToList();
 
             List<Product> prodList = _medicalContext.Products.ToList();
 
@@ -364,9 +400,37 @@ namespace Medical.Controllers
         }
 
 
-        public IActionResult QueryOrder(int? id)
+        public IActionResult QueryNotFinishOrder(int? id)
         {
-            List<Order> orderList = _medicalContext.Orders.Where(o => o.MemberId == 2).OrderByDescending(o => o.OrderDate).ToList();
+            List<Order> orderList = _medicalContext.Orders.Where(o => o.MemberId ==19&& o.OrderStateId==1).OrderByDescending(o => o.OrderId).ToList();
+            List<OrderDetail> orderDetailList = null;
+
+            foreach (var o in orderList)
+            {
+                orderDetailList = _medicalContext.OrderDetails.Where(od => od.OrderId == o.OrderId).ToList();
+                o.OrderDetails = orderDetailList;
+            }
+
+
+            List<Product> prodList = _medicalContext.Products.ToList();
+            List<ProductSpecification> prodspecList = _medicalContext.ProductSpecifications.ToList();
+
+
+
+            COrderforShowViewModel cOrderforShowViewModel = new COrderforShowViewModel()
+            {
+
+                orderDetailList = orderDetailList,
+                orderList = orderList,
+                productList = prodList,
+                productSpecificationList = prodspecList
+            };
+
+            return View(cOrderforShowViewModel);
+        }
+        public IActionResult QueryFinishOrder(int? id)
+        {
+            List<Order> orderList = _medicalContext.Orders.Where(o => o.MemberId == 19 && o.OrderStateId == 2).OrderByDescending(o => o.OrderId).ToList();
             List<OrderDetail> orderDetailList = null;
 
             foreach (var o in orderList)
@@ -417,6 +481,11 @@ namespace Medical.Controllers
             _medicalContext.Add(cd);
             _medicalContext.SaveChanges();
             return RedirectToAction("ReceiveCoupon");
+        }
+
+        public IActionResult emptyCart()
+        {
+            return View();
         }
 
 
@@ -568,11 +637,23 @@ namespace Medical.Controllers
             return RedirectToAction("tempAddProduct");
         }
 
+        public IActionResult test001()
+        {
+            var q = _medicalContext.ProductBrands.ToList();
 
-        public IActionResult aa() {
+            return View(q);
 
-            return View();
         }
+        [HttpPost]
+        public IActionResult test001(int[] pbID)
+        {
+            var q = _medicalContext.ProductBrands.ToList();
+
+            return View(q);
+
+        }
+
+
 
         // ============ 柏鈞 End =================
     }
