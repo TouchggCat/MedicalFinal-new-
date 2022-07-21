@@ -228,7 +228,7 @@
 
         //按下預約 填入modal
         function GoReserve() {
-
+            
             const clinicID = $(event.target).attr("name");
             let result1 = "";
              $.ajax({
@@ -243,9 +243,11 @@
                          $('#exampleModal').modal('hide');
                          /*沒登入跳轉登入畫面*/
                          alert("您尚未成為會員");
-                         
 
-                         window.location.href = '@Url.Content("~/Login/Login")';
+                         const back = window.location.href;
+                         console.log(back);
+
+                         window.location.href = `@Url.Content("~/Login/Login/?repath=")`+back;
                      }
                      console.log(datas);
                      $.each(datas, function (index, item) {

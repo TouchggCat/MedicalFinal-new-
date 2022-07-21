@@ -41,7 +41,7 @@ namespace Medical.Controllers
             return View();
         }
 
-        public IActionResult Login()
+        public IActionResult Login(string repath)
         {
             if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USE))
             {
