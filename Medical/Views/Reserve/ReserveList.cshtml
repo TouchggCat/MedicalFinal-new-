@@ -9,16 +9,16 @@
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
     <!-- DataTables -->
-    <link rel="stylesheet" href="../../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" href="../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-    <link rel="stylesheet" href="../../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
     <!-- Theme style -->
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
+    <!--<link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">-->
 
 
 
@@ -92,12 +92,12 @@
     <div class="card-header">
         <h3 id="title" class="card-title">查詢結果</h3>
     </div>
-
     <div class="card-body">
         <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
             <div class="row">
                 <div class="col-sm-12">
-                    <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" aria-describedby="example1_info">
+                    <table id="example1" class="table table-bordered table-striped" aria-describedby="example1_info">
+
                     </table>
                 </div>
             </div>
@@ -148,7 +148,8 @@
 @section scripts
 {
     <script>
-
+        let table;
+        
         //查詢預約
         $('#submit').click(function (evt) {
             evt.preventDefault();
@@ -159,15 +160,15 @@
             const date = $("#date").val();
             let count = 0;
             let result = `<thead>
-                             <tr>
-                                 <th class="sorting sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="醫生姓名: activate to sort column descending">醫生姓名</th>
-                                 <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="治療科別: activate to sort column ascending">治療科別</th>
-                                 <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="診間: activate to sort column ascending">診間</th>
-                                 <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="開診日期: activate to sort column ascending">開診日期</th>
-                                 <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="狀態: activate to sort column ascending">狀態</th>
-                                 <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label=": activate to sort column ascending"></th>
-                             </tr>
-                          </thead>`;
+                            <tr>
+                                <th class="sorting sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="醫生姓名: activate to sort column descending">醫生姓名</th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="治療科別: activate to sort column ascending">治療科別</th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="診間: activate to sort column ascending">診間</th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="開診日期: activate to sort column ascending">開診日期</th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="狀態: activate to sort column ascending">狀態</th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label=":動作 activate to sort column ascending"></th>
+                            </tr>
+                        </thead>`;
 
             if (doc == "選擇醫生" && dep == "選擇科別" && date =="選擇日期")
             {
@@ -198,10 +199,13 @@
                         }
 
                         count++;
-                        $("#example1").html(result);
+                        $("#title").html(`查詢結果共有${count}筆`);
                     })
-                    $("#title").html(`查詢結果共有${count}筆`);
+                   
+                    $("#example1").html(result);
 
+                    
+                    
 
                     $(function () {
                         $("#example1").DataTable({
@@ -209,12 +213,18 @@
                             "buttons": ["copy", "excel",], "retrieve": true
                         }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 
-                    });
+                    });                 
                 }
             })
 
         })
+        //setInterval($(function () {
+        //    $("#example1").DataTable({
+        //        "responsive": true, "lengthChange": false, "autoWidth": false,
+        //        "buttons": ["copy", "excel",], "retrieve": true
+        //    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 
+        //}), 1000);
 
         //按下預約 填入modal
         function GoReserve() {
@@ -230,8 +240,11 @@
                  {
                      if (datas==null)
                      {
+                         $('#exampleModal').modal('hide');
                          /*沒登入跳轉登入畫面*/
-                         alert("請先登入 再行預約");
+                         alert("您尚未成為會員");
+                         
+
                          window.location.href = '@Url.Content("~/Login/Login")';
                      }
                      console.log(datas);
@@ -272,41 +285,44 @@
                 type: "post",
                 data: { "clinicDetailid": clinicID, "Remark_Patient": Remark, "rank": rank },
                 dataType: "json",
-                success: function (datas) {
-                    alert("預約成功");
-                    /*$("#out").trigger("click");*/
-                    window.location.href = '@Url.Content("~/Home/Index")';
-                }
+            }).done((datas) => {
+                 if (datas==null)
+                     {
+                         /*預約成功 跳轉頁面*/
+                         alert("預約成功");
+                         window.location.href = '@Url.Content("~/Home/Index")';
+                     }
+
 
             })
 
-
         })
 
-
-
-
+        
 
     </script>
+
+
+
     <!-- jQuery -->
-    <script src="../../plugins/jquery/jquery.min.js"></script>
+    <script src="~/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
-    <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- DataTables  & Plugins -->
-    <script src="../../plugins/datatables/jquery.dataTables.min.js"></script> @*//套件本體*@
-    <script src="../../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-    <script src="../../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-    <script src="../../plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-    <script src="../../plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-    <script src="../../plugins/jszip/jszip.min.js"></script>
-    <script src="../../plugins/pdfmake/pdfmake.min.js"></script>
-    <script src="../../plugins/pdfmake/vfs_fonts.js"></script>
-    <script src="../../plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-    <script src="../../plugins/datatables-buttons/js/buttons.print.min.js"></script>
-    <script src="../../plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script src="~/plugins/datatables/jquery.dataTables.min.js"></script> @*//套件本體*@
+    <script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/plugins/jszip/jszip.min.js"></script>
+    <script src="~/plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="~/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="~/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="~/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
     <!-- AdminLTE App -->
-    <script src="../../dist/js/adminlte.min.js"></script>
+    @*<script src="~/dist/js/adminlte.min.js"></script>*@
 
 
 

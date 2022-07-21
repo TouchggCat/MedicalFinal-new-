@@ -17,11 +17,14 @@ namespace Medical.Controllers
     public class ReserveController : Controller
     {
         private readonly MedicalContext _context;
+        private IQueryable<ClinicDetail> id;
+        int memberid;
 
         public ReserveController(MedicalContext context)
         {
             _context = context;
         }
+
         // 得到篩選表資料(醫生 專科 門診日期)
         public IActionResult ReserveList()
         {
@@ -50,59 +53,57 @@ namespace Medical.Controllers
             int doctorId = _context.Doctors.Where(a => a.DoctorName == result.doctorname)
                 .Select(a => a.DoctorId).FirstOrDefault();
             // 還有 result.txtdate
+            DateTime? date = result.txtdate;
 
-            var id = _context.ClinicDetails;
-
-            if (departmentId > 0 && doctorId > 0 && result.txtdate != null)
+            if (departmentId == 0 && doctorId == 0 && date == null)
             {
-                id.Where(a => a.DoctorId == doctorId)
-                 .Where(a => a.DepartmentId == departmentId)
-                 .Where(a => a.ClinicDate.Value.Date > result.txtdate);
+                id = _context.ClinicDetails.Where(n=>n.Online==0);
             }
-            else if (departmentId > 0 && doctorId > 0)
+            else if (departmentId == 0 && doctorId>0 &&date!=null)
             {
-                id.Where(a => a.DoctorId == doctorId)
-                 .Where(a => a.DepartmentId == departmentId);
+                id = _context.ClinicDetails.Where(a => a.DoctorId == doctorId)
+                 .Where(a => a.ClinicDate.Value.Date > date).Where(n => n.Online == 0);
             }
-            else if (departmentId > 0 && result.txtdate != null)
+            else if (doctorId == 0 && departmentId>0 &&date!=null)
             {
-                id.Where(a => a.ClinicDate.Value.Date > result.txtdate)
-                 .Where(a => a.DepartmentId == departmentId);
+                id = _context.ClinicDetails.Where(a => a.DepartmentId == departmentId)
+                 .Where(a => a.ClinicDate.Value.Date > date).Where(n => n.Online == 0);
             }
-            else if (doctorId > 0 && result.txtdate != null)
+            else if (date == null &&departmentId >0 && doctorId>0)
             {
-                id.Where(a => a.DoctorId == doctorId)
-                 .Where(a => a.ClinicDate.Value.Date > result.txtdate);
+                id = _context.ClinicDetails.Where(a => a.DepartmentId == departmentId)
+                 .Where(a => a.DoctorId == doctorId).Where(n => n.Online == 0);
             }
-            else if (doctorId > 0 && departmentId == 0)
+            else if (departmentId == 0 && date == null)
             {
-                id.Where(a => a.DoctorId == doctorId);
-
+                id = _context.ClinicDetails
+                 .Where(a => a.DoctorId == doctorId).Where(n => n.Online == 0);
             }
-            else if (departmentId > 0 && doctorId == 0)
+            else if (departmentId == 0 && doctorId == 0)
             {
-                id.Where(a => a.DepartmentId == departmentId);
-
+                id = _context.ClinicDetails
+                 .Where(a => a.ClinicDate.Value.Date > date).Where(n => n.Online == 0);
             }
-            else if (result.txtdate != null)
+            else if (date == null && doctorId == 0)
             {
-                id.Where(a => a.ClinicDate.Value.Date > result.txtdate);
-
+                id = _context.ClinicDetails
+                 .Where(a => a.DepartmentId == departmentId).Where(n => n.Online == 0);
             }
             else
             {
-                id.Where(a => a.DoctorId == doctorId)
-                 .Where(a => a.DepartmentId == departmentId)
-                 .Where(a => a.ClinicDate.Value.Date > result.txtdate);
-            }
-            //.Where(a => a.ClinicDate.Value.Date > result.txtdate);.Where(a => a.DoctorId == doctorId)
-            //.Where(a => a.DepartmentId == departmentId)
-            //.Where(a => a.ClinicDate.Value.Date > result.txtdate);
+                id = _context.ClinicDetails.Where(a => a.ClinicDate.Value.Date > date)
+                    .Where(a => a.DoctorId == doctorId).Where(a => a.DepartmentId == departmentId).Where(n => n.Online == 0);
+            }                              
 
-            List<reserverSearch> list = new List<reserverSearch>();
+
+            //.Where(a => a.ClinicDate.Value.Date > result.txtdate).Where(a => a.DoctorId == doctorId)
+            //.Where(a => a.DepartmentId == departmentId)
+            
+
+            List<ClinicSearch> list = new List<ClinicSearch>();
             foreach (var item in id)
             {
-                reserverSearch t = new reserverSearch(_context)
+                ClinicSearch t = new ClinicSearch(_context)
                 {
                     doctorid = item.DoctorId,
                     departmentid = item.DepartmentId,
@@ -125,19 +126,23 @@ namespace Medical.Controllers
             if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USE))
             {
                 CMemberAdminViewModel vm = null;
+
                 string logJson = "";
                 logJson = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USE);
                 vm = JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
+
+
                 int memberid = vm.MemberId;
                 string member = vm.MemberName;
                 string email = vm.Email;
 
 
+
                 var id = _context.ClinicDetails.Where(n => n.ClinicDetailId == result.clinicDetailid);
-                List<reserverSearch> list = new List<reserverSearch>();
+                List<ClinicSearch> list = new List<ClinicSearch>();
                 foreach (var item in id)
                 {
-                    reserverSearch t = new reserverSearch(_context)
+                    ClinicSearch t = new ClinicSearch(_context)
                     {
                         doctorid = item.DoctorId,
                         departmentid = item.DepartmentId,
@@ -185,41 +190,47 @@ namespace Medical.Controllers
             _context.Add(reserve);
             _context.SaveChanges();
 
-            
 
-            return Content("成功預約", "text/plain", Encoding.UTF8);
+
+            return Content("null", "text/plain", Encoding.UTF8);
         }
 
 
-        
-            
-       
-    
-
-
-
-
-
-
-
-        public IActionResult ReserveSearch(int? member = 4)
+        ////查詢自己的預約
+        public IActionResult ReserveSearch()
         {
-            ViewBag.name = _context.Reserves.Where(a => a.MemberId == member).Select(a => a.Member.MemberName).FirstOrDefault();
-            var list = _context.Reserves.Where(a => a.MemberId == member)
-                .Include(a => a.Member)
-                .Include(a => a.State)
-                .Include(a => a.Source)
-                .Include(a => a.ClinicDetail)
-                .ThenInclude(a => a.Doctor)
-                .ToList();
-            return View(list);
+            
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USE))
+            {
+                CMemberAdminViewModel vm = null;
+                string logJson = "";
+                logJson = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USE);
+                vm = JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
+                memberid = vm.MemberId;
 
+                ViewBag.name = _context.Reserves.Where(a => a.MemberId == memberid).Select(a => a.Member.MemberName).FirstOrDefault();
+                var id = _context.Reserves.Where(n => n.MemberId == memberid).Select(n => n.ClinicDetailId);
+                List<ReservesSearch> list = new List<ReservesSearch>();
+                foreach (var item in id)
+                {
+                    ReservesSearch t = new ReservesSearch(_context)
+                    {
+                        clinicid = item
+
+                    };
+                    list.Add(t);
+                }
+                return View(list);
+            }
+            return RedirectToAction("Login", "Login");
         }
 
-        public IActionResult Delete(int reserveId)
+
+
+        public IActionResult Delete(int id)
         {
             Reserve result = new Reserve();
-            result = _context.Reserves.FirstOrDefault(a => a.ReserveId == reserveId);
+            result = _context.Reserves.FirstOrDefault(a => a.ReserveId == id);
             if (result != null)
             {
                 _context.Reserves.Remove(result);

@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Medical.ViewModel
 {
-    public class reserverSearch
+    public class ClinicSearch
     {
         private readonly MedicalContext _context;
-        public reserverSearch(MedicalContext db)
+        public ClinicSearch(MedicalContext db)
         {
             _context = db;
         }
