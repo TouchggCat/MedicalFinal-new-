@@ -472,7 +472,7 @@
         LoadPhoto();
 
         async function LoadPhoto() {
-            const response = await fetch("@Url.Content("~/FrontArticle/AdvertiseChange")")
+            const response = await fetch("@Url.Content("~/ArticleFront/AdvertiseChange")")
             const datas = await response.json();
             console.log(datas);
 

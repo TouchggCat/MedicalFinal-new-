@@ -23,6 +23,7 @@ namespace Medical.Controllers
         public IActionResult List()
         {
 
+
             ViewBag.Time = DateTime.Now.ToString("yyyy/MM/dd");
 
             int hour = DateTime.Now.Hour;
@@ -52,6 +53,7 @@ namespace Medical.Controllers
                                                    
                 });
                  
+
 
             return View(result);
         }

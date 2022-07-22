@@ -95,6 +95,7 @@ namespace Medical.Controllers
         {
             foreach (var i in obj)
             {
+
                 ClinicDetail c = new ClinicDetail()
                 {
                     DoctorId = _medicalContext.Doctors.Where(x => x.DoctorName.Equals(i.doctorName)).SingleOrDefault().DoctorId,
@@ -109,6 +110,7 @@ namespace Medical.Controllers
                 _medicalContext.ClinicDetails.Add(c);
                 _medicalContext.SaveChanges();
             }
+
         }
 
         public void Update(CClinicDetailViewModel cVM)
@@ -120,6 +122,7 @@ namespace Medical.Controllers
                 clinicDetail.DoctorId = cVM.DoctorId;
                 clinicDetail.PeriodId = cVM.periodID;
                 clinicDetail.RoomId = cVM.roomID;
+                //123456
                 clinicDetail.ClinicDate = cVM.date;
                 _medicalContext.SaveChanges();
             }

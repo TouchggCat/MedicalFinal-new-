@@ -452,6 +452,7 @@ namespace Medical.Models
                 entity.Property(e => e.CityId).HasColumnName("CityID");
 
 
+
                 entity.Property(e => e.CouponDetailId).HasColumnName("CouponDetailID");
 
 
