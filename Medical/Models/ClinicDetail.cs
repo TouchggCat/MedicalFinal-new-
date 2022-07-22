@@ -18,7 +18,7 @@ namespace Medical.Models
         public int PeriodId { get; set; }
         public int? Online { get; set; }
         public int? RoomId { get; set; }
-        public string ClinicDate { get; set; }
+        public DateTime? ClinicDate { get; set; }
         public int? LimitNum { get; set; }
 
         public virtual Department Department { get; set; }

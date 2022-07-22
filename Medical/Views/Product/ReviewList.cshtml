@@ -26,9 +26,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.CommentContent)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.CreateDate)
-            </th>
+            </th>*@
             <th></th>
         </tr>
     </thead>
@@ -56,9 +56,9 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.CommentContent)
                     </td>
-                    <td>
+                    @*<td>
                         @Html.DisplayFor(modelItem => item.CreateDate)
-                    </td>
+                    </td>*@
                     <td>
                         @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
                         @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |

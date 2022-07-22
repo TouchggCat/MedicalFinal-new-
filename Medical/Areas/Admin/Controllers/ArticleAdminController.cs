@@ -21,17 +21,17 @@ namespace Medical.Controllers
         {
             _medicalContext = medicalContext;
         }
-        
+
 
         public IActionResult List(AArticleSearchKeywordViewModel vModel)
         {
-            
+
             List<AArticleViewModel> list = new List<AArticleViewModel>();
 
             if (string.IsNullOrEmpty(vModel.txtKeyword))
             {
                 var datas = _medicalContext.Articles.Include(x => x.Doctor);
-                foreach(var a in datas)
+                foreach (var a in datas)
                 {
                     AArticleViewModel ar = new AArticleViewModel();
                     ar.article = a;
@@ -40,9 +40,9 @@ namespace Medical.Controllers
             }
             else
             {
-                var datas = _medicalContext.Articles.Include(x=>x.Doctor).Where(a => 
-                a.Articeltitle.Contains(vModel.txtKeyword)||
-                a.Doctor.DoctorName.Contains(vModel.txtKeyword));
+                var datas = _medicalContext.Articles.Include(x => x.Doctor).Where(a =>
+                  a.Articeltitle.Contains(vModel.txtKeyword) ||
+                  a.Doctor.DoctorName.Contains(vModel.txtKeyword));
                 foreach (var a in datas)
                 {
                     AArticleViewModel ar = new AArticleViewModel();
@@ -64,7 +64,7 @@ namespace Medical.Controllers
         [HttpPost]
         public IActionResult Create(Article a)
         {
-            
+            a.CreateDate = DateTime.Now.ToString("yyyy/MM/dd");
             _medicalContext.Articles.Add(a);
             _medicalContext.SaveChanges();
             return RedirectToAction("List");
@@ -83,7 +83,7 @@ namespace Medical.Controllers
         public IActionResult Edit(int? id)
         {
             AArticleViewModel article = new AArticleViewModel();
-            article.article = _medicalContext.Articles.Include(x=>x.Doctor).FirstOrDefault(a => a.ArticleId == id);
+            article.article = _medicalContext.Articles.Include(x => x.Doctor).FirstOrDefault(a => a.ArticleId == id);
             if (article == null)
             {
                 return RedirectToAction("List");
@@ -96,8 +96,8 @@ namespace Medical.Controllers
             Article ar = _medicalContext.Articles.FirstOrDefault(t => t.ArticleId == a.ArticleId);
             if (ar != null)
             {
-                ar.Doctor= a.Doctor;
-                ar.CreateDate = a.CreateDate;
+                ar.Doctor = a.Doctor;
+                ar.CreateDate = DateTime.Now.ToString("yyyy/MM/dd");
                 ar.ArticleContent = a.ArticleContent;
                 ar.Articeltitle = a.Articeltitle;
             }

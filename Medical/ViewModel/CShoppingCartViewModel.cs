@@ -31,6 +31,8 @@ namespace Medical.ViewModel
         public List<ProductBrand> brandList { get; set; }
         public List<ProductCategory> cateList { get; set; }
 
+        public List<string> otherP { get; set; }
+
         public int MemberID
         {
             get { return _shoppingCart.MemberId; }

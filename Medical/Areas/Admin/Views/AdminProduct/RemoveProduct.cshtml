@@ -1,4 +1,6 @@
-﻿
+﻿@using Medical.ViewModel;
+@model CProductViewModel
+
 @{
     ViewData["Title"] = "RemoveProduct";
     Layout = "~/Areas/Admin/Admin_Layout.cshtml";
@@ -37,34 +39,14 @@
                 <div class="mt-2" style="height: 85%;max-height: 85%; overflow-y:hidden ;">
                     <div style="width: 100%;height: 100%; margin: auto; overflow-y: auto;">
                         <table class="table table-striped table-hover mt-2">
-                            <tr><td><input type="checkbox" style=" transform: scale(1.4);" value=""><span style="margin-left: 10px;">1234</span></td></tr>
-                            <tr><td><input type="checkbox" style=" transform: scale(1.4);" value=""><span style="margin-left: 10px;">1234</span></td></tr>
-                            <tr><td><input type="checkbox" style=" transform: scale(1.4);" value=""><span style="margin-left: 10px;">1234</span></td></tr>
-                            <tr><td><input type="checkbox" style=" transform: scale(1.4);" value=""><span style="margin-left: 10px;">1234</span></td></tr>
-                            <tr><td><input type="checkbox" style=" transform: scale(1.4);" value=""><span style="margin-left: 10px;">1234</span></td></tr>
-                            <tr><td><input type="checkbox" style=" transform: scale(1.4);" value=""><span style="margin-left: 10px;">1234</span></td></tr>
-                            <tr><td><input type="checkbox" style=" transform: scale(1.4);" value=""><span style="margin-left: 10px;">1234</span></td></tr>
-                            <tr><td><input type="checkbox" style=" transform: scale(1.4);" value=""><span style="margin-left: 10px;">1234</span></td></tr>
-                            <tr><td><input type="checkbox" style=" transform: scale(1.4);" value=""><span style="margin-left: 10px;">1234</span></td></tr>
-                            <tr><td><input type="checkbox" style=" transform: scale(1.4);" value=""><span style="margin-left: 10px;">1234</span></td></tr>
-                            <tr><td><input type="checkbox" style=" transform: scale(1.4);" value=""><span style="margin-left: 10px;">1234</span></td></tr>
-                            <tr><td><input type="checkbox" style=" transform: scale(1.4);" value=""><span style="margin-left: 10px;">1234</span></td></tr>
-                            <tr><td><input type="checkbox" style=" transform: scale(1.4);" value=""><span style="margin-left: 10px;">1234</span></td></tr>
-                            <tr><td><input type="checkbox" style=" transform: scale(1.4);" value=""><span style="margin-left: 10px;">1234</span></td></tr>
-                            <tr><td><input type="checkbox" style=" transform: scale(1.4);" value=""><span style="margin-left: 10px;">1234</span></td></tr>
-                            <tr><td><input type="checkbox" style=" transform: scale(1.4);" value=""><span style="margin-left: 10px;">1234</span></td></tr>
-                            <tr><td><input type="checkbox" style=" transform: scale(1.4);" value=""><span style="margin-left: 10px;">1234</span></td></tr>
-                            <tr><td><input type="checkbox" style=" transform: scale(1.4);" value=""><span style="margin-left: 10px;">1234</span></td></tr>
-                            <tr><td><input type="checkbox" style=" transform: scale(1.4);" value=""><span style="margin-left: 10px;">1234</span></td></tr>
-                            <tr><td><input type="checkbox" style=" transform: scale(1.4);" value=""><span style="margin-left: 10px;">1234</span></td></tr>
-                            <tr><td><input type="checkbox" style=" transform: scale(1.4);" value=""><span style="margin-left: 10px;">1234</span></td></tr>
-                            <tr><td><input type="checkbox" style=" transform: scale(1.4);" value=""><span style="margin-left: 10px;">1234</span></td></tr>
-                            <tr><td><input type="checkbox" style=" transform: scale(1.4);" value=""><span style="margin-left: 10px;">1234</span></td></tr>
-                            <tr><td><input type="checkbox" style=" transform: scale(1.4);" value=""><span style="margin-left: 10px;">1234</span></td></tr>
-                            <tr><td><input type="checkbox" style=" transform: scale(1.4);" value=""><span style="margin-left: 10px;">1234</span></td></tr>
-                            <tr><td><input type="checkbox" style=" transform: scale(1.4);" value=""><span style="margin-left: 10px;">1234</span></td></tr>
-                            <tr><td><input type="checkbox" style=" transform: scale(1.4);" value=""><span style="margin-left: 10px;">1234</span></td></tr>
-                            <tr><td><input type="checkbox" style=" transform: scale(1.4);" value=""><span style="margin-left: 10px;">777</span></td></tr>
+                            @{int i = 0;
+                                foreach (var item in Model.productList)
+                                {
+                                    i++;
+                                    <tr><td style="margin-right:0px;color:gray;width:1em;">@i</td><td onclick="Selected(event)"><input class="myCheckbox" type="checkbox" name="checkedB" style=" transform: scale(1.4);margin-right:1em;" value="@item.ProductId" isTrue ="@item.Discontinued"><span style="margin-left: 0px;">@item.ProductName</span></td></tr>
+
+                                }
+                            }
                         </table>
                     </div>
                 </div>
@@ -77,38 +59,37 @@
                         <div style="background-color: white;height: 100%; margin-top: 0;">
                             <p style="background-color: rgb(51, 51, 51); color: rgb(255, 255, 255);line-height: 40px;padding-left: 15px;margin-bottom: 0%;">產品刪除/下架</p>
                             <div style="height: 89%;">
-                                <div class="row h-100" style="width: 100%;margin: auto;">
-                                    <!-- ==============  left  ============= -->
-                                    <div class="col col-md-6 h-100">
-                                        <p class="mt-3"> <span style="margin-right: 10px;">產品名稱:</span><input size="15px" type="text" readonly></p>
-                                        <p class="mt-1"> <span style="margin-right: 10px;">產品售價:</span><input size="15px" type="text" readonly></p>
-                                        <p class="mt-1"> <span style="margin-right: 10px;">產品顏色:</span><input size="15px" type="text" readonly></p>
+                                    <div class="row h-100" style="width: 100%;margin: auto;">
+                                        <!-- ==============  left  ============= -->
+                                        <div class="col col-md-6 h-100">
+                                            <p class="mt-3"> <span style="margin-right: 10px;">產品名稱:</span><input size="15" type="text" id="myProductName" name="ProductName" readonly></p>
+                                            <p class="mt-1"> <span style="margin-right: 10px;">產品售價:</span><input size="15" type="text" id="myProductPrice" name="UnitPrice" readonly></p>
+                                            <p class="mt-1"> <span style="margin-right: 10px;">產品顏色:</span><input size="15" type="text" id="myProductColor" name="ProductColor" readonly></p>
 
-                                        <p class="mt-1"> <span style="margin-right: 10px;">產品品牌:</span><input size="15px" type="text" readonly>       </p>
-
-
-                                        <p class="mt-1"> <span style="margin-right: 10px;">產品種類:</span><input size="15px" type="text" readonly></p>
-
-                                        <p class="mt-1"> <span style="margin-right: 10px;">銷售狀態: 已下架</span></p>
-
-                                    </div>
-
-                                    <!-- ==============  right  ============= -->
-                                    <div class="col col-md-6 h-100">
+                                            <p class="mt-1"> <span style="margin-right: 10px;">產品品牌:</span><input size="15" type="text" id="myProductBrand" name="ProductCategoryName" readonly></p>
 
 
-                                        <p class="mt-2" style="margin-bottom: 0%;">產品圖片</p>
-                                        <div class="text-center" style="width: 100%;height: 55%;">
+                                            <p class="mt-1"> <span style="margin-right: 10px;">產品種類:</span><input size="15" type="text" id="myProductCate" name="ProductCategoryName" readonly></p>
 
-                                            <img class="rounded mt-1" src="images/樂敦眼藥水-舒視齡.jpg" alt="" style=" width:75%;border: 1px solid silver;margin-top: 0%;" height="170px">
+                                            <p class="mt-1"> <span style="margin-right: 10px;color:red;">銷售狀態:</span><input type="text" name="Discontinued" id="myDiscontinued" /></p>
                                         </div>
-                                        <div class="text-center" style="width: 100%;height:30%;">
-                                            <button class="btn btn-dark btn-sm mt-4" type="button" style="width: 37%;">確認下架 </button>
-                                            <button class="btn btn-warning btn-sm mt-4" type="button" style="width: 37%;">確認上架 </button>
-                                            <button class="btn btn-danger btn-sm mt-2" type="button" style="width:75%;">確認刪除 </button>
+
+                                        <!-- ==============  right  ============= -->
+                                        <div class="col col-md-6 h-100">
+
+
+                                            <p class="mt-2" style="margin-bottom: 0%;">產品圖片</p>
+                                            <div class="text-center" style="width: 100%;height: 55%;">
+
+                                                <img class="rounded" id="myProductImg" src="" alt="" style=" width:75%;border: 1px solid silver;margin-top: 0%;" height="170">
+                                            </div>
+                                            <div class="text-center" style="width: 100%;height:30%;">
+                                                <button class="btn btn-dark btn-sm mt-4" type="button" id="btnDown" style="width: 37%;">確認下架 </button>
+                                                <button class="btn btn-warning btn-sm mt-4" type="button" id="btnUp" style="width: 37%;">確認上架 </button>
+                                                <button class="btn btn-danger btn-sm mt-2" type="button" id="btnDel" style="width:75%;">確認刪除 </button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
                             </div>
 
                         </div>
@@ -120,10 +101,9 @@
                             <div style="height: 89%;">
                                 <div style="height: 89%; overflow:hidden ;">
                                     <div style="overflow:auto ;height: 100%;">
-                                        <table class="table">
+                                        <table class="table" id="myTable">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col">序</th>
                                                     <th scope="col">圖示</th>
                                                     <th scope="col" nowrap="nowrap">產品名稱</th>
                                                     <th scope="col" nowrap="nowrap">產品品牌</th>
@@ -132,60 +112,14 @@
                                                     <th scope="col" nowrap="nowrap">銷售狀態</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                                <tr valign="middle" class="margin:auto">
-                                                    <th scope="row">1</th>
-                                                    <td valign="middle"><img src="images/樂敦眼藥水-舒視齡.jpg" alt="" width="40px" height="40px"></td>
-                                                    <td valign="middle">海昌真水感日拋隱形眼鏡</td>
-                                                    <td valign="middle">小林製藥</td>
-                                                    <td valign="middle">隱形眼鏡</td>
-                                                    <td align='center' valign="middle">199</td>
-                                                    <td valign="middle">已下架</td>
-                                                </tr>
-                                                <tr valign="middle" class="margin:auto">
-                                                    <th scope="row">2</th>
-                                                    <td valign="middle"><img src="images/樂敦眼藥水-舒視齡.jpg" alt="" width="40px" height="40px"></td>
-                                                    <td valign="middle">海昌真水感日拋隱形眼鏡</td>
-                                                    <td valign="middle">小林製藥</td>
-                                                    <td valign="middle">隱形眼鏡</td>
-                                                    <td align='center' valign="middle">199</td>
-                                                    <td valign="middle">已上架</td>
-                                                </tr>
-                                                <tr valign="middle" class="margin:auto">
-                                                    <th scope="row">3</th>
-                                                    <td valign="middle"><img src="images/樂敦眼藥水-舒視齡.jpg" alt="" width="40px" height="40px"></td>
-                                                    <td valign="middle">海昌真水感日拋隱形眼鏡</td>
-                                                    <td valign="middle">小林製藥</td>
-                                                    <td valign="middle">隱形眼鏡</td>
-                                                    <td align='center' valign="middle">199</td>
-                                                    <td valign="middle">已下架</td>
-                                                </tr>
-                                                <tr valign="middle" class="margin:auto">
-                                                    <th scope="row">4</th>
-                                                    <td valign="middle"><img src="images/樂敦眼藥水-舒視齡.jpg" alt="" width="40px" height="40px"></td>
-                                                    <td valign="middle">海昌真水感日拋隱形眼鏡</td>
-                                                    <td valign="middle">小林製藥</td>
-                                                    <td valign="middle">隱形眼鏡</td>
-                                                    <td align='center' valign="middle">199</td>
-                                                    <td valign="middle">已下架</td>
-                                                </tr>
-                                                <tr valign="middle" class="margin:auto">
-                                                    <th scope="row">5</th>
-                                                    <td valign="middle"><img src="images/樂敦眼藥水-舒視齡.jpg" alt="" width="40px" height="40px"></td>
-                                                    <td valign="middle">海昌真水感日拋隱形眼鏡</td>
-                                                    <td valign="middle">小林製藥</td>
-                                                    <td valign="middle">隱形眼鏡</td>
-                                                    <td align='center' valign="middle">199</td>
-                                                    <td valign="middle">已上架</td>
-                                                </tr>
+                                            <tbody id="myTbody">
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                                 <div class="text-end" style="width: 100%;height:12%;background-color: rgb(176, 176, 176);border-radius:0 0 15px 15px ;">
-                                    <button class="btn btn-warning btn-sm mt-1" type="button" style="width: 20%;margin-left:2em; margin-right: 13em;">確認上架 </button>
-                                    <button class="btn btn-dark btn-sm mt-1" type="button" style="width: 20%;">確認下架 </button>
-                                    <button class="btn btn-danger btn-sm mt-1" type="button" style="width:20%;margin-right: 20px;">確認刪除 </button>
+                                    <button class="btn btn-warning btn-sm mt-1" type="button" style="width: 20%;margin-left:2em;" id="btnAllup" >確認上架 </button>
+                                    <button class="btn btn-dark btn-sm mt-1" type="button" style="width: 20%;" id="btnAlldown">確認下架 </button>
                                 </div>
                             </div>
 
@@ -202,4 +136,349 @@
     </div>
 
 </div>
+
+@section Scripts{
+
+    <script>
+
+
+        let myProductName = $("#myProductName");
+        let myProductId = $("#myProductId");
+        let myProductPrice = $("#myProductPrice");
+        let myProductMaterial = $("#myProductMaterial");
+        let myProductStock = $("#myProductStock");
+        let myProductColor = $("#myProductColor");
+        let myProductShelfdate = $("#myProductShelfdate");
+        let myProductAppearance = $("#myProductAppearance");
+        let myProductImg = $("#myProductImg");
+        let myProductBrand = $("#myProductBrand");
+        let myProductCate = $("#myProductCate");
+        let myProductSpecId = $("#myProductSpecId");
+        let myform = $("#myform");
+        let productBeforeName = myProductName.val();
+        let myDiscontinued = $("#myDiscontinued");
+        let myTboby = $("#myTbody");
+        let myProductNameForChange = $("#myProductNameForChange");
+
+
+        // ajax-單筆下架 Start
+
+        $('#btnDown').click(() => {
+            let singlePName = myProductName.val();
+            $.ajax({
+                url: "@Url.Content("~/Admin/AdminProduct/SingleDiscontinue") ",
+                type: 'POST',
+                data: {singleD:singlePName},
+                success: function (message) {
+
+                    $(":checkbox").prop("checked", false)
+                    $(".cleartr").empty();
+                    myDiscontinued.val("已下架");
+
+                    if (message === "成功") {
+                        let timerInterval
+                        Swal.fire({
+                            icon: 'success',
+                            title: '下架成功',
+                            html: '此商品已下架!',
+                            timer: 1000,
+                            timerProgressBar: true,
+                            didOpen: () => {
+                                Swal.showLoading()
+                                const b = Swal.getHtmlContainer().querySelector('b')
+                                timerInterval = setInterval(() => {
+                                    b.textContent = Swal.getTimerLeft()
+                                }, 100)
+                            },
+                            willClose: () => {
+                                clearInterval(timerInterval)
+                            }
+                        }).then((result) => {
+                            /* Read more about handling dismissals below */
+                            if (result.dismiss === Swal.DismissReason.timer) {
+                                console.log('I was closed by the timer')
+                            }
+                        })
+                    }
+                    else
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: '請稍後再試..',
+                        })
+                }
+            })
+        });
+
+        // ajax-單筆下架 End
+
+
+        // ajax-單筆上架 Start
+        $('#btnUp').click(() => {
+            let singlePName = myProductName.val();
+            $.ajax({
+                url: "@Url.Content("~/Admin/AdminProduct/SingleContinue") ",
+                type: 'POST',
+                data: {singleD:singlePName},
+                success: function (message) {
+
+                    $(":checkbox").prop("checked", false)
+                    $(".cleartr").empty();
+                    myDiscontinued.val("上架中");
+
+                    if (message === "成功") {
+                        let timerInterval
+                        Swal.fire({
+                            icon: 'success',
+                            title: '上架成功',
+                            html: '此商品已上架!',
+                            timer: 1000,
+                            timerProgressBar: true,
+                            didOpen: () => {
+                                Swal.showLoading()
+                                const b = Swal.getHtmlContainer().querySelector('b')
+                                timerInterval = setInterval(() => {
+                                    b.textContent = Swal.getTimerLeft()
+                                }, 100)
+                            },
+                            willClose: () => {
+                                clearInterval(timerInterval)
+                            }
+                        }).then((result) => {
+                            /* Read more about handling dismissals below */
+                            if (result.dismiss === Swal.DismissReason.timer) {
+                                console.log('I was closed by the timer')
+                            }
+                        })
+                    }
+                    else
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: '請稍後再試..',
+                        })
+                }
+            })
+        });
+        // ajax-單筆上架 End
+
+        // ajax-單筆刪除 Start
+
+        $('#btnDel').click(() => {
+            let singlePName = myProductName.val();
+            $.ajax({
+                url: "@Url.Content("~/Admin/AdminProduct/SingleProductDelete") ",
+                type: 'POST',
+                data: {singleD:singlePName},
+                success: function (message) {
+
+                    $(":checkbox").prop("checked", false)
+                    $(".cleartr").empty();
+                    myDiscontinued.val("上架中");
+
+                    if (message === "成功") {
+                        let timerInterval
+                        Swal.fire({
+                            icon: 'success',
+                            title: '刪除成功',
+                            html: '此商品已刪除!',
+                            timer: 1000,
+                            timerProgressBar: true,
+                            didOpen: () => {
+                                Swal.showLoading()
+                                const b = Swal.getHtmlContainer().querySelector('b')
+                                timerInterval = setInterval(() => {
+                                    b.textContent = Swal.getTimerLeft()
+                                }, 100)
+                            },
+                            willClose: () => {
+                                clearInterval(timerInterval)
+                            }
+                        }).then((result) => {
+                            /* Read more about handling dismissals below */
+                            if (result.dismiss === Swal.DismissReason.timer) {
+                                console.log('I was closed by the timer')
+                            }
+                        })
+                    }
+                    else
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: '此商品已有銷售紀錄，無法刪除..',
+                        })
+                }
+            })
+        });
+
+       // ajax-單筆刪除 End
+
+
+
+        function Selected(event) {
+            let targetId = $(event.target).parents("tr").children("td").children("input").val();
+
+            GetSelected(targetId);
+        }
+
+
+        async function GetSelected(targetId) {
+            const reponse = await fetch('@Url.Content("~/Admin/AdminProduct/SelectedProduct")' + `?id=${targetId}`);
+            const datas = await reponse.json();
+            //console.log(datas);
+
+            myProductColor.val(datas.productColor);
+            myProductImg.attr("src", "/images/" + datas.productImage);
+
+
+            myProductSpecId.attr("value", `${datas.productSpecificationId}`);
+            myProductId.attr("value", `${datas.productId}`);
+            myProductCate.val(datas.productCategoryName)
+            myProductBrand.val(datas.productBrandName)
+            myProductName.val(datas.productName);
+            myProductNameForChange.val(datas.productName);
+
+            myProductPrice.val(datas.unitPrice);
+            if (datas.discontinued === false)
+                myDiscontinued.val("上架中");
+            else
+                myDiscontinued.val("已下架");
+
+
+            productBeforeName = datas.productName;
+            //console.log(productBeforeName);
+        }
+
+        // ====================CHECKBOX 多選 Start=============================
+        $(".myCheckbox").on("change",function () {
+
+            setTimeout(() => {
+                if (this.checked) {
+                    if ($(`.multipleP:contains(${myProductName.val()})`).length == 0) {
+                        console.log("checked");
+                        $("#myTable").append(`<tr valign="middle" style="margin:auto" class="cleartr"><td valign="middle"><img src="${myProductImg.attr("src")}"width="40px" height="40px"></td> <td valign="middle" class="multipleP" >${myProductName.val()}</td><td valign="middle">${myProductBrand.val()}</td> <td valign="middle">${myProductCate.val()}</td> <td align='center' valign="middle">${myProductPrice.val()}</td> <td valign="middle">${myDiscontinued.val()}</td></tr>`)
+                    }
+
+                }
+                else
+                    $(`.multipleP:contains(${myProductName.val()})`).parents("tr").eq(0).remove()
+            },200);
+        })
+        //======================多選下架 start=============================
+        $("#btnAlldown").on("click", function () {
+
+            var multipleD = new Array;
+
+            $(':checkbox[name="checkedB"]:checked').each(function (index) {
+                console.log($(this).next('span'));
+                multipleD.push( $(this).next('span').text());
+            });
+
+            $.ajax({
+                url: "@Url.Content("~/Admin/AdminProduct/MultipleDiscontinue") ",
+                type: 'POST',
+                enctype: "multipart/form-data",
+                data: { multipleD: multipleD },
+
+                   success: function (message) {
+                       $(":checkbox").prop("checked", false)
+                       $(".cleartr").empty();
+                       myDiscontinued.val("已下架");
+
+                       if (message === "成功") {
+                           let timerInterval
+                           Swal.fire({
+                               icon: 'success',
+                               title: '下架成功',
+                               html: '商品已全數下架!',
+                               timer: 1000,
+                               timerProgressBar: true,
+                               didOpen: () => {
+                                   Swal.showLoading()
+                                   const b = Swal.getHtmlContainer().querySelector('b')
+                                   timerInterval = setInterval(() => {
+                                       b.textContent = Swal.getTimerLeft()
+                                   }, 100)
+                               },
+                               willClose: () => {
+                                   clearInterval(timerInterval)
+                               }
+                           }).then((result) => {
+                               /* Read more about handling dismissals below */
+                               if (result.dismiss === Swal.DismissReason.timer) {
+                                   console.log('I was closed by the timer')
+                               }
+                           })
+                       }
+                       else
+                           Swal.fire({
+                               icon: 'error',
+                               title: 'Oops...',
+                               text: '請稍後再試..',
+                           })
+
+                }
+            })
+
+        })
+
+         //======================多選上架 start=============================
+        $("#btnAllup").on("click", function () {
+
+            var multipleD = new Array;
+
+            $(':checkbox[name="checkedB"]:checked').each(function (index) {
+                multipleD.push( $(this).next('span').text());
+            });
+
+            $.ajax({
+                url: "@Url.Content("~/Admin/AdminProduct/MultipleContinue") ",
+                type: 'POST',
+                enctype: "multipart/form-data",
+                data: { multipleD: multipleD },
+
+                   success: function (message) {
+                       $(":checkbox").prop("checked", false)
+                       $(".cleartr").empty();
+                       myDiscontinued.val("上架中");
+
+                       if (message === "成功") {
+                           let timerInterval
+                           Swal.fire({
+                               icon: 'success',
+                               title: '上架成功',
+                               html: '商品已全數上架!',
+                               timer: 1000,
+                               timerProgressBar: true,
+                               didOpen: () => {
+                                   Swal.showLoading()
+                                   const b = Swal.getHtmlContainer().querySelector('b')
+                                   timerInterval = setInterval(() => {
+                                       b.textContent = Swal.getTimerLeft()
+                                   }, 100)
+                               },
+                               willClose: () => {
+                                   clearInterval(timerInterval)
+                               }
+                           }).then((result) => {
+                               /* Read more about handling dismissals below */
+                               if (result.dismiss === Swal.DismissReason.timer) {
+                                   console.log('I was closed by the timer')
+                               }
+                           })
+                       }
+                       else
+                           Swal.fire({
+                               icon: 'error',
+                               title: 'Oops...',
+                               text: '請稍後再試..',
+                           })
+                }
+            })
+
+        })
+
+    </script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+}
 

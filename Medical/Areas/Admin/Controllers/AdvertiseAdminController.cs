@@ -19,27 +19,27 @@ namespace Medical.Controllers
             return View();
         }
         private readonly IWebHostEnvironment _host;
-        
+
         private readonly MedicalContext _medicalContext;
         public AdvertiseAdminController(MedicalContext medicalContext, IWebHostEnvironment hostEnvironment)
         {
             _medicalContext = medicalContext;
             _host = hostEnvironment;
         }
-       
+
         public IActionResult AdstatueCheckBox()
         {
             var data = _medicalContext.AdvertiseStatues.Select(a => a.Adstatue).Distinct();
             return Json(data);
         }
-        
+
         public IActionResult List(AAdvertiseSearchKeywordViewModel vModel)
         {
             List<AAdvertiseViewModel> list = new List<AAdvertiseViewModel>();
             if (string.IsNullOrEmpty(vModel.txtKeyword))
             {
                 var data = _medicalContext.Advertises.Include(x => x.Adstatue);
-                foreach(var a in data)
+                foreach (var a in data)
                 {
                     AAdvertiseViewModel ar = new AAdvertiseViewModel();
                     ar.advertise = a;
@@ -48,8 +48,8 @@ namespace Medical.Controllers
             }
             else
             {
-                var data = _medicalContext.Advertises.Where(a => 
-                a.AdTitle.Contains(vModel.txtKeyword)||
+                var data = _medicalContext.Advertises.Where(a =>
+                a.AdTitle.Contains(vModel.txtKeyword) ||
                 a.AdContant.Contains(vModel.txtKeyword));
                 foreach (var a in data)
                 {
@@ -77,7 +77,7 @@ namespace Medical.Controllers
                     a.AdPicturePath = a.photo.FileName;
                 }
             }
-            
+
             ad.AdminId = a.AdminId;
             ad.AdTitle = a.AdTitle;
             ad.Adstatue = a.Adstatue;
@@ -101,7 +101,7 @@ namespace Medical.Controllers
         public IActionResult Edit(int? id)
         {
             AAdvertiseViewModel ad = new AAdvertiseViewModel();
-            ad.advertise = _medicalContext.Advertises.Include(x=>x.Adstatue).FirstOrDefault(a => a.No == id);
+            ad.advertise = _medicalContext.Advertises.Include(x => x.Adstatue).FirstOrDefault(a => a.No == id);
             if (ad == null)
             {
                 return RedirectToAction("List");

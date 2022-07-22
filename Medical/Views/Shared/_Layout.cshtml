@@ -10,6 +10,7 @@
     string logJson = "";
     string showID = "";
     string logState = "";
+    int showID2 = 0;
     string LoginbuttonValue = "";
     string LogoutbuttonValue = "";
 
@@ -26,6 +27,7 @@
         logJson = Context.Session.GetString(CDictionary.SK_LOGINED_USE);
         vm = JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
         showID = vm.MemberName;
+        showID2 = vm.MemberId;
         logState = "";
         LogoutbuttonValue = "登出";
 
@@ -63,9 +65,11 @@
     <link href="~/css/style.css" rel="stylesheet">
 
     <!-- SweetAlert style -->
-    <script src="sweetalert2.min.js"></script>
-    <link rel="stylesheet" href="sweetalert2.min.css">
+
+    <link rel="stylesheet" href="~/plugins/sweetalert2/sweetalert2.css">
+    
     @await RenderSectionAsync("css", required: false)
+    @await RenderSectionAsync("reserve", required: false)
 </head>
 
 <body>
@@ -127,9 +131,10 @@
                             <a href="team.html" class="dropdown-item">門診時間表</a>
                             <a href="testimonial.html" class="dropdown-item">智能客服</a>
                             <a href="~/FrontArticle/List" class="dropdown-item">衛教文章</a>
+                            <a href="~/QandA/List" class="dropdown-item">Q&A常見問題</a>
                         </div>
                     </div>
-                    <a href="~/Doctor/List" class="nav-item nav-link">醫療團隊</a>
+                    <a href="~/Doctor/ListTest" class="nav-item nav-link">醫療團隊</a>
                     <div class="nav-item dropdown">
                         <a href="~/Reserve/ReserveList" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">網路掛號</a>
                         <div class="dropdown-menu m-0">
@@ -143,8 +148,9 @@
                         <div class="dropdown-menu m-0">
                             <a href="/Product/ProductList" class="dropdown-item">產品列表</a>
                             <a href="/Product/CartViewList" class="dropdown-item">我的購物車</a>
+                            <a href="/Product/ReceiveCoupon?id=@showID2" class="dropdown-item">優惠券專區</a>
                             <a href="/Product/CheckViewList" class="dropdown-item">結帳</a>
-                            <a href="/Product/QueryOrder" class="dropdown-item">訂單查看</a>
+                            <a href="/Product/QueryNotFinishOrder" class="dropdown-item">訂單查看</a>
                         </div>
                     </div>
                     <div class="nav-item dropdown">
@@ -153,9 +159,14 @@
                             <a href="/PatientRecord/List" class="dropdown-item">病例查詢</a>
                             <a href="/RatingDoctor/List" class="dropdown-item">醫生評論</a>
                             <a href="/AllPatientRecord/List" class="dropdown-item">醫師病例總覽(放進哲楨的後台)</a>
-                            <a href="/Product/OrderDetailList" class="dropdown-item">訂單紀錄</a>
+                            <a href="/Product/OrderList" class="dropdown-item">歷史訂單</a>
 
                         </div>
+                    </div>
+                    @*測試用，可刪掉*@
+                    <div class="nav-item dropdown">
+                        <a href="/SignalR/Index" class="nav-item nav-link">聊天室測試</a>
+                        
                     </div>
                 </div>
                 <!-- 購物車清單開始-->
@@ -236,7 +247,6 @@
                         <a class="text-light mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>線上商城</a>
                     </div>
                 </div>
-
                 <div class="col-lg-3 col-md-6">
                     <h3 class="text-white mb-4">Get In Touch</h3>
                     <p class="mb-2"><i class="bi bi-geo-alt text-primary me-2"></i>106台北市大安區復興南路一段390號2樓</p>
@@ -251,6 +261,14 @@
                         <a class="btn btn-lg btn-primary btn-lg-square rounded me-2" href="#"><i class="fab fa-linkedin-in fw-normal"></i></a>
                         <a class="btn btn-lg btn-primary btn-lg-square rounded" href="#"><i class="fab fa-instagram fw-normal"></i></a>
                     </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="text-white mb-4">Line Us</h3>
+                    <p class="mb-2"><i class='fab fa-line fa-2x'>智能眼科</i><br />  ID@981uepkv</p>
+                    
+                    <img src="~/images/LineCord.png" />
+
+                </div>
                 </div>
             </div>
         </div>
@@ -292,8 +310,12 @@
     <!-- Template Javascript -->
     <script src="~/js/main.js"></script>
 
+    
+
     <!-- SweetAlert -->
-    <script src="sweetalert2.all.min.js"></script>
+
+    <script src="~/plugins/sweetalert2/sweetalert2.all.min.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 
 </body>

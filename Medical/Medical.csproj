@@ -5,7 +5,38 @@
   </PropertyGroup>
 
   <ItemGroup>
+
+    <Compile Remove="Areas\Doctors\Data\**" />
+    <Compile Remove="Areas\Doctors\Models\**" />
+    <Content Remove="Areas\Doctors\Data\**" />
+    <Content Remove="Areas\Doctors\Models\**" />
+    <EmbeddedResource Remove="Areas\Doctors\Data\**" />
+    <EmbeddedResource Remove="Areas\Doctors\Models\**" />
+    <None Remove="Areas\Doctors\Data\**" />
+    <None Remove="Areas\Doctors\Models\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+
+    <None Include="Areas\Admin\Views\AdminDoctor\CreateDetail.cshtml" />
+    <None Include="Areas\Admin\Views\AdminDoctor\depEdit.cshtml" />
+    <None Include="Areas\Admin\Views\AdminDoctor\Details.cshtml" />
+    <None Include="Areas\Admin\Views\AdminDoctor\DoctorRatinglist.cshtml" />
+    <None Include="Areas\Admin\Views\AdminDoctor\EditDetail.cshtml" />
+    <None Include="Areas\Admin\Views\AdminDoctor\Email.cshtml" />
+    <None Include="Areas\Admin\Views\AdminDoctor\Index.cshtml" />
+
     <None Include="Views\ClinicDetail\List.cshtml" />
+
+    <None Include="wwwroot\img\emptyCart.gif" />
+
+    <None Include="Views\Doctor\Details.cshtml" />
+    <None Include="Views\Doctor\Index.cshtml" />
+    <None Include="Views\Doctor\IndexTest.cshtml" />
+    <None Include="Views\Doctor\List.cshtml" />
+    <None Include="Views\Doctor\ListTest.cshtml" />
+    <None Include="Views\Doctor\RatingDoctorpartail.cshtml" />
+
     <None Include="wwwroot\js\site.js" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map" />
@@ -35,7 +66,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.SignalR" Version="2.4.3" />
+    <PackageReference Include="Microsoft.AspNet.WebPages" Version="3.2.9" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.17" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="5.0.17" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.17" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.17" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.17">
@@ -43,14 +77,13 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
     <PackageReference Include="Wahid-SweetAlert2" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Models\" />
-    <Folder Include="Areas\Doctors\Data\" />
-    <Folder Include="Areas\Doctors\Models\" />
     <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 

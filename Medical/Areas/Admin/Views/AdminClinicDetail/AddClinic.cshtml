@@ -1,0 +1,366 @@
+﻿@model Medical.ViewModel.CClinicDetailAdminViewModel
+@{
+    ViewData["Title"] = "AddClinic";
+    Layout = "~/Areas/Admin/Admin_Layout.cshtml";
+}
+
+<div class="row">
+
+    <div class="col-3">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">新增門診</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group sel">
+                            <label>門診類別</label>
+                            @*@{
+                                    IEnumerable<SelectListItem> Options = new List<SelectListItem>();
+                                }
+                                @Html.DropDownList("selDept", Options, new { @class = "form-control select2", @style = "width: 100%;" })*@
+                            <select id="selDept" class="form-control select2" style="width: 100%;" name="dept">
+                            </select>
+                        </div>
+                        <div class="form-group sel">
+                            <label>醫生</label>
+                            <select id="selDoctor" class="form-control select2" style="width: 100%;" name="doctor">
+                            </select>
+                        </div>
+                        <div class="form-group sel">
+                            <label>
+                                診間
+                            </label>
+                            <select id="selRoom" class="form-control select2" style="width: 100%;" name="room">
+                                <option value="1">501</option>
+                                <option value="2">502</option>
+                                <option value="3">503</option>
+                                <option value="4">504</option>
+                                <option value="5">505</option>
+                                <option value="6">506</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Date:</label>
+                                <div class="input-group date" id="reservationdateForm" data-target-input="nearest">
+                                    <input id="selDateForm" name="selDateForm" type="text" class="form-control datetimepicker-input" data-target="#reservationdateForm" />
+                                    <div class="input-group-append" data-target="#reservationdateForm" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Date:</label>
+                                <div class="input-group date" id="reservationdateTo" data-target-input="nearest">
+                                    <input id="selDateTo" type="text" class="form-control datetimepicker-input" data-target="#reservationdateTo" />
+                                    <div class="input-group-append" data-target="#reservationdateTo" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12">
+                                    <label>星期</label>
+                                    <div class="input-group">
+                                        <div class="btn-group-toggle" data-toggle="buttons" style="margin-right:20px">
+                                            <label class="btn btn-outline-primary ">
+                                                <input id="chkday1" name="chkDay" type="checkbox" autocomplete="off" value="1"> 一
+                                            </label>
+                                        </div>
+                                        <div class="btn-group-toggle" data-toggle="buttons" style="margin-right:20px">
+                                            <label class="btn btn-outline-primary ">
+                                                <input id="chkday2" name="chkDay" type="checkbox" autocomplete="off" value="2"> 二
+                                            </label>
+                                        </div>
+                                        <div class="btn-group-toggle" data-toggle="buttons" style="margin-right:20px">
+                                            <label class="btn btn-outline-primary ">
+                                                <input id="chkday3" name="chkDay" type="checkbox" autocomplete="off" value="3"> 三
+                                            </label>
+                                        </div>
+                                        <div class="btn-group-toggle" data-toggle="buttons" style="margin-right:20px">
+                                            <label class="btn btn-outline-primary ">
+                                                <input id="chkday4" name="chkDay" type="checkbox" autocomplete="off" value="4"> 四
+                                            </label>
+                                        </div>
+                                        <div class="btn-group-toggle" data-toggle="buttons" style="margin-right:20px">
+                                            <label class="btn btn-outline-primary ">
+                                                <input id="chkday5" name="chkDay" type="checkbox" autocomplete="off" value="5"> 五
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <label>時段</label>
+                                    <div class="input-group">
+                                        <div class="btn-group-toggle" data-toggle="buttons" style="margin-right:20px">
+                                            <label class="btn btn-outline-primary ">
+                                                <input id="chkm" name="chkTime" type="checkbox" autocomplete="off" value="1"> 早上
+                                            </label>
+                                        </div>
+                                        <div class="btn-group-toggle" data-toggle="buttons" style="margin-right:20px">
+                                            <label class="btn btn-outline-primary ">
+                                                <input id="chka" name="chkTime" type="checkbox" autocomplete="off" value="2"> 下午
+                                            </label>
+                                        </div>
+                                        <div class="btn-group-toggle" data-toggle="buttons" style="margin-right:20px">
+                                            <label class="btn btn-outline-primary ">
+                                                <input id="chkn" name="chkTime" type="checkbox" autocomplete="off" value="3"> 晚上
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+
+                </div>
+                <hr />
+                <div class="col-12">
+                    <button id="btnPreview" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="width:100%">新增</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-md-9">
+        <div class="card card-primary">
+            <div class="card-body p-0">
+                <div id="calendar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" data-bs-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+            <div class="modal-content">
+                <div>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-body" id="modalbody">
+                </div>
+                <div class="modal-footer">
+                    <button id="btnDelete" type="button" class="btn btn-danger">
+                        刪除已重覆 <span class="badge badge-light" id="repeatCount"></span>
+                    </button>
+                    
+                    <button id="btnCreate" type="button" class="btn btn-primary">新增</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        let selDept = document.querySelector('#selDept'),
+            selDoctor = document.querySelector('#selDoctor'),
+            selRoom = document.querySelector('#selRoom'),
+            DateForm = document.querySelector('#selDateForm'),
+            DateTo = document.querySelector('#selDateTo'),
+            days = [], times = [];
+
+        $(document).ready(function () {
+            $('#selDept').select2();
+            $.ajax({
+                url: '/Admin/AdminClinicDetail/Dept',
+                dataType: 'json',
+                data: function (params) {
+                    return {
+                        q: params.term,
+                        page: params.page
+                    };
+                }
+            })
+                .then(function (data) {
+                    data.forEach((data) => {
+                        const option = new Option(data["deptName"], data["departmentId"]);
+                        $('#selDept').append(option).trigger('change');;
+                    })
+
+                    $('#selDept').trigger({
+                        type: 'select2:select',
+                        params: {
+                            data: data
+                        }
+                    });
+                })
+
+            var date = new Date()
+            var d = date.getDate(),
+                m = date.getMonth(),
+                y = date.getFullYear()
+
+
+            var Calendar = FullCalendar.Calendar;
+            var calendarEl = document.getElementById('calendar');
+
+            fetch("@Url.Content("~/Admin/AdminClinicDetail/loadData")")
+                .then(
+                        (respone) => {
+
+                         var calendar = new Calendar(calendarEl, {
+                            headerToolbar: {
+                                left: 'prev,next today',
+                                center: 'title',
+                                right: 'dayGridMonth,timeGridWeek'
+                            },
+                             themeSystem: 'bootstrap',
+                             events: respone,
+                            editable: true,
+                            droppable: true,
+                            drop: function (info) {
+
+                             },
+                             eventRender: function (respone, element) {
+                                 if (respone.extendedProps.periodName == "上午時段")
+                                     element.children(".fc-event").css({ 'background-color': '#2a7568' });
+                                 if (respone.type == "Y")
+                                     element.find(".fc-event-dot").css('color', '#2a7568');
+                             }
+                        });
+
+                        calendar.render();
+                    })
+        });
+
+        $('#reservationdateForm').datetimepicker({
+            format: 'yyyy/MM/DD',
+        });
+        $('#reservationdateTo').datetimepicker({
+            format: 'yyyy/MM/DD',
+        });
+
+        $("#myModal").on('show.bs.modal', function () {
+
+            $("input[name='chkDay']:checked").each(function (index, item) {
+                days.push($(this).val());
+            });
+
+            $("input[name='chkTime']:checked").each(function (index, item) {
+                times.push($(this).val());
+            });
+
+            let list = {
+                DoctorId: selDoctor.value,
+                DepartmentId: selDept.value,
+                room: selRoom.value,
+                dateForm: DateForm.value,
+                dateTo: DateTo.value,
+                day: days,
+                time: times
+            };
+
+            $.post('@Url.Content("~/Admin/AdminClinicDetail/Preview")', list, function (data) {
+                $('.modal-body').empty();
+                $('.modal-body').html(data);
+            }).then(function () {
+                $('#repeatCount').html($('#repeatDefault').text());
+            })
+
+            $('#btnCreate').click(function () {
+                let count = $('label[name="count"]'),
+                    doctorlist = $('label[name="doctorName"]'),
+                    deptlist = $('label[name="deptName"]'),
+                    periodlist = $('label[name="periodName"]'),
+                    Roomlist = $('label[name="RoomId"]'),
+                    Datelist = $('label[name="ClinicDate"]'),
+                    obj = [];
+
+                $.each(count, function (key, value) {
+                    var detail = {
+                        doctorName: doctorlist[key].textContent,
+                        deptName: deptlist[key].textContent,
+                        periodName: periodlist[key].textContent,
+                        room: Roomlist[key].textContent,
+                        dateForm: Datelist[key].textContent
+                    };
+                    obj.push(detail);
+                });
+                $.post('@Url.Content("~/Admin/AdminClinicDetail/Create")', { obj: obj })
+            })
+
+
+            $('#btnDelete').on('click', function () {
+                $('.repeat').parent().parent().remove();
+                Swal.fire({
+                    title: '刪除',
+                    text: "",
+                    icon: 'success'
+                });
+                $('#repeatCount').html("");
+                $(this).addClass("disabled");
+            })
+
+            //$('#btnDelete').click(function () {
+            //    $('.repeat').parent().parent().remove();
+            //    Swal.fire({
+            //        title: '刪除',
+            //        text: "",
+            //        icon: 'success'
+            //    });
+            //    $('#repeatCount').html("");
+            //    $(this).addClass("disabled");
+            //}) 
+        });
+
+        $("#myModal").on('hidden.bs.modal', function () {
+
+            $("input[name='chkDay']:checked").each(function (index, item) {
+                days.push($(this).val());
+            });
+
+            $("input[name='chkTime']:checked").each(function (index, item) {
+                times.push($(this).val());
+            });
+
+            $('#btnDelete').removeClass("disabled");
+        });
+
+
+
+        $('#selDept').change(function () {
+            $('#selDoctor').select2();
+
+            $.ajax({
+                url: '/Admin/AdminClinicDetail/doctorList' + `?deptid=${selDept.value}`,
+                dataType: 'json',
+                data: function (params) {
+                    console.log(params);
+                    return {
+                        q: params.term, // search term
+                        page: params.page
+                    };
+                }
+            }).then(function (data) {
+                $('#selDoctor option').remove();
+                data.forEach((data) => {
+                    const option = new Option(data["doctorName"], data["doctorId"]);
+                    $('#selDoctor').append(option).trigger('change');;
+                })
+
+                $('#selDoctor').trigger({
+                    type: 'select2:select',
+                    params: {
+                        data: data
+                    }
+                });
+            })
+        });
+    </script>
+}

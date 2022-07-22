@@ -9,7 +9,7 @@ namespace Medical.Models
     {
         public int OtherProductImageId { get; set; }
         public int ProductId { get; set; }
-        public string OtherProductImage1 { get; set; }
+        public string OtherProductPhoto { get; set; }
 
         public virtual Product Product { get; set; }
     }
