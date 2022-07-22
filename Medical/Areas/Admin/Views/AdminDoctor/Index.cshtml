@@ -113,12 +113,12 @@
     </div>
     <input id="txtKeyword" hidden="hidden" type="text" name="txtKeyword" value="" />
     <input type="submit" id="sub" value="查詢" />
-    <a href='@Url.Action("CreateDetail","AdminDoctor")'>
-        <button class="btn btn-primary">
-            <img class="icon" src="~/img/add.png" />新增醫生
-        </button>
-    </a>
+        
+   
 }
+<button class="btn btn-primary" onclick="location.href='@Url.Action("CreateDetail","AdminDoctor")'">
+    <img class="icon" src="~/img/add.png" />新增醫生
+</button>
 @*\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*@
 
 @*\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*@

@@ -19,7 +19,7 @@
             line-height: 18px;
             margin-bottom: 6px;
             overflow: hidden;
-            color:white;
+            color: white;
         }
 
         .listFCC {
@@ -56,6 +56,7 @@
             float: left;
             padding-right: 4px
         }
+
         .select-field {
             border: 1px solid black;
         }
@@ -68,9 +69,9 @@
         .list {
             box-shadow: 0px 30px 60px rgb(0,0,0,0.2);
             display: none;
-            position:absolute;
-            width:214.16px;
-            z-index:10;
+            position: absolute;
+            width: 214.16px;
+            z-index: 10;
         }
 
         .down-arrow {
@@ -120,6 +121,7 @@
             margin-top: 17px !important;
             position: relative;
         }
+
         .container .detail {
             color: #BCF7DA !important;
         }
@@ -140,7 +142,7 @@
 @using (Html.BeginForm())
 {
     <div>
-        <input type="button" value="點我推薦醫生" onclick="location.href='@Url.ActionLink("SugDoc","Doctor")'"/>
+        <input type="button" value="點我推薦醫生" onclick="location.href='@Url.ActionLink("SugDoc","Doctor")'" />
     </div>
     <div class="muti-selector">
         <div class="select-field">
@@ -171,46 +173,28 @@
     <input type="submit" id="sub" value="查詢" />
 }
 <div><br /></div>
+<div class="webShow"></div>
 @{ int count = 0;
-    foreach (var item in Model)
-    {
-        count++;
-        <div id="hateboot" class="col-lg-4 wow slideInUp" data-wow-delay="0.3s" style="float:left;width:20%;">
-            <div class="team-item" style="padding: 0 9px 25px 9px;">
-                <div class="position-relative rounded-top  container listFCP" style="z-index: 1;">
-                    <img id="img" class="img-fluid rounded-top w-100 dcimg" src="~/images/@Html.DisplayFor(modelItem => item.PicturePath)" style="width:204px;height:204px;">
+    @*foreach (var item in Model)
+        {
+            count++;
+            <div id="hateboot" class="col-lg-4 wow slideInUp" data-wow-delay="0.3s" style="float:left;width:20%;">
+                <div class="team-item" style="padding: 0 9px 25px 9px;">
+                    <div class="position-relative rounded-top  container listFCP" style="z-index: 1;">
+                        <img id="img" class="img-fluid rounded-top w-100 dcimg" src="~/images/@Html.DisplayFor(modelItem => item.PicturePath)" style="width:204px;height:204px;">
 
-                </div>
-                <div class="container">
-                    <div class="listFCN">@Html.DisplayFor(modelItem => item.DoctorName)</div>
-                    <div class="listFCS">@Html.DisplayFor(modelItem => item.JobTitle)</div>
-                    <div class="listFCC">學歷:@Html.DisplayFor(modelItem => item.Education)</div>
-                    @Html.ActionLink("詳細資料", "Detail", new { id = item.DoctorId }, new { @class = "btn btn-outline-success detail" })
+                    </div>
+                    <div class="container">
+                        <div class="listFCN">@Html.DisplayFor(modelItem => item.DoctorName)</div>
+                        <div class="listFCS">@Html.DisplayFor(modelItem => item.JobTitle)</div>
+                        <div class="listFCC">學歷:@Html.DisplayFor(modelItem => item.Education)</div>
+                        @Html.ActionLink("詳細資料", "Detail", new { id = item.DoctorId }, new { @class = "btn btn-outline-success detail" })
+                    </div>
                 </div>
             </div>
-        </div>
+        }*@
 
-        <!--<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body" id="@Html.DisplayFor(modelItem=>item.DoctorId)">
-                        ...
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
-                        @*<button type="button" class="btn btn-primary">Save changes</button>*@
-                    <!--</div>
-                </div>
-            </div>
-        </div>-->
-
-    }
-        <footer style="clear:both"></footer>
-}
+} <footer style="clear:both"></footer>
 @section Scripts{
     <script>
 
@@ -225,7 +209,7 @@
             document.querySelector('#down-arrow1').classList.toggle('rotate180')
         })
         loadDep();
-        
+
         function CCC() {
             if ($(event.target)[0].checked == true) {
                 loadDoc();
@@ -234,8 +218,8 @@
                 cancelDoc();
         }
         function DDD() {
-            if ($(event.target)[0].checked == true) {
-                $('#txtKeyword').val($(event.target)[0].name);
+            if ($(event.target)[0].checked == true) {                
+                loadWebDoc($(event.target)[0].name);
             }
             if ($(event.target)[0].checked != true)
                 $('#txtKeyword').val="";
@@ -294,13 +278,38 @@
                 })
         }
 
-        @*刪除取消勾選*@
+
+
+        @*取消專長勾選*@
         async function cancelDoc() {
                 depName = ($(event.target)[0].name);
                 const trtDs = await fetch('@Url.Content("~/Admin/AdminDoctor/Doc")' + `?depName=${depName}`).then(response => response.json());
                 trtDs.forEach((DoctorName) => {
                     document.querySelector(`#${DoctorName}`).remove();
                 })
+        }
+        @*讀取醫生資料Ajax*@
+        async function loadWebDoc(dcname) {
+            docName = dcname;
+            const doctors = await fetch('@Url.Content("~/doctor/GetDoctorWeb")' + `?docName=${docName}`).then(response => response.json());
+            console.log(doctors)
+            doctors.forEach((DoctorName)=> {
+                web = `<div id="hateboot" class="col-lg-4 wow slideInUp" data-wow-delay="0.3s" style="float:left;width:20%;">
+            <div class="team-item" style="padding: 0 9px 25px 9px;">
+                <div class="position-relative rounded-top  container listFCP" style="z-index: 1;">
+                    <img id="img" class="img-fluid rounded-top w-100 dcimg" src="~/images/${doctors[0].picturePath}" style="width:204px;height:204px;">
+
+                </div>
+                <div class="container">
+                    <div class="listFCN">${doctors[0].doctorName}</div>
+                    <div class="listFCS">${doctors[0].jobTitle}</div>
+                    <div class="listFCC">學歷:${doctors[0].education}</div>
+                    <button class = "btn btn-outline-success detail" >詳細資料<button/>
+                </div>
+            </div>
+        </div>`;
+                document.querySelector('.webShow').innerHTML += web;
+            })
         }
     </script>
 }

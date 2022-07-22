@@ -62,6 +62,21 @@ namespace Medical.Areas.Admin.Controllers
                 d.photo.CopyTo(new FileStream((_enviroment.WebRootPath + "/images/" + pName), FileMode.Create));
                 d.PicturePath = pName;
             }
+            if (d.DepName != null)
+            {
+                if (_db.Departments.FirstOrDefault(a => a.DeptName == d.DepName) != null)
+                {
+                    int depID = _db.Departments.FirstOrDefault(a => a.DeptName == d.DepName).DepartmentId;
+                    d.DepartmentID = depID;
+                }
+                else
+                {
+                    _db.Departments.Add(d.department);
+                    _db.SaveChanges();
+                    int depID = _db.Departments.FirstOrDefault(a => a.DeptName == d.DepName).DepartmentId;
+                    d.DepartmentID = depID;
+                }
+            }
             _db.Members.Add(d.member);
             _db.SaveChanges();
             d.doctor.MemberId = d.member.MemberId;
@@ -101,6 +116,8 @@ namespace Medical.Areas.Admin.Controllers
         }
         public IActionResult EditDetail(int? id)           //修改醫生資料
         {
+            if (id == null)
+                return RedirectToAction("Index");
             CDoctorDetailViewModel prod = new CDoctorDetailViewModel();
             prod.doctor = _db.Doctors.FirstOrDefault(t => t.DoctorId == id);
             Department dep = _db.Departments.FirstOrDefault(t => t.DepartmentId == prod.doctor.DepartmentId);
