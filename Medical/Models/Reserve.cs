@@ -16,7 +16,7 @@ namespace Medical.Models
         public int ClinicDetailId { get; set; }
         public int? State { get; set; }
         public int MemberId { get; set; }
-        public string ReserveDate { get; set; }
+        public DateTime ReserveDate { get; set; }
         public string RemarkPatient { get; set; }
         public string RemarkAdmin { get; set; }
         public int? Source { get; set; }

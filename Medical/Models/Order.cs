@@ -14,7 +14,7 @@ namespace Medical.Models
 
         public int OrderId { get; set; }
         public int MemberId { get; set; }
-        public string OrderDate { get; set; }
+        public DateTime? OrderDate { get; set; }
         public int? CityId { get; set; }
         public string ShipAddress { get; set; }
         public bool? IsPaid { get; set; }

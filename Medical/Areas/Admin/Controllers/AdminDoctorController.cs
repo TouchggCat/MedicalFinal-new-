@@ -281,30 +281,6 @@ namespace Medical.Areas.Admin.Controllers
             return View(list);
         }
 
-        ////換頁用
-        //[HttpPost]
-        //public IActionResult DoctorRatinglist(int currentPageIndex)
-        //{
-            
-            
-        //    return View(GetDoctorRating(currentPageIndex));
-        //}
-
-        //private CRatingDoctorViewModel GetDoctorRating(int currentPage)
-        //{
-            //IEnumerable<CRatingDoctorViewModel> list = null;
-            //if (id != 0)
-            //{
-            //    list = _db.RatingDoctors.Where(a => a.DoctorId == id).Select(a => new CRatingDoctorViewModel
-            //    {
-            //        RatingDoctor = a,
-            //        Doctor = a.Doctor,
-            //        RatingType = a.RatingType
-            //    });
-            //}
-
-            //return ;
-        //}
 
 
 
@@ -314,13 +290,13 @@ namespace Medical.Areas.Admin.Controllers
         {
             
             RatingDoctor result = _db.RatingDoctors.Where(a => a.RatingDoctorId == id).FirstOrDefault();
-            if (result.Shade==false)
+            if (result.Shade==false || result.Shade == null)
             {
                 result.Shade = true;
                 _db.SaveChanges();
                 
             }
-           else if (result.Shade == true)
+           else if (result.Shade == true|| result.Shade == null)
             {
                 result.Shade = false;
                 _db.SaveChanges();

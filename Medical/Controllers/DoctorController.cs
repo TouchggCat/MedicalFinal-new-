@@ -93,13 +93,13 @@ namespace Medical.Controllers
 
         //==========冠名==========
         //瀏覽醫生評論
-        //id寫死
+        
         public IActionResult RatingDoctorpartail(int id)
         {
             ViewBag.name = _db.RatingDoctors.Where(a => a.DoctorId == id).Select(a => a.Doctor.DoctorName).FirstOrDefault();
-            ViewBag.count = _db.RatingDoctors.Where(a => a.DoctorId == id).Where(a => a.Shade == false).Select(a=>a.Rating).Count();
+            ViewBag.count = _db.RatingDoctors.Where(a => a.DoctorId == id).Where(a => a.Shade == false || a.Shade == null).Select(a=>a.Rating).Count();
 
-            var result = _db.RatingDoctors.Where(a => a.DoctorId == id).Where(a => a.Shade == false)
+            var result = _db.RatingDoctors.Where(a => a.DoctorId == id).Where(a => a.Shade == false|| a.Shade == null)
                 .Include(a => a.Doctor)
                 .Include(a => a.RatingType)
                 .ToList();

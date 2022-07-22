@@ -62,7 +62,7 @@ namespace Medical.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=Medical;Integrated Security=True");
             }
         }
@@ -226,7 +226,7 @@ namespace Medical.Models
 
                 entity.Property(e => e.ClinicDetailId).HasColumnName("ClinicDetailID");
 
-                entity.Property(e => e.ClinicDate).HasMaxLength(50);
+                entity.Property(e => e.ClinicDate).HasColumnType("datetime");
 
                 entity.Property(e => e.DepartmentId).HasColumnName("DepartmentID");
 
@@ -393,21 +393,6 @@ namespace Medical.Models
                 entity.Property(e => e.Password).HasMaxLength(50);
 
                 entity.Property(e => e.Phone).HasMaxLength(50);
-
-                entity.HasOne(d => d.City)
-                    .WithMany(p => p.Members)
-                    .HasForeignKey(d => d.CityId)
-                    .HasConstraintName("FK_Member_City");
-
-                entity.HasOne(d => d.Gender)
-                    .WithMany(p => p.Members)
-                    .HasForeignKey(d => d.GenderId)
-                    .HasConstraintName("FK_Member_Gender");
-
-                entity.HasOne(d => d.RoleNavigation)
-                    .WithMany(p => p.Members)
-                    .HasForeignKey(d => d.Role)
-                    .HasConstraintName("FK_Member_RoleType");
             });
 
             modelBuilder.Entity<News>(entity =>
@@ -452,7 +437,7 @@ namespace Medical.Models
 
                 entity.Property(e => e.MemberId).HasColumnName("MemberID");
 
-                entity.Property(e => e.OrderDate).HasMaxLength(50);
+                entity.Property(e => e.OrderDate).HasColumnType("datetime");
 
                 entity.Property(e => e.OrderStateId).HasColumnName("OrderStateID");
 
@@ -713,9 +698,7 @@ namespace Medical.Models
 
                 entity.Property(e => e.RemarkPatient).HasColumnName("Remark_Patient");
 
-                entity.Property(e => e.ReserveDate)
-                    .IsRequired()
-                    .HasMaxLength(50);
+                entity.Property(e => e.ReserveDate).HasColumnType("datetime");
 
                 entity.Property(e => e.SequenceNumber).HasColumnName("sequence_number");
 
@@ -748,7 +731,7 @@ namespace Medical.Models
 
                 entity.Property(e => e.ReviewId).HasColumnName("ReviewID");
 
-                entity.Property(e => e.CreateDate).HasMaxLength(50);
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.MemberId).HasColumnName("MemberID");
 
