@@ -47,7 +47,7 @@
                                 <td>
                                     <div class="sparkbar" data-color="#00a65a" data-height="20"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">@Html.DisplayFor(modelItem => item.Rating)</font></font></div>
                                 </td>
-                                <td ><span class="badge badge-@sign"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">@shade</font></font></span></td>
+                                <td><span class="badge badge-@sign"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">@shade</font></font></span></td>
                                 <td>
                                     @Html.ActionLink("切換遮蔽狀態", "DoctorRatingEdit", new { id = item.RatingDoctorId }, new { onclick = "return confirm('是否切換遮蔽狀態?')", @class = "btn btn-primary" })
 

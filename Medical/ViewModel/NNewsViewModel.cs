@@ -43,11 +43,11 @@ namespace Medical.ViewModel
             get { return _news.NewsContent; }
             set { _news.NewsContent = value; }
         }
-        public DateTime? PublishDate
-        {
-            get { return _news.PublishDate; }
-            set { _news.PublishDate = value; }
-        }
+        //public DateTime? PublishDate
+        //{
+        //    get { return _news.PublishDate; }
+        //    set { _news.PublishDate = value; }
+        //}
         public DateTime? CreateDate
         {
             get { return _news.CreateDate; }

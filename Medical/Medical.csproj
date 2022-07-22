@@ -5,7 +5,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="Areas\Admin\Views\AdminDoctor\CreateDetail.cshtml" />
+    <None Include="Areas\Admin\Views\AdminDoctor\depEdit.cshtml" />
+    <None Include="Areas\Admin\Views\AdminDoctor\Details.cshtml" />
+    <None Include="Areas\Admin\Views\AdminDoctor\DoctorRatinglist.cshtml" />
+    <None Include="Areas\Admin\Views\AdminDoctor\EditDetail.cshtml" />
+    <None Include="Areas\Admin\Views\AdminDoctor\Email.cshtml" />
+    <None Include="Areas\Admin\Views\AdminDoctor\Index.cshtml" />
     <None Include="Views\ClinicDetail\List.cshtml" />
+    <None Include="Views\Doctor\Details.cshtml" />
+    <None Include="Views\Doctor\Index.cshtml" />
+    <None Include="Views\Doctor\IndexTest.cshtml" />
+    <None Include="Views\Doctor\List.cshtml" />
+    <None Include="Views\Doctor\ListTest.cshtml" />
+    <None Include="Views\Doctor\RatingDoctorpartail.cshtml" />
     <None Include="wwwroot\js\site.js" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map" />
