@@ -469,10 +469,10 @@ namespace Medical.Models
                     .HasForeignKey(d => d.CityId)
                     .HasConstraintName("FK_Order_City");
 
-                //entity.HasOne(d => d.CouponDetal)
-                //    .WithMany(p => p.Orders)
-                //    .HasForeignKey(d => d.CouponDetalId)
-                //    .HasConstraintName("FK_Order_CouponDetail");
+                entity.HasOne(d => d.CouponDetail)
+                    .WithMany(p => p.Orders)
+                    .HasForeignKey(d => d.CouponDetailId)
+                    .HasConstraintName("FK_Order_CouponDetail");
 
                 entity.HasOne(d => d.Member)
                     .WithMany(p => p.Orders)
