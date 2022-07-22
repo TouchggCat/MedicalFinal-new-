@@ -1,4 +1,4 @@
-﻿@model Medical.ViewModel.CRegisterViewModel
+﻿@model Medical.ViewModel.CMemberViewModel
 
 
 @{
@@ -11,12 +11,17 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Register">
+        <form asp-action="Register" id="demo-form" method="POST">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
                 <input asp-for="Email" class="form-control mb-2" id="email" />
                 <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MemberName" class="control-label"></label>
+                <input asp-for="MemberName" class="form-control mb-2" id="memName" />
+                <span asp-validation-for="MemberName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="IdentityId" class="control-label"></label>
@@ -30,18 +35,15 @@
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MemberName" class="control-label"></label>
-                <input asp-for="MemberName" class="form-control mb-2" id="memName" />
-                <span asp-validation-for="MemberName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="BirthDay" class="control-label"></label>
-                <input asp-for="BirthDay" class="form-control mb-2" />
+                @*日期格式type="date" 預設值value="2000-01-01"*@
+                <input asp-for="BirthDay" class="form-control mb-2" type="date" value="2000-01-01" id="bday"/>
                 <span asp-validation-for="BirthDay" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <select asp-for="GenderId">
-                    <option>性別</option>
+                <label asp-for="GenderId" class="control-label"></label><br />
+                <select asp-for="GenderId" id="genSelect">
+                    <option>您的性別</option>
                     @foreach (var item in Model.MemGender)
                     {
                         <option value="@item.GenderId">@item.Gender1</option>
@@ -61,8 +63,9 @@
                 <span asp-validation-for="Role" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <select asp-for="CityId">
-                    <option>縣市</option>
+                <label asp-for="CityId" class="control-label"></label><br />
+                <select asp-for="CityId" id="citySelect">
+                    <option>居住縣市</option>
                     @foreach (var item in Model.MemCity)
                     {
                         <option value="@item.CityId">@item.CityName</option>
@@ -76,8 +79,9 @@
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="註冊" class="btn btn-primary" />
+                <input type="submit" value="註冊" class="g-recaptcha btn btn-primary" data-sitekey="6Lfk2AkhAAAAAOtIbeGmRkHUqjne2XfLYmM21Kg3" data-callback="onSubmit"/>
             </div>
+            <br />
             <div class="form-group">
                 <input type="button" value="RegisterDemo" class="btn btn-primary mb-2" id="regiDemo" />
 
@@ -98,13 +102,22 @@
 @section Scripts {
     <script>
         $("#regiDemo").click(() => {
-            $("#email").val("msit14199@gmail.com");
+            $("#email").val("giraffegod@gmail.com");
             $("#pass").val("1234")
             $("#idid").val("A123456789")
-            $("#memName").val("王小白")
-            $("#phone").val("0911999999")
-            $("#address").val("大安區復興南路一段390號")
+            $("#memName").val("湛士華")
+            $("#phone").val("0900999999")
+            $("#address").val("新店區中正路1號1樓")
+
+            //====================自動跳出下拉選單!!!
+            $('#citySelect').val("2");
+            $('#genSelect').val("1");
+            //生日值顯示
+            $('#bday').val("2012-02-06");
+
         })
+
+
         //const genderOption = document.querySelector("#genderSelect");
         /*用index傳入*/
 /*    $("#genderSelect").append("<option >男</option>");*/
@@ -127,5 +140,12 @@
         LoadGender();*@
 
     </script>
+
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script>
+        function onSubmit(token) {
+            document.getElementById("demo-form").submit();
+        }
+    </script>
 }
-}
+

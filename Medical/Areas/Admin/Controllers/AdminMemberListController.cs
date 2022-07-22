@@ -2,6 +2,7 @@
 using Medical.ViewModel;
 using Medical.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,42 +23,48 @@ namespace Medical.Areas.Admin.Controllers
         {
             if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USE))  
             {
-                if (string.IsNullOrEmpty(keyVModel.txtKeyword))
+                if (string.IsNullOrEmpty(keyVModel.txtKeyword))    //沒關鍵字時
                 {
-                    if (Role!=null||Role!=0)   //目前沒用
+                    if (Role!=null)   //使用下拉選單時
                     {
-                        CRegisterViewModel memVModel = new CRegisterViewModel();
-
-                        memVModel.mem = _context.Members.ToList();
-                        memVModel.roleTypes = _context.RoleTypes.Where(n => n.Role == Role).ToList();
-
-
+                        CMemberViewModel memVModel = new CMemberViewModel();
+                   
+                        memVModel.mem = _context.Members.Where(n => n.Role == Role).ToList();  //清單篩選顯示!!
+                        memVModel.roleTypes = _context.RoleTypes.ToList();  //下拉選單&表格權限顯示
+                        memVModel.MemGender = _context.Genders.ToList();
+                        //性別名稱顯示，因為view有關連Model.MemGender所以要傳入(否則viewModel的MemGender為null)，無關聯則不需要
+                        memVModel.MemCity = _context.Cities.ToList();
                         return View(memVModel);
                     }
                     else
                     {
-                        CRegisterViewModel memVModel = new CRegisterViewModel()
+                        CMemberViewModel memVModel = new CMemberViewModel()
                         {
                             mem = _context.Members.ToList(),
-                            roleTypes = _context.RoleTypes.ToList()
-                        };  
+                            roleTypes = _context.RoleTypes.ToList(),
+                            MemGender = _context.Genders.ToList(),
+                            MemCity = _context.Cities.ToList()
+                    };  
                         return View(memVModel);
                     }
                  
                 }
-                else
+                else  //有關鍵字時
                 {
-                    CRegisterViewModel AdVModel = new CRegisterViewModel()
+                    CMemberViewModel VModel = new CMemberViewModel()
                     {
                         mem = _context.Members.Where(t => t.MemberName.Contains(keyVModel.txtKeyword) ||
                           t.Email.Contains(keyVModel.txtKeyword) || t.Phone.Contains(keyVModel.txtKeyword)).ToList(),
-                                roleTypes = _context.RoleTypes.ToList()
+                                roleTypes = _context.RoleTypes.ToList(),
+                                          //性別.city名稱顯示，因為view有關連Model.MemGender所以要傳入(否則viewModel的MemGender為null)，無關聯則不需要
+                        MemGender = _context.Genders.ToList(),
+                        MemCity = _context.Cities.ToList()
                     };
-                    return View(AdVModel);
+                    return View(VModel);
                 }
 
             }
-            else
+            else   //沒登入或登入失效時
                 return RedirectToAction("Index", "Home");
         }
 
@@ -65,17 +72,26 @@ namespace Medical.Areas.Admin.Controllers
 
         public IActionResult AdminCreate()
         {
-            return View();
+            CMemberViewModel memVModel = new CMemberViewModel()
+            {
+                mem = _context.Members.ToList(),
+                roleTypes = _context.RoleTypes.ToList(),
+                MemCity = _context.Cities.ToList(),
+                MemGender = _context.Genders.ToList()
+            };
+            return View(memVModel);
         }
         [HttpPost]
-        public IActionResult AdminCreate(CRegisterViewModel vModel)
+        public IActionResult AdminCreate(CMemberViewModel vModel)
         {
-            MedicalContext medicalDb = new MedicalContext();
-            medicalDb.Members.Add(vModel.member);
-
-            medicalDb.SaveChanges();
+            if (vModel != null)
+            {
+                _context.Members.Add(vModel.member);
+                _context.SaveChanges();
+            }
             return RedirectToAction("AdminMemberList", "AdminMemberList");
         }
+
         public IActionResult Delete(int? id)
         {
             MedicalContext db = new MedicalContext();
@@ -88,60 +104,63 @@ namespace Medical.Areas.Admin.Controllers
             return RedirectToAction("AdminMemberList", "AdminMemberList");
         }
 
-
         public IActionResult Edit(int? id)
-        {      
+        {
             if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USE))
             {
-              MedicalContext db = new MedicalContext();
-                Member mem = db.Members.FirstOrDefault(c => c.MemberId == id);
-        
-             return View(mem);
+                CMemberViewModel memVModel = new CMemberViewModel();
+                memVModel.MemberId = _context.Members.FirstOrDefault(c => c.MemberId == id).MemberId;
+                //=============================================//單欄項目顯示!!
+                memVModel.MemberName = _context.Members.FirstOrDefault(c => c.MemberId == id).MemberName;  
+                memVModel.Password= _context.Members.FirstOrDefault(c => c.MemberId == id).Password;
+                memVModel.Email = _context.Members.FirstOrDefault(c => c.MemberId == id).Email;
+                memVModel.IcCardNo = _context.Members.FirstOrDefault(c => c.MemberId == id).IcCardNo;
+                memVModel.IdentityId = _context.Members.FirstOrDefault(c => c.MemberId == id).IdentityId;
+                memVModel.Address = _context.Members.FirstOrDefault(c => c.MemberId == id).Address;
+                memVModel.BirthDay = _context.Members.FirstOrDefault(c => c.MemberId == id).BirthDay;
+                memVModel.Phone = _context.Members.FirstOrDefault(c => c.MemberId == id).Phone;
+                //============================================ //下拉選單所選項目顯示
+                memVModel.Role = _context.Members.FirstOrDefault(c => c.MemberId == id).Role;
+                memVModel.GenderId = _context.Members.FirstOrDefault(c => c.MemberId == id).GenderId;
+                memVModel.CityId = _context.Members.FirstOrDefault(c => c.MemberId == id).CityId;
+                //============================================
+                memVModel.roleTypes = _context.RoleTypes.ToList();  //下拉選單顯示
+                memVModel.MemGender = _context.Genders.ToList();
+                memVModel.MemCity = _context.Cities.ToList();
+                return View(memVModel);
             }
-              return RedirectToAction("AdminMemberList", "AdminMemberList");
+            return RedirectToAction("AdminMemberList", "AdminMemberList");
         }
         [HttpPost]
-        public IActionResult Edit(Member p)
+        public IActionResult Edit(CMemberViewModel vm)
         {
-            MedicalContext db = new MedicalContext();
-            Member mem = db.Members.FirstOrDefault(c => c.MemberId == p.MemberId);
+            //_context.Members.Add(vm.member);   //這樣寫會新增一筆
+            Member mem = _context.Members.FirstOrDefault(c => c.MemberId == vm.MemberId);//這裡要等於vm.MemberId而不是@Html.ActionLink的id
             if (mem != null)
             {
-                mem.IdentityId = p.IdentityId;
-                mem.Password = p.Password;
-                mem.MemberName = p.MemberName;
-                mem.BirthDay = p.BirthDay;
-                mem.GenderId = p.GenderId;
-                mem.BloodType = p.BloodType;
-                mem.Weight = p.Weight;
-                mem.IcCardNo = p.IcCardNo;
-                mem.Phone = p.Phone;
-                mem.Email = p.Email;
-                mem.Role = p.Role;
-                mem.CityId = p.CityId;
-                mem.Address = p.Address;
+                mem.MemberId = vm.MemberId;
+                mem.MemberName = vm.MemberName; 
+                mem.Email = vm.Email;
+                mem.IdentityId = vm.IdentityId;
+                mem.Password = vm.Password;
+                mem.BirthDay = vm.BirthDay;
+                mem.GenderId = vm.GenderId;
+                mem.IcCardNo = vm.IcCardNo;
+                mem.Phone = vm.Phone;         
+                mem.Role = vm.Role;
+                mem.CityId = vm.CityId;
+                mem.Address = vm.Address;
 
 
-                db.SaveChanges();
+                _context.SaveChanges();
             }
+
+
             return RedirectToAction("AdminMemberList","AdminMemberList");
         }
 
-        public IActionResult TestRole(CKeyWordViewModel keyVModel)
-        {
-            IEnumerable<CMemberAdminViewModel> list = null;
-            list = _context.Members.Where(n => n.Role == 1).Select(n => new CMemberAdminViewModel
-            {
-                MemberId=n.MemberId,
-                MemberName=n.MemberName,
-                Role=n.Role,
-                Address=n.Address
-            });
-
-            return View(list);
-        }
         //=================for Ajax API
-  
+
         //public IActionResult showRolebyAjax(CMemberAdminViewModel AdminVModel)
         //{
 

@@ -1,4 +1,4 @@
-﻿@model Medical.Models.Member
+﻿@model Medical.ViewModel.CMemberViewModel
 
 @{
     ViewData["Title"] = "AdminLoginMemberList";
@@ -10,7 +10,18 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @*id要傳入*@
             <input type="hidden" asp-for="MemberId" />
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MemberName" class="control-label"></label>
+                <input asp-for="MemberName" class="form-control" />
+                <span asp-validation-for="MemberName" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="IdentityId" class="control-label"></label>
                 <input asp-for="IdentityId" class="form-control" />
@@ -21,30 +32,22 @@
                 <input asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="MemberName" class="control-label"></label>
-                <input asp-for="MemberName" class="form-control" />
-                <span asp-validation-for="MemberName" class="text-danger"></span>
-            </div>
+
             <div class="form-group">
                 <label asp-for="BirthDay" class="control-label"></label>
-                <input asp-for="BirthDay" class="form-control" />
+                <input asp-for="BirthDay" class="form-control" type="date"/>
                 <span asp-validation-for="BirthDay" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="GenderId" class="control-label"></label>
-                <select asp-for="GenderId" class="form-control" asp-items="ViewBag.GenderId"></select>
-                <span asp-validation-for="GenderId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BloodType" class="control-label"></label>
-                <input asp-for="BloodType" class="form-control" />
-                <span asp-validation-for="BloodType" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Weight" class="control-label"></label>
-                <input asp-for="Weight" class="form-control" />
-                <span asp-validation-for="Weight" class="text-danger"></span>
+                <select asp-for="GenderId">
+                    <option>性別</option>
+                    @foreach (var item in Model.MemGender)
+                    {
+                        <option value="@item.GenderId">@item.Gender1</option>
+                    }
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="IcCardNo" class="control-label"></label>
@@ -52,43 +55,38 @@
                 <span asp-validation-for="IcCardNo" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="Phone" class="control-label"></label>
                 <input asp-for="Phone" class="form-control" />
                 <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
-            @*<div class="form-group">
-                <label asp-for="OdRight" class="control-label"></label>
-                <input asp-for="OdRight" class="form-control" />
-                <span asp-validation-for="OdRight" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="OsLeft" class="control-label"></label>
-                <input asp-for="OsLeft" class="form-control" />
-                <span asp-validation-for="OsLeft" class="text-danger"></span>
-            </div>*@
-            <div class="form-group">
-                <label asp-for="Role" class="control-label"></label>
-                <input asp-for="Role" class="form-control" />
-                <span asp-validation-for="Role" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CityId" class="control-label"></label>
-                <select asp-for="CityId" class="form-control" asp-items="ViewBag.CityId"></select>
-                <span asp-validation-for="CityId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
+        <div class="form-group">
+            <label asp-for="Role" class="control-label"></label>
+            <select asp-for="Role">
+                <option value="2">權限篩選</option>
+                @foreach (var item in Model.roleTypes)
+                {
+                    <option value="@item.Role">@item.RoleName</option>
+                }
+            </select>
+        </div>
+                <div class="form-group">
+                    <label asp-for="CityId" class="control-label"></label>
+                    <select asp-for="CityId">
+                        <option>縣市</option>
+                        @foreach (var item in Model.MemCity)
+                        {
+                            <option value="@item.CityId">@item.CityName</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Address" class="control-label"></label>
+                    <input asp-for="Address" class="form-control" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
         </form>
     </div>
 </div>
@@ -99,5 +97,6 @@
 <br />
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+ @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

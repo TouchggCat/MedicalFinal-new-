@@ -21,21 +21,8 @@ namespace Medical.Controllers
             _context = context;
         }
         //======================================================================
-        //public IActionResult AdminLoginMemberList()   //管理員帳號登入=>會員清單管理
-        //{
-        //    if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USE))  //TODO 還需要寫一個getSession(登出)/未驗證身分
-        //    {
-        //        MedicalContext medicalContext = new MedicalContext();
-        //        //CMemberAdminViewModel vModel = new CMemberAdminViewModel();
-        //        IEnumerable<Member> datas = null;
 
-        //        datas = from t in medicalContext.Members
-        //                select t;
 
-        //        return View(datas);
-        //    }
-        //    return RedirectToAction("Index", "Home");
-        //}
         public IActionResult LoginSuccess()
         {
             return View();
@@ -47,14 +34,15 @@ namespace Medical.Controllers
             {
                 return RedirectToAction("LoginSuccess");   //已登入的證明
             }
-            
+           
             if (repath!=null)
             {
                 ViewBag.reserve = "reserve";
             }
            
             //ViewData["ReUrl"] = reUrl;
-            return View();
+            return View(new CLoginViewModel());
+
         }
         [HttpPost]
         public IActionResult Login(CLoginViewModel vModel)
@@ -102,20 +90,20 @@ namespace Medical.Controllers
 
         public IActionResult Register()
         {
-            CRegisterViewModel regVModel = new CRegisterViewModel()
+            CMemberViewModel memVModel = new CMemberViewModel()
             {
                 mem = _context.Members.ToList(),
                 roleTypes = _context.RoleTypes.ToList(),
                 MemCity=_context.Cities.ToList(),
                 MemGender=_context.Genders.ToList()
             };
-            return View(regVModel);
+            return View(memVModel);
         }
 
         [HttpPost]
-        public IActionResult Register(CRegisterViewModel vModel)
+        public IActionResult Register(CMemberViewModel vModel)
         {
-            if (vModel != null)
+            if (vModel.Email != null && vModel.Password!= null)
             {
 
                 sendMail();
@@ -129,29 +117,10 @@ namespace Medical.Controllers
 
         private void sendMail()
         {
-            string mailContent = String.Empty;
-            mailContent += "<h1>請確認您的信箱</h1>";
-            mailContent += "此信件由系統自動發送";
-       
+          //待寫入內容,註冊成功發送信件
         }
 
-
-
-
-
-        //public IActionResult Delete(int? id)
-        //{
-        //    MedicalContext db = new MedicalContext();
-        //    Member mem = db.Members.FirstOrDefault(c => c.MemberId == id);
-        //    if (mem != null)
-        //    {
-        //        db.Members.Remove(mem);
-        //        db.SaveChanges();
-        //    }
-        //    return RedirectToAction("AdminLoginMemberList", "Login");
-        //}
-
-
+ 
         public IActionResult Logout()
         {
             if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USE))
@@ -164,33 +133,37 @@ namespace Medical.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        //================================================
+
         public IActionResult ForgetPassword()
         {
             return View();
         }
         [HttpPost]
-        public IActionResult ForgetPassword(string email)
+        public IActionResult ForgetPassword(CLoginViewModel vModel)  //參數=>收信者email
         {
-            Member x =_context.Members.FirstOrDefault(q => q.Email.Contains(email));
-            if (x != null)
+            Member member =_context.Members.FirstOrDefault(q => q.Email==vModel.txtAccount);
+            if (member != null)
             {
-                CRegisterViewModel.gmail = email;
+                CMemberViewModel.gmail = vModel.txtAccount;
                 string account = "giraffegtest@gmail.com";
-                string password = "ahhpp5000";    
+                string password = "kusbvagcbkfqcynb";      
                 SmtpClient client = new SmtpClient();
+                //SmtpClient MySmtp = new SmtpClient("smtp.gmail.com", 587);  //這樣寫也可以，設定google server+port
                 client.Host = "smtp.gmail.com"; //設定google server
                 client.Port = 587;              //google port
-                client.Credentials = new NetworkCredential(account, password);  //寄信人
+                client.Credentials = new NetworkCredential(account, password);  //寄信人，內容寫在上方方便修改  //credential (n.)憑據；證書
+
                 client.EnableSsl = true;           //是否啟用SSL驗證  =>SSL憑證是在網頁伺服器(主機)與網頁瀏覽器(客戶端)之間建立一個密碼連結的標準規範
 
                 MailMessage mail = new MailMessage();
-                mail.From = new MailAddress(account);
-                mail.To.Add(email);
-                mail.Subject = "KitchenGo";
-                mail.SubjectEncoding = System.Text.Encoding.UTF8;
-                mail.IsBodyHtml = true;
-                mail.Body = "<h1>親愛的會員您好:</h1><br><h2>如欲重新設定密碼<a href='https://localhost:44302/Login/ResetPassword'>請點我</a></h2>";
-                mail.BodyEncoding = System.Text.Encoding.UTF8;
+                mail.From = new MailAddress(account, "漢斯眼科");   //前面是發信email後面是顯示的名稱
+                mail.To.Add(vModel.txtAccount);  //收信者email from 參數
+                mail.Subject = "[漢斯眼科]一密碼重設通知信";  //標題
+                mail.SubjectEncoding = System.Text.Encoding.UTF8;   //標題使用UTF8編碼
+                mail.IsBodyHtml = true;   //內容使用html
+                mail.Body = $"<h1>漢斯眼科會員一{member.MemberName}，您好:</h1><br><h2>如欲重新設定密碼<a href='https://localhost:44302/Login/ResetPassword?email={vModel.txtAccount}'>請點我</a></h2>";
+                mail.BodyEncoding = System.Text.Encoding.UTF8;       //內文使用UTF8編碼
                 try
                 {
                     client.Send(mail);
@@ -204,11 +177,35 @@ namespace Medical.Controllers
                     mail.Dispose();
                     client.Dispose();//釋放資源
                 }
-                return Content("<script>alert('信件已送出!請到註冊的信箱查看');window.location.href='https://localhost:44302/'</script>", "text/html", System.Text.Encoding.UTF8);
+                return Content("<script>alert('信件已送出，請至信箱查看');window.location.href='https://localhost:44302/'</script>", "text/html", System.Text.Encoding.UTF8);
+                //window.location.href跳轉業面
             }
             else
-                return Content("<script>alert('您不是會員!請先加入會員!');window.location.href='https://localhost:44302/'</script>", "text/html", System.Text.Encoding.UTF8);
+                return Content("<script>alert('未註冊的帳號，請確認輸入是否正確');window.location.href='https://localhost:44302/'</script>", "text/html", System.Text.Encoding.UTF8);
 
+        }
+
+        public IActionResult ResetPassword(string email)
+        {
+            //把忘記密碼輸入的信箱傳入參數
+            CLoginViewModel LogVM = new CLoginViewModel();
+            Member mem = new Member();
+            mem= _context.Members.Where(n => n.Email == email).FirstOrDefault();
+            LogVM.txtAccount = mem.Email;
+
+            return View(LogVM);
+        }
+        [HttpPost]
+        public IActionResult ResetPassword(CLoginViewModel LogVM)
+        {
+            if (LogVM != null)
+            {
+                Member mem = _context.Members.Where(n => n.Email == LogVM.txtAccount).FirstOrDefault();
+                mem.Password = LogVM.txtPassword;
+                _context.SaveChanges();
+                return Content("<script>alert('修改密碼成功');window.location.href='https://localhost:44302/';</script>", "text/html", System.Text.Encoding.UTF8);
+            }
+            return RedirectToAction("Index", "Home");
         }
 
     }

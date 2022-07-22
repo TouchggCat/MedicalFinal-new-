@@ -14,7 +14,7 @@ namespace Medical.ViewModel
         {
             _Member = new Member();
         }
-        public List<Member>mem { get; set; }
+        public List<Member> mem { get; set; }
         public Member Member
         {
             get { return _Member; }
@@ -76,7 +76,7 @@ namespace Medical.ViewModel
             get { return _Member.Phone; }
             set { _Member.Phone = value; }
         }
-        
+
         public int? Role
         {
             get { return _Member.Role; }

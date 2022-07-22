@@ -10,7 +10,8 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Login">
+        @*id="demo-form" method="POST"給reCAPCHA使用*@
+        <form asp-action="Login" id="demo-form" method="POST">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 帳號
@@ -25,23 +26,32 @@
                 <span asp-validation-for="txtPassword" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="請登入" class="btn btn-primary mb-2" />
-                <a asp-action="Register" class="btn btn-primary mb-2">註冊</a>
+                @*reCAPTCHA登入<button class="g-recaptcha" data-sitekey="your_site_key" data-callback="onSubmit">*@
+            <input type="submit" value="請登入" class="g-recaptcha btn btn-primary mb-2"
+                         data-sitekey="6Lfk2AkhAAAAAOtIbeGmRkHUqjne2XfLYmM21Kg3" data-callback="onSubmit" />
+             <a asp-action="Register" class="btn btn-primary mb-2">註冊</a>
             </div>
             <div class="form-group">
-                <input type="button" value="AdminDemo" class="btn btn-primary mb-2" id="adDemo" />
-                <input type="button" value="DoctorDemo" class="btn btn-primary mb-2" id="docDemo" />
-                <input type="button" value="CustomerDemo" class="btn btn-primary mb-2" id="cusDemo" />
+
+                <a asp-action="ForgetPassword" class="btn btn-outline-info mb-2">忘記密碼</a>
+
+            </div>
+            <div class="form-group">
+                <input type="button" value="AdminDemo" class="btn btn-outline-dark mb-2" id="adDemo" />
+                <input type="button" value="DoctorDemo" class="btn btn-outline-dark mb-2" id="docDemo" />
+                <input type="button" value="CustomerDemo" class="btn btn-outline-dark mb-2" id="cusDemo" />
                 <input type="hidden" asp-for="reserve" value="reserve" class="btn btn-primary mb-2" id="cusDemo" />
             </div>
-            <div class="form-group">
-                <input type="submit" value="忘記密碼" class="btn btn-primary mb-2" />
-                <a asp-action="ForgetPassword" class="btn btn-primary mb-2">忘記密碼</a>
-            </div>
+
+
         </form>
     </div>
 </div>
 
+@*<form id="demo-form" action="?" method="POST">
+    <button class="g-recaptcha" data-sitekey="6Lfk2AkhAAAAAOtIbeGmRkHUqjne2XfLYmM21Kg3" data-callback="onSubmit">Submit</button>
+    <br />
+</form>*@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
@@ -58,20 +68,27 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-<script>
-    $("#adDemo").click(()=> {
-        $("#email").val(6);
-        $("#pass").val("AAA")
-    })
-    $("#docDemo").click(() => {
-        $("#email").val("candy@gmail.com");
-        $("#pass").val("841120")
-    })
-    $("#cusDemo").click(() => {
-        $("#email").val("s86821993");
-        $("#pass").val("851208")
-    })
-</script>
-
+    <script>
+        $("#adDemo").click(() => {
+            $("#email").val(6);
+            $("#pass").val("AAA")
+        })
+        $("#docDemo").click(() => {
+            $("#email").val("candy@gmail.com");
+            $("#pass").val("841120")
+        })
+        $("#cusDemo").click(() => {
+            $("#email").val("s86821993");
+            $("#pass").val("851208")
+        })
+    </script>
+    @*==========================================================*@
+@*reCAPTCHA套件使用*@
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script>
+        function onSubmit(token) {
+            document.getElementById("demo-form").submit();
+        }
+    </script>
 }
 

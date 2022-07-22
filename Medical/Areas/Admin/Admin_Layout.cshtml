@@ -35,12 +35,14 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
 
+
     <!-- Select2 -->
     <link rel="stylesheet" href="~/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="~/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 
     <script src="~/plugins/sweetalert2/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="~/plugins/sweetalert2/sweetalert2.css">
+
 
 
     @await RenderSectionAsync("Styles", required: false)
@@ -124,13 +126,15 @@
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
+
                         <li class="nav-item menu-open">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
 
+
                                 <p>
                                     門診維護
-                                    <i class="right fas fa-angle-left"></i>
+                                    <i class="fas fa-angle-left right"></i>
                                 </p>
                             </a>
 
@@ -152,6 +156,7 @@
                                     </a>
                                 </li>*@
                             </ul>
+
 
                         </li>
                     </ul>
@@ -306,7 +311,7 @@
                             </div>
                             <!-- /.card -->
 
-
+                            
                         </section>
                         <!-- /.Left col -->
                     </div>
@@ -323,6 +328,11 @@
         <!-- /.control-sidebar -->
     </div>
     <!-- ./wrapper -->
+
+
+    <!-- fullCalendar 2.2.5 -->
+    <script src="~/plugins/moment/moment.min.js"></script>
+    <script src="~/plugins/fullcalendar/main.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

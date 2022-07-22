@@ -209,14 +209,15 @@
                 <!-- 放大鏡在這裡 我先註解掉-->
                 @*<button type="button" class="btn text-dark" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fa fa-search"></i></button>*@
                 @*<a href="/ClinicDetail/List" class="btn btn-primary py-2 px-4 ms-3">登入</a>*@
-                <a class="btnControl">
-                    @*@Html.ActionLink("請登入", "Login", "Login", new { @class = "nav-item nav-link" })*@
-                    <a asp-action="Login" asp-controller="Login" class="btn btn-primary" id="loginButton">@LoginbuttonValue</a>
-                    <a asp-action="Logout" asp-controller="Login" class="btn btn-primary" id="looutButton">@LogoutbuttonValue</a>
-                </a>
-                <p id="showMe">
+                @*把Button的Bootstrap改寫到div，就不會顯示兩個<a>標籤的按鈕*@
+                <div class="btn btn-light">
+                    <a asp-action="Login" asp-controller="Login" id="loginButton" >@LoginbuttonValue</a>
+                    <a asp-action="Logout" asp-controller="Login"  id="looutButton">@LogoutbuttonValue</a>
+                </div>
+                @*這裡也使用div避免文字沒對齊*@
+                <div id="showMe" class="fas fa-user">
                     @showID @logState
-                </p>
+                </div>
 
 
 
