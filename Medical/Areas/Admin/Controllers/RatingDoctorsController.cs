@@ -10,8 +10,8 @@ namespace Medical.Controllers
 {
     public class RatingDoctorsController : Controller
     {
-        
 
+        [Area(areaName: "Admin")]
         public IActionResult List()
         {
             MedicalContext medical = new MedicalContext();

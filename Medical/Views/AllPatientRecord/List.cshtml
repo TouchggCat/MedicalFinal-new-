@@ -16,11 +16,11 @@
 <br>
 @using (Html.BeginForm())
 {
-    @:醫生查詢 @Html.TextBox("txtKeyword")
-    <input type="submit" value="Search" />
+    @:病患查詢 @Html.TextBox("txtKeyword")
+    <input type="submit" value="查詢" class="btn btn-primary" />
 }
 <p></p>
-<table class="table">
+<table class="table table-sm align-middle table-hover" style="margin-bottom:100px">
     <thead>
         <tr>
             <th>
@@ -31,9 +31,6 @@
             </th>
             <th>
                 病例概況
-            </th>
-            <th>
-                詳細病情
             </th>
             <th>
                 治療科目
@@ -57,9 +54,6 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.DiagnosticRecord)
                     </td>
-                    @*<td>
-                        @Html.DisplayFor(modelItem => item.SyndromeDescription)
-                    </td>*@
                     <td>
                         @Html.DisplayFor(modelItem => item.TreatmentDetail.TreatmentDetail1)
                     </td>

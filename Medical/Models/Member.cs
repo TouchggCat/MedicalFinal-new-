@@ -22,7 +22,7 @@ namespace Medical.Models
         public string IdentityId { get; set; }
         public string Password { get; set; }
         public string MemberName { get; set; }
-        public string BirthDay { get; set; }
+        public DateTime? BirthDay { get; set; }
         public int? GenderId { get; set; }
         public string BloodType { get; set; }
         public int? Weight { get; set; }
