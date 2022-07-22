@@ -62,6 +62,7 @@ namespace Medical.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=Medical;Integrated Security=True");
             }
         }
@@ -395,16 +396,6 @@ namespace Medical.Models
 
                 entity.Property(e => e.Phone).HasMaxLength(50);
 
-                entity.HasOne(d => d.City)
-                    .WithMany(p => p.Members)
-                    .HasForeignKey(d => d.CityId)
-                    .HasConstraintName("FK_Member_City");
-
-                entity.HasOne(d => d.Gender)
-                    .WithMany(p => p.Members)
-                    .HasForeignKey(d => d.GenderId)
-                    .HasConstraintName("FK_Member_Gender");
-
                 entity.HasOne(d => d.RoleNavigation)
                     .WithMany(p => p.Members)
                     .HasForeignKey(d => d.Role)
@@ -422,6 +413,8 @@ namespace Medical.Models
                 entity.Property(e => e.NewsCategoryId).HasColumnName("NewsCategoryID");
 
                 entity.Property(e => e.NewsPicturePath).HasMaxLength(50);
+
+                entity.Property(e => e.PublishDate).HasColumnType("datetime");
 
                 entity.HasOne(d => d.Admin)
                     .WithMany(p => p.News)
@@ -451,12 +444,6 @@ namespace Medical.Models
 
                 entity.Property(e => e.CityId).HasColumnName("CityID");
 
-
-
-                entity.Property(e => e.CouponDetailId).HasColumnName("CouponDetailID");
-
-
-
                 entity.Property(e => e.MemberId).HasColumnName("MemberID");
 
                 entity.Property(e => e.OrderDate).HasColumnType("datetime");
@@ -474,12 +461,10 @@ namespace Medical.Models
                     .HasForeignKey(d => d.CityId)
                     .HasConstraintName("FK_Order_City");
 
-                entity.HasOne(d => d.CouponDetal)
+                entity.HasOne(d => d.CouponDetail)
                     .WithMany(p => p.Orders)
-
-                    .HasForeignKey(d => d.CouponDetalId)
+                    .HasForeignKey(d => d.CouponDetailId)
                     .HasConstraintName("FK_Order_CouponDetail");
-
 
                 entity.HasOne(d => d.Member)
                     .WithMany(p => p.Orders)
