@@ -34,12 +34,14 @@
     <link rel="stylesheet" href="~/plugins/fullcalendar/main.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
+
     <!-- Select2 -->
     <link rel="stylesheet" href="~/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="~/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 
     <script src="~/plugins/sweetalert2/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="~/plugins/sweetalert2/sweetalert2.css">
+
 
     @await RenderSectionAsync("Styles", required: false)
 </head>
@@ -121,14 +123,17 @@
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
                         <li class="nav-item menu-open">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
+
                                 <p>
                                     門診維護
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
+
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="~/Admin/AdminClinicDetail/AddClinic" class="nav-link">
@@ -147,6 +152,7 @@
                                     </a>
                                 </li>*@
                             </ul>
+
                         </li>
                     </ul>
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -179,9 +185,9 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="~/Admin/AdminProduct/ChooseView" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>列表1</p>
+                                        <p>管理</p>
                                     </a>
                                 </li>
                             </ul>
@@ -244,9 +250,9 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="~/Admin/AdminMemberList/AdminMemberList" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>列表1</p>
+                                        <p>會員管理</p>
                                     </a>
                                 </li>
                             </ul>

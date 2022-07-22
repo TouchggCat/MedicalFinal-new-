@@ -58,7 +58,7 @@ namespace Medical.ViewModel
         }
 
         [DisplayName("生日")]
-        public string BirthDay
+        public DateTime? BirthDay
         {
             get { return _member.BirthDay.ToString(); }
             set { _member.BirthDay = DateTime.Parse(value); }

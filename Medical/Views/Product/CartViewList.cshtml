@@ -65,6 +65,7 @@
                 <div style="background-color: white; width: 100%; border-radius: 10px; padding-top: 10px;padding-bottom:1em">
                     <p class="mt-2" style="margin-left: 1em; font-size: larger; font-weight: bold;">購物車試算</p>
                     <div style="width: 80%;margin-left: 2em;">
+                        <span id="note" hidden style="font-size:x-small;">金額不足，無法使用此優惠券</span>
                         <select id="mySelect" class="form-select" aria-label="Default select example" style="margin-bottom: 5px;">
                             <option selected>請選擇優惠券</option>
                         </select>
@@ -72,19 +73,22 @@
                     </div>
                     <hr style="width: 85%;margin: auto;" class="mt-3">
                     <div class="mt-4" style="width: 80%; display: flex ; justify-content: space-between; margin: auto;">
-                        <h6>交易金額:</h6><h6 id="tranSum">@pay.ToString("C0")</h6>
+                        <h6>交易金額:</h6><h6 id="tranSum">@pay</h6>
                     </div>
                     <div style="width: 80%; display: flex ; justify-content: space-between; margin: auto;">
-                        <h6>運費:</h6><h6 id="ship">@ship.ToString("C0") </h6>
+                        <h6>運費:</h6><h6 id="ship">@ship </h6>
+                    </div>
+                    <div style="width: 80%; display: flex ; justify-content: space-between; margin: auto;">
+                        <h6>折扣:</h6><h6 id="discount">0</h6>
                     </div>
                     <hr style="width: 85%;margin: auto;" class="mt-4">
 
                     <div style="width: 80%; display: flex ; justify-content: space-between; margin: auto; margin-top:15px">
-                        <h6>總額:</h6><h6 style="color: red" id="TotalSum">@((pay+ship).ToString("C0"))</h6>
+                        <h6>總額:</h6><h6 style="color: red" id="TotalSum">@(pay+ship)</h6>
                     </div>
                     <div style=" width: 85%; margin: auto; margin-top: 15px;">
-                        <a class="btn btn-dark" href="" style="width: 97%; height:40px;margin-left: 10px;color: white;">前往結帳</a>
-                        <a class="btn btn-light mt-2" href="" style="width: 97%; height:40px;margin-left: 10px;color: black;">繼續購物</a>
+                        <a class="btn btn-dark" href="/Product/CheckViewList" style="width: 97%; height:40px;margin-left: 10px;color: white;">前往結帳</a>
+                        <a class="btn btn-light mt-2" href="/Product/ProductList" style="width: 97%; height:40px;margin-left: 10px;color: black;">繼續購物</a>
 
                     </div>
                 </div>
@@ -229,10 +233,55 @@
 
             let clearCart = document.getElementById("clearCart");
             let inputNum = $(".inputNum");
-            let getMemId = $("#getMemid");
-            let mySelect = $("#mySelect");
-            //console.log(clearCart);
-            //console.log(myform)
+            let note = $("#note");
+            let getMemId = $("#getMemid").val();
+            const mySelect = document.querySelector("#mySelect");
+            //購物車試算
+            let TotaltranSum = document.querySelector("#tranSum");
+            //console.log(tranSum.innerHTML);
+            let TotalSum = document.querySelector("#TotalSum");
+            let discount = document.querySelector("#discount");
+
+
+            async function GetCoupon(memId) {
+                const reponse = await fetch('@Url.Content("~/Product/GetCoupon")' + `?id=${memId}`);
+                const datas = await reponse.json();
+                console.log(datas);
+                datas.forEach(coupon => {
+                    const OptCoupon = new Option(`滿${coupon.couponRequireNum}折${coupon.couponDiscountNum}券`, coupon.couponDiscountNum)
+                    OptCoupon.classList.add("myCoupon")
+                    mySelect.options.add(OptCoupon);
+                    
+                });
+                //console.log($(".myCoupon")[0].value);
+                //console.log($(".myCoupon")[1].value);
+
+            }
+            //執行 取得使用者Coupon
+            GetCoupon(getMemId);
+
+            $("#mySelect").on("change", function () {
+                var chooseOpt = $("#mySelect option:selected");
+                
+                var tranSumnumber = parseInt(TotaltranSum.innerText);
+                var chooseOptVal = parseInt(chooseOpt.val());
+
+                if (chooseOpt.val() === "請選擇優惠券") {
+                    discount.innerText = 0;
+                    note.prop("hidden", true);
+                }
+                else if (tranSumnumber + 60 < chooseOptVal * 10) {
+                    $("#mySelect option:first").prop("selected", "selected")
+                    note.prop("hidden", false);
+                }
+                else {
+                    discount.innerText = chooseOpt.val();
+                    note.prop("hidden", true);
+                }
+                var discountnumber = parseInt(discount.innerText);
+                TotalSum.innerHTML = (tranSumnumber + 60 - discountnumber);
+
+            })
 
             inputNum.on("change", function (event) {
                 let prodname = $(event.target).parents(".prod").children("p")[0].innerText;
@@ -247,11 +296,6 @@
 
                 let myform = $(event.target).parents("form");
 
-                //購物車試算
-                let TotaltranSum = document.querySelector("#tranSum");
-                //console.log(tranSum.innerHTML);
-                let TotalSum = document.querySelector("#TotalSum")
-
 
                 $.ajax({
                     url: "@Url.Content("~/Product/ChangeCartItem")",
@@ -264,13 +308,19 @@
                     success: function (message) {
                         Subtotal.innerText = Intamount * Intunitprice
                         tranSum.innerHTML = $(".sub")[0].innerHTML
+                        let discountNum = parseInt(discount.innerText);
                         let newSub = 0;
                         $(".sub").each(function (i, n) {
                             var newPrice = parseInt(n.innerText);
                             newSub += newPrice;
                         })
                         TotaltranSum.innerHTML = newSub;
-                        TotalSum.innerHTML = newSub + 60;
+                        if (newSub + 60 < discountNum * 10) {
+                            discount.innerHTML = 0; discountNum = 0;
+                            $("#mySelect option:first").prop("selected","selected")
+
+                        }
+                        TotalSum.innerHTML = newSub + 60 -discountNum;
 
                     }
 
@@ -285,20 +335,10 @@
 
         //})
 
-            $("#mySelect").on("click", function () {
-                let memId = parseInt(getMemId.val());
-                GetCoupon(memId);
-            })
-
-            async function GetCoupon(memberId) {
-                const response = await fetch('@Url.Content("~/Product/GetCoupon")' + `?memId=${memberId}`);
-                const datas = await response.json();
-                console.log(datas);
-
-            }
-
-
-
+            //$("#mySelect").on("click", function () {
+            //    let memId = parseInt(getMemId.val());
+            //    GetCoupon(memId);
+            //})
 
             $(".btnClick").on("click", function () {
 

@@ -14,10 +14,8 @@
 
     <div>
         <div style=" display: flex;justify-content: space-around; width: 100%; margin: auto;height: 3em;">
-            <button class="btn btn-dark" style=" width: 25%; height: 100%; border-radius: 0%;margin-right: 1px;">待付款</button>
-            <button class="btn btn-primary" style=" width: 25%; height: 100%; border-radius: 0%;margin-right: 1px;">待收貨</button>
-            <button class="btn btn-dark" style=" width: 25%; height: 100%; border-radius: 0%;margin-right: 1px;">已完成訂單</button>
-            <button class="btn btn-dark" style=" width: 25%; height: 100%; border-radius: 0%;">已退款</button>
+            <a href="/Product/QueryNotFinishOrder" class="btn btn-primary" style=" width: 50%; height: 100%; border-radius: 0%;margin-right: 1px;font-size:22px; ">待收貨</a>
+            <a href="/Product/QueryFinishOrder" class="btn btn-dark" style="width: 50%; height: 100%; border-radius: 0%; margin-right: 1px; font-size: 22px; ">已完成訂單</a>
         </div>
 
         <br>
@@ -26,7 +24,7 @@
         {
 
             <div class="card mt-3" style="width: 100%;">
-                <div class="card-header">訂單編號</div>
+                <div class="card-header">訂單編號-@item.OrderId</div>
                 <div class="card-body">
                     <hr>
                     <table style="width: 100%; text-align: center;">
@@ -70,7 +68,7 @@
                         <div style="display: flex;justify-content: space-between;">
                             <p class="mt-2" style="margin-left: 10px;">
                                 訂單成立時間:<br>
-                                <span style="color:red">2022/03/031 12:50:01</span>
+                                <span style="color:red">@item.OrderDate </span>
                             </p>
                             <p class="mt-3" style="margin-right : 1em;">
                                 <span>訂單總金額:</span> <span style="font-size: large;color: red;">@total.ToString("C0")</span>

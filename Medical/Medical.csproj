@@ -27,12 +27,16 @@
     <None Include="Areas\Admin\Views\AdminDoctor\Index.cshtml" />
 
     <None Include="Views\ClinicDetail\List.cshtml" />
+
+    <None Include="wwwroot\img\emptyCart.gif" />
+
     <None Include="Views\Doctor\Details.cshtml" />
     <None Include="Views\Doctor\Index.cshtml" />
     <None Include="Views\Doctor\IndexTest.cshtml" />
     <None Include="Views\Doctor\List.cshtml" />
     <None Include="Views\Doctor\ListTest.cshtml" />
     <None Include="Views\Doctor\RatingDoctorpartail.cshtml" />
+
     <None Include="wwwroot\js\site.js" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map" />
@@ -73,6 +77,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
     <PackageReference Include="Wahid-SweetAlert2" Version="1.0.0" />
   </ItemGroup>
 
