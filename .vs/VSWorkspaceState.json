@@ -1,7 +1,15 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Medical",
+    "\\Medical\\Areas",
+    "\\Medical\\Areas\\Admin",
+    "\\Medical\\Areas\\Admin\\Controllers",
+    "\\Medical\\DB",
+    "\\Medical\\ViewModel",
+    "\\Medical\\Views",
+    "\\Medical\\Views\\Product"
   ],
-  "SelectedNode": "\\Medical.sln",
+  "SelectedNode": "\\Medical\\Areas\\Admin\\Controllers\\AdminProductController.cs",
   "PreviewInSolutionExplorer": false
 }

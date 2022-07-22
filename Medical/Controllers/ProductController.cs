@@ -140,7 +140,7 @@ namespace Medical.Controllers
 
             prodModel.prodSpec = (from prod in this._medicalContext.ProductSpecifications
                                   select prod)
-                        //.Where(p=>p.Product.ProductBrand.ProductBrandName == "雷朋") 條件
+                        .Where(p=>p.Product.Discontinued==false) //條件
                         .OrderBy(prod => prod.Product.ProductName).ToList();
                         //.Skip((currentPage - 1) * maxRows)
                         //.Take(maxRows).ToList();
@@ -176,7 +176,7 @@ namespace Medical.Controllers
             ProductSpecification ps = _medicalContext.ProductSpecifications.FirstOrDefault(
                 ps => ps.Product.ProductName == productName);
             
-            List<Review> reviewList = _medicalContext.Reviews.Where(rw => rw.Product.ProductName == productName).ToList();
+            List<Review> reviewList = _medicalContext.Reviews.Where(rw => rw.Product.ProductName == productName && rw.Shade==false).ToList();
             List<Member> memList = _medicalContext.Members.ToList();
             List<RatingType> ratings = _medicalContext.RatingTypes.ToList();
             List<ProductBrand> brandList = _medicalContext.ProductBrands.ToList();

@@ -54,7 +54,7 @@ namespace Medical.Controllers
 
             if (mb != null)
             {
-                if (mb.Email.Equals(vModel.txtAccount) && mb.Password.Equals(vModel.txtPassword)&&vModel.reserve != null)
+                if (mb.Email.Equals(vModel.txtAccount) && mb.Password.Equals(vModel.txtPassword)&&vModel.reserve != null && mb.Role == 1)
                 {
                     jasonUser = JsonSerializer.Serialize(mb);
                     HttpContext.Session.SetString(CDictionary.SK_LOGINED_USE, jasonUser);
