@@ -71,8 +71,8 @@ namespace Medical.ViewModel
         [DisplayName("日期")]
         public string CreateDate
         {
-            get { return _review.CreateDate; }
-            set { _review.CreateDate = value; }
+            get { return _review.CreateDate.ToString(); }
+            set { _review.CreateDate = DateTime.Parse(value); }
         }
         [DisplayName("評論人")]
         public virtual Member Member
