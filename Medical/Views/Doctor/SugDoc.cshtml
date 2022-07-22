@@ -1,0 +1,122 @@
+﻿@section css{
+    <style>
+        .dialogue {
+            width: 500px;
+            padding: 20px;
+            box-shadow: 0 0 10px #000;
+            background-color: #E0DFC0;
+            border-radius: 20px;
+        }
+
+        .user {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+            .user .avatar {
+                width: 60px;
+                text-align: center;
+                flex-shrink: 0;
+            }
+
+            .user .pic {
+                border-radius: 50%;
+                overflow: hidden;
+            }
+
+                .user .pic .img {
+                    width: 100%;
+                    vertical-align: middle;
+                }
+
+            .user .name {
+                color: #333;
+            }
+
+            .user .text {
+                background-color: #aaa;
+                padding: 16px;
+                border-radius: 10px;
+                position: relative;
+            }
+
+
+        .remote .text {
+            margin-left: 20px;
+            margin-right: 80px;
+            color: #eee;
+            background-color: #4179f1;
+        }
+
+            .remote .text &::before {
+                border-right: 10px solid #4179f1;
+                left: -10px;
+            }
+
+        .local {
+            justify-content: flex-end;
+        }
+
+            .local .text {
+                margin-right: 20px;
+                margin-left: 80px;
+                order: -1;
+                background-color: #fff;
+                color: #333;
+            }
+
+                .local .text &::before {
+                    border-left: 10px solid #fff;
+                    right: -10px;
+                }
+    </style>
+}
+<!-- Hero Start -->
+<div class="container-fluid bg-primary py-5 hero-header mb-5">
+    <div class="row py-3">
+        <div class="col-12 text-center">
+            <h3 class="display-3 text-white animated zoomIn">推薦機器人</h3>
+        </div>
+    </div>
+</div>
+<!-- Hero End -->
+<br>
+<div class="dialogue">
+    <div class="user remote">
+        <div class="avatar">
+            <div class="pic">
+                <img src="https://picsum.photos/100/100?random=12" />
+            </div>
+            <div class="name">You</div>
+        </div>
+        <div class="text">
+            <input type="button" value="我要掛號" onclick="Register()">
+            <input type="button" value="交通指引" onclick="">
+            <input type="button" value="衛教健保" onclick="">
+        </div>
+    </div>
+    <div class="user local">
+        <div class="avatar">
+            <div class="pic">
+                <img src="https://picsum.photos/100/100?random=16" />
+            </div>
+            <div class="name">Me</div>
+        </div>
+        <div class="text">這是我的對話文字</div>        
+    </div>
+</div>
+@section Scripts{
+    <script>
+        function Register() {
+            Usertext = `<div class="avatar">
+            <div class="pic">
+                <img src="https://picsum.photos/100/100?random=16" />
+            </div>
+            <div class="name">Me</div>
+        </div>
+        <div class="text">這是我的對話文字</div>`
+            document.querySelector('.local').innerHTML += Usertext;
+        }
+    </script>
+}

@@ -23,7 +23,7 @@
                 <input type="hidden" name="ExperienceID" value="@Model.ExperienceID">
                 <div class="form-group">
                     <label asp-for="DoctorName" class="control-label"></label>
-                    <input asp-for="DoctorName" class="form-control" id="dcn" />
+                    <input asp-for="DoctorName" class="form-control" id="dcN" />
                     <span asp-validation-for="DoctorName" class="text-danger"></span>
                 </div>
                 <div class="form-group">
@@ -70,7 +70,7 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
         $('#btnDmo').click(() => {
-            document.getElementById("dcn").value = "高壹陞";
+            document.getElementById("dcN").value = "高壹陞";
             document.getElementById("edu").value = "博士";
             document.getElementById("job").value = "台北諾貝爾眼科 副院長";
             document.getElementById("exp").value = "臺大醫院眼科主治醫生";

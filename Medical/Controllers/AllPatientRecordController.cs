@@ -13,25 +13,33 @@ namespace Medical.Controllers
 {
     public class AllPatientRecordController : Controller
     {
+
+
+        private readonly MedicalContext _context;
+        public AllPatientRecordController(MedicalContext medicalContext)
+        {
+            _context = medicalContext;
+        }
+
         public IActionResult List(CKeyWordViewModel vModel)
         {
-            MedicalContext medical = new MedicalContext();
+
             CMemberAdminViewModel vm = null;
             string logJson = "";
             logJson = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USE);
             vm = JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
             var id = vm.Member.MemberId;
 
-            var doctorID = medical.Doctors.Where(m => m.MemberId == id).Select(m => m.DoctorId).FirstOrDefault();
-            var clinicDetailID = medical.ClinicDetails.Where(m => m.DoctorId == doctorID).Select(m => m.ClinicDetailId).FirstOrDefault();
+            var doctorID = _context.Doctors.Where(m => m.MemberId == id).Select(m => m.DoctorId).FirstOrDefault();
+            var clinicDetailID = _context.ClinicDetails.Where(m => m.DoctorId == doctorID).Select(m => m.ClinicDetailId).FirstOrDefault();
             //var reserveID = 18;
-            var reserveID = medical.Reserves.Where(m => m.ClinicDetailId == clinicDetailID).Select(m => m.ReserveId).FirstOrDefault();
+            var reserveID = _context.Reserves.Where(m => m.ClinicDetailId == clinicDetailID).Select(m => m.ReserveId).FirstOrDefault();
             if (string.IsNullOrEmpty(vModel.txtKeyword)){
                 if (reserveID != 0)
                 {
                     IEnumerable<CaseRecordViewModel> list = null;
 
-                    list = medical.CaseRecords.Where(m => m.ReserveId == reserveID).Select(m => new CaseRecordViewModel
+                    list = _context.CaseRecords.Where(m => m.ReserveId == reserveID).Select(m => new CaseRecordViewModel
                     {
                         caseRecord = m,
                         Member = m.Member,
@@ -45,7 +53,7 @@ namespace Medical.Controllers
             {
                 IEnumerable<CaseRecordViewModel> list = null;
 
-                list = medical.CaseRecords.Where(m => m.ReserveId == reserveID && m.Member.MemberName.Contains(vModel.txtKeyword)).Select(m => new CaseRecordViewModel
+                list = _context.CaseRecords.Where(m => m.ReserveId == reserveID && m.Member.MemberName.Contains(vModel.txtKeyword)).Select(m => new CaseRecordViewModel
                 {
                     caseRecord = m,
                     Member = m.Member,

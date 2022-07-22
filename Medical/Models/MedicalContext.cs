@@ -129,6 +129,8 @@ namespace Medical.Models
 
                 entity.Property(e => e.AdminId).HasColumnName("AdminID");
 
+                entity.Property(e => e.ArPicturePath).HasMaxLength(50);
+
                 entity.Property(e => e.Articeltitle).HasMaxLength(50);
 
                 entity.Property(e => e.CreateDate).HasMaxLength(50);
@@ -368,7 +370,7 @@ namespace Medical.Models
 
                 entity.Property(e => e.Address).HasMaxLength(50);
 
-                entity.Property(e => e.BirthDay).HasMaxLength(50);
+                entity.Property(e => e.BirthDay).HasColumnType("datetime");
 
                 entity.Property(e => e.BloodType).HasMaxLength(50);
 
@@ -419,7 +421,7 @@ namespace Medical.Models
 
                 entity.Property(e => e.NewsCategoryId).HasColumnName("NewsCategoryID");
 
-                entity.Property(e => e.PublishDate).HasColumnType("datetime");
+                entity.Property(e => e.NewsPicturePath).HasMaxLength(50);
 
                 entity.HasOne(d => d.Admin)
                     .WithMany(p => p.News)
@@ -449,11 +451,13 @@ namespace Medical.Models
 
                 entity.Property(e => e.CityId).HasColumnName("CityID");
 
+
                 entity.Property(e => e.CouponDetailId).HasColumnName("CouponDetailID");
+
 
                 entity.Property(e => e.MemberId).HasColumnName("MemberID");
 
-                entity.Property(e => e.OrderDate).HasMaxLength(50);
+                entity.Property(e => e.OrderDate).HasColumnType("datetime");
 
                 entity.Property(e => e.OrderStateId).HasColumnName("OrderStateID");
 
@@ -468,9 +472,9 @@ namespace Medical.Models
                     .HasForeignKey(d => d.CityId)
                     .HasConstraintName("FK_Order_City");
 
-                entity.HasOne(d => d.CouponDetail)
+                entity.HasOne(d => d.CouponDetal)
                     .WithMany(p => p.Orders)
-                    .HasForeignKey(d => d.CouponDetailId)
+                    .HasForeignKey(d => d.CouponDetalId)
                     .HasConstraintName("FK_Order_CouponDetail");
 
                 entity.HasOne(d => d.Member)
