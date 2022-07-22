@@ -47,6 +47,13 @@ namespace Medical.Controllers
             {
                 return RedirectToAction("LoginSuccess");   //已登入的證明
             }
+            
+            if (repath!=null)
+            {
+                ViewBag.reserve = "reserve";
+            }
+           
+            //ViewData["ReUrl"] = reUrl;
             return View();
         }
         [HttpPost]
@@ -59,6 +66,14 @@ namespace Medical.Controllers
 
             if (mb != null)
             {
+                if (mb.Email.Equals(vModel.txtAccount) && mb.Password.Equals(vModel.txtPassword)&&vModel.reserve != null)
+                {
+                    jasonUser = JsonSerializer.Serialize(mb);
+                    HttpContext.Session.SetString(CDictionary.SK_LOGINED_USE, jasonUser);
+                    //從預約頁面來的
+                    return RedirectToAction("ReserveList", "Reserve");
+                }
+
                 if (mb.Email.Equals(vModel.txtAccount) && mb.Password.Equals(vModel.txtPassword) && mb.Role == 1)
                 {
                     //LogbySession(mb);

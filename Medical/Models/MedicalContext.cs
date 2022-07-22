@@ -393,21 +393,6 @@ namespace Medical.Models
                 entity.Property(e => e.Password).HasMaxLength(50);
 
                 entity.Property(e => e.Phone).HasMaxLength(50);
-
-                entity.HasOne(d => d.City)
-                    .WithMany(p => p.Members)
-                    .HasForeignKey(d => d.CityId)
-                    .HasConstraintName("FK_Member_City");
-
-                entity.HasOne(d => d.Gender)
-                    .WithMany(p => p.Members)
-                    .HasForeignKey(d => d.GenderId)
-                    .HasConstraintName("FK_Member_Gender");
-
-                entity.HasOne(d => d.RoleNavigation)
-                    .WithMany(p => p.Members)
-                    .HasForeignKey(d => d.Role)
-                    .HasConstraintName("FK_Member_RoleType");
             });
 
             modelBuilder.Entity<News>(entity =>
@@ -452,7 +437,7 @@ namespace Medical.Models
 
                 entity.Property(e => e.MemberId).HasColumnName("MemberID");
 
-                entity.Property(e => e.OrderDate).HasMaxLength(50);
+                entity.Property(e => e.OrderDate).HasColumnType("datetime");
 
                 entity.Property(e => e.OrderStateId).HasColumnName("OrderStateID");
 
@@ -746,7 +731,7 @@ namespace Medical.Models
 
                 entity.Property(e => e.ReviewId).HasColumnName("ReviewID");
 
-                entity.Property(e => e.CreateDate).HasMaxLength(50);
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.MemberId).HasColumnName("MemberID");
 

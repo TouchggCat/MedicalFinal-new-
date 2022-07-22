@@ -240,14 +240,14 @@
                  {
                      if (datas==null)
                      {
-                         $('#exampleModal').modal('hide');
+                         
                          /*沒登入跳轉登入畫面*/
                          alert("您尚未成為會員");
-
+                         $('#exampleModal').attr("hidden", "hidden");
                          const back = window.location.href;
                          console.log(back);
 
-                         window.location.href = `@Url.Content("~/Login/Login/?repath=")`+back;
+                         window.location.href = `@Url.Content("~/Login/Login/?repath=reserve")`;
                      }
                      console.log(datas);
                      $.each(datas, function (index, item) {
