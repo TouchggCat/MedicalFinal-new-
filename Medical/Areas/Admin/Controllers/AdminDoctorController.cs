@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Medical.Areas.Admin.Controllers
@@ -269,40 +270,13 @@ namespace Medical.Areas.Admin.Controllers
             return View(list);
         }
 
-        ////換頁用
-        //[HttpPost]
-        //public IActionResult DoctorRatinglist(int currentPageIndex)
-        //{
-            
-            
-        //    return View(GetDoctorRating(currentPageIndex));
-        //}
-
-        //private CRatingDoctorViewModel GetDoctorRating(int currentPage)
-        //{
-            //IEnumerable<CRatingDoctorViewModel> list = null;
-            //if (id != 0)
-            //{
-            //    list = _db.RatingDoctors.Where(a => a.DoctorId == id).Select(a => new CRatingDoctorViewModel
-            //    {
-            //        RatingDoctor = a,
-            //        Doctor = a.Doctor,
-            //        RatingType = a.RatingType
-            //    });
-            //}
-
-            //return ;
-        //}
-
-
-
-
+  
 
         public IActionResult DoctorRatingEdit(int? id)
         {
             
             RatingDoctor result = _db.RatingDoctors.Where(a => a.RatingDoctorId == id).FirstOrDefault();
-            if (result.Shade==false)
+            if (result.Shade == null)
             {
                 result.Shade = true;
                 _db.SaveChanges();
@@ -310,12 +284,11 @@ namespace Medical.Areas.Admin.Controllers
             }
            else if (result.Shade == true)
             {
-                result.Shade = false;
+                result.Shade = null;
                 _db.SaveChanges();
                 
             }
-            return RedirectToAction("Index");
-            //最好還是回到評論清單(待克服)
+            return Content("null", "text/plain", Encoding.UTF8);
         }
 
     }

@@ -224,12 +224,14 @@
 }
 @section Scripts{
     <script>
-        var docid = $('.buttonLoad').attr("data-docid");
-        console.log(docid);
+        
+        
 
         $('.buttonLoad').click(function () {
-            $('#tbdRatingList').load('@Url.Content("~/Doctor/RatingDoctorpartail/1")' )
-             console.log(doctorid);
+            var id = $(event.target).attr("data-docid");
+            console.log(id);
+            $('#tbdRatingList').load('@Url.Content("~/Doctor/RatingDoctorpartail/")' + id )
+             /*console.log(doctorid);*/
         })
 
 
