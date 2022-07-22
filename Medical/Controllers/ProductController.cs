@@ -350,7 +350,6 @@ namespace Medical.Controllers
             CouponRequireNum =cd.Coupon.CouponRequireNum
             }).ToList();
 
-            string a = "";
             return Json(GetUserC);
         }
 

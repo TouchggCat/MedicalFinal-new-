@@ -369,7 +369,7 @@ namespace Medical.Models
 
                 entity.Property(e => e.Address).HasMaxLength(50);
 
-                entity.Property(e => e.BirthDay).HasMaxLength(50);
+                entity.Property(e => e.BirthDay).HasColumnType("datetime");
 
                 entity.Property(e => e.BloodType).HasMaxLength(50);
 
@@ -749,7 +749,7 @@ namespace Medical.Models
 
                 entity.Property(e => e.ReviewId).HasColumnName("ReviewID");
 
-                entity.Property(e => e.CreateDate).HasMaxLength(50);
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.MemberId).HasColumnName("MemberID");
 

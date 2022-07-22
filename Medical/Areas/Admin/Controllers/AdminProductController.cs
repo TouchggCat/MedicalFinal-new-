@@ -182,13 +182,7 @@ namespace Medical.Areas.Admin.Controllers
         }
 
 
-
-        public IActionResult test()
-        {
-            return View();
-        }
-
-        public IActionResult test64(string [] multipleImgsArray,string productBeforeName)
+        public IActionResult test64(string [] multipleImgsArray,string productBeforeName)  //多圖 base64傳送
         {
             if(multipleImgsArray.Length==0 || productBeforeName == "")
             {
@@ -268,7 +262,7 @@ namespace Medical.Areas.Admin.Controllers
             return View();
         }
 
-        // 刪除/下架商品
+        // 刪除/下架商品 cshtml
         public IActionResult RemoveProduct()
         {
             CProductViewModel model = new CProductViewModel
@@ -282,19 +276,106 @@ namespace Medical.Areas.Admin.Controllers
 
             return View(model);
         }
-
+        // 下架多筆商品
         public IActionResult MultipleDiscontinue(string[] multipleD)
         {
 
+            foreach(var prod in multipleD)
+            {
+                Product p = db.Products.FirstOrDefault(pN => pN.ProductName == prod);
+                p.Discontinued = true;
+                db.SaveChanges();
+            }
+
+
             return Content("成功");
         }
+        // 下架單筆
+        public IActionResult SingleDiscontinue(string singleD)
+        {
+
+            Product p = db.Products.FirstOrDefault(pN => pN.ProductName == singleD);
+            p.Discontinued = true;
+            db.SaveChanges();
+
+            return Content("成功");
+
+        }
+        // 上架多筆商品
+        public IActionResult MultipleContinue(string[] multipleD)
+        {
+
+            foreach (var prod in multipleD)
+            {
+                Product p = db.Products.FirstOrDefault(pN => pN.ProductName == prod);
+                p.Discontinued = false;
+                db.SaveChanges();
+            }
+
+
+            return Content("成功");
+        }
+        // 上架單筆
+        public IActionResult SingleContinue(string singleD)
+        {
+
+            Product p = db.Products.FirstOrDefault(pN => pN.ProductName == singleD);
+            p.Discontinued = false;
+            db.SaveChanges();
+
+
+
+            return Content("成功");
+        }
+
+        // ==========================刪除單筆商品=============================
+        public IActionResult SingleProductDelete(string singleD)
+        {
+
+            Product p = db.Products.FirstOrDefault(pN => pN.ProductName == singleD);
+
+            ProductSpecification ps = db.ProductSpecifications.FirstOrDefault(pps => pps.ProductId == p.ProductId);
+            List<OtherProductImage> otherpList = db.OtherProductImages.Where(otp => otp.ProductId ==p.ProductId).ToList();
+            int[] oplist = db.OtherProductImages.Where(o => o.ProductId == p.ProductId).Select(op=>op.ProductId).ToArray();
+            int[] cartlist = db.ShoppingCarts.Where(c => c.ProductId == p.ProductId).Select(cc => cc.ProductId).ToArray();
+            int[] orderlist = db.ShoppingCarts.Where(od => od.ProductId == p.ProductId).Select(odd => odd.ProductId).ToArray();
+
+
+            //Array.Exists<int>(oplist, x => x == p.ProductId);
+            var mybool1= oplist.Contains<int>(p.ProductId);
+            var mybool2 = cartlist.Contains<int>(p.ProductId);
+            var mybool3 = orderlist.Contains<int>(p.ProductId);
+           
+            if(mybool2||mybool3==true)
+            {
+                return Content("失敗");
+            }
+            else
+            {
+                if (mybool1 == true)
+                {
+                    foreach (var otherp in otherpList)
+                    {
+                        db.OtherProductImages.Remove(otherp);
+                        db.SaveChanges();
+                    }
+                }
+
+                db.ProductSpecifications.Remove(ps);
+                db.SaveChanges();
+                db.Products.Remove(p);
+                db.SaveChanges();
+
+                return Content("成功");
+            }
+        }
+
+
 
 
         // 查詢訂單
         public IActionResult QueryAllOrders()
         {
-
-
             return View();
         }
         // 評論查詢/刪除

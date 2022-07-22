@@ -41,7 +41,7 @@ namespace Medical.ViewModel
             get { return _Member.MemberName; }
             set { _Member.MemberName = value; }
         }
-        public string BirthDay
+        public DateTime? BirthDay
         {
             get { return _Member.BirthDay; }
             set { _Member.BirthDay = value; }
