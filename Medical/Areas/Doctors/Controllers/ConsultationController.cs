@@ -22,7 +22,8 @@ namespace Medical.Areas.Doctors.Controllers
         {
             int doctorId = 2;
             List<CClinicDetailAdminViewModel> list = new List<CClinicDetailAdminViewModel>();
-            var result = _medicalContext.ClinicDetails.Include(x=>x.Doctor).Include(x=>x.Department).Include(x=>x.Room).Include(x=>x.Period).Where(x => x.DoctorId.Equals(doctorId));
+            var result = _medicalContext.ClinicDetails.Include(x=>x.Doctor).Include(x=>x.Department)
+                .Include(x=>x.Room).Include(x=>x.Period).Where(x => x.DoctorId.Equals(doctorId));
 
             foreach (var c in result)
             {
@@ -56,7 +57,8 @@ namespace Medical.Areas.Doctors.Controllers
 
         public IActionResult user(int id)
         {
-            var user = _medicalContext.CaseRecords.Include(x=>x.Reserve).Where(x => x.MemberId.Equals(id)).Select(x=> new {x.Reserve.ReserveDate, x.DiagnosticRecord });
+            var user = _medicalContext.CaseRecords.Include(x=>x.Reserve)
+                .Where(x => x.MemberId.Equals(id)).Select(x=> new {x.Reserve.ReserveDate, x.DiagnosticRecord });
             return Json(user);
         }
     }

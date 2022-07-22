@@ -20,8 +20,8 @@ namespace Medical.Controllers
         // 寫死日期 要再改
         public IActionResult List()
         {
-            
-            var result = _context.ClinicDetails.Where(a => a.ClinicDate == "2022/07/12/12/00/00")
+            DateTime dt = new DateTime(2022, 7, 18);
+            var result = _context.ClinicDetails.Where(a => a.ClinicDate == dt)
                 .Select(a => new CClinicDetailViewModel {
                     clinicDetail=a,
                     Doctor=a.Doctor,

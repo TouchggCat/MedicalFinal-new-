@@ -37,9 +37,60 @@
     <!-- Select2 -->
     <link rel="stylesheet" href="~/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="~/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+
+    <script src="~/plugins/sweetalert2/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="~/plugins/sweetalert2/sweetalert2.css">
+
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
+    <!-- jQuery -->
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="~/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+        $.widget.bridge('uibutton', $.ui.button)
+    </script>
+    <!-- Bootstrap 4 -->
+    <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- ChartJS -->
+    <script src="~/plugins/chart.js/Chart.min.js"></script>
+    <!-- Sparkline -->
+    <script src="~/plugins/sparklines/sparkline.js"></script>
+    <!-- JQVMap -->
+    <script src="~/plugins/jqvmap/jquery.vmap.min.js"></script>
+    <script src="~/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+    <!-- jQuery Knob Chart -->
+    <script src="~/plugins/jquery-knob/jquery.knob.min.js"></script>
+    <!-- daterangepicker -->
+    <script src="~/plugins/moment/moment.min.js"></script>
+    <script src="~/plugins/daterangepicker/daterangepicker.js"></script>
+    <!-- Tempusdominus Bootstrap 4 -->
+    <script src="~/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <!-- Summernote -->
+    <script src="~/plugins/summernote/summernote-bs4.min.js"></script>
+    <!-- overlayScrollbars -->
+    <script src="~/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/dist/js/adminlte.js"></script>
+    <!-- FullCalendar v3.8.1 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.8.1/fullcalendar.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.8.1/fullcalendar.print.css" rel="stylesheet" media="print">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.8.1/fullcalendar.min.js"></script>
+
+    <!-- fullCalendar 2.2.5 -->
+    <script src="~/plugins/moment/moment.min.js"></script>
+    <script src="~/plugins/fullcalendar/main.js"></script>
+
+    <script src="~/plugins/select2/js/select2.full.min.js"></script>
+    <!-- BS-Stepper -->
+    <script src="~/plugins/bs-stepper/js/bs-stepper.min.js"></script>
+    <!-- dropzonejs -->
+    <script src="~/plugins/dropzone/min/dropzone.min.js"></script>
+
+    <script src="~/plugins/sweetalert2/sweetalert2.all.min.js"></script>
+
     <div class="wrapper">
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -71,7 +122,7 @@
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <li class="nav-item menu-open">
-                            <a href="#" class="nav-link active">
+                            <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     門診維護
@@ -80,21 +131,21 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="~/Admin/AdminClinicDetail/List" class="nav-link">
+                                    <a href="~/Admin/AdminClinicDetail/AddClinic" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>
                                             新增門診
                                         </p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
+                                @*<li class="nav-item">
                                     <a href="~/Admin/AdminClinicDetail/Index" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>
                                             編輯門診
                                         </p>
                                     </a>
-                                </li>
+                                </li>*@
                             </ul>
                         </li>
                     </ul>
@@ -141,7 +192,7 @@
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-edit"></i>
                                 <p>
-                                    文章維護
+                                    文章維護                                   
                                     <i class="fas fa-angle-left right"></i>
                                 </p>
                             </a>
@@ -258,50 +309,6 @@
         <!-- /.control-sidebar -->
     </div>
     <!-- ./wrapper -->
-    <!-- jQuery -->
-    <script src="~/plugins/jquery/jquery.min.js"></script>
-    <!-- jQuery UI 1.11.4 -->
-    <script src="~/plugins/jquery-ui/jquery-ui.min.js"></script>
-    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-    <script>
-        $.widget.bridge('uibutton', $.ui.button)
-    </script>
-    <!-- Bootstrap 4 -->
-    <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- ChartJS -->
-    <script src="~/plugins/chart.js/Chart.min.js"></script>
-    <!-- Sparkline -->
-    <script src="~/plugins/sparklines/sparkline.js"></script>
-    <!-- JQVMap -->
-    <script src="~/plugins/jqvmap/jquery.vmap.min.js"></script>
-    <script src="~/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-    <!-- jQuery Knob Chart -->
-    <script src="~/plugins/jquery-knob/jquery.knob.min.js"></script>
-    <!-- daterangepicker -->
-    <script src="~/plugins/moment/moment.min.js"></script>
-    <script src="~/plugins/daterangepicker/daterangepicker.js"></script>
-    <!-- Tempusdominus Bootstrap 4 -->
-    <script src="~/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-    <!-- Summernote -->
-    <script src="~/plugins/summernote/summernote-bs4.min.js"></script>
-    <!-- overlayScrollbars -->
-    <script src="~/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="~/dist/js/adminlte.js"></script>
-    <!-- FullCalendar v3.8.1 -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.8.1/fullcalendar.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.8.1/fullcalendar.print.css" rel="stylesheet" media="print">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.8.1/fullcalendar.min.js"></script>
-
-    <!-- fullCalendar 2.2.5 -->
-    <script src="~/plugins/moment/moment.min.js"></script>
-    <script src="~/plugins/fullcalendar/main.js"></script>
-
-    <script src="~/plugins/select2/js/select2.full.min.js"></script>
-    <!-- BS-Stepper -->
-    <script src="~/plugins/bs-stepper/js/bs-stepper.min.js"></script>
-    <!-- dropzonejs -->
-    <script src="~/plugins/dropzone/min/dropzone.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

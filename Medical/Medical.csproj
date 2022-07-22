@@ -5,6 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Doctors\Data\**" />
+    <Compile Remove="Areas\Doctors\Models\**" />
+    <Content Remove="Areas\Doctors\Data\**" />
+    <Content Remove="Areas\Doctors\Models\**" />
+    <EmbeddedResource Remove="Areas\Doctors\Data\**" />
+    <EmbeddedResource Remove="Areas\Doctors\Models\**" />
+    <None Remove="Areas\Doctors\Data\**" />
+    <None Remove="Areas\Doctors\Models\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="Views\ClinicDetail\List.cshtml" />
     <None Include="wwwroot\js\site.js" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
@@ -49,8 +60,6 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Models\" />
-    <Folder Include="Areas\Doctors\Data\" />
-    <Folder Include="Areas\Doctors\Models\" />
     <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 

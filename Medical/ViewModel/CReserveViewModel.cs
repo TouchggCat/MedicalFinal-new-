@@ -42,7 +42,7 @@ namespace Medical.ViewModel
             set { _reserve.MemberId = value; }
         }
         [DisplayName("預約日期")]
-        public string ReserveDate
+        public DateTime ReserveDate
         {
             get { return _reserve.ReserveDate; }
             set { _reserve.ReserveDate = value; }

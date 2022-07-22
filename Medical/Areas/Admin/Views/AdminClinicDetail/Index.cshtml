@@ -5,75 +5,19 @@
 }
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-3">
-            <div class="sticky-top mb-3">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">新增排班</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="btn-group" style="width: 100%; margin-bottom: 10px;">
-                            <ul class="fc-color-picker" id="color-chooser">
-                                <li><a class="text-primary" href="#" title="早上">早上<i class="fas fa-square"></i></a></li>
-                                <li><a class="text-success" href="#" title="下午">下午<i class="fas fa-square"></i></a></li>
-                                <li><a class="text-danger" href="#" title="晚上">晚上<i class="fas fa-square"></i></a></li>
-                                <li><a class="text-warning" href="#" title="其他">其他<i class="fas fa-square"></i></a></li>
-                            </ul>
-                        </div>
-                        <div>
-                            <div class="input-group" style="flex-direction: column">
-                                <div>
-                                    <section>醫生</section>
-                                    <select asp-for="DoctorId" id="doctorlist" class="form-control"></select>
-                                </div>
-
-                                <div>
-                                    <section>診間</section>
-                                    <select asp-for="RoomId" id="roomlist" class="form-control">
-                                        <option value="1">501</option>
-                                        <option value="2">502</option>
-                                        <option value="3">503</option>
-                                        <option value="4">504</option>
-                                        <option value="5">505</option>
-                                        <option value="6">506</option>
-                                    </select>
-
-                                </div><br />
-
-                                <button id="add-new-event" type="button" class="btn btn-primary">新增</button>
-                            </div>
-                        </div>
-                        <hr />
-                        <div id="external-events">
-                            <div class="external-event bg-success">Lunch</div>
-                            <div class="checkbox">
-                                <label for="drop-remove">
-                                    <input type="checkbox" id="drop-remove">
-                                    拖移後移除
-                                </label>
-                            </div>
-                        </div>
-                        /input-group
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <div class="col-md-12">
+        <div class="col-md-9">
             <div class="card card-primary">
                 <div class="card-body p-0">
                     <div id="calendar"></div>
                 </div>
-                <!-- /.card-body -->
             </div>
-            <!-- /.card -->
         </div>
     </div>
 </div>
 @section Scripts{
     <script>
             $(function () {
-                var total;
+                @*var total;
                 fetch("@Url.Content("~/Admin/AdminClinicDetail/loadData")")
                     .then(
                         (respone) => {
@@ -83,22 +27,28 @@
                         (datas) => {
                             let eventList = [];
                             let data = datas.split('#');
-                            //var timeDate = data[i];
+
                             for (var i = 0, len = data.length; i < len; i++) {
-
                                 var ii = data[i].split(',');
-                                console.log(ii[2]);
-                                var date = ii[2].split('/');
+                                let dt = new Date(ii[2]);
+                                let dtTo = new Date(moment(dt).add(3, 'hours').format("yyyy/MM/DD HH:00:00"));
+                                let color ;
 
-                                let dd = `${date[0]}-${date[1]}-${date[2]} ${date[3]}:${date[4]}:${date[5]}`;
+                                if (dt.getHours = 9) {
+                                    color = '#0073b7'
+                                } else if (dt.getHours = 13) {
+                                    color = '#FBBC05'
+                                } else {
+                                    color = '#34A853'
+                                }
 
                                 var item = {
                                     id: ii[0],
                                     title: ii[1],
-                                    start: dd,
-                                    allDay: true,
-                                    backgroundColor: '#0073b7',
-                                    borderColor: '#0073b7',
+                                    start: dt,
+                                    end: dtTo,
+                                    backgroundColor: color,
+                                    borderColor: color,
                                     extendedProps: {
                                         room: ii[3],
                                         period: ii[4]
@@ -185,7 +135,7 @@
                                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                                 },
                                 themeSystem: 'bootstrap',
-                                timeZone: 'Asia/Taipei',
+                                /*timeZone: 'Asia/Taipei',*/
                                 events: list,
                                 editable: true,
                                 droppable: true, // this allows things to be dropped onto the calendar !!!
@@ -213,6 +163,7 @@
                             /* ADDING EVENTS */
                             var currColor = '#3c8dbc' //Red by default
                             // Color chooser button
+
                             $('#color-chooser > li > a').click(function (e) {
                                 e.preventDefault()
                                 // Save color
@@ -223,6 +174,7 @@
                                     'border-color': currColor
                                 })
                             })
+
                             $('#add-new-event').click(function (e) {
                                 e.preventDefault()
                                 // Get value and make sure it is not null
@@ -267,7 +219,7 @@
                     });
                 }
 
-                async function updateToServer(info) {
+                 function updateToServer(info) {
                     const list = {
                         id: info.event.id,
                         doctor: info.event.title,
@@ -277,7 +229,7 @@
                     };
 
                     $.post('@Url.Content("~/Admin/AdminClinicDetail/Method")', list);
-                }
+                }*@
 
                 @*async function loadRooms() {
                     const response = await fetch('@Url.Content("~/Admin/AdminClinicDetail/roomList")');
@@ -293,5 +245,69 @@
 
             })
 
+
+
+
+
+
+
+
+        $(function () {
+            
+            var date = new Date()
+            var d = date.getDate(),
+                m = date.getMonth(),
+                y = date.getFullYear()
+
+
+            var Calendar = FullCalendar.Calendar;
+            var calendarEl = document.getElementById('calendar');
+
+            fetch("@Url.Content("~/Admin/AdminClinicDetail/loadData")")
+                .then(
+                        (respone) => {
+  
+                         var calendar = new Calendar(calendarEl, {
+                            headerToolbar: {
+                                left: 'prev,next today',
+                                center: 'title',
+                                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                            },
+                             themeSystem: 'bootstrap',
+                             events: respone,
+                            editable: true,
+                            droppable: true,
+                            drop: function (info) {
+
+                            }
+                        });
+
+                        calendar.render();
+                    })
+        })
+
+        async function loadDoctors() {
+            let count = 0;
+            const response = await fetch('@Url.Content("~/Admin/AdminClinicDetail/doctorList")');
+            const datas = await response.json();
+
+            datas.forEach(city => {
+                const opt = new Option(city, city);
+                selDoctor.options.add(opt);
+            })
+        }
+
+        function updateToServer(info) {
+
+            const list = {
+                id: info.event.id,
+                doctor: info.event.title,
+                period: info.event.extendedProps.period,
+                room: info.event.extendedProps.room,
+                date: moment(info.event.start).format("YYYY/MM/DD/HH/mm/ss")
+            }
+
+            $.post('@Url.Content("~/Admin/AdminClinicDetail/Method")', list)
+        }
     </script>
 }
