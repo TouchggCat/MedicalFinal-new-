@@ -43,8 +43,8 @@ namespace Medical.ViewModel
         }
         public string BirthDay
         {
-            get { return _Member.BirthDay; }
-            set { _Member.BirthDay = value; }
+            get { return _Member.BirthDay.ToString(); }
+            set { _Member.BirthDay =DateTime.Parse(value); }
         }
         public int? GenderId
         {

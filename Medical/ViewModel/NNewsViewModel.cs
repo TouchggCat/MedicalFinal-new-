@@ -45,12 +45,14 @@ namespace Medical.ViewModel
             get { return _news.NewsContent; }
             set { _news.NewsContent = value; }
         }
+
         public string NewsPicturePath
         {
             get { return _news.NewsPicturePath; }
             set { _news.NewsPicturePath = value; }
         }
         public IFormFile photo { get; set; }
+
         public DateTime? CreateDate
         {
             get { return _news.CreateDate; }

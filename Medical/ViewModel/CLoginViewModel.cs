@@ -15,5 +15,7 @@ namespace Medical.ViewModel
         [DisplayName("密碼")]
         [Required(ErrorMessage = "請填寫密碼")]
         public string txtPassword { get; set; }
+
+        public string reserve { get; set; }
     }
 }

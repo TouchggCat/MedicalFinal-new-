@@ -50,7 +50,7 @@ namespace Medical.ViewModel
         }
         public int? RoomId
         {
-            get { return _clinicDetail.RoomId; }
+            get { return (int)_clinicDetail.RoomId; }
             set { _clinicDetail.RoomId = value; }
         }
 
@@ -65,13 +65,36 @@ namespace Medical.ViewModel
             get { return _clinicDetail.LimitNum; }
             set { _clinicDetail.LimitNum = value; }
         }
+        public int id
+        {
+            set; get;
+        }
+        //public int doctorId
+        //{
+        //    set; get;
+        //}
 
-        public string doctor
+        public string doctorName
         {
             set; get;
         }
 
-        public int period
+        //public int deptId
+        //{
+        //    set; get;
+        //}
+
+        public string deptName
+        {
+            set; get;
+        }
+
+        //public int period
+        //{
+        //    set; get;
+        //}
+
+        public string periodName
         {
             set; get;
         }
@@ -81,15 +104,34 @@ namespace Medical.ViewModel
             set; get;
         }
 
-        public DateTime date
+
+        public string dateForm
+
         {
             set; get;
         }
 
-        public int id
+        public string dateTo
         {
             set; get;
         }
+
+        public int[] day
+        {
+            set; get;
+        }
+
+        public int[] time
+        {
+            set; get;
+        }
+
+        public bool repeat
+        {
+            set; get;
+        }
+
+
 
         public virtual Department Department { get { return _clinicDetail.Department; } set { _clinicDetail.Department = value; } }
         public virtual Doctor Doctor { get { return _clinicDetail.Doctor; } set { _clinicDetail.Doctor = value; } }
