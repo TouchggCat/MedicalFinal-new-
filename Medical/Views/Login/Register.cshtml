@@ -11,6 +11,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
+        @*id="demo-form" method="POST"給reCAPCHA使用*@
         <form asp-action="Register" id="demo-form" method="POST">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -35,9 +36,14 @@
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label class="control-label">密碼確認</label>
+                <input class="form-control mb-2" id="passCheck" />
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="BirthDay" class="control-label"></label>
                 @*日期格式type="date" 預設值value="2000-01-01"*@
-                <input asp-for="BirthDay" class="form-control mb-2" type="date" value="2000-01-01" id="bday"/>
+                <input asp-for="BirthDay" class="form-control mb-2" type="date" value="2000-01-01" id="bday" />
                 <span asp-validation-for="BirthDay" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -79,7 +85,7 @@
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="註冊" class="g-recaptcha btn btn-primary" data-sitekey="6Lfk2AkhAAAAAOtIbeGmRkHUqjne2XfLYmM21Kg3" data-callback="onSubmit"/>
+                <input type="submit" value="註冊" class="g-recaptcha btn btn-primary" data-sitekey="6Lfk2AkhAAAAAOtIbeGmRkHUqjne2XfLYmM21Kg3" data-callback="onSubmit" />
             </div>
             <br />
             <div class="form-group">
@@ -104,6 +110,8 @@
         $("#regiDemo").click(() => {
             $("#email").val("giraffegod@gmail.com");
             $("#pass").val("1234")
+            $("#passCheck").val("1234")
+
             $("#idid").val("A123456789")
             $("#memName").val("湛士華")
             $("#phone").val("0900999999")

@@ -34,7 +34,7 @@ namespace Medical.ViewModel
         }
 
         [DisplayName("身分證字號")]
-        [Required(ErrorMessage = "必填")]
+        [Required(ErrorMessage = "身分證不可為空白")]
         public string IdentityId
         {
             get { return _member.IdentityId; }
@@ -42,7 +42,7 @@ namespace Medical.ViewModel
         }
 
         [DisplayName("密碼")]
-        [Required(ErrorMessage = "必填")]
+        [Required(ErrorMessage = "密碼不可為空白")]
         public string Password
         {
             get { return _member.Password; }
@@ -50,7 +50,7 @@ namespace Medical.ViewModel
         }
 
         [DisplayName("姓名")]
-        [Required(ErrorMessage = "必填")]
+        [Required(ErrorMessage = "姓名不可為空白")]
         public string MemberName
         {
             get { return _member.MemberName; }
@@ -71,7 +71,8 @@ namespace Medical.ViewModel
         }
 
         [DisplayName("郵件信箱")]
-        [Required(ErrorMessage = "必填")]
+        [EmailAddress(ErrorMessage = "不是正確的郵件格式")]
+        [Required(ErrorMessage = "信箱不可為空白")]
         public string Email
         {
             get { return _member.Email; }
@@ -83,6 +84,7 @@ namespace Medical.ViewModel
             get { return _member.Phone; }
             set { _member.Phone = value; }
         }
+        [DisplayName("權限")]
         public int? Role
 
         {
@@ -101,7 +103,7 @@ namespace Medical.ViewModel
             get { return _member.Address; }
             set { _member.Address = value; }
         }
-
+        [DisplayName("健保卡號")]
         public string IcCardNo
         {
             get { return _member.IcCardNo; }
