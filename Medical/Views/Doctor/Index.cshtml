@@ -4,65 +4,68 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>醫生主頁(後台)</h1>
-@using (Html.BeginForm())
-{
-    @:關鍵字 @Html.TextBox("txtKeyword")
-    <input type="submit" value="查詢" />
-}
+<h1>Index</h1>
 
 <p>
-    <a asp-action="CreateDetail">新增醫生資料</a>
+    <a asp-action="Create">Create New</a>
 </p>
-<table class="table table-hover">
+<table class="table">
     <thead>
         <tr>
             <th>
-                序
+                @Html.DisplayNameFor(model => model.DoctorId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MemberId)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.DoctorName)
             </th>
-            
+            <th>
+                @Html.DisplayNameFor(model => model.Department.DeptName)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Education)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.JobTitle)
             </th>
-
+            <th>
+                @Html.DisplayNameFor(model => model.PicturePath)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @{ int count = 0;
-            foreach (var item in Model)
-            {
-                count++;
-                <tr>
-                    <td>
-                        @count
-                    </td>
-                    <td>
-                        <img width="100" height="100" src="~/images/@Html.DisplayFor(modelItem => item.PicturePath)" />"
-                        <br>
-                        @Html.DisplayFor(modelItem => item.DoctorName)
-                    </td>
-                    
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Education)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.JobTitle)
-                    </td>
-
-                    <td>
-                        @Html.ActionLink("修改資料", "EditDetail", new { id = item.DoctorId },new {@class="btn btn-primary" }) 
-                        @Html.ActionLink("顯示資料", "Details", new { id = item.DoctorId },new{ @class = "btn btn-success" }) 
-                        @Html.ActionLink("刪除", "Delete", new { id = item.DoctorId }, new { onclick = "return confirm('確定刪除?')" , @class = "btn btn-danger" })
-                    </td>
-                </tr>
-            }
-        }
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DoctorId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MemberId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DoctorName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Department.DeptName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Education)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.JobTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PicturePath)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
     </tbody>
 </table>

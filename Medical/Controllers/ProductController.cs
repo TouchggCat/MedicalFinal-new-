@@ -53,6 +53,7 @@ namespace Medical.Controllers
         public IActionResult OrderDetailList(int? id)
         {
             IEnumerable<OrderDetailViewModel> list = null;
+            IEnumerable<OrderDetailViewModel> list1 = null;
             if (id != 0)
             {
                 list = _medicalContext.OrderDetails.Where(a => a.OrderId == id)
@@ -61,9 +62,18 @@ namespace Medical.Controllers
                             OrderDetail=a,
                             Order=a.Order,
                             Product=a.Product,
-                            Member=a.Order.Member,
-                            
+                            Member=a.Order.Member,                                                     
                         });
+                //foreach (var p in list)
+                //{
+                //    list1 = _medicalContext.Products.Where(a => a.ProductId == p.ProductId).Select(a => new OrderDetailViewModel
+                //    { 
+                        
+                    
+                //    });
+
+                //}
+                
               
             }
             return View(list);

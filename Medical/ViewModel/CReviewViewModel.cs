@@ -68,12 +68,14 @@ namespace Medical.ViewModel
             get { return _review.CommentContent; }
             set { _review.CommentContent = value; }
         }
-        [DisplayName("日期")]
-        public DateTime? CreateDate
-        {
-            get { return _review.CreateDate; }
-            set { _review.CreateDate = value; }
-        }
+
+        //[DisplayName("日期")]
+        //public DateTime? CreateDate
+        //{
+        //    get { return _review.CreateDate.ToString(); }
+        //    set { _review.CreateDate = DateTime.Parse(value); }
+        //}
+
         [DisplayName("評論人")]
         public virtual Member Member
         {

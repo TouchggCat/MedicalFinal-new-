@@ -1,14 +1,11 @@
 ﻿using Medical.Models;
 using Medical.ViewModel;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using static Medical.Controllers.calendar;
 
 namespace Medical.Controllers
 {
@@ -25,26 +22,52 @@ namespace Medical.Controllers
             return View();
         }
 
-        public IActionResult loadData() {
-            IEnumerable<CClinicDetailViewModel> list = null;
-            list = _medicalContext.ClinicDetails.Select(x => new CClinicDetailViewModel
-            {
-                clinicDetail = x,
-                Doctor = x.Doctor,
-                Department = x.Department,
-                Period = x.Period,
-                Room = x.Room,
-                ClinicDate = x.ClinicDate
-            });
+        public IActionResult AddClinic()
+        {
+            return View();
+        }
 
-            string info = "";
-            foreach (var i in list)
+        public IActionResult Preview(CClinicDetailAdminViewModel cVM)
+        {
+            return ViewComponent("preview", new { cVM = cVM });
+        }
+
+        public IActionResult loadData()
+        {
+            List<detail> list = new List<detail>();
+
+            var qry = _medicalContext.ClinicDetails.Include(x => x.Doctor).Include(x => x.Room).Include(x => x.Period);
+
+            foreach (var i in qry)
             {
-                info += $"{i.ClinicDetailId},{i.Doctor.DoctorName},{i.ClinicDate},{i.RoomId},{i.PeriodId}#";
+                int dt = (i.ClinicDate).Value.Hour;
+                string color;
+
+                if (dt == 9)
+                { color = "#0073b7"; }
+                else if (dt == 13)
+                { color = "#FBBC05"; }
+                else
+                { color = "#34A853"; }
+
+                calendar.detail detail = new calendar.detail
+                {
+                    id = i.ClinicDetailId,
+                    start = ((DateTime)(i.ClinicDate)).ToString("yyyy-MM-dd HH:00:00"),
+                    end = (((DateTime)(i.ClinicDate)).AddHours(3)).ToString("yyyy-MM-dd HH:00:00"),
+                    title = $"{i.Doctor.DoctorName}-診間:{i.Room.RoomName}",
+                    borderColor = color,
+                    backgroundColor = color,
+                    extendedProps = new calendar.ExtendedProps
+                    {
+                        room = i.RoomId,
+                        period = i.Period.PeriodDetail
+                    }
+
+                };
+                list.Add(detail);
             }
-            info = info.Substring(0, info.Length - 1);
-
-            return Content(info, "text/plain", System.Text.Encoding.UTF8);
+            return Json(list);
         }
 
         public IActionResult CountClinicDetailId()
@@ -54,80 +77,72 @@ namespace Medical.Controllers
             return Content(count, "text/plain", System.Text.Encoding.UTF8);
         }
 
-        public void Method(CClinicDetailViewModel cVM) {
+        public void Method(CClinicDetailViewModel cVM)
+        {
+
             var result = _medicalContext.ClinicDetails.Where(x => x.ClinicDetailId.Equals(cVM.clinicId));
             var resultDoctor = _medicalContext.Doctors.Where(x => x.DoctorName.Equals(cVM.doctorname)).SingleOrDefault();
             cVM.DoctorId = resultDoctor.DoctorId;
             cVM.DepartmentId = resultDoctor.DepartmentId;
 
             if (result.Count() > 0)
-            { 
+            {
                 Update(cVM);
             }
-            else
+        }
+
+        public void Create(CClinicDetailAdminViewModel[] obj)
+        {
+            foreach (var i in obj)
             {
-                Create(cVM);
+
+                ClinicDetail c = new ClinicDetail()
+                {
+                    DoctorId = _medicalContext.Doctors.Where(x => x.DoctorName.Equals(i.doctorName)).SingleOrDefault().DoctorId,
+                    DepartmentId = _medicalContext.Departments.Where(x => x.DeptName.Equals(i.deptName)).SingleOrDefault().DepartmentId,
+                    PeriodId = _medicalContext.Periods.Where(x => x.PeriodDetail.Equals(i.periodName)).SingleOrDefault().PeriodId,
+                    Online = 0,
+                    //RoomId = _medicalContext.ClinicRooms.Where(x => x.RoomName.Equals(i.room)).SingleOrDefault().RoomId,
+                    RoomId = i.room,
+                    ClinicDate = TranDate(i.dateForm, i.periodName),
+                    LimitNum = 6
+                };
+                _medicalContext.ClinicDetails.Add(c);
+                _medicalContext.SaveChanges();
             }
-        }
-
-        public IActionResult Preview(List<string> list) 
-        {
-            string doctor = list[0];
-            string dept = list[1];
-            string room = list[2];
-            
-            DateTime dtForm = DateTime.Parse(list[3]);
-            DateTime dtTo = DateTime.Parse(list[4]);
-
-            List<CClinicDetailAdminViewModel> c = new List<CClinicDetailAdminViewModel>();
-
-
-            return PartialView("Preview", c);
-        }
-
-        public void Create(CClinicDetailViewModel cVM) 
-        {
-            ClinicDetail c = new ClinicDetail()
-            {
-                DoctorId = cVM.DoctorId,
-                DepartmentId = cVM.DepartmentId,
-                PeriodId = cVM.periodID,
-                RoomId = cVM.roomID,
-                Online = 0,
-                ClinicDate = cVM.date
-            };
-
-            _medicalContext.ClinicDetails.Add(c);
-            _medicalContext.SaveChanges();
 
         }
+
         public void Update(CClinicDetailViewModel cVM)
         {
             ClinicDetail clinicDetail = _medicalContext.ClinicDetails.Where(x => x.ClinicDetailId.Equals(cVM.clinicId)).FirstOrDefault();
-            
-            if(clinicDetail != null)
+
+            if (clinicDetail != null)
             {
                 clinicDetail.DoctorId = cVM.DoctorId;
                 clinicDetail.PeriodId = cVM.periodID;
                 clinicDetail.RoomId = cVM.roomID;
+                //123456
                 clinicDetail.ClinicDate = cVM.date;
                 _medicalContext.SaveChanges();
             }
         }
+
         public IActionResult Dept()
         {
             var dept = _medicalContext.Departments.Select(x => new { x.DeptName, x.DepartmentId });
             return Json(dept);
         }
+
         public IActionResult doctorList(int? deptid)
         {
             var doctors = from q in _medicalContext.Doctors select q;
-            if (deptid>0)
+            if (deptid > 0)
             {
                 doctors = doctors.Where(x => x.DepartmentId.Equals(deptid));
             }
 
-            doctors.Select(x=>new { x.DoctorName, x.DoctorId });
+            doctors.Select(x => new { x.DoctorName, x.DoctorId });
 
             return Json(doctors);
         }
@@ -138,11 +153,51 @@ namespace Medical.Controllers
             return Json(rooms);
         }
 
-        public IActionResult List()
+        public DateTime TranDate(string date, string time)
         {
-            return View();
+            string[] aryDate = date.Split('/');
+            DateTime dt = new DateTime(int.Parse(aryDate[0]), int.Parse(aryDate[1]), int.Parse(aryDate[2]), 0, 0, 0);
+
+            switch (time)
+            {
+                case "上午時段":
+                    dt = dt.AddHours(9);
+                    break;
+                case "下午時段":
+                    dt = dt.AddHours(13);
+                    break;
+                case "晚上時段":
+                    dt = dt.AddHours(17);
+                    break;
+            }
+            return dt;
+        }
+    }
+
+    class calendar
+    {
+        public class Data
+        {
+            public detail[] details { get; set; }
+        }
+        public class ExtendedProps
+        {
+            public int? room { get; set; }
+            public string period { get; set; }
         }
 
-        
+        public class detail
+        {
+            public int id { get; set; }
+            //public string url { get; set; }
+            public string start { get; set; }
+            public string end { get; set; }
+            public string title { get; set; }
+            //public string textColor { get; set; }
+            public string borderColor { get; set; }
+            public string backgroundColor { get; set; }
+            public ExtendedProps extendedProps { get; set; }
+        }
+
     }
 }

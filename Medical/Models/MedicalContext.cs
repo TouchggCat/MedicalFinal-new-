@@ -62,7 +62,6 @@ namespace Medical.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=Medical;Integrated Security=True");
             }
         }
@@ -129,6 +128,8 @@ namespace Medical.Models
                 entity.Property(e => e.ArticleId).HasColumnName("ArticleID");
 
                 entity.Property(e => e.AdminId).HasColumnName("AdminID");
+
+                entity.Property(e => e.ArPicturePath).HasMaxLength(50);
 
                 entity.Property(e => e.Articeltitle).HasMaxLength(50);
 
@@ -226,7 +227,7 @@ namespace Medical.Models
 
                 entity.Property(e => e.ClinicDetailId).HasColumnName("ClinicDetailID");
 
-                entity.Property(e => e.ClinicDate).HasMaxLength(50);
+                entity.Property(e => e.ClinicDate).HasColumnType("datetime");
 
                 entity.Property(e => e.DepartmentId).HasColumnName("DepartmentID");
 
@@ -420,7 +421,7 @@ namespace Medical.Models
 
                 entity.Property(e => e.NewsCategoryId).HasColumnName("NewsCategoryID");
 
-                entity.Property(e => e.PublishDate).HasColumnType("datetime");
+                entity.Property(e => e.NewsPicturePath).HasMaxLength(50);
 
                 entity.HasOne(d => d.Admin)
                     .WithMany(p => p.News)
@@ -450,7 +451,9 @@ namespace Medical.Models
 
                 entity.Property(e => e.CityId).HasColumnName("CityID");
 
+
                 entity.Property(e => e.CouponDetailId).HasColumnName("CouponDetailID");
+
 
                 entity.Property(e => e.MemberId).HasColumnName("MemberID");
 
@@ -469,10 +472,12 @@ namespace Medical.Models
                     .HasForeignKey(d => d.CityId)
                     .HasConstraintName("FK_Order_City");
 
-                entity.HasOne(d => d.CouponDetail)
+                entity.HasOne(d => d.CouponDetal)
                     .WithMany(p => p.Orders)
-                    .HasForeignKey(d => d.CouponDetailId)
-                    .HasConstraintName("FK_Order_CouponDetail1");
+
+                    .HasForeignKey(d => d.CouponDetalId)
+                    .HasConstraintName("FK_Order_CouponDetail");
+
 
                 entity.HasOne(d => d.Member)
                     .WithMany(p => p.Orders)
@@ -714,9 +719,7 @@ namespace Medical.Models
 
                 entity.Property(e => e.RemarkPatient).HasColumnName("Remark_Patient");
 
-                entity.Property(e => e.ReserveDate)
-                    .IsRequired()
-                    .HasMaxLength(50);
+                entity.Property(e => e.ReserveDate).HasColumnType("datetime");
 
                 entity.Property(e => e.SequenceNumber).HasColumnName("sequence_number");
 

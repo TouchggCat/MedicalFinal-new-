@@ -60,8 +60,8 @@ namespace Medical.ViewModel
         [DisplayName("生日")]
         public DateTime? BirthDay
         {
-            get { return _member.BirthDay; }
-            set { _member.BirthDay = value; }
+            get { return _member.BirthDay.ToString(); }
+            set { _member.BirthDay = DateTime.Parse(value); }
         }
         [DisplayName("性別")]
         public int? GenderId
