@@ -55,7 +55,10 @@ namespace Medical.Areas.Admin.Controllers
                     {
                         mem = _context.Members.Where(t => t.MemberName.Contains(keyVModel.txtKeyword) ||
                           t.Email.Contains(keyVModel.txtKeyword) || t.Phone.Contains(keyVModel.txtKeyword)).ToList(),
-                                roleTypes = _context.RoleTypes.ToList()
+                                roleTypes = _context.RoleTypes.ToList(),
+                                          //性別.city名稱顯示，因為view有關連Model.MemGender所以要傳入(否則viewModel的MemGender為null)，無關聯則不需要
+                        MemGender = _context.Genders.ToList(),
+                        MemCity = _context.Cities.ToList()
                     };
                     return View(VModel);
                 }
