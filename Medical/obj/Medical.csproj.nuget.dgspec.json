@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\ADO.NET\\作業區\\Medical-final-3.0\\Medical\\Medical.csproj": {}
+    "C:\\Users\\Student\\Desktop\\專題3.0 冠名\\Medical\\Medical.csproj": {}
   },
   "projects": {
-    "C:\\ADO.NET\\作業區\\Medical-final-3.0\\Medical\\Medical.csproj": {
+    "C:\\Users\\Student\\Desktop\\專題3.0 冠名\\Medical\\Medical.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\ADO.NET\\作業區\\Medical-final-3.0\\Medical\\Medical.csproj",
+        "projectUniqueName": "C:\\Users\\Student\\Desktop\\專題3.0 冠名\\Medical\\Medical.csproj",
         "projectName": "Medical",
-        "projectPath": "C:\\ADO.NET\\作業區\\Medical-final-3.0\\Medical\\Medical.csproj",
+        "projectPath": "C:\\Users\\Student\\Desktop\\專題3.0 冠名\\Medical\\Medical.csproj",
         "packagesPath": "C:\\Users\\Student\\.nuget\\packages\\",
-        "outputPath": "C:\\ADO.NET\\作業區\\Medical-final-3.0\\Medical\\obj\\",
+        "outputPath": "C:\\Users\\Student\\Desktop\\專題3.0 冠名\\Medical\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"

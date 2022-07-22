@@ -19,7 +19,7 @@
             line-height: 18px;
             margin-bottom: 6px;
             overflow: hidden;
-            color:white;
+            color: white;
         }
 
         .listFCC {
@@ -56,6 +56,7 @@
             float: left;
             padding-right: 4px
         }
+
         .select-field {
             border: 1px solid black;
         }
@@ -68,9 +69,9 @@
         .list {
             box-shadow: 0px 30px 60px rgb(0,0,0,0.2);
             display: none;
-            position:absolute;
-            width:214.16px;
-            z-index:10;
+            position: absolute;
+            width: 214.16px;
+            z-index: 10;
         }
 
         .down-arrow {
@@ -120,6 +121,7 @@
             margin-top: 17px !important;
             position: relative;
         }
+
         .container .detail {
             color: #BCF7DA !important;
         }
@@ -140,7 +142,7 @@
 @using (Html.BeginForm())
 {
     <div>
-        <input type="button" value="點我推薦醫生" onclick="location.href='@Url.ActionLink("SugDoc","Doctor")'"/>
+        <input type="button" value="點我推薦醫生" onclick="location.href='@Url.ActionLink("SugDoc", "Doctor")'" />
     </div>
     <div class="muti-selector">
         <div class="select-field">
@@ -186,33 +188,52 @@
                     <div class="listFCS">@Html.DisplayFor(modelItem => item.JobTitle)</div>
                     <div class="listFCC">學歷:@Html.DisplayFor(modelItem => item.Education)</div>
                     @Html.ActionLink("詳細資料", "Detail", new { id = item.DoctorId }, new { @class = "btn btn-outline-success detail" })
+                <button type="button" id="buttonLoad" class="btn btn-primary buttonLoad" data-bs-toggle="modal" data-bs-target="#exampleModal" data-docid="@item.DoctorId">
+                    查看評價
+                </button>
                 </div>
             </div>
         </div>
 
-        <!--<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body" id="@Html.DisplayFor(modelItem=>item.DoctorId)">
-                        ...
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
-                        @*<button type="button" class="btn btn-primary">Save changes</button>*@
-                    <!--</div>
-                </div>
-            </div>
-        </div>-->
 
     }
-        <footer style="clear:both"></footer>
+
+}
+@*查看醫師評論*@
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="tbdRatingList" class="modal-body">
+                @*//這裡放partail*@
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">離開</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<footer style="clear:both"></footer>
 }
 @section Scripts{
     <script>
+        var docid = $('.buttonLoad').attr("data-docid");
+        console.log(docid);
+
+        $('.buttonLoad').click(function () {
+            $('#tbdRatingList').load('@Url.Content("~/Doctor/RatingDoctorpartail/1")' )
+             console.log(doctorid);
+        })
+
+
+
 
         @*選單下拉*@
         document.querySelector('.select-field').addEventListener('click', () => {
@@ -225,7 +246,7 @@
             document.querySelector('#down-arrow1').classList.toggle('rotate180')
         })
         loadDep();
-        
+
         function CCC() {
             if ($(event.target)[0].checked == true) {
                 loadDoc();
@@ -272,7 +293,7 @@
 
             const deps = await fetch('@Url.Content("~/Admin/AdminDoctor/Dep")').then(response => response.json())
             deps.forEach((DeptName) => {
-                console.log(DeptName)
+                /*console.log(DeptName)*/
                 name =`<label for="" class="task">
                 <input type="checkbox" class="check" onclick="CCC()" id="${DeptName}" name="${DeptName}" value="${DeptName}"/>
                 ${DeptName}

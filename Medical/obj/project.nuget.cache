@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Fo7xdCJAPKYIIVT2F6E1oVShEVEVOA1sr7D7trLbFBCoULMbmvOsIamhoUO+lrCCdsDGP2trZ+VaTFR1W4ih0Q==",
+  "dgSpecHash": "OrW/Cr8+KbdsCqhDtm5haccXIKAmoM+OVc/r88ofnN4hJthdPQfCs4zIddu6/Mro368FFQvj/cn43Ii83Vanew==",
   "success": true,
-  "projectFilePath": "C:\\ADO.NET\\作業區\\Medical-final-3.0\\Medical\\Medical.csproj",
+  "projectFilePath": "C:\\Users\\Student\\Desktop\\專題3.0 冠名\\Medical\\Medical.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Student\\.nuget\\packages\\castle.core\\4.4.1\\castle.core.4.4.1.nupkg.sha512",
     "C:\\Users\\Student\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",

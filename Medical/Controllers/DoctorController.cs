@@ -141,6 +141,7 @@ namespace Medical.Controllers
         //id寫死
         public IActionResult RatingDoctorpartail(int id)
         {
+            //id = 1;
             ViewBag.name = _db.RatingDoctors.Where(a => a.DoctorId == id).Select(a => a.Doctor.DoctorName).FirstOrDefault();
             ViewBag.count = _db.RatingDoctors.Where(a => a.DoctorId == id).Where(a => a.Shade == false).Select(a=>a.Rating).Count();
 

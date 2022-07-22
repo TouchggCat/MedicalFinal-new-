@@ -25,14 +25,20 @@ namespace Medical.Controllers
         }
         //歷史訂單
         //預設會員19 需要抓登入資料
-        //id=memberID
-        public IActionResult OrderList(int? id = 19)
+        public IActionResult OrderList()
         {
 
             IEnumerable<OrderDetailViewModel> list = null;
-            if (id != 0)
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USE))
             {
-                list = _medicalContext.Orders.Where(a => a.MemberId == id)
+                CMemberAdminViewModel vm = null;
+
+                string logJson = "";
+                logJson = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USE);
+                vm = JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
+                
+
+                list = _medicalContext.Orders.Where(a => a.MemberId == vm.MemberId)
                     .Select(a => new OrderDetailViewModel
                     {
                         Order = a,
@@ -53,7 +59,7 @@ namespace Medical.Controllers
         public IActionResult OrderDetailList(int? id)
         {
             IEnumerable<OrderDetailViewModel> list = null;
-            IEnumerable<OrderDetailViewModel> list1 = null;
+            
             if (id != 0)
             {
                 list = _medicalContext.OrderDetails.Where(a => a.OrderId == id)
@@ -64,15 +70,7 @@ namespace Medical.Controllers
                             Product=a.Product,
                             Member=a.Order.Member,                                                     
                         });
-                //foreach (var p in list)
-                //{
-                //    list1 = _medicalContext.Products.Where(a => a.ProductId == p.ProductId).Select(a => new OrderDetailViewModel
-                //    { 
-                        
-                    
-                //    });
-
-                //}
+              
                 
               
             }

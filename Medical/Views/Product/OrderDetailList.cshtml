@@ -37,83 +37,75 @@
                         {
                             count++;
 
-                           <tr>
-                               <td>
-                                   @count
-                               </td>
-                               <td>
-                                   @Html.DisplayFor(modelItem => item.Product.ProductName)
-                               </td>
-                               <td>
-                                   這裡是照片
-                               </td>
-                               <td>
-                                   <div class="sparkbar" data-color="#00a65a" data-height="20"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> @Html.DisplayFor(modelItem => item.Order.OrderDate)</font></font></div>
-                               </td>
-                               <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
-                               <td>@Html.DisplayFor(modelItem => item.Member.MemberName)</td>
-                               <td>
-                                   @Html.ActionLink("新增評論", "createReview", new { id = item.Product.ProductId }, new { @class = "btn btn-primary" })
-                               </td>
-                           </tr>
-                          
+                            <tr>
+                                <td>
+                                    @count
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Product.ProductName)
+                                </td>
+                                <td>
+                                    這裡是照片
+                                </td>
+                                <td>
+                                    <div class="sparkbar" data-color="#00a65a" data-height="20"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> @Html.DisplayFor(modelItem => item.Order.OrderDate)</font></font></div>
+                                </td>
+                                <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Member.MemberName)</td>
+                                <td>
+                                    @Html.ActionLink("新增評論", "createReview", new { id = item.Product.ProductId }, new { @class = "btn btn-primary" })
+                                </td>
+                                <td>
+                                    <button type="button" id="GoReserve"  class="btn btn-primary GoReserve" data-bs-toggle="modal" data-bs-target="#exampleModal">我要預約</button>
+                                </td>
+                            </tr>
+
                         }
                     }
                 </tbody>
             </table>
-        </div>           
+        </div>
     </div>
 </div>
 <div>
     <a asp-action="Index">回到上一頁</a>
 </div>
 <!-- Modal -->
-<!--<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">新增產品評論</h5>
+                <h5 class="modal-title" id="exampleModalLabel">預約</h5>
+                <input type="hidden" id="hiddenID" />
+                <input type="hidden" id="hiddenID2" />
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
-                    <div class="mb-3">
-                        <label for="recipient-name" class="col-form-label">分數</label>
-                        <input type="text" class="form-control" id="recipient-name">
+                <div class="card-body pt-0">
+                    <div class="row">
+                        <div id="re" class="col-7">
+                            <h1>確認預約</h1>
+
+                        </div>
+                        <div class="col-5 text-center">
+                            <img src="../../dist/img/user1-128x128.jpg" alt="user-avatar" class="img-circle img-fluid">
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="message-text" class="col-form-label">評論</label>
-                        <textarea class="form-control" id="message-text"></textarea>
-                    </div>
-                </form>
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Send message</button>
+                <button id="out" type="button" class="btn btn-secondary" data-bs-dismiss="modal">退出</button>
+                <button id="startReserve" type="button" class="btn btn-primary">送出預約</button>
+
             </div>
         </div>
     </div>
-</div>-->
+</div>
 
 @section Scripts
 {
     <script>
-        var exampleModal = document.getElementById('exampleModal')
-        exampleModal.addEventListener('show.bs.modal', function (event) {
-            // Button that triggered the modal
-            var button = event.relatedTarget
-            // Extract info from data-bs-* attributes
-            var recipient = button.getAttribute('data-bs-whatever')
-            // If necessary, you could initiate an AJAX request here
-            // and then do the updating in a callback.
-            //
-            // Update the modal's content.
-            var modalTitle = exampleModal.querySelector('.modal-title')
-            var modalBodyInput = exampleModal.querySelector('.modal-body input')
 
-            modalTitle.textContent = 'New message to ' + recipient
-            modalBodyInput.value = recipient
-        })
 
     </script>
 }
