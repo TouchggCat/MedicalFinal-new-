@@ -274,7 +274,23 @@
 
                     $(":checkbox").prop("checked", false)
                     $(".cleartr").empty();
-                    myDiscontinued.val("上架中");
+                    myDiscontinued.val("");
+                    myProductColor.val("");
+                    myProductImg.attr("src", "");
+
+
+                    myProductSpecId.attr("value","");
+                    myProductId.attr("value", "");
+                    myProductCate.val("")
+                    myProductBrand.val("")
+                    myProductName.val("");
+
+
+
+
+
+
+
 
                     if (message === "成功") {
                         let timerInterval
@@ -298,6 +314,7 @@
                             /* Read more about handling dismissals below */
                             if (result.dismiss === Swal.DismissReason.timer) {
                                 console.log('I was closed by the timer')
+                                $(`span:contains(${singlePName})`).parents("tr").eq(0).remove();
                             }
                         })
                     }
