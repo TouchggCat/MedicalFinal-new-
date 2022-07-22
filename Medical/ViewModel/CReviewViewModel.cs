@@ -69,7 +69,7 @@ namespace Medical.ViewModel
             set { _review.CommentContent = value; }
         }
         [DisplayName("日期")]
-        public string CreateDate
+        public DateTime? CreateDate
         {
             get { return _review.CreateDate.ToString(); }
             set { _review.CreateDate = DateTime.Parse(value); }

@@ -17,19 +17,40 @@ namespace Medical.Controllers
         {
             _context = medicalContext;
         }
-        // 寫死日期 要再改
+        
+
+
         public IActionResult List()
         {
-            
-            var result = _context.ClinicDetails.Where(a => a.ClinicDate == "2022/07/12/12/00/00")
+            ViewBag.Time = DateTime.Now.ToString("yyyy/MM/dd");
+
+            int hour = DateTime.Now.Hour;
+            int Period = 0;
+
+            if (hour <= 12)
+            {
+                Period = 1; //上午時段
+            }
+            if (hour > 12 &&hour<17)
+            {
+                Period = 2; //下午時段
+            }
+            if (hour > 17 && hour < 21)
+            {
+                Period = 3; //晚上時段
+            }
+            ViewBag.period = Period;
+            var result = _context.ClinicDetails.Where(a => a.ClinicDate.Value.Date.Equals(DateTime.Today.Date))
                 .Select(a => new CClinicDetailViewModel {
                     clinicDetail=a,
                     Doctor=a.Doctor,
                     Department=a.Department,
                     Room=a.Room,
+                    Period=a.Period
                                                    
                 });
-                                  
+                 
+
             return View(result);
         }
 

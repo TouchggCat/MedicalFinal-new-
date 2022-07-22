@@ -50,8 +50,8 @@
                                <td>
                                    <div class="sparkbar" data-color="#00a65a" data-height="20"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> @Html.DisplayFor(modelItem => item.Order.OrderDate)</font></font></div>
                                </td>
-                               <td><span class="badge badge-primary"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">@Html.DisplayFor(modelItem => item.Quantity)-套件未套 反白</font></font></span></td>
-                               <td><span class="badge badge-primary"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">@Html.DisplayFor(modelItem => item.Member.MemberName)-套件未套 反白</font></font></span></td>
+                               <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
+                               <td>@Html.DisplayFor(modelItem => item.Member.MemberName)</td>
                                <td>
                                    @Html.ActionLink("新增評論", "createReview", new { id = item.Product.ProductId }, new { @class = "btn btn-primary" })
                                </td>

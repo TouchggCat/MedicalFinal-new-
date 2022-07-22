@@ -59,7 +59,7 @@ namespace Medical.ViewModel
             get { return _clinicDetail.RoomId; }
             set { _clinicDetail.RoomId = value; }
         }
-        public string ClinicDate
+        public DateTime? ClinicDate
         {
             get { return _clinicDetail.ClinicDate; }
             set { _clinicDetail.ClinicDate = value; }
@@ -71,16 +71,15 @@ namespace Medical.ViewModel
             set { _clinicDetail.LimitNum = value; }
         }
 
-        public string clinicId
-        {
-            set; get;
-        }
-
         public string doctorname
         {
             set; get;
         }
-
+        public string clinicId
+        {
+            set; get;
+        }
+      
         public int periodID
         {
             set; get;
@@ -91,7 +90,7 @@ namespace Medical.ViewModel
             set; get;
         }
 
-        public string date
+        public DateTime date
         {
             set; get;
         }
@@ -112,6 +111,7 @@ namespace Medical.ViewModel
             get { return _doctor; }
             set { _doctor = value; }
         }
+
         public virtual Period Period
         {
             get { return _period; }
@@ -127,5 +127,10 @@ namespace Medical.ViewModel
             get { return _reserve; }
             set { _reserve = value; }
         }
+
+        
+
+
+
     }
 }
