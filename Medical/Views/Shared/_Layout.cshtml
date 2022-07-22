@@ -63,8 +63,9 @@
     <link href="~/css/style.css" rel="stylesheet">
 
     <!-- SweetAlert style -->
-    <script src="sweetalert2.min.js"></script>
-    <link rel="stylesheet" href="sweetalert2.min.css">
+    @*我自己改的*@
+    @*<script src="~/sweetalert2.min.js"></script>
+        <link rel="stylesheet" href="~/sweetalert2.min.css">*@
     @await RenderSectionAsync("css", required: false)
 </head>
 
@@ -156,6 +157,11 @@
                             <a href="/Product/OrderDetailList" class="dropdown-item">訂單紀錄</a>
 
                         </div>
+                    </div>
+                    @*測試用，可刪掉*@
+                    <div class="nav-item dropdown">
+                        <a href="/SignalR/Index" class="nav-item nav-link">聊天室測試</a>
+                        
                     </div>
                 </div>
                 <!-- 購物車清單開始-->
@@ -292,7 +298,8 @@
     <script src="~/js/main.js"></script>
 
     <!-- SweetAlert -->
-    <script src="sweetalert2.all.min.js"></script>
+    @*我自己改的*@
+    @*<script src="~/sweetalert2.all.min.js"></script>*@
     @await RenderSectionAsync("Scripts", required: false)
 
 </body>

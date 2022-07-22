@@ -21,15 +21,16 @@ namespace Medical.Controllers
         public IActionResult List()
         {
             
-            var result = _context.ClinicDetails.Where(a => a.ClinicDate == "2022/07/12/12/00/00")
-                .Select(a => new CClinicDetailViewModel {
-                    clinicDetail=a,
-                    Doctor=a.Doctor,
-                    Department=a.Department,
-                    Room=a.Room,
-                                                   
-                });
-                                  
+            var result = _context.ClinicDetails.Where(a => a.ClinicDate == DateTime.Now)
+            .Select(a => new CClinicDetailViewModel
+            {
+                clinicDetail = a,
+                Doctor = a.Doctor,
+                Department = a.Department,
+                Room = a.Room,
+
+            });
+
             return View(result);
         }
 

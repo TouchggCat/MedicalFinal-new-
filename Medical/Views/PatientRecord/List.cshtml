@@ -4,70 +4,93 @@
     ViewData["Title"] = "List";
 
 }
+
 <!-- Hero Start -->
 <div class="container-fluid bg-primary py-5 hero-header mb-5">
     <div class="row py-3">
         <div class="col-12 text-center">
-            <h3 class="display-3 text-white animated zoomIn">病歷紀錄</h3>
+            <h3 class="display-3 text-white animated zoomIn">衛教文章</h3>
         </div>
     </div>
 </div>
 <!-- Hero End -->
-@using (Html.BeginForm())
-{
-    @:醫生查詢 @Html.TextBox("txtKeyword")
-    <input type="submit" value="Search" />
-}
+@*========查詢按鍵============*@
+<div class="input-group" style="display:block; text-align:center;margin-block:50px">
+    @Html.TextBox("txtKeyword", "", new { @class = "font-weight-bold", style = "font-size:26px;border-radius:15px;", @placeholder = "search..." })
+    <button type="submit" class="btn btn-lg btn-default">
+        <i class="fa fa-search">查詢</i>
+    </button>
+</div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                序
-            </th>
-            <th>
-                看診醫生
-            </th>
-            <th>
-                病例概況
-            </th>
-            <th>
-                詳細病情
-            </th>
-            <th>
-                治療科目
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @{
-            int count = 0;
 
-            foreach (var item in Model)
-            {
-                count++;
-                <tr>
-                    <td>
-                        @count
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Doctor.DoctorName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DiagnosticRecord)
-                    </td>
-                    @*<td>
-                        @Html.DisplayFor(modelItem => item.SyndromeDescription)
-                    </td>*@
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TreatmentDetail.TreatmentDetail1)
-                    </td>
-                    <td>
-                        @Html.ActionLink("評論", "Create", new { id = item.Doctor.DoctorId })
-                    </td>
-                </tr>
-            }
-        }
-    </tbody>
-</table>
+@*===一行3個圖文======*@
+
+<div class="row row-cols-1 row-cols-md-3">
+    <div class="col mb-4">
+        <div class="card h-100">
+            @*===文章圖片===*@
+            <img src="~/img/carousel-1.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+                @*===文章標題===*@
+                <a>
+                    <i class="card-title" style="font-size: 30px; font-weight: bold;">Card title</i>
+                </a>
+                @*===日期===*@
+                <a style="float: right; text-align: right;">
+                    <i class="fa fa-calendar">2022/07/12 </i>
+                </a>
+                @*===文章內容===*@
+                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+            </div>
+            @*===文章連結===*@
+            <div class="card-input" style="margin-left:10px;margin-block:10px">
+                <input type="button" href="......" class="btn btn-outline-primary" value="Read more..." />
+            </div>
+        </div>
+    </div>
+
+    <div class="col mb-4">
+        <div class="card h-100">
+            @*===文章圖片===*@
+            <img src="~/img/carousel-1.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+                @*===文章標題===*@
+                <a>
+                    <i class="card-title" style="font-size: 30px; font-weight: bold;">Card title</i>
+                </a>
+                @*===日期===*@
+                <a style="float: right; text-align: right;">
+                    <i class="fa fa-calendar">2022/07/12 </i>
+                </a>
+                @*===文章內容===*@
+                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+            </div>
+            @*===文章連結===*@
+            <div class="card-input" style="margin-left:10px;margin-block:10px">
+                <input type="button" href="......" class="btn btn-outline-primary" value="Read more..." />
+            </div>
+        </div>
+    </div>
+    <div class="col mb-4">
+        <div class="card h-100">
+            @*===文章圖片===*@
+            <img src="~/img/carousel-1.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+                @*===文章標題===*@
+                <a>
+                    <i class="card-title" style="font-size: 30px; font-weight: bold;">Card title</i>
+                </a>
+                @*===日期===*@
+                <a style="float: right; text-align: right;">
+                    <i class="fa fa-calendar">2022/07/12 </i>
+                </a>
+                @*===文章內容===*@
+                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+            </div>
+            @*===文章連結===*@
+            <div class="card-input" style="margin-left:10px;margin-block:10px">
+                <input type="button" href="......" class="btn btn-outline-primary" value="Read more..." />
+            </div>
+        </div>
+    </div>
+</div>

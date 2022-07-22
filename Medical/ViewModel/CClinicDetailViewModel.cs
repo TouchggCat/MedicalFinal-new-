@@ -59,7 +59,8 @@ namespace Medical.ViewModel
             get { return _clinicDetail.RoomId; }
             set { _clinicDetail.RoomId = value; }
         }
-        public string ClinicDate
+
+        public DateTime? ClinicDate
         {
             get { return _clinicDetail.ClinicDate; }
             set { _clinicDetail.ClinicDate = value; }
@@ -91,7 +92,7 @@ namespace Medical.ViewModel
             set; get;
         }
 
-        public string date
+        public DateTime date
         {
             set; get;
         }

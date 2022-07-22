@@ -94,7 +94,8 @@ namespace Medical.Controllers
                 PeriodId = cVM.periodID,
                 RoomId = cVM.roomID,
                 Online = 0,
-                ClinicDate = cVM.date
+                //123456
+                //ClinicDate = cVM.date
             };
 
             _medicalContext.ClinicDetails.Add(c);
@@ -110,6 +111,7 @@ namespace Medical.Controllers
                 clinicDetail.DoctorId = cVM.DoctorId;
                 clinicDetail.PeriodId = cVM.periodID;
                 clinicDetail.RoomId = cVM.roomID;
+                //123456
                 clinicDetail.ClinicDate = cVM.date;
                 _medicalContext.SaveChanges();
             }
