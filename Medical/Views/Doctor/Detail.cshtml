@@ -1,0 +1,88 @@
+﻿@model Medical.ViewModels.CDoctorDetailViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+@section css{
+    <style>
+        .det {
+            float: left;
+            width: 800px;
+        }
+
+        .row {
+            font-size: 20px !important;
+        }
+    </style>
+}
+
+<h1>醫生詳細資料</h1>
+<input type="hidden" id="DoctorID" name="DoctorID" value="@Model.DoctorID">
+<div>
+    <hr />
+    <dl class="row det">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DoctorName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DoctorName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.JobTitle)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.JobTitle)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Education)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Education)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Experience)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Experience)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DepName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DepName)
+        </dd>
+        <dt class="col-sm-2">
+            治療項目:
+        </dt>
+        <dd class="col-sm-10" id="trtD">
+
+        </dd>
+
+    </dl>
+</div>
+
+
+<img class="pic" src="~/images/@Html.DisplayFor(model => model.PicturePath)" width="450" height="450" />
+<br />
+<button class="btn btn-success btn-sm">我要掛號</button>
+<div>
+    <input type="button" onclick="location.href='@Url.Action("ListTest","Doctor")'" value="返回醫生" class="btn btn-info btn-sm" />
+</div>
+@section Scripts{
+    <script>
+
+        loadTrTD();
+        async function loadTrTD()
+        {
+            const trts = await fetch('@Url.Content("~/doctor/getTreatment")' + `?dcID=${@Model.DoctorID}`).then(response => response.json());
+            trts.forEach((TreatmentDetail1) => {
+                    console.log(TreatmentDetail1)
+                    name = TreatmentDetail1+"/"
+                    document.querySelector("#trtD").innerHTML += name;
+            })
+
+        }
+
+    </script>
+}
