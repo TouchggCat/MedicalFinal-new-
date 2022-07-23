@@ -934,7 +934,6 @@ C:\Users\user\Desktop\期末專題冠名\Medical\obj\Debug\net5.0\Razor\Views\Do
 C:\Users\user\Desktop\期末專題冠名\Medical\obj\Debug\net5.0\Razor\Views\Doctor\Details.cshtml.g.cs
 C:\Users\user\Desktop\期末專題冠名\Medical\obj\Debug\net5.0\Razor\Views\Doctor\Index.cshtml.g.cs
 C:\Users\user\Desktop\期末專題冠名\Medical\obj\Debug\net5.0\Razor\Views\Doctor\IndexTest.cshtml.g.cs
-C:\Users\user\Desktop\期末專題冠名\Medical\obj\Debug\net5.0\Razor\Views\Doctor\List.cshtml.g.cs
 C:\Users\user\Desktop\期末專題冠名\Medical\obj\Debug\net5.0\Razor\Views\Doctor\ListTest.cshtml.g.cs
 C:\Users\user\Desktop\期末專題冠名\Medical\obj\Debug\net5.0\Razor\Views\Doctor\RatingDoctorpartail.cshtml.g.cs
 C:\Users\user\Desktop\期末專題冠名\Medical\obj\Debug\net5.0\Razor\Views\Doctor\SugDoc.cshtml.g.cs

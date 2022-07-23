@@ -47,11 +47,11 @@
                                 <td>
                                     <div class="sparkbar" data-color="#00a65a" data-height="20"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">@Html.DisplayFor(modelItem => item.Rating)</font></font></div>
                                 </td>
-                                <td><span class="badge badge-@sign"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">@shade</font></font></span></td>
+                                <td><span class="badge badge-@sign">@shade</span></td>
                                 <td>
                                     @*@Html.ActionLink("切換遮蔽狀態", "DoctorRatingEdit", new { id = item.RatingDoctorId }, new { onclick = "return confirm('是否切換遮蔽狀態?')", @class = "btn btn-primary" })*@
                                     <button type="button" id="buttonLoad" class="btn btn-primary buttonLoad" data-bs-toggle="modal" data-bs-target="#exampleModal" data-docid="@item.RatingDoctorId">
-                                        切換遮蔽狀態
+                                        遮蔽
                                     </button>
                                 </td>
                             </tr>
@@ -74,21 +74,26 @@
 
         $(".buttonLoad").click(function(evt) {
             evt.preventDefault();
-            var id = $(event.target).attr("data-docid");
-            console.log(id)
-          $.ajax({
-              url: '@Url.Content("~/AdminDoctor/DoctorRatingEdit/")' + id,
-              type: "post",
-              data: { "id": id},
-              dataType: "json",
-                   success: function (datas)
-                   {
-                       if (datas == null) { alert("切換成功") }
+            var docid = $(event.target).attr("data-docid");
+            var shade = $(event.target).closest("tr").children("td:eq(3)");
+            //var span = $(event.target).closest("tr").children("td:eq(3)").closest("span");
+            
 
-                   }
 
-           })
+            $.post('@Url.Content("~/Admin/AdminDoctor/DoctorRatingEdit")', { "docid": docid }, function (datas) {
+                console.log(datas);
+                if (datas == "已遮蔽") {
+                    shade.html(`<span class="badge badge-danger">${datas}</span>`);                  
+                    //window.location.reload()
+                }
+                if (datas == "正常評論")
+                {
+                    shade.html(`<span class="badge badge-primary">${datas}</span>`);                    
+                    //window.location.reload()
+                }
 
+
+              })
 
         })
 

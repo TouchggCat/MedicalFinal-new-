@@ -272,21 +272,21 @@ namespace Medical.Areas.Admin.Controllers
 
   
 
-        public IActionResult DoctorRatingEdit(int? id)
+        public IActionResult DoctorRatingEdit(int docid)
         {
             
-            RatingDoctor result = _db.RatingDoctors.Where(a => a.RatingDoctorId == id).FirstOrDefault();
+            RatingDoctor result = _db.RatingDoctors.Where(a => a.RatingDoctorId == docid).FirstOrDefault();
             if (result.Shade == null)
             {
                 result.Shade = true;
                 _db.SaveChanges();
-                
+                return Content("已遮蔽", "text/plain", Encoding.UTF8);
             }
            else if (result.Shade == true)
             {
                 result.Shade = null;
                 _db.SaveChanges();
-                
+                return Content("正常評論", "text/plain", Encoding.UTF8);
             }
             return Content("null", "text/plain", Encoding.UTF8);
         }

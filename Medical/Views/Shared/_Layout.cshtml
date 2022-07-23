@@ -134,94 +134,89 @@
                             <a href="~/QandA/List" class="dropdown-item">Q&A常見問題</a>
                         </div>
                     </div>
-                    <a href="~/Doctor/ListTest" class="nav-item nav-link">醫療團隊</a>
                     <div class="nav-item dropdown">
-                        <a href="~/Reserve/ReserveList" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">網路掛號</a>
-                        <div class="dropdown-menu m-0">
-                            <a href="~/Reserve/ReserveList" class="dropdown-item">線上掛號</a>
-                            <a href="~/Reserve/ReserveSearch" class="dropdown-item">查詢與取消</a>
-                        </div>
+                        <a href="~/Doctor/ListTest" class="nav-item nav-link">醫療團隊</a>
                     </div>
-                    <a href="~/ClinicDetail/List" class="nav-item nav-link">即時看診進度</a>
-                    <div class="nav-item dropdown">
-                        <a href="/Product/productList" class="nav-link dropdown-toggle active"  data-bs-toggle="dropdown">線上商城</a>
-                        <div class="dropdown-menu m-0">
-                            <a href="/Product/ProductList" class="dropdown-item">產品列表</a>
-                            <a href="/Product/CartViewList" class="dropdown-item">我的購物車</a>
-                            <a href="/Product/ReceiveCoupon?id=@showID2" class="dropdown-item">優惠券專區</a>
-                            <a href="/Product/CheckViewList" class="dropdown-item">結帳</a>
-                            <a href="/Product/QueryNotFinishOrder" class="dropdown-item">訂單查看</a>
-                        </div>
-                    </div>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-item nav-link">會員中心</a>
-                        <div class="dropdown-menu m-0">
-                            <a href="/PatientRecord/List" class="dropdown-item">診療紀錄</a>
-                            <a href="/RatingDoctor/List" class="dropdown-item">醫生評論</a>
-                            <a href="/AllPatientRecord/List" class="dropdown-item">醫師病例總覽(放進哲楨的後台)</a>
-                            <a href="/Product/OrderList" class="dropdown-item">歷史訂單</a>
+                     <div class="nav-item dropdown">
+                         <a href="~/Reserve/ReserveList" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">網路掛號</a>
+                         <div class="dropdown-menu m-0">
+                             <a href="~/Reserve/ReserveList" class="dropdown-item">線上掛號</a>
+                             <a href="~/Reserve/ReserveSearch" class="dropdown-item">查詢與取消</a>
+                             <a href="~/ClinicDetail/List" class="nav-item nav-link">即時看診進度</a>
+                         </div>
+                     </div>
 
+                        <div class="nav-item dropdown">
+                            <a href="/Product/productList" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">線上商城</a>
+                            <div class="dropdown-menu m-0">
+                                <a href="/Product/ProductList" class="dropdown-item">產品列表</a>
+                                <a href="/Product/CartViewList" class="dropdown-item">我的購物車</a>
+                                <a href="/Product/ReceiveCoupon?id=@showID2" class="dropdown-item">優惠券專區</a>
+                                <a href="/Product/CheckViewList" class="dropdown-item">結帳</a>
+                                <a href="/Product/QueryNotFinishOrder" class="dropdown-item">訂單查看</a>
+                            </div>
                         </div>
-                    </div>
-                    @*測試用，可刪掉*@
-                    <div class="nav-item dropdown">
-                        <a href="/SignalR/Index" class="nav-item nav-link">聊天室測試</a>
-                        
-                    </div>
-                </div>
-                <!-- 購物車清單開始-->
-                <!--<div class="dropdown ml-auto">
-                    <button class="btn btn-cart btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-shopping-cart text-dark fa-2x"></i>
-                        <span class="badge badge-pill badge-danger">9</span>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-right" style="min-width: 300px" aria-labelledby="dropdownMenuButton">
-                        <div class="p-3">
-                            <h6>已選擇商品</h6>
-                            <table class="table table-sm ">
-                                <tbody>
-                                    <tr>
-                                        <td class="align-middle text-center">
-                                            <a href="#removeModal" data-price="1999" data-title="不求人" data-toggle="modal"
-                                               data-target="#removeModal"><i class="far fa-trash-alt "></i></a>
-                                        </td>
-                                        <td class="align-middle">不求人</td>
-                                        <td class="align-middle">1件</td>
-                                        <td class="align-middle text-right">$1999</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="align-middle text-center">
-                                            <a href="#removeModal" data-price="999" data-title="一級偽裝帽" data-toggle="modal"
-                                               data-target="#removeModal"><i class="far fa-trash-alt "></i></a>
-                                        </td>
-                                        <td class="align-middle">一級偽裝帽</td>
-                                        <td class="align-middle">1件</td>
-                                        <td class="align-middle text-right">$999</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <a href="#" class="btn btn-block btn-primary btn-sm text-white">確認結帳</a>
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-item nav-link">會員中心</a>
+                            <div class="dropdown-menu m-0">
+                                <a href="/PatientRecord/List" class="dropdown-item">診療紀錄</a>
+                                <a href="/RatingDoctor/List" class="dropdown-item">醫生評論</a>
+                                <a href="/AllPatientRecord/List" class="dropdown-item">醫師病例總覽(放進哲楨的後台)</a>
+                                <a href="/Product/OrderList" class="dropdown-item">歷史訂單</a>
+                                @*測試用，可刪掉*@
+                                <a href="/SignalR/Index" class="nav-item nav-link">聊天室測試</a>
+                            </div>
                         </div>
+
                     </div>
-                </div>-->
-                <!-- 購物車清單結束-->
-                <!-- 放大鏡在這裡 我先註解掉-->
-                @*<button type="button" class="btn text-dark" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fa fa-search"></i></button>*@
-                @*<a href="/ClinicDetail/List" class="btn btn-primary py-2 px-4 ms-3">登入</a>*@
-                @*把Button的Bootstrap改寫到div，就不會顯示兩個<a>標籤的按鈕*@
-                <div class="btn btn-light">
-                    <a asp-action="Login" asp-controller="Login" id="loginButton" >@LoginbuttonValue</a>
-                    <a asp-action="Logout" asp-controller="Login"  id="looutButton">@LogoutbuttonValue</a>
-                </div>
-                @*這裡也使用div避免文字沒對齊*@
-                <div id="showMe" class="fas fa-user">
-                    @showID @logState
-                </div>
-
-
-
+                    <!-- 購物車清單開始-->
+                    <!--<div class="dropdown ml-auto">
+        <button class="btn btn-cart btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-shopping-cart text-dark fa-2x"></i>
+            <span class="badge badge-pill badge-danger">9</span>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right" style="min-width: 300px" aria-labelledby="dropdownMenuButton">
+            <div class="p-3">
+                <h6>已選擇商品</h6>
+                <table class="table table-sm ">
+                    <tbody>
+                        <tr>
+                            <td class="align-middle text-center">
+                                <a href="#removeModal" data-price="1999" data-title="不求人" data-toggle="modal"
+                                   data-target="#removeModal"><i class="far fa-trash-alt "></i></a>
+                            </td>
+                            <td class="align-middle">不求人</td>
+                            <td class="align-middle">1件</td>
+                            <td class="align-middle text-right">$1999</td>
+                        </tr>
+                        <tr>
+                            <td class="align-middle text-center">
+                                <a href="#removeModal" data-price="999" data-title="一級偽裝帽" data-toggle="modal"
+                                   data-target="#removeModal"><i class="far fa-trash-alt "></i></a>
+                            </td>
+                            <td class="align-middle">一級偽裝帽</td>
+                            <td class="align-middle">1件</td>
+                            <td class="align-middle text-right">$999</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <a href="#" class="btn btn-block btn-primary btn-sm text-white">確認結帳</a>
             </div>
+        </div>
+    </div>-->
+                    <!-- 購物車清單結束-->
+                    <!-- 放大鏡在這裡 我先註解掉-->
+                    @*把Button的Bootstrap改寫到div，就不會顯示兩個<a>標籤的按鈕*@
+                    <div class="btn btn-light">
+                        <a asp-action="Login" asp-controller="Login" id="loginButton">@LoginbuttonValue</a>
+                        <a asp-action="Logout" asp-controller="Login" id="looutButton">@LogoutbuttonValue</a>
+                    </div>
+                    @*這裡也使用div避免文字沒對齊*@
+                    <div id="showMe" class="fas fa-user">
+                        @showID @logState
+                    </div>
+                </div>
         </nav>
         <!-- Navbar End -->
 
@@ -290,9 +285,16 @@
     </div>
     <!-- Footer End -->
     <!-- Back to Top -->
-
-
     <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+
+
+
+
+    <script>
+        const showMe = document.getElementById("showMe").value;
+        console.log(showMe);
+    </script>
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -309,12 +311,8 @@
 
     <!-- Template Javascript -->
     <script src="~/js/main.js"></script>
-
-    
-
     <!-- SweetAlert -->
-
-    <script src="~/plugins/sweetalert2/sweetalert2.all.min.js"></script>
+   <script src="~/plugins/sweetalert2/sweetalert2.all.min.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 
