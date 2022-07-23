@@ -2,6 +2,23 @@
 @{
     ViewData["Title"] = "OrderList";
 }
+@section css
+{
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <!-- Theme style -->
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <!--<link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">-->
+}
+
 
 <!-- Hero Start -->
 <div class="container-fluid bg-primary py-5 hero-header mb-5">
@@ -14,61 +31,163 @@
 <!-- Hero End -->
 <hr />
 
+
+
+@*結果顯示*@
 <div class="card">
-    <div class="card-body p-0">
-        <div class="table-responsive">
-            <table class="table m-0">
-                <thead>
-                    <tr>
-                        <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">訂單編號</font></font></th>
-                        <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">購買日期</font></font></th>
-                        <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">付款狀態</font></font></th>
-                        <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">訂單狀態</font></font></th>
-                        <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">付款方式</font></font></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{
-                        int count = 0;
-                        string sign = "";
-                        foreach (var item in Model)
-                        {
-                            if (item.Order.IsPaid == true)
-                            {
-                                sign = "已付款";
-                            }
-                            if (item.Order.IsPaid == false)
-                            {
-                                sign = "未付款";
-                            }
-                            count++;
+    <div class="card-header">
+        <h3 class="card-title">這裡是viewbag</h3>
+    </div>
+
+    <div class="card-body">
+        <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+            <div class="row">
+                <div class="col-sm-12">
+                    <table id="example1" class="table table-bordered table-striped" aria-describedby="example1_info">
+                        <thead>
                             <tr>
-                                <td>
-                                    @count
-                                </td>
-                                <td>
-                                    @item.Order.OrderDate
-                                </td>
-                                <td>
-                                    @sign
-                                </td>
-                                <td>
-                                    @*<span class="badge badge-denger">*@
-                                    @item.Orderstate.OrderState1
-                                    @*</span>*@
-                                </td>
-                                <td>
-                                    @item.Paytype.PayType1
-                                </td>
-                                <td>
-                                    @Html.ActionLink("顯示訂單內容", "OrderDetailList", new { id = item.Order.OrderId }, new { @class = "btn btn-primary" })
-                                </td>
+                                <th class="sorting sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="訂單編號: activate to sort column descending">訂單編號</th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="訂單日期: activate to sort column ascending">訂單日期</th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="付款狀態: activate to sort column ascending">付款狀態</th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="訂單狀態: activate to sort column ascending">訂單狀態</th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="付款方式: activate to sort column ascending">付款方式</th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label=": activate to sort column ascending"></th>
                             </tr>
-                        }
-                    }
-                </tbody>
-            </table>
+                        </thead>
+                        <tbody>
+                            @{
+                                int count = 0;
+                                string sign = "";
+                                string state = "";
+                                foreach (var item in Model)
+                                {
+                                    if (item.Order.IsPaid == true)
+                                    {
+                                        state = "success";
+                                        sign = "已付款";
+                                    }
+                                    if (item.Order.IsPaid == false)
+                                    {
+                                        state = "secondary";
+                                        sign = "未付款";
+                                    }
+                                    count++;
+                                    <tr>
+                                        <td>
+                                            @count
+                                        </td>
+                                        <td>
+                                            @item.Order.OrderDate
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-@state">
+                                                @sign
+                                            </span>
+                                        </td>
+                                        <td>
+
+                                            @item.Orderstate.OrderState1
+
+                                        </td>
+                                        <td>
+                                            @item.Paytype.PayType1
+                                        </td>
+                                        <td>
+                                            @Html.ActionLink("顯示訂單內容", "OrderDetailList", new { id = item.Order.OrderId }, new { @class = "btn btn-primary" })
+                                            <button type="button" id="GoReserve" class="btn btn-primary GoReserve" data-bs-toggle="modal" data-bs-target="#exampleModal">顯示訂單內容</button>
+                                        </td>
+                                    </tr>
+                                }
+
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th rowspan="1" colspan="1">訂單編號</th>
+                                <th rowspan="1" colspan="1">訂單日期</th>
+                                <th rowspan="1" colspan="1">付款狀態</th>
+                                <th rowspan="1" colspan="1">訂單狀態</th>
+                                <th rowspan="1" colspan="1">付款方式</th>
+                                <th rowspan="1" colspan="1"></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+@*結果顯示*@
+
+
+<!-- 顯示訂單內容Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">訂單內容</h5>
+                <input type="hidden" id="hiddenID" />
+                <input type="hidden" id="hiddenID2" />
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="card-body pt-0">
+                    <div class="row">
+                        <div id="re" class="col-7">
+                            <h1>訂單內容</h1>
+
+                        </div>                       
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="out" type="button" class="btn btn-secondary" data-bs-dismiss="modal">退出</button>              
+            </div>
         </div>
     </div>
 </div>
 
+
+
+
+
+
+
+
+@section Scripts
+{
+
+
+
+
+    <!-- jQuery -->
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- DataTables  & Plugins -->
+    <script src="~/plugins/datatables/jquery.dataTables.min.js"></script> @*//套件本體*@
+    <script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/plugins/jszip/jszip.min.js"></script>
+    <script src="~/plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="~/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="~/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="~/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <!-- AdminLTE App -->
+    @*<script src="~/dist/js/adminlte.min.js"></script>*@
+
+    <script>
+
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "buttons": ["copy", "excel", "pdf", "colvis"], "retrieve": true
+            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+        });
+    </script>
+}

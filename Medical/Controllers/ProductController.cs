@@ -24,7 +24,7 @@ namespace Medical.Controllers
             environment = myEnvironment;
         }
         //歷史訂單
-        //預設會員19 需要抓登入資料
+        //抓登入資料 會員id
         public IActionResult OrderList()
         {
 
@@ -55,7 +55,7 @@ namespace Medical.Controllers
 
         //關於訂單內產品新增產品評論
         //先秀出訂單明細表 
-        //id=orderID
+        //這裡的id是orderID
         public IActionResult OrderDetailList(int? id)
         {
             IEnumerable<OrderDetailViewModel> list = null;
@@ -69,20 +69,17 @@ namespace Medical.Controllers
                             Order=a.Order,
                             Product=a.Product,
                             Member=a.Order.Member,                                                     
-                        });
-              
-                
-              
+                        });                                         
             }
             return View(list);
         }
 
-        //根據訂單產品ID 新增評論 (前台)
+        //根據訂單產品ID 新增評論(前台)
         public IActionResult createReview(int? id)
         {
             var p = _medicalContext.Reviews.FirstOrDefault(a => a.ProductId == id);
 
-                return View(p);
+            return View(p);
         }
         [HttpPost]
         public IActionResult createReview(Review addReviewView)
@@ -94,6 +91,8 @@ namespace Medical.Controllers
             return RedirectToAction("OrderDetailList");
         }
 
+
+
         //管理產品評論 (後台)
         public IActionResult ReviewList()
         {
@@ -102,7 +101,8 @@ namespace Medical.Controllers
             {
                 Review = p,
                 Member = p.Member,
-                RatingType = p.RatingType,             
+                RatingType = p.RatingType,
+                Product=p.Product
             }) ;
             
 
