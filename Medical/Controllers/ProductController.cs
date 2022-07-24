@@ -36,7 +36,7 @@ namespace Medical.Controllers
                 string logJson = "";
                 logJson = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USE);
                 vm = JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
-                
+                ViewBag.name = vm.MemberName;
 
                 list = _medicalContext.Orders.Where(a => a.MemberId == vm.MemberId)
                     .Select(a => new OrderDetailViewModel
@@ -47,7 +47,7 @@ namespace Medical.Controllers
                         Paytype=a.PayType,
                         ShipType=a.ShipType
                     });
-
+                ViewBag.count = list.Count();
             }
             return View(list);
         }
@@ -56,23 +56,24 @@ namespace Medical.Controllers
         //關於訂單內產品新增產品評論
         //先秀出訂單明細表 
         //這裡的id是orderID
-        public IActionResult OrderDetailList(int? id)
+        public IActionResult OrderDetailList(int detail)
         {
-            IEnumerable<OrderDetailViewModel> list = null;
-            
-            if (id != 0)
+            var id = _medicalContext.OrderDetails.Where(n => n.OrderId == detail);
+            List<oddetailviewmodel> list = new List<oddetailviewmodel>();
+            foreach (var item in id)
             {
-                list = _medicalContext.OrderDetails.Where(a => a.OrderId == id)
-                    .Select(a=>new OrderDetailViewModel
-                        {
-                            OrderDetail=a,
-                            Order=a.Order,
-                            Product=a.Product,
-                            Member=a.Order.Member,                                                     
-                        });                                         
+                oddetailviewmodel t = new oddetailviewmodel(_medicalContext)
+                {
+                   orderid=item.OrderId
+                };
+
+                list.Add(t);
             }
-            return View(list);
+            return Json(list);
         }
+
+
+
 
         //根據訂單產品ID 新增評論(前台)
         public IActionResult createReview(int? id)

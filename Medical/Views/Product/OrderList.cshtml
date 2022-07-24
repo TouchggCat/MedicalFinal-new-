@@ -33,10 +33,10 @@
 
 
 
-@*結果顯示*@
+@*歷史訂單結果顯示*@
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">這裡是viewbag</h3>
+        <h3 class="card-title">@ViewBag.name 共有 @ViewBag.count 筆訂單紀錄</h3>
     </div>
 
     <div class="card-body">
@@ -75,6 +75,7 @@
                                     <tr>
                                         <td>
                                             @count
+                                           <input type="hidden" name="@item.Order.OrderId" />
                                         </td>
                                         <td>
                                             @item.Order.OrderDate
@@ -92,13 +93,11 @@
                                         <td>
                                             @item.Paytype.PayType1
                                         </td>
-                                        <td>
-                                            @Html.ActionLink("顯示訂單內容", "OrderDetailList", new { id = item.Order.OrderId }, new { @class = "btn btn-primary" })
-                                            <button type="button" id="GoReserve" class="btn btn-primary GoReserve" data-bs-toggle="modal" data-bs-target="#exampleModal">顯示訂單內容</button>
+                                        <td>                                           
+                                            <button type="button" id="GoReserve" name="@item.Order.OrderId"  onclick="GoDetail()" class="btn btn-primary GoReserve" data-bs-toggle="modal" data-bs-target="#exampleModal">顯示訂單內容</button>
                                         </td>
                                     </tr>
                                 }
-
                             }
                         </tbody>
                         <tfoot>
@@ -121,24 +120,48 @@
 @*結果顯示*@
 
 
-<!-- 顯示訂單內容Modal -->
+<!-- 顯示詳細訂單內容Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">訂單內容</h5>
-                <input type="hidden" id="hiddenID" />
-                <input type="hidden" id="hiddenID2" />
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="card-body pt-0">
-                    <div class="row">
-                        <div id="re" class="col-7">
-                            <h1>訂單內容</h1>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">訂單內容</font></font></h3>
+                            <div class="card-tools">
+                                <div class="input-group input-group-sm" style="width: 150px;">
+                                    @*<input type="text" name="table_search" class="form-control float-right" placeholder="搜索">*@
+                                    @*<div class="input-group-append">
+                                        <button type="submit" class="btn btn-default">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>*@
+                                </div>
+                            </div>
+                        </div>
 
-                        </div>                       
+                        <div class="card-body table-responsive p-0" style="height: 300px;">
+                            <table class="table table-head-fixed text-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">產品編號</font></font></th>
+                                        <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">商品名稱</font></font></th>
+                                        <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">商品照片</font></font></th>
+                                        <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">購買日期</font></font></th>
+                                        <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">數量</font></font></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="orderDetail">
+                                    
+
+                                </tbody>
+                            </table>
+                        </div>
+
                     </div>
+
                 </div>
             </div>
             <div class="modal-footer">
@@ -155,8 +178,59 @@
 
 
 
+
+
+
+
 @section Scripts
 {
+
+    <script>
+        function GoDetail() {
+            $("#orderDetail").empty();
+            //得到訂單id
+            const detail = $(event.target).attr("name");
+            console.log(detail);
+            let result = "";
+            let count = 0;
+            $.post('@Url.Content("~/Product/OrderDetailList")', { "detail": detail }, function (datas) {
+                console.log(datas);
+
+                $.each(datas, function (index, item) {
+                    console.log(item.productimage);
+                    count++;
+                    result += `<tr><td>${count}</td>`
+                    result += `<td>${item.productname}</td>`
+                    result += `<td><img class="img-fluid rounded-top w-75" src="~/images/${item.productimage}" alt=""></td>`
+                    result += `<td>${item.orderday}</td>`
+                    result += `<td>${item.quantity}</td>`
+                    result +=`<td><button type="button" id="GoReserve" name="" onclick="GoDetail()" class="btn btn-primary GoReserve" data-bs-toggle="modal" data-bs-target="#exampleModal">前往評論</button></td></tr>`
+                })
+                
+                $("#orderDetail").html(result);
+
+              })
+
+
+
+
+
+        }
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
