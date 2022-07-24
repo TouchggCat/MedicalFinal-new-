@@ -208,5 +208,28 @@ namespace Medical.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+
+        //============================================AJAX API
+        public IActionResult AccountCheck(string account)
+        {
+            if (!string.IsNullOrWhiteSpace(account))
+            {
+                Member mem = _context.Members.Where(n => n.Email == account).FirstOrDefault();
+                if (mem != null)
+                {
+                    return Content("此帳號已被使用", "text/html", System.Text.Encoding.UTF8);
+                }
+                else
+                {
+                    return Ok();
+                }
+            }
+            else
+            {
+                return Content("請輸入帳號", "text/html", System.Text.Encoding.UTF8);
+            }
+        }
+
+
     }
 }

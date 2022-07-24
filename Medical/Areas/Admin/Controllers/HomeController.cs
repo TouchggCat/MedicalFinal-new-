@@ -13,5 +13,11 @@ namespace Medical.Areas.Admin.Controllers
         {
             return View();
         }
+        public IActionResult BackHome()
+        {
+            //不指定area就是回到原本Controller
+            return RedirectToAction("Index", "Home", new { area = "" });
+
+        }
     }
 }
