@@ -5,11 +5,12 @@
     "\\Medical\\Areas",
     "\\Medical\\Areas\\Admin",
     "\\Medical\\Areas\\Admin\\Controllers",
-    "\\Medical\\DB",
-    "\\Medical\\ViewModel",
+    "\\Medical\\Areas\\Admin\\Views",
+    "\\Medical\\Areas\\Admin\\Views\\AdminProduct",
     "\\Medical\\Views",
-    "\\Medical\\Views\\Product"
+    "\\Medical\\Views\\Product",
+    "\\Medical\\Views\\Shared"
   ],
-  "SelectedNode": "\\Medical\\Areas\\Admin\\Controllers\\AdminProductController.cs",
+  "SelectedNode": "\\Medical\\Views\\Product\\productList.cshtml",
   "PreviewInSolutionExplorer": false
 }

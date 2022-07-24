@@ -12,7 +12,8 @@ namespace Medical.ViewModel
         public List<Product> productList { get; set; }
         public List<ProductBrand> brandList { get; set; }
         public List<ProductCategory> cateList { get; set; }
-
+        public List<Review> reviewList { get; set; }
+        public List<RatingType> rateList { get; set; }
         public List<ProductSpecification> prodSpec { get; set; }
         public IFormFile photo { get; set; }
         public int CurrentPageIndex { get; set; }
