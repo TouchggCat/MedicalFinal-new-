@@ -110,7 +110,7 @@
         }
 
         .slideInUp {
-            background-color: #171117;
+            background-color: #5ED4D2;
             border: 0.2px #666;
             border-radius: 25px 25px 25px 25px;
             margin: 10px 5px 10px 5px;
@@ -152,7 +152,7 @@
         </div>
         <div class="list">
             <label for="" class="task">
-                <input type="checkbox" class="checkAll" name="123" id="c" />
+                <input type="checkbox" class="checkAll1" name="123" id="c" onclick="check_all()"/>
                 全選
             </label>
         </div>
@@ -164,7 +164,7 @@
         </div>
         <div class="list" id="list1">
             <label for="" class="task">
-                <input type="checkbox" class="checkAll" />
+                <input type="checkbox" class="checkAll2" />
                 全選
             </label>
         </div>
@@ -181,7 +181,7 @@
             <div id="hateboot" class="col-lg-4 wow slideInUp" data-wow-delay="0.3s" style="float:left;width:20%;">
                 <div class="team-item" style="padding: 0 9px 25px 9px;">
                     <div class="position-relative rounded-top  container listFCP" style="z-index: 1;">
-                        <img id="img" class="img-fluid rounded-top w-100 dcimg" src="~/images/@Html.DisplayFor(modelItem => item.PicturePath)" style="width:204px;height:204px;">
+                        <img id="img" class="img-fluid rounded-top w-100 dcimg" src="images/@Html.DisplayFor(modelItem => item.PicturePath)" style="width:204px;height:204px;">
 
                     </div>
                     <div class="container">
@@ -197,7 +197,17 @@
 } <footer style="clear:both"></footer>
 @section Scripts{
     <script>
-
+        const ck1 = document.querySelector('.checkAll1')
+        const ck2 = document.querySelector('.checkAll2')
+        function check_all() {
+            console.log("all")
+            var checkboxs = document.querySelector('.check')
+            for (var i = 0; i < checkboxs.length; i++)
+            {
+                console.log(i)
+                checkboxs[i].checked = obj.checked;
+            }
+        }
         @*選單下拉*@
         document.querySelector('.select-field').addEventListener('click', () => {
         document.querySelector('.list').classList.toggle('show');
@@ -218,39 +228,39 @@
                 cancelDoc();
         }
         function DDD() {
-            if ($(event.target)[0].checked == true) {                
+            if ($(event.target)[0].checked == true) {
                 loadWebDoc($(event.target)[0].name);
             }
             if ($(event.target)[0].checked != true)
                 $('#txtKeyword').val="";
         }
-        $(function () {
-            //全選被按
-            $(".checkAll").click(function () {
-                var isCheck = $(this).prop("checked");
-                $(this).closest(".muti-selector").find("input[name='check']").prop("checked", isCheck);
-            });
+        //$(function () {
+        //    //全選被按
+        //    $(".checkAll").click(function () {
+        //        var isCheck = $(this).prop("checked");
+        //        $(this).closest(".muti-selector").find("input[name='check']").prop("checked", isCheck);
+        //    });
 
-            $(".checkAllWrap input[name='check']").click(function () {
+        //    $(".checkAllWrap input[name='check']").click(function () {
 
-                var el_checkAll = $(this).closest(".muti-selector").find(".checkAll");
+        //        var el_checkAll = $(this).closest(".muti-selector").find(".checkAll");
 
-                var checkLength = $(this).closest(".muti-selector").find("input[name='check']:checked").length;// 每區塊目前被V的有幾個
+        //        var checkLength = $(this).closest(".muti-selector").find("input[name='check']:checked").length;// 每區塊目前被V的有幾個
 
-                var inputLength =
-                    $(this).closest(".muti-selector").find("input[name='check']").length; // 每區塊的核取框有多少
+        //        var inputLength =
+        //            $(this).closest(".muti-selector").find("input[name='check']").length; // 每區塊的核取框有多少
 
 
-                if (!$(this).prop("checked")) {
-                    el_checkAll.prop("checked", false);
-                } else {
-                    if (checkLength == inputLength) {
-                        el_checkAll.prop("checked", true);
-                    }
-                }
-            });
+        //        if (!$(this).prop("checked")) {
+        //            el_checkAll.prop("checked", false);
+        //        } else {
+        //            if (checkLength == inputLength) {
+        //                el_checkAll.prop("checked", true);
+        //            }
+        //        }
+        //    });
 
-        });
+        //});
         @*讀取專長選單*@
         async function loadDep() {
 
@@ -265,7 +275,7 @@
             })
 
         }
-        @*讀取TreatmentDetail*@
+        @*讀取Doctor選單*@
         async function loadDoc() {
                 depName = ($(event.target)[0].name);
                 const trtDs = await fetch('@Url.Content("~/Admin/AdminDoctor/Doc")' + `?depName=${depName}`).then(response => response.json());
@@ -280,24 +290,17 @@
 
 
 
-        @*取消專長勾選*@
-        async function cancelDoc() {
-                depName = ($(event.target)[0].name);
-                const trtDs = await fetch('@Url.Content("~/Admin/AdminDoctor/Doc")' + `?depName=${depName}`).then(response => response.json());
-                trtDs.forEach((DoctorName) => {
-                    document.querySelector(`#${DoctorName}`).remove();
-                })
-        }
+
         @*讀取醫生資料Ajax*@
         async function loadWebDoc(dcname) {
             docName = dcname;
             const doctors = await fetch('@Url.Content("~/doctor/GetDoctorWeb")' + `?docName=${docName}`).then(response => response.json());
             console.log(doctors)
             doctors.forEach((DoctorName)=> {
-                web = `<div id="hateboot" class="col-lg-4 wow slideInUp" data-wow-delay="0.3s" style="float:left;width:20%;">
+                web = `<div id="hateboot" class="col-lg-4 wow slideInUp ${doctors[0].doctorName}" data-wow-delay="0.3s" style="float:left;width:20%;">
             <div class="team-item" style="padding: 0 9px 25px 9px;">
                 <div class="position-relative rounded-top  container listFCP" style="z-index: 1;">
-                    <img id="img" class="img-fluid rounded-top w-100 dcimg" src="~/images/${doctors[0].picturePath}" style="width:204px;height:204px;">
+                    <img id="img" class="img-fluid rounded-top w-100 dcimg" src="/images/${doctors[0].picturePath}" style="width:204px;height:204px;">
 
                 </div>
                 <div class="container">
@@ -310,6 +313,16 @@
         </div>`;
                 document.querySelector('.webShow').innerHTML += web;
             })
+        }
+        @*取消專長勾選*@
+        async function cancelDoc() {
+                depName = ($(event.target)[0].name);
+                const trtDs = await fetch('@Url.Content("~/Admin/AdminDoctor/Doc")' + `?depName=${depName}`).then(response => response.json());
+                trtDs.forEach((DoctorName) => {
+                    document.querySelector(`#${DoctorName}`).remove();
+                    document.querySelector(`.${doctorName}`).remove();
+
+                })
         }
     </script>
 }
