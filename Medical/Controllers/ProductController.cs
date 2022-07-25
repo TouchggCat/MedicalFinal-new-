@@ -25,7 +25,7 @@ namespace Medical.Controllers
         }
         //歷史訂單
         //抓登入資料 會員id
-        public IActionResult OrderList()
+        public IActionResult OrderList(Review addReviewView)
         {
 
             IEnumerable<OrderDetailViewModel> list = null;
@@ -48,6 +48,14 @@ namespace Medical.Controllers
                         ShipType=a.ShipType
                     });
                 ViewBag.count = list.Count();
+
+
+                //新增評論
+                addReviewView.MemberId = vm.MemberId;
+                _medicalContext.Reviews.Add(addReviewView);
+                _medicalContext.SaveChanges();
+                //新增評論結束
+
             }
             return View(list);
         }
@@ -75,22 +83,22 @@ namespace Medical.Controllers
 
 
 
-        //根據訂單產品ID 新增評論(前台)
-        public IActionResult createReview(int? id)
-        {
-            var p = _medicalContext.Reviews.FirstOrDefault(a => a.ProductId == id);
+        ////根據訂單產品ID 新增評論(前台)
+        //public IActionResult createReview(int? id)
+        //{
+        //    var p = _medicalContext.Reviews.FirstOrDefault(a => a.ProductId == id);
 
-            return View(p);
-        }
-        [HttpPost]
-        public IActionResult createReview(Review addReviewView)
-        {
+        //    return View(p);
+        //}
+        //[HttpPost]
+        //public IActionResult createReview(Review addReviewView)
+        //{
 
 
-            _medicalContext.Reviews.Add(addReviewView);
-            _medicalContext.SaveChanges();
-            return RedirectToAction("OrderDetailList");
-        }
+        //    _medicalContext.Reviews.Add(addReviewView);
+        //    _medicalContext.SaveChanges();
+        //    return RedirectToAction("OrderDetailList");
+        //}
 
 
 

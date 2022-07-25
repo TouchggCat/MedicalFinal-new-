@@ -682,7 +682,6 @@ C:\Users\Student\Desktop\專題3.0 冠名\Medical\obj\Debug\net5.0\Razor\Views\D
 C:\Users\Student\Desktop\專題3.0 冠名\Medical\obj\Debug\net5.0\Razor\Views\Doctor\Details.cshtml.g.cs
 C:\Users\Student\Desktop\專題3.0 冠名\Medical\obj\Debug\net5.0\Razor\Views\Doctor\Index.cshtml.g.cs
 C:\Users\Student\Desktop\專題3.0 冠名\Medical\obj\Debug\net5.0\Razor\Views\Doctor\IndexTest.cshtml.g.cs
-C:\Users\Student\Desktop\專題3.0 冠名\Medical\obj\Debug\net5.0\Razor\Views\Doctor\List.cshtml.g.cs
 C:\Users\Student\Desktop\專題3.0 冠名\Medical\obj\Debug\net5.0\Razor\Views\Doctor\ListTest.cshtml.g.cs
 C:\Users\Student\Desktop\專題3.0 冠名\Medical\obj\Debug\net5.0\Razor\Views\Doctor\RatingDoctorpartail.cshtml.g.cs
 C:\Users\Student\Desktop\專題3.0 冠名\Medical\obj\Debug\net5.0\Razor\Views\Doctor\SugDoc.cshtml.g.cs

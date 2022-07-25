@@ -21,7 +21,7 @@ namespace Medical.ViewModel
 
         public int Quantity { get { return _context.OrderDetails.FirstOrDefault(n => n.OrderDetailId == detailid).Quantity; } }
 
-        public DateTime? orderday { get { return _context.Orders.FirstOrDefault(n => n.OrderId == orderid).OrderDate; } }
+        public string orderday { get { return ((DateTime)_context.Orders.FirstOrDefault(n => n.OrderId == orderid).OrderDate).ToString("yyyy/MM/dd"); } }
 
         public int productid { get { return _context.OrderDetails.FirstOrDefault(n => n.OrderDetailId==detailid).ProductId; } }
         public string productname { get { return _context.Products.FirstOrDefault(n => n.ProductId == productid).ProductName; } }
