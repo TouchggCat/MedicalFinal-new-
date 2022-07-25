@@ -84,6 +84,7 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Views\LinePayTest\" />
     <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 
