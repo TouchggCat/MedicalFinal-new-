@@ -369,29 +369,102 @@ namespace Medical.Areas.Admin.Controllers
                 return Content("成功");
             }
         }
-
-
-
-
         // 查詢訂單
         public IActionResult QueryAllOrders()
         {
             return View();
         }
+
+
         // 評論查詢/刪除
         public IActionResult DeleteReviews()
         {
-
-
-            return View();
+            CReviewForEditViewModel cReviewModel = new CReviewForEditViewModel
+            {
+                productList = db.Products.ToList(),
+                memberList = db.Members.ToList(),
+                ratingTypeList = db.RatingTypes.ToList(),
+                reviewList = db.Reviews.ToList()
+            };
+            return View(cReviewModel);
         }
-        // 退貨訂單
-        public IActionResult ReturnOrderList()
+
+        public IActionResult SelectedReview(int? id)
+        {
+            Review review = db.Reviews.FirstOrDefault(r => r.ReviewId == id);
+            string memName = db.Members.FirstOrDefault(m => m.MemberId == review.MemberId).MemberName;
+            string ratingstr = db.RatingTypes.FirstOrDefault(rm => rm.RatingTypeId == review.RatingTypeId).RatingTypeName;
+            string prodName = db.Products.FirstOrDefault(p => p.ProductId == review.ProductId).ProductName;
+            int ratingNum = int.Parse(ratingstr);
+            CselectReviewViewModel cReviewmodel = new CselectReviewViewModel()
+            {
+                shade = (bool)review.Shade,
+                revId = review.ReviewId,
+                productName = prodName,
+                ratingtypeNum = ratingNum,
+                memberName = memName,
+                CommentContent = review.CommentContent,
+                datetimeStr = ((DateTime) review.CreateDate).ToString("yyyy年MM月dd日 hh時mm分"),
+            };
+
+            return Json(cReviewmodel);
+        }
+        public IActionResult SingleReviewDelete(string singleR)
+        {
+            
+            //Product p = db.Products.FirstOrDefault(pN => pN.ProductName == singleD);
+
+            Review review = db.Reviews.FirstOrDefault(r => r.ReviewId == int.Parse(singleR));
+
+            if (review != null)
+            {
+                review.Shade=true;
+                db.SaveChanges();
+                return Content("成功");
+            }
+            else
+                return Content("失敗");
+        }
+        public IActionResult SingleReviewRelieve(string singleR)
         {
 
+            //Product p = db.Products.FirstOrDefault(pN => pN.ProductName == singleD);
 
-            return View();
+            Review review = db.Reviews.FirstOrDefault(r => r.ReviewId == int.Parse(singleR));
+
+            if (review != null)
+            {
+                review.Shade = false;
+                db.SaveChanges();
+                return Content("成功");
+            }
+            else
+                return Content("失敗");
         }
+        public IActionResult MultipleShade(int[] multipleD)
+        {
+            if (multipleD.Length == 0)
+                return Content("失敗");
+
+
+            foreach (var revId in multipleD)
+            {
+                Review r = db.Reviews.FirstOrDefault(rv => rv.ReviewId == revId);
+                r.Shade = true;
+                db.SaveChanges();
+            }
+
+
+            return Content("成功");
+        }
+
+        // 退貨訂單
+        public IActionResult ReturnOrderList()
+            {
+
+
+                return View();
+            }
 
     }
 }
