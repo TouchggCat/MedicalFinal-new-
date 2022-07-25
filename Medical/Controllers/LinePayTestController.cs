@@ -10,11 +10,23 @@ using static Medical.CoreLinePay;
 using Newtonsoft.Json;
 using System.Text;
 using Medical.ViewModel;
+using LinePayEC.Models.RequestModels;
+using LinePayEC.Models;
+using LinePayEC;
 
 namespace Medical.Controllers
 {
     public class LinePayTestController : Controller
     {
+
+        public LinePayTestController()
+        {
+            var baseAddress = "https://sandbox-api-pay.line.me";
+            var channelId = "1657329218";
+            var channelSecret = "d5a97c039996d5b4c7dc0b4a3f48b784";
+            LinePayClient client = new LinePayClient(baseAddress, channelId);
+        }
+
         public IActionResult test()
         {
             return View();
@@ -24,6 +36,49 @@ namespace Medical.Controllers
         //    var result = await RequestLinePayAsync(213);
         //    return Redirect(result.info.paymentUrl.web);
         //}
+
+        private Reserve GetReserveData()
+        {
+            Reserve reserve = new Reserve
+            {
+                Amount = 100,
+                Currency = "TWD",
+                OrderId = Guid.NewGuid().ToString()
+            };
+            List<Products> products = new List<Products>()
+            {
+                new Products()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = "tessttt",
+                    Quantity = 2,
+                    Price = 50
+                }
+            };
+
+            reserve.Packages.Add
+            (
+                new Packages { Id = Guid.NewGuid().ToString(), Amount = 100, Products = products }
+            );
+            reserve.RedirectUrls.ConfirmUrl = "https://localhost:44302/LinePayTest/confirm";
+            reserve.RedirectUrls.CancelUrl = "https://localhost:44302/LinePayTest/confirm";
+
+            return reserve;
+        }
+
+
+        //[Route("reserve")]
+        //public async Task<IActionResult> Reserve()
+        //{
+        //    var reserveData = GetReserveData();
+        //    var nonce = Guid.NewGuid().ToString();
+        //    var requestUrl = "/v3/payments/request";
+        //    var requestJson = JsonConvert.SerializeObject(reserveData);
+        //    var signature = (channelSecret, apiUri, body, orderId, channelSecret);
+        //}
+
+
+        ///=========================================
 
         public async Task RequestLinePayAsync(int amount)
         {
