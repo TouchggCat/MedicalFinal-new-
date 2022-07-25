@@ -17,8 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-
-    <None Include="Areas\Admin\Views\AdminDoctor\CreateDetail.cshtml" />
     <None Include="Areas\Admin\Views\AdminDoctor\depEdit.cshtml" />
     <None Include="Areas\Admin\Views\AdminDoctor\Details.cshtml" />
     <None Include="Areas\Admin\Views\AdminDoctor\DoctorRatinglist.cshtml" />

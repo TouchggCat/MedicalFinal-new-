@@ -132,6 +132,25 @@ namespace Medical.Controllers
             
             return View(prod);
         }
+        
+        public IActionResult GetDoctorWeb(string docName)   //讀取醫生資料
+        {
+            if (docName == null)
+            {
+                var docs = _db.Doctors.Where(t => t.DoctorName.Contains(""));
+                return Json(docs);
+            }
+            else
+            {
+                var docs = _db.Doctors.Where(d => d.DoctorName == docName).Distinct();
+                return Json(docs);
+            }
+        }
+        
+        
+        
+        
+        
         public IActionResult SugDoc() {
             
             return View();
