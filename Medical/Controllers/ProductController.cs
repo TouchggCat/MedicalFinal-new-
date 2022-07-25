@@ -49,13 +49,14 @@ namespace Medical.Controllers
                     });
                 ViewBag.count = list.Count();
 
-
-                //新增評論
-                addReviewView.MemberId = vm.MemberId;
-                _medicalContext.Reviews.Add(addReviewView);
-                _medicalContext.SaveChanges();
-                //新增評論結束
-
+                if (addReviewView.ProductId != null)
+                {
+                      //新增評論
+                    addReviewView.MemberId = vm.MemberId;
+                    _medicalContext.Reviews.Add(addReviewView);
+                    _medicalContext.SaveChanges();
+                    //新增評論結束  
+                }                
             }
             return View(list);
         }
@@ -81,24 +82,6 @@ namespace Medical.Controllers
         }
 
 
-
-
-        ////根據訂單產品ID 新增評論(前台)
-        //public IActionResult createReview(int? id)
-        //{
-        //    var p = _medicalContext.Reviews.FirstOrDefault(a => a.ProductId == id);
-
-        //    return View(p);
-        //}
-        //[HttpPost]
-        //public IActionResult createReview(Review addReviewView)
-        //{
-
-
-        //    _medicalContext.Reviews.Add(addReviewView);
-        //    _medicalContext.SaveChanges();
-        //    return RedirectToAction("OrderDetailList");
-        //}
 
 
 
