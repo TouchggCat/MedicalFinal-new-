@@ -231,6 +231,7 @@
 
         <script>
 
+
             let clearCart = document.getElementById("clearCart");
             let inputNum = $(".inputNum");
             let note = $("#note");
@@ -253,8 +254,6 @@
                     mySelect.options.add(OptCoupon);
                     
                 });
-                //console.log($(".myCoupon")[0].value);
-                //console.log($(".myCoupon")[1].value);
 
             }
             //執行 取得使用者Coupon
@@ -282,16 +281,13 @@
                 TotalSum.innerHTML = (tranSumnumber + 60 - discountnumber);
 
             })
-
+            // 更換購物車內容數量
             inputNum.on("change", function (event) {
                 let prodname = $(event.target).parents(".prod").children("p")[0].innerText;
-                console.log(prodname);
                 let amount = $(event.target)[0].value;
                 Intamount = parseInt(amount);
-                console.log(Intamount);
                 let unitprice = $(event.target).parents(".prod").children("p")[1].innerText;
                 Intunitprice = parseInt(unitprice);
-                console.log(Intunitprice)
                 let Subtotal = $(event.target).parents(".prodDiv").children("div:last-child").children("div:first-child").children("p:first-child")[0];
 
                 let myform = $(event.target).parents("form");
@@ -306,6 +302,9 @@
 
 
                     success: function (message) {
+                        let word = message.split('+');
+                        let memberId = word[1];
+
                         Subtotal.innerText = Intamount * Intunitprice
                         tranSum.innerHTML = $(".sub")[0].innerHTML
                         let discountNum = parseInt(discount.innerText);
@@ -320,25 +319,26 @@
                             $("#mySelect option:first").prop("selected","selected")
 
                         }
-                        TotalSum.innerHTML = newSub + 60 -discountNum;
+                        TotalSum.innerHTML = newSub + 60 - discountNum;
+                        loadCartData(memberId);
 
                     }
 
                 })
             })
 
-        //todo
-        //$(".btnAdd").on("click", function () {
+            //todo
+            //$(".btnAdd").on("click", function () {
 
-        //    let myinputNum = $(event.target).parent().children("input")[0];
-        //    myinputNum.value = 2;
+            //    let myinputNum = $(event.target).parent().children("input")[0];
+            //    myinputNum.value = 2;
 
-        //})
-
-            //$("#mySelect").on("click", function () {
-            //    let memId = parseInt(getMemId.val());
-            //    GetCoupon(memId);
             //})
+
+                //$("#mySelect").on("click", function () {
+                //    let memId = parseInt(getMemId.val());
+                //    GetCoupon(memId);
+                //})
 
             $(".btnClick").on("click", function () {
 
@@ -357,19 +357,21 @@
                     cancelButtonText: '取消',
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        Swal.fire(
-                            '成功!',
-                            '您已將此商品移出購物車',
-                            'success'
-                        )
-
                         $.ajax({
                             url: "@Url.Content("~/Product/DeleteCartItem?ShoppingCartId")",
                             type: "POST",
                             enctype: "multipart/form-data",
                             data: myform.serialize(),
                             success: function (message) {
+                                let word = message.split('+');
+                                let memberId = word[1];
+                                Swal.fire(
+                                    '成功!',
+                                    '您已將此商品移出購物車',
+                                    'success'
+                                )
                                 deleteitem.remove();
+                                loadCartData(memberId);
                             }
                         })
                     }
