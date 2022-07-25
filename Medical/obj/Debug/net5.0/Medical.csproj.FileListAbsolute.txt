@@ -736,3 +736,4 @@ C:\medical-3.0\Medical\obj\Debug\net5.0\Medical.pdb
 C:\medical-3.0\Medical\obj\Debug\net5.0\Medical.genruntimeconfig.cache
 C:\medical-3.0\Medical\obj\Debug\net5.0\Razor\Areas\Admin\Views\AdminProduct\CouponList.cshtml.g.cs
 C:\ADO.NET\作業區\Medical-final-3.0\Medical\obj\Debug\net5.0\Razor\Areas\Admin\Views\AdminProduct\CouponList.cshtml.g.cs
+C:\ADO.NET\作業區\Medical-final-3.0\Medical\obj\Debug\net5.0\Razor\Views\LinePayTest\test.cshtml.g.cs
