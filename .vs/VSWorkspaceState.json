@@ -10,6 +10,6 @@
     "\\Medical\\Views",
     "\\Medical\\Views\\Product"
   ],
-  "SelectedNode": "\\Medical\\Areas\\Admin\\Controllers\\AdminProductController.cs",
+  "SelectedNode": "\\Medical\\Views\\Product\\ProductDetail.cshtml",
   "PreviewInSolutionExplorer": false
 }
