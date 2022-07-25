@@ -134,17 +134,22 @@
                             <a href="~/QandA/List" class="dropdown-item">Q&A常見問題</a>
                         </div>
                     </div>
-                    <a href="~/Doctor/ListTest" class="nav-item nav-link">醫療團隊</a>
+                    <div class="nav-item dropdown">
+                        <a href="~/Doctor/ListTest" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">醫療團隊</a>
+                        <div class="dropdown-menu m-0">
+                            <a href="~/Doctor/ListTest" class="dropdown-item">醫療團隊</a>
+                        </div>
+                    </div>
                     <div class="nav-item dropdown">
                         <a href="~/Reserve/ReserveList" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">網路掛號</a>
                         <div class="dropdown-menu m-0">
                             <a href="~/Reserve/ReserveList" class="dropdown-item">線上掛號</a>
                             <a href="~/Reserve/ReserveSearch" class="dropdown-item">查詢與取消</a>
+                            <a href="~/ClinicDetail/List" class="dropdown-item">即時看診進度</a>
                         </div>
                     </div>
-                    <a href="~/ClinicDetail/List" class="nav-item nav-link">即時看診進度</a>
                     <div class="nav-item dropdown">
-                        <a href="/Product/productList" class="nav-link dropdown-toggle active"  data-bs-toggle="dropdown">線上商城</a>
+                        <a href="/Product/productList" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">線上商城</a>
                         <div class="dropdown-menu m-0">
                             <a href="/Product/ProductList" class="dropdown-item">產品列表</a>
                             <a href="/Product/CartViewList" class="dropdown-item">我的購物車</a>
@@ -153,21 +158,16 @@
                             <a href="/Product/QueryNotFinishOrder" class="dropdown-item">訂單查看</a>
                         </div>
                     </div>
-                    <div class="nav-item dropdown">
+                    <div class="nav-item dropdown" id="membercenter"  hidden="hidden" >
                         <a href="#" class="nav-item nav-link">會員中心</a>
                         <div class="dropdown-menu m-0">
-                            <a href="/PatientRecord/List" class="dropdown-item">病例查詢</a>
-                            <a href="/RatingDoctor/List" class="dropdown-item">醫生評論</a>
-                            <a href="/AllPatientRecord/List" class="dropdown-item">醫師病例總覽(放進哲楨的後台)</a>
+                            <a href="/PatientRecord/List" class="dropdown-item">診療紀錄</a>
                             <a href="/Product/OrderList" class="dropdown-item">歷史訂單</a>
-
+                            @*測試用，可刪掉*@
+                            <a href="/SignalR/Index" class="dropdown-item">聊天室測試</a>
                         </div>
                     </div>
-                    @*測試用，可刪掉*@
-                    <div class="nav-item dropdown">
-                        <a href="/SignalR/Index" class="nav-item nav-link">聊天室測試</a>
-                        
-                    </div>
+
                 </div>
                 <!-- 購物車清單開始-->
                 <!--<div class="dropdown ml-auto">
@@ -207,20 +207,15 @@
                 </div>-->
                 <!-- 購物車清單結束-->
                 <!-- 放大鏡在這裡 我先註解掉-->
-                @*<button type="button" class="btn text-dark" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fa fa-search"></i></button>*@
-                @*<a href="/ClinicDetail/List" class="btn btn-primary py-2 px-4 ms-3">登入</a>*@
                 @*把Button的Bootstrap改寫到div，就不會顯示兩個<a>標籤的按鈕*@
                 <div class="btn btn-light">
-                    <a asp-action="Login" asp-controller="Login" id="loginButton" >@LoginbuttonValue</a>
-                    <a asp-action="Logout" asp-controller="Login"  id="looutButton">@LogoutbuttonValue</a>
+                    <a asp-action="Login" asp-controller="Login" id="loginButton">@LoginbuttonValue</a>
+                    <a asp-action="Logout" asp-controller="Login" id="looutButton">@LogoutbuttonValue</a>
                 </div>
                 @*這裡也使用div避免文字沒對齊*@
-                <div id="showMe" class="fas fa-user">
-                    @showID @logState
-                </div>
-
-
-
+            <div id="showMe" class="fas fa-user" value="@showID @logState">
+                @showID @logState
+            </div>
             </div>
         </nav>
         <!-- Navbar End -->
@@ -265,13 +260,13 @@
                 <div class="col-lg-3 col-md-6">
                     <h3 class="text-white mb-4">Line Us</h3>
                     <p class="mb-2"><i class='fab fa-line fa-2x'>智能眼科</i><br />  ID@981uepkv</p>
-                    
+
                     <img src="~/images/LineCord.png" />
 
                 </div>
-                </div>
             </div>
         </div>
+    </div>
     </div>
     <div class="container-fluid text-light py-4" style="background: #051225;">
         <div class="container">
@@ -290,8 +285,6 @@
     </div>
     <!-- Footer End -->
     <!-- Back to Top -->
-
-
     <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded back-to-top"><i class="bi bi-arrow-up"></i></a>
 
     <!-- JavaScript Libraries -->
@@ -309,14 +302,26 @@
 
     <!-- Template Javascript -->
     <script src="~/js/main.js"></script>
-
-    
-
     <!-- SweetAlert -->
-
     <script src="~/plugins/sweetalert2/sweetalert2.all.min.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 
+    <script >
+        
+        var showMe = $("#showMe").attr("value");
+        //console.log(showMe);
+        //console.log($("#membercenter"));
+      
+        if (showMe !="尚未登入 ") {
+            $("#membercenter").attr("hidden", false);
+            console.log(showMe);
+        }
+       
+       
+
+    </script>
+
 </body>
 </html>
+
