@@ -6,11 +6,12 @@
 @section css{
     <style>
         .listFCN {
-            color: #366ba8;
+            color: black !important;
             font-size: 20px;
             font-weight: bold;
             margin-bottom: 10px;
             color: #00EEFF;
+            font-family: Jost, sans-serif !important;
         }
 
         .listFCS {
@@ -19,15 +20,17 @@
             line-height: 18px;
             margin-bottom: 6px;
             overflow: hidden;
-            color: white;
+            color: black !important;
+            font-family: Jost, sans-serif !important;
         }
 
         .listFCC {
-            color: white;
+            color: black !important;
             font-size: 18px;
             height: 54px;
             line-height: 18px;
             overflow: hidden;
+            font-family: Jost, sans-serif !important;
         }
 
         .container img {
@@ -107,13 +110,17 @@
         .detail {
             margin-left: 60px;
             margin-right: 60px;
+            background-color: #4F518C !important;
+            border-color: #4F518C !important;
+            
         }
 
         .slideInUp {
-            background-color: #5ED4D2;
+            background-color: #FE938C;
             border: 0.2px #666;
             border-radius: 25px 25px 25px 25px;
             margin: 10px 5px 10px 5px;
+
         }
 
         #hateboot img {
@@ -123,7 +130,10 @@
         }
 
         .container .detail {
-            color: #BCF7DA !important;
+            color: white !important;
+        }
+        .container img{
+            padding-top:10px !important;
         }
     </style>
 
@@ -203,8 +213,10 @@
             document.getElementById("c").checked = true;
         }
         function firstCheck1() {
-            document.getElementById("d").checked = true;
+            document.getElementById("d").checked = true;            
         }
+
+    @*醫生全選*@
         function check_allDp() {
             var ckboxs = document.getElementsByClassName("check1")
             for (var i = 0; i < ckboxs.length; i++) {
@@ -214,22 +226,24 @@
                 else
                     cancelWebDoc(ckboxs[i].name)
             }
-        }  
+        }
+
+    @*專長全選*@
         function check_all() {
             
             var checkboxs = document.getElementsByClassName("check")
             
-                for (var i = 0; i < checkboxs.length; i++) {
+            for (var i = 0; i < checkboxs.length; i++) {
 
-                    checkboxs[i].checked = !checkboxs[i].checked;
-                    if (checkboxs[i].checked == true)
-                        loadDoc(checkboxs[i].name)
-                    else
-                        cancelDoc(checkboxs[i].name)
-                }
-            check_allDp();
+                checkboxs[i].checked = !checkboxs[i].checked;
+                if (checkboxs[i].checked == true)
+                    loadDoc(checkboxs[i].name);
+                else
+                    cancelDoc(checkboxs[i].name);
+            }
         }
-        @* 選單下拉 *@
+
+    @* 選單下拉 *@
         document.querySelector('.select-field').addEventListener('click', () => {
             document.querySelector('.list').classList.toggle('show');
             document.querySelector('.down-arrow').classList.toggle('rotate180')
@@ -239,16 +253,23 @@
             document.querySelector('#list1').classList.toggle('show');
             document.querySelector('#down-arrow1').classList.toggle('rotate180')
         })
-        loadDep()
-         @*取消專長勾選*@
+
+
+    @*網頁開始執行*@
+        loadDep()     
+        
+
+    @*取消全選專長勾選*@
         async function cancelDoc(N) {
                 depName = N;
                 const trtDs = await fetch('@Url.Content("~/Admin/AdminDoctor/Doc")' + `?depName=${depName}`).then(response => response.json());
                 trtDs.forEach((DoctorName) => {
                     document.querySelector(`#${DoctorName}`).remove();
+                    document.getElementById(`${DoctorName}Div`).remove();
                 })
         }
-        @*取消醫生Ajax*@
+
+    @*取消全選醫生Ajax*@
         async function cancelWebDoc(N) {
             dcName = N;
             const doctors = await fetch('@Url.Content("~/doctor/GetDoctorWeb")' + `?docName=${dcName}`).then(response => response.json());
@@ -257,9 +278,8 @@
                 div.remove()
             })
         }
-        
 
-
+    @*取消勾選專長*@
         function CCC() {
             if ($(event.target)[0].checked == true) {
                 loadDoc($(event.target)[0].name);
@@ -267,72 +287,49 @@
             else
                 cancelDoc($(event.target)[0].name);
         }
+
+    @*取消勾選醫生*@
         function DDD() {
             if ($(event.target)[0].checked == true) {
                 loadWebDoc($(event.target)[0].name);
             }
             else
                 cancelWebDoc($(event.target)[0].name)
-        }
-        //$(function () {
-        //    //全選被按
-        //    $(".checkAll").click(function () {
-        //        var isCheck = $(this).prop("checked");
-        //        $(this).closest(".muti-selector").find("input[name='check']").prop("checked", isCheck);
-        //    });
-
-        //    $(".checkAllWrap input[name='check']").click(function () {
-
-        //        var el_checkAll = $(this).closest(".muti-selector").find(".checkAll");
-
-        //        var checkLength = $(this).closest(".muti-selector").find("input[name='check']:checked").length;// 每區塊目前被V的有幾個
-
-        //        var inputLength =
-        //            $(this).closest(".muti-selector").find("input[name='check']").length; // 每區塊的核取框有多少
+        }        
 
 
-        //        if (!$(this).prop("checked")) {
-        //            el_checkAll.prop("checked", false);
-        //        } else {
-        //            if (checkLength == inputLength) {
-        //                el_checkAll.prop("checked", true);
-        //            }
-        //        }
-        //    });
-
-        //});
-        @*讀取專長選單*@
+    @*讀取專長選單*@
         async function loadDep() {
 
             const deps = await fetch('@Url.Content("~/Admin/AdminDoctor/Dep")').then(response => response.json())
             deps.forEach((DeptName) => {                
                 name =`<label for="" class="task">
-                <input type="checkbox" class="check" onclick="CCC()" id="${DeptName}" name="${DeptName}" value="${DeptName}"/>
-                ${DeptName}
-            </label>`;
+                       <input type="checkbox" class="check" onclick="CCC()" id="${DeptName}" name="${DeptName}" value="${DeptName}"/>
+                       ${DeptName}
+                       </label>`;
                 document.querySelector('.list').innerHTML += name;
             })
             firstCheck();
             check_all();
         }
-        @*讀取Doctor選單*@
+
+
+    @*讀取Doctor選單*@
         async function loadDoc(N) {
                 depName =N/*($(event.target)[0].name);*/
                 const trtDs = await fetch('@Url.Content("~/Admin/AdminDoctor/Doc")' + `?depName=${depName}`).then(response => response.json());
                 trtDs.forEach((DoctorName) => {
                     name = `<label for="" class="task" id="${DoctorName}">
-                <input type="checkbox" class="check1" name="${DoctorName}" onclick="DDD()" value="${DoctorName}"/>
+                <input type="checkbox" class="check1" checked="true" name="${DoctorName}" onclick="DDD()" value="${DoctorName}"/>
                 ${DoctorName}
             </label>`;
-                    document.querySelector('#list1').innerHTML += name;                    
+                    document.querySelector('#list1').innerHTML += name;
+                    loadWebDoc(`${DoctorName}`)
                 })
-            firstCheck1();
+            firstCheck1()
         }
 
-
-
-
-        @*讀取醫生資料Ajax*@
+    @*讀取醫生資料Ajax*@
         async function loadWebDoc(dcname) {
             docName = dcname;
             const doctors = await fetch('@Url.Content("~/doctor/GetDoctorWeb")' + `?docName=${docName}`).then(response => response.json());
@@ -346,7 +343,7 @@
                 </div>
                 <div class="container">
                     <div class="listFCN">${doctors[0].doctorName}</div>
-Url Content                   <div class="listFCS">${doctors[0].jobTitle}</div>
+                   <div class="listFCS">${doctors[0].jobTitle}</div>
                     <div class="listFCC">學歷:${doctors[0].education}</div>
                     <button class = "btn btn-outline-success detail" >詳細資料<button/>
                 </div>
