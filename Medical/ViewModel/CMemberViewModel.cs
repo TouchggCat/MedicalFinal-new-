@@ -115,11 +115,11 @@ namespace Medical.ViewModel
             set { _member.MemberId = value; }
         }
         //=================以下給Edit功能使用   (導覽屬性)
-        public virtual RoleType RoleT
-        {
-            get { return _member.RoleNavigation; }
-            set { _member.RoleNavigation = value; }
-        }
+        //public virtual RoleType RoleT
+        //{
+        //    get { return _member.RoleNavigation; }
+        //    set { _member.RoleNavigation = value; }
+        //}
         //public virtual Gender GenD
         //{
         //    get { return _member.Gender; }

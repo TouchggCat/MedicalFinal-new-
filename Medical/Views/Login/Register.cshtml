@@ -106,18 +106,26 @@
         </div>
 
         <p style="text-align:center">會員註冊</p>
-        <label asp-for="MemberName" class="control-label"></label>
+        @*註冊不填太多資料，身分證預設值1*@
+        <div class="form-group" hidden="hidden">
+            <label asp-for="IdentityId" class="control-label"></label>-->
+            <input asp-for="IdentityId" class="form-control mb-2" id="idid" value="1" />
+            <span asp-validation-for="IdentityId" class="text-danger"></span>
+        </div>
+
+        <label asp-for="MemberName" class="control-label"></label>   
         <input type="text" class="form-control" placeholder="姓名" required="" autofocus="" asp-for="MemberName" id="memName">
+
         <label asp-for="Email" class="control-label"></label>
-        <input type="email" class="form-control" placeholder="電子郵件信箱" required autofocus="" id="txtEmail" asp-for="Email">
         <span asp-validation-for="Email" class="text-danger" id="accountAlert"></span>
-        <br />
+        <input type="email" class="form-control" placeholder="電子郵件信箱" required autofocus="" id="txtEmail" asp-for="Email">
+
         <label asp-for="Password" class="control-label"></label>
+        <span class="text-danger" id="passAlert"></span>
         <input type="password" class="form-control" placeholder="密碼" asp-for="Password" id="pass">
         <label class="control-label">密碼確認</label>
         <input type="password" class="form-control" placeholder="密碼確認" id="passCheck">
-        <span class="text-danger" id="passAlert"></span>
-        <br />
+
         @*<input class="form-control" placeholder="身分證字號" required autofocus="" asp-for="IdentityId" id="idid">
         <span asp-validation-for="IdentityId" class="text-danger"></span>*@
 
@@ -155,7 +163,8 @@
         <input asp-for="Address" class="form-control" id="address" placeholder="地址" />
 
         <div class="input-group">
-            <button class="g-recaptcha btn btn-md btn-block submit" type="submit" data-sitekey="6Lfk2AkhAAAAAOtIbeGmRkHUqjne2XfLYmM21Kg3" data-callback="onSubmit">
+            <button id="regBtn" class="g-recaptcha btn btn-md btn-block submit" type="submit" data-sitekey="6Lfk2AkhAAAAAOtIbeGmRkHUqjne2XfLYmM21Kg3">
+                @*data-callback="onSubmit"*@
                 <i class="fas fa-user-plus"></i> 註冊
             </button>
         </div>
@@ -163,65 +172,73 @@
         <input type="button" value="RegisterDemo" class="btn btn-primary btn-block" id="regiDemo" />
 
     </form>
-</div>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    @section Scripts {
-        <script>
-            $("#regiDemo").click(() => {
-                $("#txtEmail").val("giraffegod@gmail.com");
-                $("#pass").val("1234")
-                $("#passCheck").val("1234")
+        </div>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            @section Scripts {
+                <script>
+                    $("#regiDemo").click(() => {
+                        $("#txtEmail").val("giraffegod@gmail.com");
+                        $("#pass").val("1234")
+                        $("#passCheck").val("1234")
 
-                $("#idid").val("A123456789")
-                $("#memName").val("湛士華")
-                $("#phone").val("0900999999")
-                $("#address").val("新店區中正路1號1樓")
+                        $("#idid").val("A123456789")
+                        $("#memName").val("湛士華")
+                        $("#phone").val("0900999999")
+                        $("#address").val("新店區中正路1號1樓")
 
-                //====================自動跳出下拉選單!!!
-                $('#citySelect').val("2");
-                $('#genSelect').val("1");
-                //生日值顯示
-                $('#bday').val("2012-02-06");
+                        //====================自動跳出下拉選單!!!
+                        $('#citySelect').val("2");
+                        $('#genSelect').val("1");
+                        //生日值顯示
+                        $('#bday').val("2012-02-06");
 
-            })
+                    })
 
 
-            $("#txtEmail").blur(function () {
-                const str = $(this).val();
-                $.ajax({
-                    url: "/Login/AccountCheck?account=" + str,
-                    method: "GET",
-                    success: function (data) {
-                        $("#accountAlert").text(data);
-                    },
-                    error: function (msg) {
-                        alert('error：' + msg.toLabel);
+                    $("#txtEmail").blur(function () {
+                        const str = $(this).val();
+                        $.ajax({
+                            url: "/Login/AccountCheck?account=" + str,
+                            method: "GET",
+                            success: function (data) {
+                                $("#accountAlert").text(data);
+                                /*把span擺在label後面靠右顯示，省一行*/
+                                $("#accountAlert").css("float", "right");
+                            },
+                            error: function (msg) {
+                                alert('error：' + msg.toLabel);
+                            }
+                        })
+                    })
+
+                    $("#passCheck").blur(function () {
+                        const str = $(this).val();
+                        const pass = $("#pass").val();
+                        if (str != pass) {
+                            $("#passAlert").text("輸入錯誤，請重新輸入");
+                            /*把span擺在label後面靠右顯示，省一行*/
+                            $("#passAlert").css("float", "right");
+
+                            //$("#regBtn").removeProp("data-callback")
+                        }
+                        else
+                            $("#passAlert").text("");
+                        //$("#regBtn").prop("data-callback", "onSubmit")
+
+                    })
+                </script>
+
+                <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+                <script>
+                    function onSubmit(token) {
+                        document.getElementById("demo-form").submit();
                     }
-                })
-            })
-
-            $("#passCheck").blur(function () {
-                const str = $(this).val();
-                const pass = $("#pass").val();
-                if (str != pass) {
-                    $("#passAlert").text("輸入錯誤，請重新輸入");
-                }
-                else
-                    $("#passAlert").text("");
-            })
-        </script>
-
-        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-        <script>
-            function onSubmit(token) {
-                document.getElementById("demo-form").submit();
+                </script>
             }
-        </script>
-    }
 
