@@ -24,15 +24,21 @@ namespace Medical.Controllers
             environment = myEnvironment;
         }
         //歷史訂單
-        //預設會員19 需要抓登入資料
-        //id=memberID
-        public IActionResult OrderList(int? id = 19)
+        //抓登入資料 會員id
+        public IActionResult OrderList(Review addReviewView)
         {
 
             IEnumerable<OrderDetailViewModel> list = null;
-            if (id != 0)
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USE))
             {
-                list = _medicalContext.Orders.Where(a => a.MemberId == id)
+                CMemberAdminViewModel vm = null;
+
+                string logJson = "";
+                logJson = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USE);
+                vm = JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
+                ViewBag.name = vm.MemberName;
+
+                list = _medicalContext.Orders.Where(a => a.MemberId == vm.MemberId)
                     .Select(a => new OrderDetailViewModel
                     {
                         Order = a,
@@ -41,7 +47,16 @@ namespace Medical.Controllers
                         Paytype=a.PayType,
                         ShipType=a.ShipType
                     });
+                ViewBag.count = list.Count();
 
+                if (addReviewView.ProductId != null)
+                {
+                      //新增評論
+                    addReviewView.MemberId = vm.MemberId;
+                    _medicalContext.Reviews.Add(addReviewView);
+                    _medicalContext.SaveChanges();
+                    //新增評論結束  
+                }                
             }
             return View(list);
         }
@@ -49,52 +64,26 @@ namespace Medical.Controllers
 
         //關於訂單內產品新增產品評論
         //先秀出訂單明細表 
-        //id=orderID
-        public IActionResult OrderDetailList(int? id)
+        //這裡的id是orderID
+        public IActionResult OrderDetailList(int detail)
         {
-            IEnumerable<OrderDetailViewModel> list = null;
-            IEnumerable<OrderDetailViewModel> list1 = null;
-            if (id != 0)
+            var id = _medicalContext.OrderDetails.Where(n => n.OrderId == detail);
+            List<oddetailviewmodel> list = new List<oddetailviewmodel>();
+            foreach (var item in id)
             {
-                list = _medicalContext.OrderDetails.Where(a => a.OrderId == id)
-                    .Select(a=>new OrderDetailViewModel
-                        {
-                            OrderDetail=a,
-                            Order=a.Order,
-                            Product=a.Product,
-                            Member=a.Order.Member,                                                     
-                        });
-                //foreach (var p in list)
-                //{
-                //    list1 = _medicalContext.Products.Where(a => a.ProductId == p.ProductId).Select(a => new OrderDetailViewModel
-                //    { 
-                        
-                    
-                //    });
+                oddetailviewmodel t = new oddetailviewmodel(_medicalContext)
+                {
+                   orderid=item.OrderId
+                };
 
-                //}
-                
-              
+                list.Add(t);
             }
-            return View(list);
+            return Json(list);
         }
 
-        //根據訂單產品ID 新增評論 (前台)
-        public IActionResult createReview(int? id)
-        {
-            var p = _medicalContext.Reviews.FirstOrDefault(a => a.ProductId == id);
-
-                return View(p);
-        }
-        [HttpPost]
-        public IActionResult createReview(Review addReviewView)
-        {
 
 
-            _medicalContext.Reviews.Add(addReviewView);
-            _medicalContext.SaveChanges();
-            return RedirectToAction("OrderDetailList");
-        }
+
 
         //管理產品評論 (後台)
         public IActionResult ReviewList()
@@ -104,7 +93,8 @@ namespace Medical.Controllers
             {
                 Review = p,
                 Member = p.Member,
-                RatingType = p.RatingType,             
+                RatingType = p.RatingType,
+                Product=p.Product
             }) ;
             
 
