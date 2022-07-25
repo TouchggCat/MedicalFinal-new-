@@ -164,7 +164,7 @@
         </div>
         <div class="list" id="list1">
             <label for="" class="task">
-                <input type="checkbox" class="checkAll2" />
+                <input type="checkbox" class="checkAll2" onclick="check_allDp()" id="d"/>
                 全選
             </label>
         </div>
@@ -199,18 +199,39 @@
     <script>
         const ck1 = document.querySelector('.checkAll1')
         const ck2 = document.querySelector('.checkAll2')
-        function check_all() {
-            console.log("all")
-            var checkboxs = document.querySelector('.check')
-            for (var i = 0; i < checkboxs.length; i++)
-            {
-                console.log(i)
-                checkboxs[i].checked = obj.checked;
-            }
+        function firstCheck() {
+            document.getElementById("c").checked = true;
         }
-        @*選單下拉*@
+        function firstCheck1() {
+            document.getElementById("d").checked = true;
+        }
+        function check_allDp() {
+            var ckboxs = document.getElementsByClassName("check1")
+            for (var i = 0; i < ckboxs.length; i++) {
+                ckboxs[i].checked = !ckboxs[i].checked;
+                if (ckboxs[i].checked == true)
+                    loadWebDoc(ckboxs[i].name)
+                else
+                    cancelWebDoc(ckboxs[i].name)
+            }
+        }  
+        function check_all() {
+            
+            var checkboxs = document.getElementsByClassName("check")
+            
+                for (var i = 0; i < checkboxs.length; i++) {
+
+                    checkboxs[i].checked = !checkboxs[i].checked;
+                    if (checkboxs[i].checked == true)
+                        loadDoc(checkboxs[i].name)
+                    else
+                        cancelDoc(checkboxs[i].name)
+                }
+            check_allDp();
+        }
+        @* 選單下拉 *@
         document.querySelector('.select-field').addEventListener('click', () => {
-        document.querySelector('.list').classList.toggle('show');
+            document.querySelector('.list').classList.toggle('show');
             document.querySelector('.down-arrow').classList.toggle('rotate180')
 
         })
@@ -218,21 +239,40 @@
             document.querySelector('#list1').classList.toggle('show');
             document.querySelector('#down-arrow1').classList.toggle('rotate180')
         })
-        loadDep();
+        loadDep()
+         @*取消專長勾選*@
+        async function cancelDoc(N) {
+                depName = N;
+                const trtDs = await fetch('@Url.Content("~/Admin/AdminDoctor/Doc")' + `?depName=${depName}`).then(response => response.json());
+                trtDs.forEach((DoctorName) => {
+                    document.querySelector(`#${DoctorName}`).remove();
+                })
+        }
+        @*取消醫生Ajax*@
+        async function cancelWebDoc(N) {
+            dcName = N;
+            const doctors = await fetch('@Url.Content("~/doctor/GetDoctorWeb")' + `?docName=${dcName}`).then(response => response.json());
+            doctors.forEach((DoctorName) => {
+                var div = document.getElementById(`${doctors[0].doctorName}Div`);
+                div.remove()
+            })
+        }
+        
+
 
         function CCC() {
             if ($(event.target)[0].checked == true) {
-                loadDoc();
+                loadDoc($(event.target)[0].name);
             }
             else
-                cancelDoc();
+                cancelDoc($(event.target)[0].name);
         }
         function DDD() {
             if ($(event.target)[0].checked == true) {
                 loadWebDoc($(event.target)[0].name);
             }
-            if ($(event.target)[0].checked != true)
-                $('#txtKeyword').val="";
+            else
+                cancelWebDoc($(event.target)[0].name)
         }
         //$(function () {
         //    //全選被按
@@ -265,27 +305,28 @@
         async function loadDep() {
 
             const deps = await fetch('@Url.Content("~/Admin/AdminDoctor/Dep")').then(response => response.json())
-            deps.forEach((DeptName) => {
-                console.log(DeptName)
+            deps.forEach((DeptName) => {                
                 name =`<label for="" class="task">
                 <input type="checkbox" class="check" onclick="CCC()" id="${DeptName}" name="${DeptName}" value="${DeptName}"/>
                 ${DeptName}
             </label>`;
                 document.querySelector('.list').innerHTML += name;
             })
-
+            firstCheck();
+            check_all();
         }
         @*讀取Doctor選單*@
-        async function loadDoc() {
-                depName = ($(event.target)[0].name);
+        async function loadDoc(N) {
+                depName =N/*($(event.target)[0].name);*/
                 const trtDs = await fetch('@Url.Content("~/Admin/AdminDoctor/Doc")' + `?depName=${depName}`).then(response => response.json());
                 trtDs.forEach((DoctorName) => {
                     name = `<label for="" class="task" id="${DoctorName}">
                 <input type="checkbox" class="check1" name="${DoctorName}" onclick="DDD()" value="${DoctorName}"/>
                 ${DoctorName}
             </label>`;
-                    document.querySelector('#list1').innerHTML+= name;
+                    document.querySelector('#list1').innerHTML += name;                    
                 })
+            firstCheck1();
         }
 
 
@@ -295,9 +336,9 @@
         async function loadWebDoc(dcname) {
             docName = dcname;
             const doctors = await fetch('@Url.Content("~/doctor/GetDoctorWeb")' + `?docName=${docName}`).then(response => response.json());
-            console.log(doctors)
+
             doctors.forEach((DoctorName)=> {
-                web = `<div id="hateboot" class="col-lg-4 wow slideInUp ${doctors[0].doctorName}" data-wow-delay="0.3s" style="float:left;width:20%;">
+                web = `<div id="${doctors[0].doctorName}Div" class="col-lg-4 wow slideInUp" data-wow-delay="0.3s" style="float:left;width:20%;">
             <div class="team-item" style="padding: 0 9px 25px 9px;">
                 <div class="position-relative rounded-top  container listFCP" style="z-index: 1;">
                     <img id="img" class="img-fluid rounded-top w-100 dcimg" src="/images/${doctors[0].picturePath}" style="width:204px;height:204px;">
@@ -305,7 +346,7 @@
                 </div>
                 <div class="container">
                     <div class="listFCN">${doctors[0].doctorName}</div>
-                    <div class="listFCS">${doctors[0].jobTitle}</div>
+Url Content                   <div class="listFCS">${doctors[0].jobTitle}</div>
                     <div class="listFCC">學歷:${doctors[0].education}</div>
                     <button class = "btn btn-outline-success detail" >詳細資料<button/>
                 </div>
@@ -314,16 +355,8 @@
                 document.querySelector('.webShow').innerHTML += web;
             })
         }
-        @*取消專長勾選*@
-        async function cancelDoc() {
-                depName = ($(event.target)[0].name);
-                const trtDs = await fetch('@Url.Content("~/Admin/AdminDoctor/Doc")' + `?depName=${depName}`).then(response => response.json());
-                trtDs.forEach((DoctorName) => {
-                    document.querySelector(`#${DoctorName}`).remove();
-                    document.querySelector(`.${doctorName}`).remove();
 
-                })
-        }
     </script>
 }
+
 
