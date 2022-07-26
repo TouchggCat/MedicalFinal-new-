@@ -2,10 +2,12 @@
     <style>
         .dialogue {
             width: 500px;
+            height: 800px;
             padding: 20px;
             box-shadow: 0 0 10px #000;
             background-color: #E0DFC0;
             border-radius: 20px;
+            overflow: auto;
         }
 
         .user {
@@ -86,37 +88,51 @@
 </div>
 <!-- Hero End -->
 <br>
-<button onclick="show()"></button>
+<button onclick="show()">呼叫機器人</button>
 <div class="dialogue">
     <div class="user remote">
         <div class="avatar">
             <div class="pic">
                 <img src="https://picsum.photos/100/100?random=12" />
             </div>
-            <div class="name">You</div>
+            <div class="name">漢斯機器人</div>
+        </div>
+        <div class="text">
+            您好，需要甚麼幫忙嗎？
+        </div>
+    </div>
+    <div class="user remote">
+        <div class="avatar">
+            <div class="pic">
+                <img src="https://picsum.photos/100/100?random=12" />
+            </div>
+            <div class="name">漢斯機器人</div>
         </div>
         <div class="text">
             <input type="button" value="我要掛號" onclick="Register()">
             <input type="button" value="交通指引" onclick="Register()">
             <input type="button" value="衛教健保" onclick="Register()">
+            <input type="button" value="該掛哪科" onclick="Register()">
         </div>
     </div>
     @*<div class="user local">
-        <div class="avatar">
-            <div class="pic">
-                <img src="https://picsum.photos/100/100?random=16" />
+            <div class="avatar">
+                <div class="pic">
+                    <img src="https://picsum.photos/100/100?random=16" />
+                </div>
+                <div class="name">Me</div>
             </div>
-            <div class="name">Me</div>
-        </div>
-        <div class="text">這是我的對話文字</div>        
-    </div>*@
-    <div class="inputText">
-        <input id="txtBox" type="text" value=""/>
-        <input type="button" value="輸入" onclick="Insert()"/>
-    </div>
+            <div class="text">這是我的對話文字</div>
+        </div>*@
+<div class="inputText">
+    <input id="txtBox" type="text" value="" />
+    <input type="button" value="輸入" onclick="Insert()" />
+    <input type="button" value="我想想" onclick="QuestionButton()" />
+</div>
 </div>
 @section Scripts{
     <script>        
+
         function Register() {
             txt = $(event.target).attr("value")
             GetA(txt);
@@ -124,6 +140,23 @@
         function Insert() {
             txt = document.getElementById('txtBox').value            
             GetA(txt);
+        }
+        function QuestionButton() {
+            Remotetext = `
+                <div class="user remote">
+                    <div class="avatar">
+                        <div class="pic">
+                            <img src="https://picsum.photos/100/100?random=12" />
+                        </div>
+                    <div class="name">漢斯機器人</div>
+                </div>
+                <div class="text">
+                    <input type="button" value="我要掛號" onclick="Register()">
+                    <input type="button" value="交通指引" onclick="Register()">
+                    <input type="button" value="衛教健保" onclick="Register()">
+                    <input type="button" value="該掛哪科" onclick="Register()">
+                </div>`
+            document.querySelector(".dialogue").innerHTML += Remotetext;
         }
         async function GetA(txt) {
             if (txt != "") {
@@ -144,10 +177,10 @@
                         <div class="pic">
                             <img src="https://picsum.photos/100/100?random=12" />
                         </div>
-                    <div class="name">You</div>
+                    <div class="name">漢斯機器人</div>
                 </div>
                 <div class="text">
-                    ${Aws.answer}            
+                    ${Aws.answer}                    
                 </div>
         </div>`
 

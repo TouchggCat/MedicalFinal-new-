@@ -111,7 +111,7 @@ namespace Medical.Controllers
             }
         }
 
-
+        /////////機器人問題集/////////
         public IActionResult GetAnswer(string Qs)
         {
             var Aws0 = new DocJsonViewModel
@@ -125,8 +125,8 @@ namespace Medical.Controllers
             };
             var Aws2 = new DocJsonViewModel
             {
-                Question = "交通",
-                Answer = "這是我們的地址"
+                Question = "交通",                
+                Answer = "<iframe src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3615.004559158371!2d121.54122331544684!3d25.033919344447703!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442abd3781b82e1%3A0xc0508038c1566f21!2zMTA25Y-w5YyX5biC5aSn5a6J5Yy65b6p6IiI5Y2X6Lev5LiA5q61Mzkw6JmfMuaokw!5e0!3m2!1szh-TW!2stw!4v1658825160170!5m2!1szh-TW!2stw' width='600' height='450' style='border:0;' allowfullscreen='' loading='lazy' referrerpolicy='no-referrer-when-downgrade'></iframe>"
             };
             
             var Aws3 = new DocJsonViewModel
@@ -141,12 +141,12 @@ namespace Medical.Controllers
             };
             var Aws5 = new DocJsonViewModel
             {
-                Question = "痠痛脹不舒服",
+                Question = "痠痛",
                 Answer = "是否伴隨頭暈頭痛?"
             };
             var Aws6 = new DocJsonViewModel
             {
-                Question = "眼壓高",
+                Question = "眼壓",
                 Answer = "是否伴隨頭暈頭痛?"
             };
             var Aws7 = new DocJsonViewModel
@@ -158,6 +158,11 @@ namespace Medical.Controllers
             {
                 Question = "白內障",
                 Answer = "是否伴隨頭暈頭痛?"
+            };
+            var Aws9 = new DocJsonViewModel
+            {
+                Question = "該掛哪科",
+                Answer = "請描述一下您的症狀"
             };
             if (Qs.Contains(Aws1.Question))
                 return Json(Aws1);
@@ -175,6 +180,8 @@ namespace Medical.Controllers
                 return Json(Aws7);
             if (Qs.Contains(Aws8.Question))
                 return Json(Aws8);
+            if (Qs.Contains(Aws9.Question))
+                return Json(Aws9);
             else
                 return Json(Aws0);
         }
