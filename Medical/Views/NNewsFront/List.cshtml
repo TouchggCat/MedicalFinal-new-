@@ -18,14 +18,20 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-3 mb-4">
+
             <div class=" ">
-                @*========查詢按鍵============*@
-                <div class="input-group" style="display:block; text-align:left;margin-block:30px">
-                    @Html.TextBox("txtKeyword", "", new { @class = "font-weight-bold", style = "font-size:20px;border-radius:15px;", @placeholder = "search..." })
-                    <button type="submit" class="btn btn-lg btn-default ">
-                        <i class="fa fa-search">查詢</i>
-                    </button>
-                </div>
+                @using (Html.BeginForm())
+                {
+                    @*========查詢按鍵============*@
+                    <div class="input-group" style="display:block; text-align:left;margin-block:30px">
+                        @Html.TextBox("txtKeyword", "", new { @class = "font-weight-bold", style = "font-size:14px;border-radius:15px;", @placeholder = "search..." })
+                        <button type="submit" class="btn btn-lg btn-default ">
+                            <i class="fa fa-search">查詢</i>
+                        </button>
+                    </div>
+                }
+
+
 
                 @*===熱搜標題===*@
                 <div style="margin-block:20px">
@@ -34,16 +40,17 @@
                     </a>
                 </div>
                 @*====熱搜按鈕====*@
-                <div style="margin:10px">
-                    <button class="col-3 btn btn-outline-primary" style="border-radius:15px">1</button>
-                    <button class="col-3 btn btn-outline-primary" style="border-radius:15px">1</button>
-                    <button class="col-3 btn btn-outline-primary" style="border-radius:15px">1</button>
-                </div>
-                <div style="margin:10px">
-                    <button class="col-3 btn btn-outline-primary" style="border-radius:15px">1</button>
-                    <button class="col-3 btn btn-outline-primary" style="border-radius:15px">1</button>
-                    <button class="col-3 btn btn-outline-primary" style="border-radius:15px">1</button>
-                </div>
+            <div style="margin:10px">
+                @*需要更改*@
+                    <a href="~/NNewsFront/List?txtKeyword=Smile" class="col-3 btn btn-outline-primary" style="border-radius:15px">Smile</a>
+                    <a href="~/NNewsFront/List?txtKeyword=Smile" class="col-3 btn btn-outline-primary" style="border-radius:15px">Smile</a>
+                    <a href="~/NNewsFront/List?txtKeyword=Smile" class="col-3 btn btn-outline-primary" style="border-radius:15px">Smile</a>
+            </div>
+            <div style="margin:10px">
+                <a href="~/NNewsFront/List?txtKeyword=Smile" class="col-3 btn btn-outline-primary" style="border-radius:15px">Smile</a>
+                <a href="~/NNewsFront/List?txtKeyword=Smile" class="col-3 btn btn-outline-primary" style="border-radius:15px">Smile</a>
+                <a href="~/NNewsFront/List?txtKeyword=Smile" class="col-3 btn btn-outline-primary" style="border-radius:15px">Smile</a>
+            </div>
 
                 @*===Categories的搜尋===*@
                 @*====搜尋標題====*@
@@ -54,11 +61,15 @@
                 </div>
 
                 <div class="card-input" style="margin-left:10px;margin-block:10px">
-                    <input type="button" href="......" class="btn btn-outline-primary" value="名人分享" style="border-radius:15px;font-size:24px;font-weight:bold" />
+                    <a href="~/NNewsFront/List?txtKeyword=新聞報導" class="btn btn-outline-primary" style="border-radius: 15px; font-size: 24px; font-weight: bold">新聞報導</a>
                 </div>
                 <div class="card-input" style="margin-left:10px;margin-block:10px">
-                    <input type="button" href="......" class="btn btn-outline-primary" value="新聞報導" style="border-radius:15px;font-size:24px;font-weight:bold" />
+                    <a href="~/NNewsFront/List?txtKeyword=名人經驗" class="btn btn-outline-primary" style="border-radius: 15px; font-size: 24px; font-weight: bold">名人經驗</a>
                 </div>
+                <div class="card-input" style="margin-left:10px;margin-block:10px">
+                    <a href="~/NNewsFront/List?txtKeyword=醫生分享" class="btn btn-outline-primary" style="border-radius: 15px; font-size: 24px; font-weight: bold">醫生分享</a>
+                </div>
+
             </div>
         </div>
         @*=====================左側搜尋設計結束========================*@
@@ -83,15 +94,15 @@
                                     </a>
                                     @*===日期===*@
                                     <a style="float: right; text-align: right;">
-                                        <i class="fa fa-calendar">@item.CreateDate</i>
+                                        <i class="fa fa-calendar">@item.PublishDate</i>
                                     </a>
                                     @*===文章內容===*@
                                 @*<p class="card-text">@item.NewsContent</p>*@
                                 </div>
                                 @*===文章連結===*@
-                                <div class="card-input" style="margin-left:10px;margin-block:10px">
-                                    <input type="button" href="......" class="btn btn-outline-primary" value="Read more..." />
-                                </div>
+                            <div class="card-input" style="margin-left:10px;margin-block:10px">
+                                <a href="~/NNewsFront/ListDetail?id=@item.No" class="btn btn-outline-primary" style="border-radius:15px">Read more...</a>
+                            </div>
                             </div>
                         </div>
                     }
@@ -101,53 +112,3 @@
 
     </div>
 </div>
-
-
-
-
-<table class="table">
-    <thead>
-        <tr>
-
-            <th>
-                @Html.DisplayNameFor(model => model.NewsCategory.NewsCategoryName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NewsTitle)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NewsContent)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NewsPicturePath)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreateDate)
-            </th>
-
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-
-                <td>
-                    @Html.DisplayFor(modelItem => item.NewsCategory.NewsCategoryName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NewsTitle)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NewsContent)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NewsPicturePath)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreateDate)
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
