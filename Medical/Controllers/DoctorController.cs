@@ -114,6 +114,10 @@ namespace Medical.Controllers
 
         public IActionResult GetAnswer(string Qs)
         {
+            var Aws0 = new DocJsonViewModel
+            {                
+                Answer = "請您說的詳細一點"
+            };
             var Aws1 = new DocJsonViewModel
             {
                 Question = "掛號",
@@ -124,14 +128,36 @@ namespace Medical.Controllers
                 Question = "交通",
                 Answer = "這是我們的地址"
             };
-            var Aws0 = new DocJsonViewModel
-            {                
-                Answer = "請您說的詳細一點"
-            };
+            
             var Aws3 = new DocJsonViewModel
             {
                 Question = "衛教",
                 Answer = "這是我們推薦的知識型YouTuber"
+            };
+            var Aws4 = new DocJsonViewModel
+            {
+                Question = "症狀",
+                Answer = "請描述一下您的症狀"
+            };
+            var Aws5 = new DocJsonViewModel
+            {
+                Question = "痠痛脹不舒服",
+                Answer = "是否伴隨頭暈頭痛?"
+            };
+            var Aws6 = new DocJsonViewModel
+            {
+                Question = "眼壓高",
+                Answer = "是否伴隨頭暈頭痛?"
+            };
+            var Aws7 = new DocJsonViewModel
+            {
+                Question = "青光眼",
+                Answer = "是否伴隨頭暈頭痛?"
+            };
+            var Aws8 = new DocJsonViewModel
+            {
+                Question = "白內障",
+                Answer = "是否伴隨頭暈頭痛?"
             };
             if (Qs.Contains(Aws1.Question))
                 return Json(Aws1);
@@ -139,6 +165,16 @@ namespace Medical.Controllers
                 return Json(Aws2);
             if (Qs.Contains(Aws3.Question))
                 return Json(Aws3);
+            if (Qs.Contains(Aws4.Question))
+                return Json(Aws4);
+            if (Qs.Contains(Aws5.Question))
+                return Json(Aws5);
+            if (Qs.Contains(Aws6.Question))
+                return Json(Aws6);
+            if (Qs.Contains(Aws7.Question))
+                return Json(Aws7);
+            if (Qs.Contains(Aws8.Question))
+                return Json(Aws8);
             else
                 return Json(Aws0);
         }
