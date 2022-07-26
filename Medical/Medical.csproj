@@ -26,6 +26,10 @@
 
     <None Include="Views\ClinicDetail\List.cshtml" />
 
+    <None Include="Views\Reserve\ReserveList.cshtml" />
+
+    <None Include="Views\Reserve\ReserveSearch.cshtml" />
+
     <None Include="wwwroot\img\emptyCart.gif" />
 
     <None Include="Views\Doctor\Details.cshtml" />
