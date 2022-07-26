@@ -1,7 +1,9 @@
-﻿using Medical.Models;
+﻿using Google.Apis.Auth;
+using Medical.Models;
 using Medical.ViewModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,12 +36,13 @@ namespace Medical.Controllers
             {
                 return RedirectToAction("LoginSuccess");   //已登入的證明
             }
-           
-            if (repath!=null)
+            else if (HttpContext.Session.Keys.Contains(CDictionary.SK_GOOGLELOGINED_USE))
+                return RedirectToAction("LoginSuccess");
+            if (repath != null)
             {
                 ViewBag.reserve = "reserve";
             }
-           
+
             //ViewData["ReUrl"] = reUrl;
             return View(new CLoginViewModel());
 
@@ -52,11 +55,18 @@ namespace Medical.Controllers
             //Member mb = (new MedicalContext()).Members.FirstOrDefault(n => n.Email == vModel.txtAccount);
             Member mb = (new MedicalContext()).Members.FirstOrDefault(n => n.Email.Equals(vModel.txtAccount));  //linQ不分大小寫
 
+            //==================↓Google登入部分↓======================
+            string googleUser = "";
+            string? formCredential = Request.Form["credential"]; //回傳憑證
+            string? formToken = Request.Form["g_csrf_token"]; //回傳令牌
+            string? cookiesToken = Request.Cookies["g_csrf_token"]; //Cookie 令牌
+                                                                    // 驗證 Google Token
+            GoogleJsonWebSignature.Payload? payload = VerifyGoogleToken(formCredential, formToken, cookiesToken).Result;
+            //==================↑Google登入部分↑======================
+
             if (mb != null)
             {
-
-                if (mb.Email.Equals(vModel.txtAccount) && mb.Password.Equals(vModel.txtPassword)&&vModel.reserve == "reserve" && mb.Role == 1)
-
+                if (mb.Email.Equals(vModel.txtAccount) && mb.Password.Equals(vModel.txtPassword) && vModel.reserve != null && mb.Role == 1)
                 {
                     jasonUser = JsonSerializer.Serialize(mb);
                     HttpContext.Session.SetString(CDictionary.SK_LOGINED_USE, jasonUser);
@@ -81,23 +91,100 @@ namespace Medical.Controllers
                 {
                     jasonUser = JsonSerializer.Serialize(mb);
                     HttpContext.Session.SetString(CDictionary.SK_LOGINED_USE, jasonUser);
-                    return RedirectToAction("Index", "Home",new {area="Admin" });
+                    return RedirectToAction("Index", "Home", new { area = "Admin" });
                 }
             }
+            //==================↓Google登入部分↓======================
+            else if (payload == null)
+            {
+                // 驗證失敗
+                //ViewData["Msg"] = "授權失敗";
+                googleUser = "授權失敗";
+            }
+            else if (payload != null)
+            {
+                CLoginViewModel cl = new CLoginViewModel();
+                cl.txtName = payload.Name;
+                //驗證成功，取使用者資訊內容
+                //ViewData["Msg"] = "驗證 Google 授權成功" + "<br>";
+                //ViewData["Msg"] += "Email:" + payload.Email + "<br>";
+                //ViewData["Msg"] += "Name:" + payload.Name + "<br>";
+                //ViewData["Msg"] += "Picture:" + payload.Picture;
+                googleUser = JsonSerializer.Serialize(cl);
+                HttpContext.Session.SetString(CDictionary.SK_GOOGLELOGINED_USE, googleUser);
+                return RedirectToAction("Index", "Home");
+            }
+            //==================↑Google登入部分↑======================
 
             return View();
         }
+        //=========================↓Google登入部分↓============================
+        /// <summary>
+        /// 驗證 Google Token
+        /// </summary>
+        /// <param name="formCredential"></param>
+        /// <param name="formToken"></param>
+        /// <param name="cookiesToken"></param>
+        /// <returns></returns>
+        //安裝套件Google.Apis.Auth
+        public async Task<GoogleJsonWebSignature.Payload?> VerifyGoogleToken(string? formCredential, string? formToken, string? cookiesToken)
+        {
+            // 檢查空值
+            if (formCredential == null || formToken == null && cookiesToken == null)
+            {
+                return null;
+            }
 
+            GoogleJsonWebSignature.Payload? payload;
+            try
+            {
+                // 驗證 token
+                if (formToken != cookiesToken)
+                {
+                    return null;
+                }
 
-
+                // 驗證憑證
+                IConfiguration Config = new ConfigurationBuilder().AddJsonFile("appSettings.json").Build();
+                string GoogleApiClientId = Config.GetSection("GoogleApiClientId").Value;
+                var settings = new GoogleJsonWebSignature.ValidationSettings()
+                {
+                    Audience = new List<string>() { GoogleApiClientId }
+                };
+                payload = await GoogleJsonWebSignature.ValidateAsync(formCredential, settings);
+                if (!payload.Issuer.Equals("accounts.google.com") && !payload.Issuer.Equals("https://accounts.google.com"))
+                {
+                    return null;
+                }
+                if (payload.ExpirationTimeSeconds == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    DateTime now = DateTime.Now.ToUniversalTime();
+                    DateTime expiration = DateTimeOffset.FromUnixTimeSeconds((long)payload.ExpirationTimeSeconds).DateTime;
+                    if (now > expiration)
+                    {
+                        return null;
+                    }
+                }
+            }
+            catch
+            {
+                return null;
+            }
+            return payload;
+        }
+        //=======================↑Google登入部分↑=============================
         public IActionResult Register()
         {
             CMemberViewModel memVModel = new CMemberViewModel()
             {
                 mem = _context.Members.ToList(),
                 roleTypes = _context.RoleTypes.ToList(),
-                MemCity=_context.Cities.ToList(),
-                MemGender=_context.Genders.ToList()
+                MemCity = _context.Cities.ToList(),
+                MemGender = _context.Genders.ToList()
             };
             return View(memVModel);
         }
@@ -105,7 +192,7 @@ namespace Medical.Controllers
         [HttpPost]
         public IActionResult Register(CMemberViewModel vModel)
         {
-            if (vModel.Email != null && vModel.Password!= null)
+            if (vModel.Email != null && vModel.Password != null)
             {
 
                 sendMail();
@@ -119,18 +206,23 @@ namespace Medical.Controllers
 
         private void sendMail()
         {
-          //待寫入內容,註冊成功發送信件
+            //待寫入內容,註冊成功發送信件
         }
 
- 
+
         public IActionResult Logout()
         {
             if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USE))
             {
 
                 HttpContext.Session.Remove(CDictionary.SK_LOGINED_USE);
-                    return RedirectToAction("Index", "Home");
-        
+                return RedirectToAction("Index", "Home");
+
+            }
+            else if (HttpContext.Session.Keys.Contains(CDictionary.SK_GOOGLELOGINED_USE))
+            {
+                HttpContext.Session.Remove(CDictionary.SK_GOOGLELOGINED_USE);
+                return RedirectToAction("Index", "Home");
             }
             return RedirectToAction("Index", "Home");
         }
@@ -144,12 +236,12 @@ namespace Medical.Controllers
         [HttpPost]
         public IActionResult ForgetPassword(CLoginViewModel vModel)  //參數=>收信者email
         {
-            Member member =_context.Members.FirstOrDefault(q => q.Email==vModel.txtAccount);
+            Member member = _context.Members.FirstOrDefault(q => q.Email == vModel.txtAccount);
             if (member != null)
             {
                 CMemberViewModel.gmail = vModel.txtAccount;
                 string account = "giraffegtest@gmail.com";
-                string password = "kusbvagcbkfqcynb";      
+                string password = "kusbvagcbkfqcynb";
                 SmtpClient client = new SmtpClient();
                 //SmtpClient MySmtp = new SmtpClient("smtp.gmail.com", 587);  //這樣寫也可以，設定google server+port
                 client.Host = "smtp.gmail.com"; //設定google server
@@ -192,7 +284,7 @@ namespace Medical.Controllers
             //把忘記密碼輸入的信箱傳入參數
             CLoginViewModel LogVM = new CLoginViewModel();
             Member mem = new Member();
-            mem= _context.Members.Where(n => n.Email == email).FirstOrDefault();
+            mem = _context.Members.Where(n => n.Email == email).FirstOrDefault();
             LogVM.txtAccount = mem.Email;
 
             return View(LogVM);
