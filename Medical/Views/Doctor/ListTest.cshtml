@@ -258,6 +258,21 @@
         @*<input type="submit" id="sub" value="查詢" class="btn btn-primary" />*@
     </div>
 
+    <input id="txtKeyword" hidden="hidden" type="text" name="txtKeyword" value="" />
+    <input type="submit" id="sub" value="查詢" />
+}
+<div><br /></div>
+<div class="webShow"></div>
+@{ @*int count = 0;*@
+    @*foreach (var item in Model)
+        {
+            count++;
+            <div id="hateboot" class="col-lg-4 wow slideInUp" data-wow-delay="0.3s" style="float:left;width:20%;">
+                <div class="team-item" style="padding: 0 9px 25px 9px;">
+                    <div class="position-relative rounded-top  container listFCP" style="z-index: 1;">
+                        <img id="img" class="img-fluid rounded-top w-100 dcimg" src="images/@Html.DisplayFor(modelItem => item.PicturePath)" style="width:204px;height:204px;">
+
+
 }
 @*Ajax醫生加載*@
 <div class="webShow row"></div>

@@ -653,9 +653,13 @@ namespace Medical.Models
 
             modelBuilder.Entity<Question>(entity =>
             {
+                entity.HasNoKey();
+
                 entity.ToTable("Question");
 
-                entity.Property(e => e.QuestionId).HasColumnName("QuestionID");
+                entity.Property(e => e.QuestionId)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("QuestionID");
             });
 
             modelBuilder.Entity<RatingDoctor>(entity =>

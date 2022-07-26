@@ -115,13 +115,6 @@ namespace Medical.Areas.Admin.Controllers
             ProductSpecification mps = db.ProductSpecifications.FirstOrDefault(m => m.ProductSpecificationId == cSelected.ProductSpecificationId);
 
 
-
-
-            //"{\"Discontinued\":\"false\",\"ProductId\":\"0\",\"ProductAppearance\":\"最新款黑色太陽眼鏡\",\"ProductImage\":" +
-            //    "\"/images/6143e97f-4d04-439c-bc97-4741069e20db.jpg\",\"ProductMaterial\":\"soft\",\"ProductName\":\"雷朋太陽眼鏡(黑)\"," +
-            //    "\"Shelfdate\":\"999\",\"Stock\":\"16\"," +
-            //    "\"UnitPrice\":\"5003\",\"ProductBrandId\":\"3\",\"ProductCategoryId\":\"1\",\"ProductSpecificationId\":\"2\"}"
-
             if (cSelected.photo != null)
             {
                 string mpName = Guid.NewGuid().ToString() + ".jpg";
@@ -459,12 +452,36 @@ namespace Medical.Areas.Admin.Controllers
         }
 
         // 退貨訂單
-        public IActionResult ReturnOrderList()
+        public IActionResult CouponList()
+        {
+            CCounponForShowViewModel couponVM = new CCounponForShowViewModel
             {
+                couponDetaillist = db.CouponDetails.ToList(),
+                couponlist = db.Coupons.ToList()
+            };
+
+            return View(couponVM);
+        }
+
+        public IActionResult SelectedCoupon(int?id)
+        {
+            Coupon c = db.Coupons.FirstOrDefault(cp => cp.CouponId == id);
+            return Json(c);
+        }
+
+        public IActionResult AddNewCoupon(int reqNum , int discountNum)
+        {
+            if (discountNum <= 0)
+                return Content("失敗");
+
+            Coupon coupon = new Coupon();
+            coupon.CouponDiscountNum = discountNum;
+            coupon.CouponRequireNum = reqNum;
+            db.Coupons.Add(coupon);
+            db.SaveChanges();
 
 
-                return View();
-            }
-
+            return Content((coupon.CouponId).ToString());
+        }
     }
 }

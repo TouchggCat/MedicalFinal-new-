@@ -283,15 +283,16 @@ namespace Medical.Areas.Admin.Controllers
                     Doctor = a.Doctor,
                     RatingType = a.RatingType
                 });
-            }          
+            }
             return View(list);
         }
 
-  
+
+
 
         public IActionResult DoctorRatingEdit(int docid)
         {
-            
+
             RatingDoctor result = _db.RatingDoctors.Where(a => a.RatingDoctorId == docid).FirstOrDefault();
             if (result.Shade == null)
             {
@@ -299,7 +300,7 @@ namespace Medical.Areas.Admin.Controllers
                 _db.SaveChanges();
                 return Content("已遮蔽", "text/plain", Encoding.UTF8);
             }
-           else if (result.Shade == true)
+            else if (result.Shade == true)
             {
                 result.Shade = null;
                 _db.SaveChanges();

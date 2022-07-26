@@ -93,7 +93,7 @@
                 <div class="col-md-6 text-center text-lg-start mb-2 mb-lg-0">
                     <div class="d-inline-flex align-items-center">
                         <!-- 上方營業時間註解 -->
-                        <small class="py-2"><i class="far fa-clock text-primary me-2"></i>營業時間: Mon - Tues : 6.00 am - 10.00 pm, 周日公休 </small>
+                        <small class="py-2"><i class="far fa-clock text-primary me-2"></i>營業時間: Mon - Tues : 10.00 am - 21.00 pm, 周日公休 </small>
                     </div>
                 </div>
                 <div class="col-md-6 text-center text-lg-end">
@@ -154,11 +154,12 @@
                             <a href="/Product/ProductList" class="dropdown-item">產品列表</a>
                             <a href="/Product/CartViewList" class="dropdown-item">我的購物車</a>
                             <a href="/Product/ReceiveCoupon?id=@showID2" class="dropdown-item">優惠券專區</a>
-                            <a href="/Product/CheckViewList" class="dropdown-item">結帳</a>
-                            <a href="/Product/QueryNotFinishOrder" class="dropdown-item">訂單查看</a>
+                            <a href="/Product/CheckViewList" class="dropdown-item">結帳</a>                          
                         </div>
                     </div>
-                    <div class="nav-item dropdown" id="membercenter"  hidden="hidden" >
+
+                    <div class="nav-item dropdown" id="membercenter" hidden="hidden">
+
                         <a href="#" class="nav-item nav-link">會員中心</a>
                         <div class="dropdown-menu m-0">
                             <a href="/PatientRecord/List" class="dropdown-item">診療紀錄</a>
@@ -170,52 +171,35 @@
 
                 </div>
                 <!-- 購物車清單開始-->
-                <!--<div class="dropdown ml-auto">
+                <div class="dropdown ml-auto">
                     <button class="btn btn-cart btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-shopping-cart text-dark fa-2x"></i>
-                        <span class="badge badge-pill badge-danger">9</span>
+                        <span class="badge badge-pill badge-danger"></span>
                     </button>
-                    <div class="dropdown-menu dropdown-menu-right" style="min-width: 300px" aria-labelledby="dropdownMenuButton">
+                    <div class="dropdown-menu dropdown-menu-lg-left" style="min-width: 300px" aria-labelledby="dropdownMenuButton">
                         <div class="p-3">
-                            <h6>已選擇商品</h6>
-                            <table class="table table-sm ">
-                                <tbody>
-                                    <tr>
-                                        <td class="align-middle text-center">
-                                            <a href="#removeModal" data-price="1999" data-title="不求人" data-toggle="modal"
-                                               data-target="#removeModal"><i class="far fa-trash-alt "></i></a>
-                                        </td>
-                                        <td class="align-middle">不求人</td>
-                                        <td class="align-middle">1件</td>
-                                        <td class="align-middle text-right">$1999</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="align-middle text-center">
-                                            <a href="#removeModal" data-price="999" data-title="一級偽裝帽" data-toggle="modal"
-                                               data-target="#removeModal"><i class="far fa-trash-alt "></i></a>
-                                        </td>
-                                        <td class="align-middle">一級偽裝帽</td>
-                                        <td class="align-middle">1件</td>
-                                        <td class="align-middle text-right">$999</td>
-                                    </tr>
+                            <h6 id="myCartH6">購物車目前沒有商品</h6>
+                            <table class="table table-sm" id="myCartTable">
+                                <tbody id="mytbody">
                                 </tbody>
                             </table>
-                            <a href="#" class="btn btn-block btn-primary btn-sm text-white">確認結帳</a>
+                            <a href="/Product/CheckViewList?id=@showID2" id="myCartCheckbtn" class="btn btn-block btn-primary btn-sm text-white" hidden>確認結帳</a>
                         </div>
                     </div>
-                </div>-->
+                </div>
                 <!-- 購物車清單結束-->
-                <!-- 放大鏡在這裡 我先註解掉-->
+
                 @*把Button的Bootstrap改寫到div，就不會顯示兩個<a>標籤的按鈕*@
                 <div class="btn btn-light">
                     <a asp-action="Login" asp-controller="Login" id="loginButton">@LoginbuttonValue</a>
                     <a asp-action="Logout" asp-controller="Login" id="looutButton">@LogoutbuttonValue</a>
                 </div>
-                @*這裡也使用div避免文字沒對齊*@
-            <div id="showMe" class="fas fa-user" value="@showID @logState">
-                @showID @logState
-            </div>
+
+                <div id="showMe" class="fas fa-user" value="@showID @logState">
+                    @showID @logState
+                </div>
+
             </div>
         </nav>
         <!-- Navbar End -->
@@ -234,29 +218,21 @@
         <div class="container pt-5">
             <div class="row g-5 pt-4">
                 <div class="col-lg-3 col-md-6">
-                    <h3 class="text-white mb-4">Quick Links</h3>
+                    <h3 class="text-white mb-4">快速連結</h3>
                     <div class="d-flex flex-column justify-content-start">
-                        <a class="text-light mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>智能資訊</a>
-                        <a class="text-light mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>醫療團隊</a>
-                        <a class="text-light mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>網路掛號</a>
-                        <a class="text-light mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>線上商城</a>
+                        <a class="text-light mb-2" href="~/ArticleFront/List"><i class="bi bi-arrow-right text-primary me-2"></i>智能資訊</a>
+                        <a class="text-light mb-2" href="~/Doctor/ListTest"><i class="bi bi-arrow-right text-primary me-2"></i>醫療團隊</a>
+                        <a class="text-light mb-2" href="~/Reserve/ReserveList"><i class="bi bi-arrow-right text-primary me-2"></i>網路掛號</a>
+                        <a class="text-light mb-2" href="/Product/productList"><i class="bi bi-arrow-right text-primary me-2"></i>線上商城</a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
-                    <h3 class="text-white mb-4">Get In Touch</h3>
+                    <h3 class="text-white mb-4">聯絡資訊</h3>
                     <p class="mb-2"><i class="bi bi-geo-alt text-primary me-2"></i>106台北市大安區復興南路一段390號2樓</p>
                     <p class="mb-2"><i class="bi bi-envelope-open text-primary me-2"></i>hanks@gmail.com</p>
                     <p class="mb-0"><i class="bi bi-telephone text-primary me-2"></i>02-2431123456</p>
                 </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-white mb-4">Follow Us</h3>
-                    <div class="d-flex">
-                        <a class="btn btn-lg btn-primary btn-lg-square rounded me-2" href="#"><i class="fab fa-twitter fw-normal"></i></a>
-                        <a class="btn btn-lg btn-primary btn-lg-square rounded me-2" href="#"><i class="fab fa-facebook-f fw-normal"></i></a>
-                        <a class="btn btn-lg btn-primary btn-lg-square rounded me-2" href="#"><i class="fab fa-linkedin-in fw-normal"></i></a>
-                        <a class="btn btn-lg btn-primary btn-lg-square rounded" href="#"><i class="fab fa-instagram fw-normal"></i></a>
-                    </div>
-                </div>
+                 
                 <div class="col-lg-3 col-md-6">
                     <h3 class="text-white mb-4">Line Us</h3>
                     <p class="mb-2"><i class='fab fa-line fa-2x'>智能眼科</i><br />  ID@981uepkv</p>
@@ -302,10 +278,94 @@
 
     <!-- Template Javascript -->
     <script src="~/js/main.js"></script>
+
     <!-- SweetAlert -->
     <script src="~/plugins/sweetalert2/sweetalert2.all.min.js"></script>
 
+    <!--購物清單-->
+    <script>
+        let myCartCheckbtn = $("#myCartCheckbtn");
+        let myCartTable = $("#myCartTable");
+        let memID =  @showID2;
+        let myCartH6 = $("#myCartH6");
+
+        function loadCartData(memId) {
+            memId = memID;
+            if (memId != 0) {
+                async function GetMainPageCartItem(memId) {
+                const reponse = await fetch('@Url.Content("~/Product/MainPageCart")' + `?id=${memId}`);
+                const datas = await reponse.json();
+                if (datas.length != 0) {
+                    myCartCheckbtn.attr("hidden", false);
+                    myCartH6.text("購物車清單")
+                    }
+
+                    $("#mytbody").empty();
+
+                datas.forEach(cart => {
+                    let totalprice = parseInt(cart.productAmount) * parseInt(cart.unitPrice)
+                    $("#myCartTable").append(`<tr><td class="align-middle text-center"><a cartid="${cart.shoppingCartId}" onclick="mainPageClearItem(event)" data-price="${cart.unitPrice}" data-title="${cart.productName}" data-toggle="modal"data-target="#removeModal"><i class="far fa-trash-alt "></i></a></td><td class="align-middle">${cart.productName}</td><td class="align-middle">${cart.productAmount}件</td><td class="align-middle text-right">${totalprice}</td></tr>`)
+                });
+                }
+                GetMainPageCartItem(memId)
+            }
+        }
+
+        loadCartData(memID);
+
+        function mainPageClearItem(event) {
+            let cardid = parseInt($(event.target).parents("a").attr("cartid"))
+            //$(event.target).parents("tr").remove();
+
+            Swal.fire({
+                title: '確定要移除該商品嗎?',
+                text: "該商品將被移除購物車",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '確定移除!',
+                cancelButtonText: '取消',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    if (result.isConfirmed) {
+
+                        $.ajax({
+                            url: "@Url.Content("~/Product/DeleteCartItem")",
+                            type: 'POST',
+                            data: {ShoppingCartId:cardid},
+                            success: function (message) {
+                                if (message.includes("成功")) {
+
+                                    Swal.fire(
+                                        '成功!',
+                                        '已將此商品移除購物車',
+                                        'success'
+                                    )
+
+                                    $(event.target).parents("tr").remove();
+                                }
+
+                            }
+                        })
+                    }
+                }
+            })
+        }
+
+        var showMe = $("#showMe").attr("value");
+        //console.log(showMe);
+        //console.log($("#membercenter"));
+
+        if (showMe != "尚未登入 ") {
+            $("#membercenter").attr("hidden", false);
+            /*console.log(showMe);*/
+        }
+
+
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
+
 
     <script >
         
@@ -321,6 +381,7 @@
        
 
     </script>
+
 
 </body>
 </html>
