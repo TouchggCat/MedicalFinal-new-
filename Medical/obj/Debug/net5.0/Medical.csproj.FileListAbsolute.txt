@@ -509,3 +509,14 @@ C:\Users\Student\source\repos\MedicalFinal-new-\Medical\obj\Debug\net5.0\Medical
 C:\Users\Student\source\repos\MedicalFinal-new-\Medical\obj\Debug\net5.0\ref\Medical.dll
 C:\Users\Student\source\repos\MedicalFinal-new-\Medical\obj\Debug\net5.0\Medical.pdb
 C:\Users\Student\source\repos\MedicalFinal-new-\Medical\obj\Debug\net5.0\Medical.genruntimeconfig.cache
+C:\Users\Student\Desktop\共同專案\Medical\obj\Debug\net5.0\Medical.csproj.AssemblyReference.cache
+C:\Users\Student\Desktop\共同專案\Medical\obj\Debug\net5.0\Medical.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Student\Desktop\共同專案\Medical\obj\Debug\net5.0\Medical.AssemblyInfoInputs.cache
+C:\Users\Student\Desktop\共同專案\Medical\obj\Debug\net5.0\Medical.AssemblyInfo.cs
+C:\Users\Student\Desktop\共同專案\Medical\obj\Debug\net5.0\Medical.csproj.CoreCompileInputs.cache
+C:\Users\Student\Desktop\共同專案\Medical\obj\Debug\net5.0\Medical.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Student\Desktop\共同專案\Medical\obj\Debug\net5.0\Medical.RazorAssemblyInfo.cache
+C:\Users\Student\Desktop\共同專案\Medical\obj\Debug\net5.0\Medical.RazorAssemblyInfo.cs
+C:\Users\Student\Desktop\共同專案\Medical\obj\Debug\net5.0\Medical.dll
+C:\Users\Student\Desktop\共同專案\Medical\obj\Debug\net5.0\ref\Medical.dll
+C:\Users\Student\Desktop\共同專案\Medical\obj\Debug\net5.0\Medical.pdb
