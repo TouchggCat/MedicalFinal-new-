@@ -93,7 +93,7 @@
                 <div class="col-md-6 text-center text-lg-start mb-2 mb-lg-0">
                     <div class="d-inline-flex align-items-center">
                         <!-- 上方營業時間註解 -->
-                        <small class="py-2"><i class="far fa-clock text-primary me-2"></i>營業時間: Mon - Tues : 6.00 am - 10.00 pm, 周日公休 </small>
+                        <small class="py-2"><i class="far fa-clock text-primary me-2"></i>營業時間: Mon - Tues : 10.00 am - 21.00 pm, 周日公休 </small>
                     </div>
                 </div>
                 <div class="col-md-6 text-center text-lg-end">
@@ -134,15 +134,20 @@
                             <a href="~/QandA/List" class="dropdown-item">Q&A常見問題</a>
                         </div>
                     </div>
-                    <a href="~/Doctor/ListTest" class="nav-item nav-link">醫療團隊</a>
+                    <div class="nav-item dropdown">
+                        <a href="~/Doctor/ListTest" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">醫療團隊</a>
+                        <div class="dropdown-menu m-0">
+                            <a href="~/Doctor/ListTest" class="dropdown-item">醫療團隊</a>
+                        </div>
+                    </div>
                     <div class="nav-item dropdown">
                         <a href="~/Reserve/ReserveList" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">網路掛號</a>
                         <div class="dropdown-menu m-0">
                             <a href="~/Reserve/ReserveList" class="dropdown-item">線上掛號</a>
                             <a href="~/Reserve/ReserveSearch" class="dropdown-item">查詢與取消</a>
+                            <a href="~/ClinicDetail/List" class="dropdown-item">即時看診進度</a>
                         </div>
                     </div>
-                    <a href="~/ClinicDetail/List" class="nav-item nav-link">即時看診進度</a>
                     <div class="nav-item dropdown">
                         <a href="/Product/productList" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">線上商城</a>
                         <div class="dropdown-menu m-0">
@@ -153,23 +158,16 @@
                             <a href="/Product/QueryNotFinishOrder" class="dropdown-item">訂單查看</a>
                         </div>
                     </div>
-                    <div class="nav-item dropdown">
+                    <div class="nav-item dropdown" id="membercenter" hidden="hidden">
                         <a href="#" class="nav-item nav-link">會員中心</a>
                         <div class="dropdown-menu m-0">
-                            <a href="/PatientRecord/List" class="dropdown-item">病例查詢</a>
-                            <a href="/RatingDoctor/List" class="dropdown-item">醫生評論</a>
-                            <a href="/AllPatientRecord/List" class="dropdown-item">醫師病例總覽(放進哲楨的後台)</a>
+                            <a href="/PatientRecord/List" class="dropdown-item">診療紀錄</a>
                             <a href="/Product/OrderList" class="dropdown-item">歷史訂單</a>
-
+                            @*測試用，可刪掉*@
+                            <a href="/SignalR/Index" class="dropdown-item">聊天室測試</a>
                         </div>
                     </div>
-                    @*測試用，可刪掉*@
-                    <div class="nav-item dropdown">
-                        <a href="/SignalR/Index" class="nav-item nav-link">聊天室測試</a>
-
-                    </div>
                 </div>
-
                 <!-- 購物車清單開始-->
                 <div class="dropdown ml-auto">
                     <button class="btn btn-cart btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown"
@@ -189,21 +187,15 @@
                     </div>
                 </div>
                 <!-- 購物車清單結束-->
-                <!-- 放大鏡在這裡 我先註解掉-->
-                @*<button type="button" class="btn text-dark" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fa fa-search"></i></button>*@
-                @*<a href="/ClinicDetail/List" class="btn btn-primary py-2 px-4 ms-3">登入</a>*@
+                                    
                 @*把Button的Bootstrap改寫到div，就不會顯示兩個<a>標籤的按鈕*@
                 <div class="btn btn-light">
                     <a asp-action="Login" asp-controller="Login" id="loginButton">@LoginbuttonValue</a>
                     <a asp-action="Logout" asp-controller="Login" id="looutButton">@LogoutbuttonValue</a>
                 </div>
-                @*這裡也使用div避免文字沒對齊*@
-                <div id="showMe" class="fas fa-user">
+                <div id="showMe" class="fas fa-user" value="@showID @logState">
                     @showID @logState
                 </div>
-
-
-
             </div>
         </nav>
         <!-- Navbar End -->
@@ -369,6 +361,16 @@
                 }
             })
         }
+
+        var showMe = $("#showMe").attr("value");
+        //console.log(showMe);
+        //console.log($("#membercenter"));
+
+        if (showMe != "尚未登入 ") {
+            $("#membercenter").attr("hidden", false);
+            /*console.log(showMe);*/
+        }
+
 
     </script>
     @await RenderSectionAsync("Scripts", required: false)

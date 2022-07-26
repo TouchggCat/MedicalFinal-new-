@@ -77,7 +77,7 @@
                                 <input id="date" type="date" name="txtdate" class="form-control bg-light border-0" placeholder="選擇日期" style="height: 55px;">
                             </div>
                             <div class="col-12">
-                                <button id="submit" class="btn btn-dark w-100 py-3" type="submit">查詢門診</button>
+                                <button id="submit" class="btn btn-dark w-100 py-3" data-bs-toggle="modal" data-bs-target="#exampleModa2" type="submit">查詢門診</button>
                             </div>
                         </div>
                     </form>
@@ -87,6 +87,38 @@
     </div>
 </div>
 <!-- 查詢預約 End -->
+<!-- 跳出提示Modal -->
+<div class="modal fade" id="exampleModa2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ol style="padding-left:30px;list-style:disc;margin-top:15px;">
+                    <li>預約完成後，將由諮詢專員於1~2個工作天內電話與您聯繫。</li>
+                    <li style="color:#f00">預約諮詢時間以諮詢專員電話聯繫為主。</li>
+                    <li>欲預約3天內的諮詢檢查，建議電話洽詢(0800-74-74-88)。</li>
+                </ol>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>               
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
 @*結果顯現*@
 <div class="card">
     <div class="card-header">
@@ -97,7 +129,6 @@
             <div class="row">
                 <div class="col-sm-12">
                     <table id="example1" class="table table-bordered table-striped" aria-describedby="example1_info">
-
                     </table>
                 </div>
             </div>
@@ -127,18 +158,24 @@
                     <div class="row">
                         <div id="re" class="col-7">
                             <h1>確認預約</h1>
-                            
+
                         </div>
-                        <div class="col-5 text-center">
+                        <div class="col-5 text-center" id="docimage">
                             <img src="../../dist/img/user1-128x128.jpg" alt="user-avatar" class="img-circle img-fluid">
                         </div>
                     </div>
                 </div>
             </div>
+            <div id="informationBox" class="Personal_informationBox" style="background: none;">
+                <input type="checkbox" name="use_Personal_information" id="use_Personal_information" value="1">
+                <label for="use_Personal_information">我同意「漢克斯智能眼科診所」使用本人之個人資料，做為預約資訊之提供、提升服務品質及客戶關懷使用。</label>
+                @*<span id="praviteBtn" style="padding-left: 28px;">隱私權保護政策</span>*@
+                <span id="txtPersonal_informationMsg" class="txtMsg"></span>
+            </div>
             <div class="modal-footer">
                 <button id="out" type="button" class="btn btn-secondary" data-bs-dismiss="modal">退出</button>
                 <button id="startReserve" type="button" class="btn btn-primary">送出預約</button>
-                
+
             </div>
         </div>
     </div>
@@ -149,7 +186,7 @@
 {
     <script>
         let table;
-        
+
         //查詢預約
         $('#submit').click(function (evt) {
             evt.preventDefault();
@@ -201,11 +238,11 @@
                         count++;
                         $("#title").html(`查詢結果共有${count}筆`);
                     })
-                   
+
                     $("#example1").html(result);
 
-                    
-                    
+
+
 
                     $(function () {
                         $("#example1").DataTable({
@@ -213,11 +250,13 @@
                             "buttons": ["copy", "excel",], "retrieve": true
                         }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 
-                    });                 
+                    });
                 }
             })
 
         })
+
+
         //setInterval($(function () {
         //    $("#example1").DataTable({
         //        "responsive": true, "lengthChange": false, "autoWidth": false,
@@ -228,7 +267,7 @@
 
         //按下預約 填入modal
         function GoReserve() {
-            
+
             const clinicID = $(event.target).attr("name");
             let result1 = "";
              $.ajax({
@@ -240,7 +279,7 @@
                  {
                      if (datas==null)
                      {
-                         
+
                          /*沒登入跳轉登入畫面*/
                          alert("您尚未成為會員");
                          $('#exampleModal').attr("hidden", "hidden");
@@ -253,14 +292,17 @@
                      $.each(datas, function (index, item) {
                          if (item.memberid > 0)
                          {
+                             $("#docimage").html(`<img src="/images/${item.picturePath}" alt="user-avatar" class="img-circle img-fluid">`)
                              $("#hiddenID").val(item.clinicDetailid);
                              $("#hiddenID2").val(7 - item.sequence_number);
                              result1 += `<h1 class="lead" style="color:red;"><b>順位:${7 - item.sequence_number}</b></h1>`
                              result1 += `<h2 class="lead"><b>姓名:${item.membername}</b></h2>`
                              result1 += `<h2 class="lead"><b>信箱:${item.email}</b></h2>`
-                             result1 += `<h2 class="lead"><b>預約日期:${item.clinicdate} ${item.period}</b></h2>`
+                             result1 += `<h2 class="lead"><b>預約日期:${item.clinicdate}</b></h2>`
+                             result1 += `<h2 class="lead"><b>時段: ${item.period}</b></h2>`
                              result1 += `<h2 class="lead"><b>科別:${item.department}</b></h2>`
                              result1 += `<h2 class="lead"><b>醫師:${item.doctor}</b></h2>`
+                             /*result1 += `<h2 class="lead"><img src="/images/${item.picturePath}" alt="user-avatar" class="img-circle img-fluid"></h2>`*/
                              result1 += `<h2 class="lead"><b>備註</b></h2><textarea id="Remark_Patient" name="Remark_Patient" rows="5" cols="33"></textarea>`
                          }
                          $("#re").html(result1);
@@ -294,13 +336,23 @@
                          alert("預約成功");
                          window.location.href = '@Url.Content("~/Home/Index")';
                      }
-
-
             })
-
         })
 
+        $("#use_Personal_information").click(function (evt)
+        {
+            if (!$("#informationBox").attr("style", "background:rgb(255, 249, 134)"))
+                $("#informationBox").attr("style", "background:none");
+
+            else 
+                $("#informationBox").attr("style", "background:rgb(255, 249, 134)");
+
+            
+        })
+           
+
         
+
 
     </script>
 
