@@ -21,7 +21,7 @@ namespace Medical.Controllers
         }
         public IActionResult List(AAdvertiseSearchKeywordViewModel vModel)
         {
-
+            //123156454
             List<AAdvertiseViewModel> list = new List<AAdvertiseViewModel>();
 
             if (string.IsNullOrEmpty(vModel.txtKeyword))
