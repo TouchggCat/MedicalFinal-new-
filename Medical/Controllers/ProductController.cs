@@ -52,12 +52,16 @@ namespace Medical.Controllers
 
                 if (addReviewView.ProductId != null)
                 {
+
                     //新增評論
+
                     addReviewView.MemberId = vm.MemberId;
                     _medicalContext.Reviews.Add(addReviewView);
                     _medicalContext.SaveChanges();
                     //新增評論結束  
+
                 }
+
             }
             return View(list);
         }
@@ -74,7 +78,9 @@ namespace Medical.Controllers
             {
                 oddetailviewmodel t = new oddetailviewmodel(_medicalContext)
                 {
-                    orderid = item.OrderId
+
+                    orderid =item.OrderId
+
                 };
 
                 list.Add(t);
@@ -95,8 +101,10 @@ namespace Medical.Controllers
                 Review = p,
                 Member = p.Member,
                 RatingType = p.RatingType,
+
                 Product = p.Product
             });
+
 
 
             return View(list);

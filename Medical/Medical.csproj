@@ -35,8 +35,6 @@
     <None Include="Views\Doctor\Details.cshtml" />
     <None Include="Views\Doctor\Index.cshtml" />
     <None Include="Views\Doctor\IndexTest.cshtml" />
-    <None Include="Views\Doctor\List.cshtml" />
-    <None Include="Views\Doctor\ListTest.cshtml" />
     <None Include="Views\Doctor\RatingDoctorpartail.cshtml" />
 
     <None Include="wwwroot\js\site.js" />

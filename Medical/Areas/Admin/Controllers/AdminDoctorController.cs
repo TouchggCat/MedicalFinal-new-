@@ -289,6 +289,7 @@ namespace Medical.Areas.Admin.Controllers
 
 
 
+
         public IActionResult DoctorRatingEdit(int docid)
         {
 

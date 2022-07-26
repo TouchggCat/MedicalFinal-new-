@@ -157,7 +157,9 @@
                             <a href="/Product/CheckViewList" class="dropdown-item">結帳</a>                          
                         </div>
                     </div>
+
                     <div class="nav-item dropdown" id="membercenter" hidden="hidden">
+
                         <a href="#" class="nav-item nav-link">會員中心</a>
                         <div class="dropdown-menu m-0">
                             <a href="/PatientRecord/List" class="dropdown-item">診療紀錄</a>
@@ -166,6 +168,7 @@
                             <a href="/SignalR/Index" class="dropdown-item">聊天室測試</a>
                         </div>
                     </div>
+
                 </div>
                 <!-- 購物車清單開始-->
                 <div class="dropdown ml-auto">
@@ -186,15 +189,17 @@
                     </div>
                 </div>
                 <!-- 購物車清單結束-->
-                                    
+
                 @*把Button的Bootstrap改寫到div，就不會顯示兩個<a>標籤的按鈕*@
                 <div class="btn btn-light">
                     <a asp-action="Login" asp-controller="Login" id="loginButton">@LoginbuttonValue</a>
                     <a asp-action="Logout" asp-controller="Login" id="looutButton">@LogoutbuttonValue</a>
                 </div>
+
                 <div id="showMe" class="fas fa-user" value="@showID @logState">
                     @showID @logState
                 </div>
+
             </div>
         </nav>
         <!-- Navbar End -->
@@ -256,8 +261,6 @@
     </div>
     <!-- Footer End -->
     <!-- Back to Top -->
-
-
     <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded back-to-top"><i class="bi bi-arrow-up"></i></a>
 
     <!-- JavaScript Libraries -->
@@ -276,10 +279,7 @@
     <!-- Template Javascript -->
     <script src="~/js/main.js"></script>
 
-
-
     <!-- SweetAlert -->
-
     <script src="~/plugins/sweetalert2/sweetalert2.all.min.js"></script>
 
     <!--購物清單-->
@@ -367,5 +367,22 @@
     @await RenderSectionAsync("Scripts", required: false)
 
 
+    <script >
+        
+        var showMe = $("#showMe").attr("value");
+        //console.log(showMe);
+        //console.log($("#membercenter"));
+      
+        if (showMe !="尚未登入 ") {
+            $("#membercenter").attr("hidden", false);
+            console.log(showMe);
+        }
+       
+       
+
+    </script>
+
+
 </body>
 </html>
+
