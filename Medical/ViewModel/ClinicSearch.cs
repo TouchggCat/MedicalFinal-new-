@@ -26,7 +26,8 @@ namespace Medical.ViewModel
         public int? roomid { get; set; }        
         
         public int? clinicDetailid { get; set; }
-
+        //醫生照片
+        public string PicturePath { get { return _context.Doctors.FirstOrDefault(n => n.DoctorId == doctorid).PicturePath; } }
         public string clinicdate { get { return ((DateTime)_context.ClinicDetails.FirstOrDefault(n => n.ClinicDate==date).ClinicDate).ToString("yyyy/MM/dd"); } }
         public string doctor { get { return _context.Doctors.FirstOrDefault(n => n.DoctorId == doctorid).DoctorName; } }
         public string department { get { return _context.Departments.FirstOrDefault(n => n.DepartmentId == departmentid).DeptName; } }
