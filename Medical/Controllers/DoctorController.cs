@@ -110,11 +110,40 @@ namespace Medical.Controllers
                 return Json(docs);
             }
         }
-        
-        
-        
-        
-        
+
+
+        public IActionResult GetAnswer(string Qs)
+        {
+            var Aws1 = new DocJsonViewModel
+            {
+                Question = "掛號",
+                Answer = "這是我們的掛號網頁"
+            };
+            var Aws2 = new DocJsonViewModel
+            {
+                Question = "交通",
+                Answer = "這是我們的地址"
+            };
+            var Aws0 = new DocJsonViewModel
+            {                
+                Answer = "請您說的詳細一點"
+            };
+            var Aws3 = new DocJsonViewModel
+            {
+                Question = "衛教",
+                Answer = "這是我們推薦的知識型YouTuber"
+            };
+            if (Qs.Contains(Aws1.Question))
+                return Json(Aws1);
+            if (Qs.Contains(Aws2.Question))
+                return Json(Aws2);
+            if (Qs.Contains(Aws3.Question))
+                return Json(Aws3);
+            else
+                return Json(Aws0);
+        }
+
+
         public IActionResult SugDoc() {
             
             return View();
