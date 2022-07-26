@@ -126,11 +126,22 @@
                     <!-- 選單 -->
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">智能資訊</a>
+                        @*更改處，文章搜尋一起*@
                         <div class="dropdown-menu m-0">
-                            <a href="price.html" class="dropdown-item">最新消息</a>
+                            <a href="~/NNewsFront/List" class="dropdown-item">最新消息</a>
+                            <a href="~/ArticleFront/List" class="dropdown-item">衛教文章</a>
+                            <a href="~/AdvertiseFront/List" class="dropdown-item">相關文章</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">智能資訊</a>
+                        @*有更改，獨立到上面*@
+                        <div class="dropdown-menu m-0">
                             <a href="team.html" class="dropdown-item">門診時間表</a>
+
                             <a href="testimonial.html" class="dropdown-item">智能客服</a>
                             <a href="~/ArticleFront/List" class="dropdown-item">衛教文章</a>
+
                             <a href="~/QandA/List" class="dropdown-item">Q&A常見問題</a>
                         </div>
                     </div>
@@ -207,6 +218,7 @@
 
 
 
+
         <div class="container">
             <main role="main" class="pb-3">
                 @RenderBody()
@@ -214,6 +226,7 @@
         </div>
     </header><!-- /header放這裡 動態條才會跟著 -->
     <!-- Footer Start -->
+
     <div class="container-fluid bg-dark text-light py-5 wow fadeInUp" data-wow-delay="0.3s" style="margin-top: 0px;">
         <div class="container pt-5">
             <div class="row g-5 pt-4">
@@ -239,6 +252,7 @@
 
                     <img src="~/images/LineCord.png" />
 
+
                 </div>
             </div>
         </div>
@@ -261,9 +275,25 @@
     </div>
     <!-- Footer End -->
     <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded back-to-top"><i class="bi bi-arrow-up"></i></a>
 
-    <!-- JavaScript Libraries -->
+
+    <div id="fb-title" style="position: fixed; bottom: 2px; bottom:100px; right: 45px; color: black; font-weight: bold; z-index: 999;">
+        <a href="/SignalR/Index" style="border-radius:20px">
+            <img style="border-radius: 20px;width:50px; display: block; margin: 0 auto 5px;" src="~/images/1111111111.jpg">
+        </a>
+        <span style="display: block; text-align: center;">
+            聊天室<br>
+        </span>
+    </div>
+
+
+    <div class="card">
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded back-to-top"><i class="bi bi-arrow-up"></i></a>
+    </div>
+
+
+
+
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/wow/wow.min.js"></script>
@@ -278,6 +308,7 @@
 
     <!-- Template Javascript -->
     <script src="~/js/main.js"></script>
+
 
     <!-- SweetAlert -->
     <script src="~/plugins/sweetalert2/sweetalert2.all.min.js"></script>

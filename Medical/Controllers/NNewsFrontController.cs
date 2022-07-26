@@ -37,9 +37,8 @@ namespace Medical.Controllers
             else
             {
                 var data = _medicalContext.News.Include(n => n.NewsCategory).
-                    Where(n => n.NewsTitle == vModel.txtKeyword ||
-                    n.NewsCategory.NewsCategoryName == vModel.txtKeyword||
-                    n.NewsContent==vModel.txtKeyword
+                    Where(n => n.NewsTitle.Contains(vModel.txtKeyword) ||
+                    n.NewsCategory.NewsCategoryName.Equals(vModel.txtKeyword) 
                 );
                 foreach(var n in data)
                 {
@@ -50,5 +49,15 @@ namespace Medical.Controllers
             }
             return View(list.ToList());
         }
+        public IActionResult ListDetail(int? id)
+        {
+            News n = _medicalContext.News.FirstOrDefault(x => x.No == id);
+            if (n == null)
+            {
+                return RedirectToAction("List");
+            }
+            return View(n);
+        }
+        
     }
 }

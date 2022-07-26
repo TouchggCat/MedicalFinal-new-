@@ -5,7 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>漢克斯智能眼科 | 後臺管理系統</title>
+
     <link href="~/css/buttons.css" rel="stylesheet" />
+
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
@@ -42,7 +44,6 @@
 
     <script src="~/plugins/sweetalert2/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="~/plugins/sweetalert2/sweetalert2.css">
-
 
 
     @await RenderSectionAsync("Styles", required: false)
@@ -148,6 +149,7 @@
                                     </a>
                                 </li>
                                 @*<li class="nav-item">
+
                         <a href="~/Admin/AdminClinicDetail/Index" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
                             <p>
@@ -155,6 +157,7 @@
                             </p>
                         </a>
                     </li>*@
+
                             </ul>
 
 
@@ -330,12 +333,12 @@
         <!-- /.control-sidebar -->
     </div>
     <!-- ./wrapper -->
-
-
     <!-- fullCalendar 2.2.5 -->
     <script src="~/plugins/moment/moment.min.js"></script>
     <script src="~/plugins/fullcalendar/main.js"></script>
 
+    @*=====必須要增加，這是文章要用的新增格式====*@
+    <script src="https://cdn.ckeditor.com/ckeditor5/34.2.0/classic/ckeditor.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
