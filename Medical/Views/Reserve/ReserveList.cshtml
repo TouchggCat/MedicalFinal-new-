@@ -45,8 +45,12 @@
         <div class="row gx-5">
             <div class="col-lg-6 py-5">
                 <div class="py-5">
-                    <h1 class="display-5 text-white mb-4">We Are A Certified and Award Winning Dental Clinic You Can Trust</h1>
-                    <p class="text-white mb-0">Eirmod sed tempor lorem ut dolores. Aliquyam sit sadipscing kasd ipsum. Dolor ea et dolore et at sea ea at dolor, justo ipsum duo rebum sea invidunt voluptua. Eos vero eos vero ea et dolore eirmod et. Dolores diam duo invidunt lorem. Elitr ut dolores magna sit. Sea dolore sanctus sed et. Takimata takimata sanctus sed.</p>
+                    <h1 class="display-5 text-white mb-4">漢克斯眼科|近視控制的專家</h1>
+                    <ol>
+                        <li class=" text-white ">若有其他眼科門診需求，請現場掛號或電話詢問離您最近的門診單位，謝謝!</li>
+                        <li class=" text-white ">網路預約恕不接受當日預約，請於1天前預約，以便安排！</li>
+                        <li class=" text-white ">因檢查時間較長，請於門診時間結束前1小時到達，術前檢查請勿自行開車或騎車前往！</li>
+                    </ol>
                 </div>
             </div>
             <div class="col-lg-6">
@@ -99,7 +103,7 @@
                 <ol style="padding-left:30px;list-style:disc;margin-top:15px;">
                     <li>預約完成後，將由諮詢專員於1~2個工作天內電話與您聯繫。</li>
                     <li style="color:#f00">預約諮詢時間以諮詢專員電話聯繫為主。</li>
-                    <li>欲預約3天內的諮詢檢查，建議電話洽詢(0800-74-74-88)。</li>
+                    <li>欲預約3天內的諮詢檢查，建議電話洽詢(02-2431123456)。</li>
                 </ol>
             </div>
             <div class="modal-footer">
@@ -174,7 +178,7 @@
             </div>
             <div class="modal-footer">
                 <button id="out" type="button" class="btn btn-secondary" data-bs-dismiss="modal">退出</button>
-                <button id="startReserve" type="button" class="btn btn-primary">送出預約</button>
+                <button id="startReserve" type="button" class="btn btn-primary" >送出預約</button>
 
             </div>
         </div>
@@ -232,7 +236,7 @@
                         else if (item.online == 1)
                         {
                             result += `<td>已逾期</td>`
-                            result += `<td><button type="button" id="GoReserve" disabled = "disabled" name=${item.clinicDetailid} onclick="GoReserve()" class="btn btn-denger GoReserve" data-bs-toggle="modal" data-bs-target="#exampleModal">我要預約</button></td></tr></tbody>`
+                            result += `<td><button type="button" id="GoReserve" disabled = "disabled" name=${item.clinicDetailid} onclick="GoReserve()" class="btn btn-denger GoReserve" data-bs-toggle="modal" data-bs-target="#exampleModal ">我要預約</button></td></tr></tbody>`
                         }
 
                         count++;
