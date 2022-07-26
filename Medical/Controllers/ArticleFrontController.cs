@@ -54,5 +54,14 @@ namespace Medical.Controllers
             var data = _medicalContext.Advertises.Select(a => a.AdPicturePath);
             return Json(data);
         }
+        public IActionResult ListDetail(int? id)
+        {
+            Article a = _medicalContext.Articles.Include(x=>x.Doctor).FirstOrDefault(x => x.ArticleId == id);
+            if (a == null)
+            {
+                return RedirectToAction("List");
+            }
+            return View(a);
+        }
     }
 }

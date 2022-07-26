@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Medical.Areas.Admin.Controllers
@@ -62,6 +63,21 @@ namespace Medical.Areas.Admin.Controllers
                 d.photo.CopyTo(new FileStream((_enviroment.WebRootPath + "/images/" + pName), FileMode.Create));
                 d.PicturePath = pName;
             }
+            if (d.DepName != null)
+            {
+                if (_db.Departments.FirstOrDefault(a => a.DeptName == d.DepName) != null)
+                {
+                    int depID = _db.Departments.FirstOrDefault(a => a.DeptName == d.DepName).DepartmentId;
+                    d.DepartmentID = depID;
+                }
+                else
+                {
+                    _db.Departments.Add(d.department);
+                    _db.SaveChanges();
+                    int depID = _db.Departments.FirstOrDefault(a => a.DeptName == d.DepName).DepartmentId;
+                    d.DepartmentID = depID;
+                }
+            }
             _db.Members.Add(d.member);
             _db.SaveChanges();
             d.doctor.MemberId = d.member.MemberId;
@@ -101,6 +117,8 @@ namespace Medical.Areas.Admin.Controllers
         }
         public IActionResult EditDetail(int? id)           //修改醫生資料
         {
+            if (id == null)
+                return RedirectToAction("Index");
             CDoctorDetailViewModel prod = new CDoctorDetailViewModel();
             prod.doctor = _db.Doctors.FirstOrDefault(t => t.DoctorId == id);
             Department dep = _db.Departments.FirstOrDefault(t => t.DepartmentId == prod.doctor.DepartmentId);
@@ -265,57 +283,30 @@ namespace Medical.Areas.Admin.Controllers
                     Doctor = a.Doctor,
                     RatingType = a.RatingType
                 });
-            }          
+            }
             return View(list);
         }
 
-        ////換頁用
-        //[HttpPost]
-        //public IActionResult DoctorRatinglist(int currentPageIndex)
-        //{
-            
-            
-        //    return View(GetDoctorRating(currentPageIndex));
-        //}
-
-        //private CRatingDoctorViewModel GetDoctorRating(int currentPage)
-        //{
-            //IEnumerable<CRatingDoctorViewModel> list = null;
-            //if (id != 0)
-            //{
-            //    list = _db.RatingDoctors.Where(a => a.DoctorId == id).Select(a => new CRatingDoctorViewModel
-            //    {
-            //        RatingDoctor = a,
-            //        Doctor = a.Doctor,
-            //        RatingType = a.RatingType
-            //    });
-            //}
-
-            //return ;
-        //}
 
 
 
-
-
-        public IActionResult DoctorRatingEdit(int? id)
+        public IActionResult DoctorRatingEdit(int docid)
         {
-            
-            RatingDoctor result = _db.RatingDoctors.Where(a => a.RatingDoctorId == id).FirstOrDefault();
-            if (result.Shade==false)
+
+            RatingDoctor result = _db.RatingDoctors.Where(a => a.RatingDoctorId == docid).FirstOrDefault();
+            if (result.Shade == null)
             {
                 result.Shade = true;
                 _db.SaveChanges();
-                
+                return Content("已遮蔽", "text/plain", Encoding.UTF8);
             }
-           else if (result.Shade == true)
+            else if (result.Shade == true)
             {
-                result.Shade = false;
+                result.Shade = null;
                 _db.SaveChanges();
-                
+                return Content("正常評論", "text/plain", Encoding.UTF8);
             }
-            return RedirectToAction("Index");
-            //最好還是回到評論清單(待克服)
+            return Content("null", "text/plain", Encoding.UTF8);
         }
 
     }

@@ -3,9 +3,11 @@ using Medical.ViewModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Protocols;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Mail;
 using System.Text;
 using System.Text.Json;
@@ -190,9 +192,41 @@ namespace Medical.Controllers
             _context.Add(reserve);
             _context.SaveChanges();
 
+            DateTime? clinictime = _context.ClinicDetails.FirstOrDefault(n => n.ClinicDetailId == id).ClinicDate;
 
 
-            return Content("null", "text/plain", Encoding.UTF8);
+            //成功預約後寄信
+            //goblwrtefmpunxvt
+            try
+            {
+                MailMessage mmsg = new MailMessage();
+                
+                mmsg.From = new MailAddress("hankseyes@gmail.com");
+
+                mmsg.To.Add(new MailAddress("c121474790@gmail.com"));//應該要抓會員的email
+                mmsg.Subject = "漢克斯眼科|預約通知信 ";
+
+                mmsg.Body = "恭喜預約成功! 你的預約日期是: " + clinictime + "\n順位:" + sequence_number+ "號\n備註:" + remark;
+                mmsg.IsBodyHtml = true;
+                mmsg.BodyEncoding = Encoding.UTF8;
+                mmsg.SubjectEncoding = Encoding.UTF8;
+
+                using (SmtpClient client = new SmtpClient("smtp.gmail.com", 587))
+                {
+                    client.EnableSsl = true;
+                    client.Credentials = new NetworkCredential("hankseyes@gmail.com", "goblwrtefmpunxvt");
+                    client.Send(mmsg);
+                }
+
+                return Content("null", "text/plain", Encoding.UTF8);
+
+            }
+            catch
+            {
+                return Content("Err", "text/plain", Encoding.UTF8);
+            }
+
+            //return Content("null", "text/plain", Encoding.UTF8);
         }
 
 
@@ -239,6 +273,19 @@ namespace Medical.Controllers
 
             return RedirectToAction("ReserveSearch");
         }
+
+        //public IActionResult SendMail() 
+        //{
+            
+
+
+        //    return
+        //}
+
+
+
+
+
 
 
     }

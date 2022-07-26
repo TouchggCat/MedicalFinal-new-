@@ -12,44 +12,47 @@
     </div>
 </div>
 <!-- Hero End -->
+<!-- 每五秒刷新一次 -->
+<meta http-equiv="refresh" content="5">
 
 <div style="display: flex; /* 水平置中*/ justify-content: center; /* 垂直置中 */ align-items: center; flex-wrap: wrap;">
-    @{ 
+    @{
 
         foreach (var item in Model)
         {
-            if (item.PeriodId == @ViewBag.period) { 
+            if (item.PeriodId == @ViewBag.period)
+            {
 
-        <div class="col-3 wow zoomIn" data-wow-delay="0.1s" style="float: left; border: solid 2px black; margin: 20px; border-radius: 15%; width: 400px; ">
-            <div class="bg-primary d-flex flex-column p-5" style="height: 300px; width: auto; border-radius: 15%">
-                <h2>診間:  @item.Room.RoomName</h2>
+                <div class="col-3 wow zoomIn" data-wow-delay="0.1s" style="float: left; border: solid 2px black; margin: 20px; border-radius: 15%; width: 400px; ">
+                    <div class="bg-primary d-flex flex-column p-5" style="height: 300px; width: auto; border-radius: 15%">
+                        <h2>診間:  @item.Room.RoomName</h2>
 
-                <div class="d-flex justify-content-between text-white mb-3">
-                    <h4 class="text-white mb-3">
-                        醫生姓名:
-                    </h4>
-                    <p class="mb-0">
-                        @item.Doctor.DoctorName
-                    </p>
+                        <div class="d-flex justify-content-between text-white mb-3">
+                            <h4 class="text-white mb-3">
+                                醫生姓名:
+                            </h4>
+                            <p class="mb-0">
+                                @item.Doctor.DoctorName
+                            </p>
+                        </div>
+                        <div class="d-flex justify-content-between text-white mb-3">
+                            <h4 class="text-white mb-3">
+                                科目:
+                            </h4>
+                            <p class="mb-0">
+                                @item.Department.DeptName
+                            </p>
+                        </div>
+                        <div class="d-flex justify-content-between text-white mb-3">
+                            <h4 class="text-white mb-3">
+                                現在號碼:
+                            </h4>
+                            <h1 class="mb-0" style="color:red;font-size:larger">
+                                @item.Room.Number
+                            </h1>
+                        </div>
+                    </div>
                 </div>
-                <div class="d-flex justify-content-between text-white mb-3">
-                    <h4 class="text-white mb-3">
-                        科目:
-                    </h4>
-                    <p class="mb-0">
-                        @item.Department.DeptName
-                    </p>
-                </div>
-                <div class="d-flex justify-content-between text-white mb-3">
-                    <h4 class="text-white mb-3">
-                        現在號碼:
-                    </h4>
-                    <h1 class="mb-0" style="color:red;font-size:larger">
-                        @item.Room.Number
-                    </h1>
-                </div>
-            </div>
-        </div>
             }
         }
     }
@@ -73,7 +76,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach(var item in Model)
+                    @foreach (var item in Model)
                     {
                         string online = "";
                         if (item.Online == 0)
@@ -84,17 +87,20 @@
                         {
                             online = "已結束";
                         }
-                    <tr>
-                        <td><a href="pages/examples/invoice.html"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">@item.Room.RoomName</font></font></a></td>
-                        <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">@item.Doctor.DoctorName</font></font></td>
-                        <td>@item.Department.DeptName</td>
-                        <td>
-                            <div class="sparkbar" data-color="#00a65a" data-height="20"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">@item.Period.PeriodDetail ( @online )</font></font></div>
-                        </td>
-                        <td>
-                            <div class="sparkbar" data-color="#00a65a" data-height="20"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">@item.Room.Number</font></font></div>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td><a href="pages/examples/invoice.html"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">@item.Room.RoomName</font></font></a></td>
+                            <td>
+                                <img class="img-fluid rounded-top mb-2" src="/images/@item.Doctor.PicturePath" alt="" style="width:100px" />
+                                @item.Doctor.DoctorName
+                            </td>
+                            <td>@item.Department.DeptName</td>
+                            <td>
+                                <div class="sparkbar" data-color="#00a65a" data-height="20"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">@item.Period.PeriodDetail ( @online )</font></font></div>
+                            </td>
+                            <td>
+                                <div class="sparkbar" data-color="#00a65a" data-height="20"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">@item.Room.Number</font></font></div>
+                            </td>
+                        </tr>
                     }
                 </tbody>
             </table>
@@ -102,9 +108,9 @@
 
     </div>
 
-    <div class="card-footer clearfix">
-        <a href="javascript:void(0)" class="btn btn-sm btn-info float-left"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">刷新</font></font></a>
-    </div>
+    @*<div class="card-footer clearfix">
+            <a href="javascript:void(0)" class="btn btn-sm btn-info float-left"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">刷新</font></font></a>
+        </div>*@
 
 </div>
 
