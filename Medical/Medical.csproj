@@ -67,10 +67,14 @@
 
   <ItemGroup>
 
+    <PackageReference Include="LinePayOnlineAPIv3" Version="1.0.0" />
+
+
     <PackageReference Include="Bootstrap.v3.Datetimepicker" Version="4.17.49" />
     <PackageReference Include="Bootstrap.v3.Datetimepicker.CSS" Version="4.17.49" />
 
     <PackageReference Include="Google.Apis.Auth" Version="1.57.0" />
+
 
     <PackageReference Include="Microsoft.AspNet.SignalR" Version="2.4.3" />
     <PackageReference Include="Microsoft.AspNet.WebPages" Version="3.2.9" />
@@ -84,14 +88,15 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <PackageReference Include="Wahid-SweetAlert2" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Models\" />
-    <Folder Include="Views\LinePayTest\" />
     <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 

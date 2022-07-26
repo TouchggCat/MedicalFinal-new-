@@ -1,10 +1,14 @@
-﻿using Medical.Models;
+﻿using LinePayEC;
+using LinePayEC.Models;
+using LinePayEC.Models.RequestModels;
+using Medical.Models;
 using Medical.ViewModel;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -161,7 +165,7 @@ namespace Medical.Controllers
 
             if(logJson!=null)
             { 
-                vm = JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
+                vm = System.Text.Json.JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
                 showID2 = vm.MemberId;
             }
 
@@ -231,7 +235,7 @@ namespace Medical.Controllers
 
             if (logJson != null)
             {
-                vm = JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
+                vm = System.Text.Json.JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
                 showID2 = vm.MemberId;
             }
 
@@ -297,7 +301,7 @@ namespace Medical.Controllers
 
             if (logJson != null)
             {
-                vm = JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
+                vm = System.Text.Json.JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
                 showID2 = vm.MemberId;
             }
 
@@ -340,7 +344,7 @@ namespace Medical.Controllers
 
             if (logJson != null)
             {
-                vm = JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
+                vm = System.Text.Json.JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
                 showID2 = vm.MemberId;
             }
 
@@ -361,7 +365,7 @@ namespace Medical.Controllers
 
             if (logJson != null)
             {
-                vm = JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
+                vm = System.Text.Json.JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
                 showID2 = vm.MemberId;
             }
 
@@ -423,7 +427,7 @@ namespace Medical.Controllers
 
             if (logJson != null)
             {
-                vm = JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
+                vm = System.Text.Json.JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
                 showID2 = vm.MemberId;
             }
 
@@ -436,8 +440,6 @@ namespace Medical.Controllers
             List<ShoppingCart> cartList = _medicalContext.ShoppingCarts.Where(c => c.MemberId == showID2).ToList();
 
             List<Product> prodList = _medicalContext.Products.ToList();
-
-
 
             List<ProductSpecification> prodspecList = _medicalContext.ProductSpecifications.ToList();
 
@@ -453,6 +455,7 @@ namespace Medical.Controllers
                 item.prod = prodList.FirstOrDefault(p => p.ProductId == cart.ProductId);
                 item.prodspec = prodspecList.FirstOrDefault(ps => ps.ProductId == cart.ProductId);
                 checkForShowList.Add(item);
+                item.MemberId = showID2;
             }
 
 
@@ -462,7 +465,7 @@ namespace Medical.Controllers
 
         public IActionResult QueryNotFinishOrder(int? id)
         {
-            List<Order> orderList = _medicalContext.Orders.Where(o => o.MemberId ==19&& o.OrderStateId==1).OrderByDescending(o => o.OrderId).ToList();
+            List<Order> orderList = _medicalContext.Orders.Where(o => o.MemberId ==4&& o.OrderStateId==1).OrderByDescending(o => o.OrderId).ToList();
             List<OrderDetail> orderDetailList = null;
 
             foreach (var o in orderList)
@@ -490,7 +493,7 @@ namespace Medical.Controllers
         }
         public IActionResult QueryFinishOrder(int? id)
         {
-            List<Order> orderList = _medicalContext.Orders.Where(o => o.MemberId == 19 && o.OrderStateId == 2).OrderByDescending(o => o.OrderId).ToList();
+            List<Order> orderList = _medicalContext.Orders.Where(o => o.MemberId == 4 && o.OrderStateId == 2).OrderByDescending(o => o.OrderId).ToList();
             List<OrderDetail> orderDetailList = null;
 
             foreach (var o in orderList)
@@ -722,7 +725,126 @@ namespace Medical.Controllers
 
         }
 
+        // =========================== LineTest ============================
+        private LinePayEC.Models.RequestModels.Reserve GetReserveData(List<Products>pl,int total)
+        {
+            LinePayEC.Models.RequestModels.Reserve reserve = new LinePayEC.Models.RequestModels.Reserve
+            {
+                Amount = total,
+                Currency = "TWD",
+                OrderId = Guid.NewGuid().ToString()
+            };
 
+            reserve.Packages.Add
+            (
+                new Packages { Id = Guid.NewGuid().ToString(), Amount = total, Products = pl }
+            ) ;
+
+            reserve.RedirectUrls.ConfirmUrl = "https://localhost:44302/Product/confirm";
+            reserve.RedirectUrls.CancelUrl = "https://localhost:44302/Product/confirm";
+
+            return reserve;
+        }
+
+
+        public async Task<IActionResult> Reserve(List<CShoppingCartItem> SList,int total, int[] pId)
+        {
+            List<Products> pList = new List<Products>();
+            List<Order> oList = new List<Order>();
+            List<OrderDetail> odList = new List<OrderDetail>();
+            List<ShoppingCart> cartList = new List<ShoppingCart>();
+            foreach (var cartItem in SList)
+            {
+                if (Array.Exists<int>(pId,x=>x==cartItem.prod.ProductId)==true)
+                {
+                    Products p = new Products
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Name = cartItem.prod.ProductName,
+                        ImageUrl = "https://i.imgur.com/HjQSZ2p.jpg",
+                        Price = cartItem.prodspec.UnitPrice,
+                        Quantity = cartItem.cart.ProductAmount
+                    };
+
+                    ShoppingCart cart = _medicalContext.ShoppingCarts.FirstOrDefault(c => c.ShoppingCartId == cartItem.cart.ShoppingCartId);
+                    cartList.Add(cart);
+                    pList.Add(p);
+
+                    
+                }
+
+            }
+
+            var baseAddress = "https://sandbox-api-pay.line.me";
+            var channelId = "1657329218";
+            var channelSecret = "d5a97c039996d5b4c7dc0b4a3f48b784";
+            LinePayClient client = new LinePayClient(baseAddress, channelId);
+
+
+
+            var reserveData = GetReserveData(pList,total);
+            var nonce = Guid.NewGuid().ToString();
+            var requestUrl = "/v3/payments/request";
+            var requestJson = JsonConvert.SerializeObject(reserveData, client.SerializerSettings);
+            var signature = client.GetSignature((channelSecret + requestUrl + requestJson + nonce), channelSecret);
+            var result = await client.ReserveAsync(reserveData, nonce, signature);
+
+
+            Order o = new Order
+            {
+                OrderDate = DateTime.Now,
+                OrderStateId = 1,
+                MemberId = cartList.FirstOrDefault().MemberId,
+                ShipAddress = "test",
+                IsPaid = true,
+                PayTypeId = 1,
+                ShipTypeId = 1
+            };
+            _medicalContext.Orders.Add(o);
+            _medicalContext.SaveChanges();
+
+            foreach (var cc in cartList)
+            {
+                OrderDetail od = new OrderDetail
+                {
+                    OrderId = o.OrderId,
+                    ProductId = cc.ProductId,
+                    Quantity = cc.ProductAmount
+                };
+                _medicalContext.OrderDetails.Add(od);
+                _medicalContext.SaveChanges();
+
+                _medicalContext.ShoppingCarts.Remove(cc);
+                _medicalContext.SaveChanges();
+            }
+
+
+            return Redirect(result.Info.PaymentUrl.Web);
+
+        }
+        public async Task<IActionResult> confirm([FromQuery] string orderId, [FromQuery] string transactionId)
+        {
+            Order order = _medicalContext.Orders.Include(o => o.OrderDetails).OrderBy(o=>o.OrderId).LastOrDefault();
+            List<CLinepayConfirmViewModel> linepaylist = new List<CLinepayConfirmViewModel>();
+
+            foreach (var od in order.OrderDetails)
+            {
+
+                CLinepayConfirmViewModel linepay = new CLinepayConfirmViewModel
+                {
+                    ProductImage = _medicalContext.ProductSpecifications.FirstOrDefault(ps => ps.ProductId == od.ProductId).ProductImage,
+                    ProductName = _medicalContext.Products.FirstOrDefault(p => p.ProductId == od.ProductId).ProductName,
+                    Quantity = od.Quantity,
+                    UnitPrice = _medicalContext.ProductSpecifications.FirstOrDefault(ps => ps.ProductId == od.ProductId).UnitPrice,
+                    orderId = orderId,
+                    transactionId  =transactionId
+                    
+                };
+                linepaylist.Add(linepay);
+            }
+
+            return View(linepaylist);
+        }
 
         // ============ 柏鈞 End =================
     }
