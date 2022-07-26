@@ -5,56 +5,73 @@
 }
 
 
-    <!--<h4>登入會員</h4>
-    <hr />
-    <div class="row">
-        <div class="col-md-4">-->
-            @*id="demo-form" method="POST"給reCAPCHA使用*@
-            <!--<form asp-action="Login" id="demo-form" method="POST">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="txtAccount" class="control-label"></label>
-                    <input asp-for="txtAccount" class="form-control mb-2" value="" id="email" />
-                    <span asp-validation-for="txtAccount" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="txtPassword" class="control-label"></label>
-                    <input asp-for="txtPassword" class="form-control mb-2" id="pass" />
-                    <span asp-validation-for="txtPassword" class="text-danger"></span>
-                </div>
-                <div class="form-group">-->
-                    @*reCAPTCHA登入<button class="g-recaptcha" data-sitekey="your_site_key" data-callback="onSubmit">*@
-                    <!--<input type="submit" value="請登入" class="g-recaptcha btn btn-primary mb-2"
-                           data-sitekey="6Lfk2AkhAAAAAOtIbeGmRkHUqjne2XfLYmM21Kg3" data-callback="onSubmit" />
-                    <a asp-action="Register" class="btn btn-primary mb-2">註冊</a>
-                </div>
-                <div class="form-group">
+<!--<h4>登入會員</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">-->
+@*id="demo-form" method="POST"給reCAPCHA使用*@
+<!--<form asp-action="Login" id="demo-form" method="POST">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="txtAccount" class="control-label"></label>
+        <input asp-for="txtAccount" class="form-control mb-2" value="" id="email" />
+        <span asp-validation-for="txtAccount" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="txtPassword" class="control-label"></label>
+        <input asp-for="txtPassword" class="form-control mb-2" id="pass" />
+        <span asp-validation-for="txtPassword" class="text-danger"></span>
+    </div>
+    <div class="form-group">-->
+@*reCAPTCHA登入<button class="g-recaptcha" data-sitekey="your_site_key" data-callback="onSubmit">*@
+<!--<input type="submit" value="請登入" class="g-recaptcha btn btn-primary mb-2"
+                       data-sitekey="6Lfk2AkhAAAAAOtIbeGmRkHUqjne2XfLYmM21Kg3" data-callback="onSubmit" />
+                <a asp-action="Register" class="btn btn-primary mb-2">註冊</a>
+            </div>
+            <div class="form-group">
 
-                    <a asp-action="ForgetPassword" class="btn btn-outline-info mb-2">忘記密碼</a>
+                <a asp-action="ForgetPassword" class="btn btn-outline-info mb-2">忘記密碼</a>
 
-                </div>
-                <div class="form-group">
-                    <input type="button" value="AdminDemo" class="btn btn-outline-dark mb-2" id="adDemo" />
-                    <input type="button" value="DoctorDemo" class="btn btn-outline-dark mb-2" id="docDemo" />
-                    <input type="button" value="CustomerDemo" class="btn btn-outline-dark mb-2" id="cusDemo" />
-                    <input type="hidden" asp-for="reserve" value="reserve" class="btn btn-primary mb-2" id="cusDemo" />
-                </div>
+            </div>
+            <div class="form-group">
+                <input type="button" value="AdminDemo" class="btn btn-outline-dark mb-2" id="adDemo" />
+                <input type="button" value="DoctorDemo" class="btn btn-outline-dark mb-2" id="docDemo" />
+                <input type="button" value="CustomerDemo" class="btn btn-outline-dark mb-2" id="cusDemo" />
+                <input type="hidden" asp-for="reserve" value="reserve" class="btn btn-primary mb-2" id="cusDemo" />
+            </div>
 
 
-            </form>
-        </div>
-    </div>-->
-
+        </form>
+    </div>
+</div>-->
 @*================使用template==================*@
 <div id="logreg-forms">
     @*id="demo-form" method="POST"給reCAPCHA使用*@
     <form class="form-signin" asp-action="Login" id="demo-form" method="POST">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <h1 class="h3 mb-3 font-weight-normal" style="text-align: center">登入</h1>
-        <div class="social-login">
-            <button class="btn facebook-btn social-btn" type="button"><span><i class="fab fa-facebook-f"></i> Sign in with Facebook</span> </button>
-            <button class="btn google-btn social-btn" type="button"><span><i class="fab fa-google-plus-g"></i> Sign in with Google+</span> </button>
+        @*↓Google登入部分↓*@
+        @*參考
+            https://developers.google.com/identity/gsi/web/guides/display-button#html
+            https://developers.google.com/identity/gsi/web/reference/html-reference#element_with_class_g_id_signin*@
+        <script src="https://accounts.google.com/gsi/client" async defer></script>
+        <div class="googlePosition">
+            <div id="g_id_onload"
+                 data-client_id="1087362159078-lu36dve3c34na91pmke4rp4dkdcdlsp5.apps.googleusercontent.com"
+                 data-login_uri="https://localhost:44302/Login/Login"
+                 data-auto_prompt="false">
+            </div>
+            <div class="g_id_signin "
+                 data-type="standard"
+                 data-width=380
+                 data-size="large"
+                 data-theme="filled_black"
+                 data-text="sign_in_with"
+                 data-shape="pill"
+                 data-logo_alignment="left">
+            </div>
         </div>
+        @*↑Google登入部分↑*@
         <p style="text-align:center"> OR  </p>
         <div class="input-group">
             <input type="email" class="form-control" placeholder="電子郵件信箱" required="" autofocus="" asp-for="txtAccount" id="email">
@@ -90,42 +107,42 @@
     </form>
 
 </div>
-    @*<br />避免被footer擋到*@
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
+@*<br />避免被footer擋到*@
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
 
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-        <script>
-            $("#adDemo").click(() => {
-                $("#email").val(6);
-                $("#pass").val("AAA")
-            })
-            $("#docDemo").click(() => {
-                $("#email").val("candy@gmail.com");
-                $("#pass").val("841120")
-            })
-            $("#cusDemo").click(() => {
-                $("#email").val("s86821993");
-                $("#pass").val("851208")
-            })
+    <script>
+        $("#adDemo").click(() => {
+            $("#email").val(6);
+            $("#pass").val("AAA")
+        })
+        $("#docDemo").click(() => {
+            $("#email").val("candy@gmail.com");
+            $("#pass").val("841120")
+        })
+        $("#cusDemo").click(() => {
+            $("#email").val("s86821993");
+            $("#pass").val("851208")
+        })
 
-        </script>
-        @*==========================================================*@
-        @*reCAPTCHA套件使用*@
-        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-        <script>
-            function onSubmit(token) {
-                document.getElementById("demo-form").submit();
-            }
-        </script>
-    }
+    </script>
+    @*==========================================================*@
+    @*reCAPTCHA套件使用*@
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script>
+        function onSubmit(token) {
+            document.getElementById("demo-form").submit();
+        }
+    </script>
+}
 
