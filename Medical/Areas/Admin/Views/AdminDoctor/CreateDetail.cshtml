@@ -6,27 +6,30 @@
     Layout = "~/Areas/Admin/Admin_Layout.cshtml";
 }
 @section styles {
-<style>
-    .xkfVF {
-        padding: 48px 40px 36px;
-        box-sizing: inherit;
-        font-family: roboto,"Noto Sans Myanmar UI",arial,sans-serif;
-    }
-    .Aa1VU {
-        flex-basis: 450px;
-        margin: 0 -48px;
-        overflow: hidden;
-        padding: 0 48px;
-        box-sizing: inherit;
-    
-    }    
-</style>
-} 
+    <style>
+        .xkfVF {
+            padding: 48px 40px 36px;
+            box-sizing: inherit;
+            font-family: roboto, "Noto Sans Myanmar UI", arial, sans-serif;
+        }
+
+        .Aa1VU {
+            flex-basis: 450px;
+            margin: 0 -48px;
+            overflow: hidden;
+            padding: 0 48px;
+            box-sizing: inherit;
+        }
+        .thisform{
+            float:left;
+        }
+    </style>
+}
 <h1>新增醫生帳戶</h1>
 <hr />
 <div class="row xkfVF">
-    <div class="col-md-4 Aa1VU" >
-        <form asp-action="CreateDetail">
+    <div class="col-md-4 Aa1VU">
+        <form asp-action="CreateDetail" class="thisform">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="DoctorName" class="control-label"></label>
@@ -53,6 +56,21 @@
                 <input asp-for="Password" type="password" class="form-control" id="psw" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="DepName" class="control-label"></label>
+                <input asp-for="DepName" class="form-control" id="psw" />
+                <span asp-validation-for="DepName" class="text-danger"></span>
+            </div>
+            <div id='show'>
+                <img id="showImg" width="100" height="100" />
+            </div>
+            <div class="form-group">
+                @Html.Label("產品照片", "", new { @class = "control-label col-md-2" })
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="file" name="photo" id="upimg" />
+                </div>
+            </div>
+
             <div class="form-group" hidden="hidden">
                 <label asp-for="Role" class="control-label"></label>
                 <input asp-for="Role" class="form-control" id="rol" value="2" />
@@ -62,7 +80,7 @@
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
             <div><input type="button" id="btnDmo" value="D鍵" /></div>
-        </form>
+        </form>        
     </div>
 </div>
 
@@ -81,5 +99,16 @@
             document.getElementById("psw").value = "111";
             document.getElementById("rol").value = "2";
         })
+        
+        $('#upimg').change(() => {
+            
+            var file = $('#upimg')[0].files[0];
+            var reader = new FileReader;
+            reader.onload = function (e) {
+                $('#showImg').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(file);
+        })
+        
     </script>
 }

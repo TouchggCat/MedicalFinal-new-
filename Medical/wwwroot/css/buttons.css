@@ -1,5 +1,5 @@
 /*======= 3. BUTTONS STYLES  =======*/
-.btn-radius {
+/*.btn-radius {
     border-radius: 100px !important;
 }
 .btn {
@@ -178,4 +178,17 @@
     100%{
         background-position:0% 31%
     }
+}*/
+
+
+/*=====================================士華後台部分======================================*/
+
+
+
+.backButton {
+    position: fixed;
+    width: 50px;
+    border-radius: 50%;
+    left: 20px;
+    bottom: 20px;
 }

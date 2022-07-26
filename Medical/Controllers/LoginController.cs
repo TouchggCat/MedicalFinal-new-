@@ -54,7 +54,9 @@ namespace Medical.Controllers
 
             if (mb != null)
             {
-                if (mb.Email.Equals(vModel.txtAccount) && mb.Password.Equals(vModel.txtPassword)&&vModel.reserve != null && mb.Role == 1)
+
+                if (mb.Email.Equals(vModel.txtAccount) && mb.Password.Equals(vModel.txtPassword)&&vModel.reserve == "reserve" && mb.Role == 1)
+
                 {
                     jasonUser = JsonSerializer.Serialize(mb);
                     HttpContext.Session.SetString(CDictionary.SK_LOGINED_USE, jasonUser);
@@ -82,7 +84,7 @@ namespace Medical.Controllers
                     return RedirectToAction("Index", "Home",new {area="Admin" });
                 }
             }
-            //TODO 身分別登入不同頁面
+
             return View();
         }
 
@@ -207,6 +209,29 @@ namespace Medical.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
+
+
+        //============================================AJAX API
+        public IActionResult AccountCheck(string account)
+        {
+            if (!string.IsNullOrWhiteSpace(account))
+            {
+                Member mem = _context.Members.Where(n => n.Email == account).FirstOrDefault();
+                if (mem != null)
+                {
+                    return Content("此帳號已被使用", "text/html", System.Text.Encoding.UTF8);
+                }
+                else
+                {
+                    return Ok();
+                }
+            }
+            else
+            {
+                return Content("請輸入帳號", "text/html", System.Text.Encoding.UTF8);
+            }
+        }
+
 
     }
 }
