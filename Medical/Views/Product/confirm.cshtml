@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Medical.ViewModel.CLinepayConfirmViewModel>
+
+@{
+    ViewData["Title"] = "confirm";
+}
+
+
+<div class="container">
+    <div style="margin:auto;">
+        <div style="height: 4em; width: 60%; background-color:#003060; margin: auto;">
+            <div style="height:2em;width:20%;margin-left:2em;">
+                <img src="~/img/line.png" style="height:100%;width:100%;margin-top:1em;" />
+            </div>
+        </div>
+        <div style=" width: 60%; margin: auto; background-color: rgb(236, 236, 236);">
+            @{
+                foreach (var item in Model)
+                {
+                    <div class="row" style="background-color:white;;width:100%;margin:auto;height:8em;">
+                        <div class="col-md-3" style="height:10em;margin:auto;text-align:center;">
+                            <img src="~/images/@item.ProductImage" alt="Alternate Text" style="height:50%;width:60%;margin-top:1em;" />
+                        </div>
+                        <div class="col-md-9" style="padding-left:1em;">
+                            <p style="margin-top: 1em;font-weight:bold;font-size:x-large">@item.ProductName</p>
+                            <p style="color: lawngreen; font-weight: bold;">@item.UnitPrice.ToString("C0")</p>
+                        </div>
+                    </div>
+                }
+            }
+            <div style="margin:auto;text-align:center;" class="mt-3">
+                <p style="font-size:x-large;font-weight:bold;">
+                    <span><i class="fa-solid fa-check" style="color:lawngreen;"></i>付款完成。</span>
+                </p>
+                <p style="font-size:x-large;font-weight:bold;">
+                    <span>訂單編號:</span><span>@Model.FirstOrDefault().orderId</span>
+                    <br />
+                    <span>交易代號:</span><span>@Model.FirstOrDefault().transactionId</span>
+                </p>
+            </div>
+
+        </div>
+    </div>
+</div>
