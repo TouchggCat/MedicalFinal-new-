@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using static Medical.Controllers.calendar;
 
@@ -36,7 +37,7 @@ namespace Medical.Controllers
         {
             List<detail> list = new List<detail>();
 
-            var qry = _medicalContext.ClinicDetails.Include(x => x.Doctor).Include(x => x.Room).Include(x => x.Period);
+            var qry = _medicalContext.ClinicDetails.Include(x => x.Doctor).Include(x => x.Room).Include(x => x.Period).Include(x => x.Department);
 
             foreach (var i in qry)
             {
@@ -58,12 +59,20 @@ namespace Medical.Controllers
                     title = $"{i.Doctor.DoctorName}-診間:{i.Room.RoomName}",
                     borderColor = color,
                     backgroundColor = color,
+                    textColor = "white",
+                    color = color,
+                    constraint = "businessHours",
                     extendedProps = new calendar.ExtendedProps
                     {
-                        room = i.RoomId,
-                        period = i.Period.PeriodDetail
+                        doctorId = i.DoctorId,
+                        doctorName = i.Doctor.DoctorName,
+                        deptId = i.DepartmentId,
+                        deptName = i.Department.DeptName,
+                        roomId = i.RoomId,
+                        roomName = i.Room.RoomName,
+                        periodId = i.PeriodId,
+                        periodDetail = i.Period.PeriodDetail,
                     }
-
                 };
                 list.Add(detail);
             }
@@ -79,7 +88,6 @@ namespace Medical.Controllers
 
         public void Method(CClinicDetailViewModel cVM)
         {
-
             var result = _medicalContext.ClinicDetails.Where(x => x.ClinicDetailId.Equals(cVM.clinicId));
             var resultDoctor = _medicalContext.Doctors.Where(x => x.DoctorName.Equals(cVM.doctorname)).SingleOrDefault();
             cVM.DoctorId = resultDoctor.DoctorId;
@@ -91,41 +99,89 @@ namespace Medical.Controllers
             }
         }
 
-        public void Create(CClinicDetailAdminViewModel[] obj)
+        public IActionResult Create(CClinicDetailAdminViewModel[] obj)
         {
-            foreach (var i in obj)
-            {
+            string result = "";
 
-                ClinicDetail c = new ClinicDetail()
+            if (obj != null)
+            {
+                foreach (var i in obj)
                 {
-                    DoctorId = _medicalContext.Doctors.Where(x => x.DoctorName.Equals(i.doctorName)).SingleOrDefault().DoctorId,
-                    DepartmentId = _medicalContext.Departments.Where(x => x.DeptName.Equals(i.deptName)).SingleOrDefault().DepartmentId,
-                    PeriodId = _medicalContext.Periods.Where(x => x.PeriodDetail.Equals(i.periodName)).SingleOrDefault().PeriodId,
-                    Online = 0,
-                    //RoomId = _medicalContext.ClinicRooms.Where(x => x.RoomName.Equals(i.room)).SingleOrDefault().RoomId,
-                    RoomId = i.room,
-                    ClinicDate = TranDate(i.dateForm, i.periodName),
-                    LimitNum = 6
-                };
-                _medicalContext.ClinicDetails.Add(c);
-                _medicalContext.SaveChanges();
+                    DateTime dt = Convert.ToDateTime(i.dateForm);
+                    var qry = _medicalContext.Periods.Where(x => x.PeriodDetail.Equals(i.periodName)).Single().PeriodId;
+                    if (qry == 1)
+                    {
+                        dt = dt.AddHours(9);
+                    }
+                    else if (qry == 2)
+                    {
+                        dt = dt.AddHours(13);
+                    }
+                    else if (qry == 3)
+                    {
+                        dt = dt.AddHours(17);
+                    }
+
+                    ClinicDetail c = new ClinicDetail()
+                    {
+                        DoctorId = i.DoctorId,
+                        DepartmentId = i.DepartmentId,
+                        ClinicDate = dt,
+                        PeriodId = qry,
+                        RoomId = i.RoomId,
+                        Online = 0,
+                        LimitNum = 6
+                    };
+                    _medicalContext.ClinicDetails.Add(c);
+                    _medicalContext.SaveChanges();
+                    result = "新增成功";
+                }
+            }
+            else
+            {
+                result = "新增失敗";
             }
 
+            return Content(result, "text/plain", System.Text.Encoding.UTF8);
         }
 
+        [HttpPost]
         public void Update(CClinicDetailViewModel cVM)
         {
-            ClinicDetail clinicDetail = _medicalContext.ClinicDetails.Where(x => x.ClinicDetailId.Equals(cVM.clinicId)).FirstOrDefault();
+            ClinicDetail clinicDetail = _medicalContext.ClinicDetails.Where(x => x.ClinicDetailId.Equals(cVM.clinicDetailId)).FirstOrDefault();
 
             if (clinicDetail != null)
             {
                 clinicDetail.DoctorId = cVM.DoctorId;
-                clinicDetail.PeriodId = cVM.periodID;
-                clinicDetail.RoomId = cVM.roomID;
-                //123456
-                clinicDetail.ClinicDate = cVM.date;
+                clinicDetail.DepartmentId = cVM.DepartmentId;
+                clinicDetail.PeriodId = cVM.PeriodId;
+                clinicDetail.RoomId = cVM.RoomId;
+                clinicDetail.ClinicDate = cVM.ClinicDate;
                 _medicalContext.SaveChanges();
             }
+        }
+
+        public IActionResult Delete(string id)
+        {
+            string result = "";
+            ClinicDetail clinicDetail = _medicalContext.ClinicDetails.Where(x => x.ClinicDetailId.Equals(int.Parse(id))).FirstOrDefault();
+
+            var qry = _medicalContext.Reserves.Where(x => x.ClinicDetailId.Equals(int.Parse(id)));
+
+            if (qry.Count() > 0)
+            {
+                result = "false";
+            }
+            else
+            {
+                if (clinicDetail != null)
+                {
+                    _medicalContext.ClinicDetails.Remove(clinicDetail);
+                    _medicalContext.SaveChanges();
+                    result = "true";
+                }
+            }
+            return Content(result, "text/plain", System.Text.Encoding.UTF8);
         }
 
         public IActionResult Dept()
@@ -182,8 +238,14 @@ namespace Medical.Controllers
         }
         public class ExtendedProps
         {
-            public int? room { get; set; }
-            public string period { get; set; }
+            public int? doctorId { get; set; }
+            public string doctorName { get; set; }
+            public int? deptId { get; set; }
+            public string deptName { get; set; }
+            public int? roomId { get; set; }
+            public string roomName { get; set; }
+            public int periodId { get; set; }
+            public string periodDetail { get; set; }
         }
 
         public class detail
@@ -193,7 +255,9 @@ namespace Medical.Controllers
             public string start { get; set; }
             public string end { get; set; }
             public string title { get; set; }
-            //public string textColor { get; set; }
+            public string textColor { get; set; }
+            public string constraint { get; set; }
+            public string color { get; set; }
             public string borderColor { get; set; }
             public string backgroundColor { get; set; }
             public ExtendedProps extendedProps { get; set; }
