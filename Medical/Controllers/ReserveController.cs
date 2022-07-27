@@ -59,7 +59,7 @@ namespace Medical.Controllers
 
             if (departmentId == 0 && doctorId == 0 && date == null)
             {
-                id = _context.ClinicDetails.Where(n=>n.Online==0);
+                id = _context.ClinicDetails.Where(n=>n.Online==0).Where(n=>n.ClinicDate>DateTime.Now);
             }
             else if (departmentId == 0 && doctorId>0 &&date!=null)
             {
@@ -74,12 +74,12 @@ namespace Medical.Controllers
             else if (date == null &&departmentId >0 && doctorId>0)
             {
                 id = _context.ClinicDetails.Where(a => a.DepartmentId == departmentId)
-                 .Where(a => a.DoctorId == doctorId).Where(n => n.Online == 0);
+                 .Where(a => a.DoctorId == doctorId).Where(n => n.Online == 0).Where(n => n.ClinicDate > DateTime.Now);
             }
             else if (departmentId == 0 && date == null)
             {
                 id = _context.ClinicDetails
-                 .Where(a => a.DoctorId == doctorId).Where(n => n.Online == 0);
+                 .Where(a => a.DoctorId == doctorId).Where(n => n.Online == 0).Where(n => n.ClinicDate > DateTime.Now);
             }
             else if (departmentId == 0 && doctorId == 0)
             {
@@ -89,7 +89,7 @@ namespace Medical.Controllers
             else if (date == null && doctorId == 0)
             {
                 id = _context.ClinicDetails
-                 .Where(a => a.DepartmentId == departmentId).Where(n => n.Online == 0);
+                 .Where(a => a.DepartmentId == departmentId).Where(n => n.Online == 0).Where(n => n.ClinicDate > DateTime.Now);
             }
             else
             {
