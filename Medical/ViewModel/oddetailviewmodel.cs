@@ -17,7 +17,7 @@ namespace Medical.ViewModel
 
         public int? orderid { get; set; }
 
-        public int detailid { get { return _context.OrderDetails.FirstOrDefault(n => n.OrderId == orderid).OrderDetailId; } }
+        public int detailid { get; set; }
 
         public int Quantity { get { return _context.OrderDetails.FirstOrDefault(n => n.OrderDetailId == detailid).Quantity; } }
 

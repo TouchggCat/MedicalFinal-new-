@@ -456,6 +456,7 @@ namespace Medical.Areas.Admin.Controllers
                 datetimeStr = ((DateTime) review.CreateDate).ToString("yyyy年MM月dd日 hh時mm分"),
             };
 
+
             return Json(cReviewmodel);
         }
         public IActionResult SingleReviewDelete(string singleR)
