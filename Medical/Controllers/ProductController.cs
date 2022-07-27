@@ -1,14 +1,20 @@
-﻿using Medical.Models;
+﻿using LinePayEC;
+using LinePayEC.Models;
+using LinePayEC.Models.RequestModels;
+using Medical.Models;
 using Medical.ViewModel;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MimeKit;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -18,29 +24,50 @@ namespace Medical.Controllers
     {
         private readonly MedicalContext _medicalContext;
         private IWebHostEnvironment environment;
-        public ProductController(MedicalContext medicalContext, IWebHostEnvironment myEnvironment)
+    public ProductController(MedicalContext medicalContext, IWebHostEnvironment myEnvironment)
         {
             _medicalContext = medicalContext;
             environment = myEnvironment;
+            
         }
         //歷史訂單
-        //預設會員19 需要抓登入資料
-        //id=memberID
-        public IActionResult OrderList(int? id = 19)
+        //抓登入資料 會員id
+        public IActionResult OrderList(Review addReviewView)
         {
 
             IEnumerable<OrderDetailViewModel> list = null;
-            if (id != 0)
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USE))
             {
-                list = _medicalContext.Orders.Where(a => a.MemberId == id)
+                CMemberAdminViewModel vm = null;
+
+                string logJson = "";
+                logJson = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USE);
+                vm = System.Text.Json.JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
+                ViewBag.name = vm.MemberName;
+
+                list = _medicalContext.Orders.Where(a => a.MemberId == vm.MemberId)
                     .Select(a => new OrderDetailViewModel
                     {
                         Order = a,
-                        Member=a.Member,
-                        Orderstate=a.OrderState,
-                        Paytype=a.PayType,
-                        ShipType=a.ShipType
+                        Member = a.Member,
+                        Orderstate = a.OrderState,
+                        Paytype = a.PayType,
+                        ShipType = a.ShipType
                     });
+                ViewBag.count = list.Count();
+
+                if (addReviewView.ProductId != null)
+                {
+
+                    //新增評論
+                    addReviewView.CreateDate = DateTime.Now;
+                    addReviewView.Shade = false;
+                    addReviewView.MemberId = vm.MemberId;
+                    _medicalContext.Reviews.Add(addReviewView);
+                    _medicalContext.SaveChanges();
+                    //新增評論結束  
+
+                }
 
             }
             return View(list);
@@ -49,67 +76,47 @@ namespace Medical.Controllers
 
         //關於訂單內產品新增產品評論
         //先秀出訂單明細表 
-        //id=orderID
-        public IActionResult OrderDetailList(int? id)
+        //這裡的id是orderID
+        public IActionResult OrderDetailList(int detail)
         {
-            IEnumerable<OrderDetailViewModel> list = null;
-            IEnumerable<OrderDetailViewModel> list1 = null;
-            if (id != 0)
+            var id = _medicalContext.OrderDetails.Where(n => n.OrderId == detail);
+            List<oddetailviewmodel> list = new List<oddetailviewmodel>();
+            foreach (var item in id)
             {
-                list = _medicalContext.OrderDetails.Where(a => a.OrderId == id)
-                    .Select(a=>new OrderDetailViewModel
-                        {
-                            OrderDetail=a,
-                            Order=a.Order,
-                            Product=a.Product,
-                            Member=a.Order.Member,                                                     
-                        });
-                //foreach (var p in list)
-                //{
-                //    list1 = _medicalContext.Products.Where(a => a.ProductId == p.ProductId).Select(a => new OrderDetailViewModel
-                //    { 
-                        
-                    
-                //    });
+                oddetailviewmodel t = new oddetailviewmodel(_medicalContext)
+                {
 
-                //}
-                
-              
+                    orderid =item.OrderId,
+                    detailid=item.OrderDetailId
+                };
+
+                list.Add(t);
             }
-            return View(list);
+            return Json(list);
         }
 
-        //根據訂單產品ID 新增評論 (前台)
-        public IActionResult createReview(int? id)
-        {
-            var p = _medicalContext.Reviews.FirstOrDefault(a => a.ProductId == id);
-
-                return View(p);
-        }
-        [HttpPost]
-        public IActionResult createReview(Review addReviewView)
-        {
 
 
-            _medicalContext.Reviews.Add(addReviewView);
-            _medicalContext.SaveChanges();
-            return RedirectToAction("OrderDetailList");
-        }
+
 
         //管理產品評論 (後台)
         public IActionResult ReviewList()
         {
-            IEnumerable < CReviewViewModel > list= null;
+            IEnumerable<CReviewViewModel> list = null;
             list = _medicalContext.Reviews.Select(p => new CReviewViewModel
             {
                 Review = p,
                 Member = p.Member,
-                RatingType = p.RatingType,             
-            }) ;
-            
+                RatingType = p.RatingType,
+
+                Product = p.Product
+            });
+
+
 
             return View(list);
         }
+
 
 
 
@@ -132,15 +139,15 @@ namespace Medical.Controllers
             CProductForShowViewModel prodModel = new CProductForShowViewModel()
             {
                 productList = _medicalContext.Products.ToList(),
-                brandList = _medicalContext.ProductBrands.Include(b=>b.Products).ToList(),
+                brandList = _medicalContext.ProductBrands.Include(b => b.Products).ToList(),
                 cateList = _medicalContext.ProductCategories.Include(c => c.Products).ToList(),
-                prodSpec = _medicalContext.ProductSpecifications.ToList()
-
+                prodSpec = _medicalContext.ProductSpecifications.ToList(),
+                reviewList =_medicalContext.Reviews.Include(r=>r.RatingType).ToList()
             };
 
             prodModel.prodSpec = (from prod in this._medicalContext.ProductSpecifications
                                   select prod)
-                        //.Where(p=>p.Product.ProductBrand.ProductBrandName == "雷朋") 條件
+                        .Where(p=>p.Product.Discontinued==false) //條件
                         .OrderBy(prod => prod.Product.ProductName).ToList();
                         //.Skip((currentPage - 1) * maxRows)
                         //.Take(maxRows).ToList();
@@ -161,7 +168,7 @@ namespace Medical.Controllers
 
             if(logJson!=null)
             { 
-                vm = JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
+                vm = System.Text.Json.JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
                 showID2 = vm.MemberId;
             }
 
@@ -176,7 +183,7 @@ namespace Medical.Controllers
             ProductSpecification ps = _medicalContext.ProductSpecifications.FirstOrDefault(
                 ps => ps.Product.ProductName == productName);
             
-            List<Review> reviewList = _medicalContext.Reviews.Where(rw => rw.Product.ProductName == productName).ToList();
+            List<Review> reviewList = _medicalContext.Reviews.Where(rw => rw.Product.ProductName == productName && rw.Shade==false).ToList();
             List<Member> memList = _medicalContext.Members.ToList();
             List<RatingType> ratings = _medicalContext.RatingTypes.ToList();
             List<ProductBrand> brandList = _medicalContext.ProductBrands.ToList();
@@ -207,7 +214,7 @@ namespace Medical.Controllers
 
             return View(cartView);
         }
-
+        //推薦產品 隨機取9
         public IActionResult GetOthersProduct()
         {
 
@@ -231,7 +238,7 @@ namespace Medical.Controllers
 
             if (logJson != null)
             {
-                vm = JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
+                vm = System.Text.Json.JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
                 showID2 = vm.MemberId;
             }
 
@@ -243,7 +250,6 @@ namespace Medical.Controllers
 
             if (AddToCartvModel.txtCount == 0)
                 return RedirectToAction("ProductDetail");
-
 
             Product prod = _medicalContext.Products.FirstOrDefault(p => p.ProductId == AddToCartvModel.txtPId);
             if (prod == null)
@@ -268,7 +274,7 @@ namespace Medical.Controllers
                 {
                     hasCart.ProductAmount = afterAmount;
                     _medicalContext.SaveChanges();
-                    return Content("成功");
+                    return Content("成功+"+showID2);
                 }
             }
             else
@@ -298,7 +304,7 @@ namespace Medical.Controllers
 
             if (logJson != null)
             {
-                vm = JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
+                vm = System.Text.Json.JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
                 showID2 = vm.MemberId;
             }
 
@@ -334,22 +340,74 @@ namespace Medical.Controllers
         [HttpPost]
         public IActionResult DeleteCartItem(int ShoppingCartId)
         {
+            CMemberAdminViewModel vm = null;
+
+            int showID2 = 0;
+            string logJson = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USE);
+
+            if (logJson != null)
+            {
+                vm = System.Text.Json.JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
+                showID2 = vm.MemberId;
+            }
+
             ShoppingCart cart = _medicalContext.ShoppingCarts.FirstOrDefault(c => c.ShoppingCartId == ShoppingCartId);
 
             _medicalContext.Remove(cart);
             _medicalContext.SaveChanges();
-            return Content("成功");
+            return Content("成功+" + showID2);
         }
 
         [HttpPost]
         public IActionResult ChangeCartItem(ShoppingCart cart)
         {
+            CMemberAdminViewModel vm = null;
+
+            int showID2 = 0;
+            string logJson = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USE);
+
+            if (logJson != null)
+            {
+                vm = System.Text.Json.JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
+                showID2 = vm.MemberId;
+            }
+
+
             ShoppingCart mycart = _medicalContext.ShoppingCarts.FirstOrDefault(mc => mc.ShoppingCartId == cart.ShoppingCartId);
             mycart.ProductAmount = cart.ProductAmount;
             _medicalContext.SaveChanges();
 
-            return Content("成功");
+            return Content("成功+"+showID2);
         }
+
+        public IActionResult MainPageCart(int? id)
+        {
+
+            List<ShoppingCart> cartList = _medicalContext.ShoppingCarts.Where(c => c.MemberId ==id).ToList();
+
+
+            List<Product> prodList = _medicalContext.Products.ToList();
+            List<ProductSpecification> prodspecList = _medicalContext.ProductSpecifications.ToList();
+
+            List<CMainPageCartViewModel> cartForShowList = new List<CMainPageCartViewModel>();
+
+            Product p = new Product();
+
+            foreach (ShoppingCart cart in cartList)
+            {
+                CMainPageCartViewModel item = new CMainPageCartViewModel();
+                item.ShoppingCartId = cart.ShoppingCartId;
+                item.ProductName = cart.Product.ProductName;
+                item.UnitPrice = prodspecList.FirstOrDefault(ps => ps.Product.ProductName == cart.Product.ProductName).UnitPrice;
+                item.ProductAmount = cart.ProductAmount;
+                item.ProductId = cart.ProductId;
+                cartForShowList.Add(item);
+            }
+            return Json(cartForShowList);
+            
+        }
+
+
         public IActionResult GetCoupon(int? id)
         {
             List<CGetUserCoupon>GetUserC = _medicalContext.CouponDetails.Include(cd=>cd.Coupon).Where(cd => cd.MemberId == id && cd.CouponUsed==false).Select(cd=>new CGetUserCoupon {
@@ -372,7 +430,7 @@ namespace Medical.Controllers
 
             if (logJson != null)
             {
-                vm = JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
+                vm = System.Text.Json.JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
                 showID2 = vm.MemberId;
             }
 
@@ -385,8 +443,6 @@ namespace Medical.Controllers
             List<ShoppingCart> cartList = _medicalContext.ShoppingCarts.Where(c => c.MemberId == showID2).ToList();
 
             List<Product> prodList = _medicalContext.Products.ToList();
-
-
 
             List<ProductSpecification> prodspecList = _medicalContext.ProductSpecifications.ToList();
 
@@ -402,6 +458,7 @@ namespace Medical.Controllers
                 item.prod = prodList.FirstOrDefault(p => p.ProductId == cart.ProductId);
                 item.prodspec = prodspecList.FirstOrDefault(ps => ps.ProductId == cart.ProductId);
                 checkForShowList.Add(item);
+                item.MemberId = showID2;
             }
 
 
@@ -411,7 +468,7 @@ namespace Medical.Controllers
 
         public IActionResult QueryNotFinishOrder(int? id)
         {
-            List<Order> orderList = _medicalContext.Orders.Where(o => o.MemberId ==19&& o.OrderStateId==1).OrderByDescending(o => o.OrderId).ToList();
+            List<Order> orderList = _medicalContext.Orders.Where(o => o.MemberId ==4&& o.OrderStateId==1).OrderByDescending(o => o.OrderId).ToList();
             List<OrderDetail> orderDetailList = null;
 
             foreach (var o in orderList)
@@ -439,7 +496,7 @@ namespace Medical.Controllers
         }
         public IActionResult QueryFinishOrder(int? id)
         {
-            List<Order> orderList = _medicalContext.Orders.Where(o => o.MemberId == 19 && o.OrderStateId == 2).OrderByDescending(o => o.OrderId).ToList();
+            List<Order> orderList = _medicalContext.Orders.Where(o => o.MemberId == 4 && o.OrderStateId == 2).OrderByDescending(o => o.OrderId).ToList();
             List<OrderDetail> orderDetailList = null;
 
             foreach (var o in orderList)
@@ -489,7 +546,16 @@ namespace Medical.Controllers
             cd.CouponUsed = couponUsed;
             _medicalContext.Add(cd);
             _medicalContext.SaveChanges();
-            return RedirectToAction("ReceiveCoupon");
+
+
+            var cGet = _medicalContext.Coupons.Select(c => new CGetCouponViewModel
+            {
+                MemId = (int)memberId,
+                coupon = c,
+                couponDetail = c.CouponDetails.FirstOrDefault(cd => cd.MemberId == memberId && cd.CouponId == c.CouponId)
+            });
+
+            return View(cGet);
         }
 
         public IActionResult emptyCart()
@@ -662,7 +728,153 @@ namespace Medical.Controllers
 
         }
 
+        // =========================== LineTest ============================
+        private LinePayEC.Models.RequestModels.Reserve GetReserveData(List<Products>pl,int total)
+        {
+            LinePayEC.Models.RequestModels.Reserve reserve = new LinePayEC.Models.RequestModels.Reserve
+            {
+                Amount = total,
+                Currency = "TWD",
+                OrderId = Guid.NewGuid().ToString()
+            };
 
+            reserve.Packages.Add
+            (
+                new Packages { Id = Guid.NewGuid().ToString(), Amount = total, Products = pl }
+            ) ;
+
+            reserve.RedirectUrls.ConfirmUrl = "https://localhost:44302/Product/confirm";
+            reserve.RedirectUrls.CancelUrl = "https://localhost:44302/Product/confirm";
+
+            return reserve;
+        }
+
+
+        public async Task<IActionResult> Reserve(List<CShoppingCartItem> SList,int total, int[] pId,string custName,string r1,string r2,string address,string sevenAddress,string couponName)
+        {
+            List<Products> pList = new List<Products>();
+            List<Order> oList = new List<Order>();
+            List<OrderDetail> odList = new List<OrderDetail>();
+            List<ShoppingCart> cartList = new List<ShoppingCart>();
+            foreach (var cartItem in SList)
+            {
+                if (Array.Exists<int>(pId,x=>x==cartItem.prod.ProductId)==true)
+                {
+                    Products p = new Products
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Name = cartItem.prod.ProductName,
+                        ImageUrl = "https://i.imgur.com/HjQSZ2p.jpg",
+                        Price = cartItem.prodspec.UnitPrice,
+                        Quantity = cartItem.cart.ProductAmount
+                    };
+
+                    ShoppingCart cart = _medicalContext.ShoppingCarts.FirstOrDefault(c => c.ShoppingCartId == cartItem.cart.ShoppingCartId);
+                    cartList.Add(cart);
+                    pList.Add(p);
+
+                    
+                }
+
+            }
+
+            var baseAddress = "https://sandbox-api-pay.line.me";
+            var channelId = "1657329218";
+            var channelSecret = "d5a97c039996d5b4c7dc0b4a3f48b784";
+            LinePayClient client = new LinePayClient(baseAddress, channelId);
+
+
+
+            var reserveData = GetReserveData(pList,total);
+            var nonce = Guid.NewGuid().ToString();
+            var requestUrl = "/v3/payments/request";
+            var requestJson = JsonConvert.SerializeObject(reserveData, client.SerializerSettings);
+            var signature = client.GetSignature((channelSecret + requestUrl + requestJson + nonce), channelSecret);
+            var result = await client.ReserveAsync(reserveData, nonce, signature);
+
+
+            Order o = new Order
+            {
+                OrderDate = DateTime.Now,
+                OrderStateId = 1,
+                MemberId = cartList.FirstOrDefault().MemberId,
+                ShipAddress = address,
+                IsPaid = true,
+                PayTypeId = 1,
+                ShipTypeId = 1,
+                //CouponDetail = 
+            };
+            _medicalContext.Orders.Add(o);
+            _medicalContext.SaveChanges();
+
+            foreach (var cc in cartList)
+            {
+                OrderDetail od = new OrderDetail
+                {
+                    OrderId = o.OrderId,
+                    ProductId = cc.ProductId,
+                    Quantity = cc.ProductAmount
+                };
+                _medicalContext.OrderDetails.Add(od);
+                _medicalContext.SaveChanges();
+
+                _medicalContext.ShoppingCarts.Remove(cc);
+                _medicalContext.SaveChanges();
+            }
+
+
+            return Redirect(result.Info.PaymentUrl.Web);
+
+        }
+        public async Task<IActionResult> confirm([FromQuery] string orderId, [FromQuery] string transactionId)
+        {
+            Order order = _medicalContext.Orders.Include(o => o.OrderDetails).OrderBy(o=>o.OrderId).LastOrDefault();
+            List<CLinepayConfirmViewModel> linepaylist = new List<CLinepayConfirmViewModel>();
+
+            foreach (var od in order.OrderDetails)
+            {
+
+                CLinepayConfirmViewModel linepay = new CLinepayConfirmViewModel
+                {
+                    ProductImage = _medicalContext.ProductSpecifications.FirstOrDefault(ps => ps.ProductId == od.ProductId).ProductImage,
+                    ProductName = _medicalContext.Products.FirstOrDefault(p => p.ProductId == od.ProductId).ProductName,
+                    Quantity = od.Quantity,
+                    UnitPrice = _medicalContext.ProductSpecifications.FirstOrDefault(ps => ps.ProductId == od.ProductId).UnitPrice,
+                    orderId = orderId,
+                    transactionId  =transactionId
+                    
+                };
+                linepaylist.Add(linepay);
+            }
+
+            if (orderId != null && transactionId != null)
+            {
+                var message = new MimeMessage();
+                message.From.Add(new MailboxAddress("漢克斯眼科", "wangbo841019@gmail.com"));
+                message.To.Add(new MailboxAddress("客戶", "c121474790@gmail.com"));
+                message.Subject = "訂單成立通知";
+                var bodyBuilder = new BodyBuilder();
+                bodyBuilder.TextBody = "感謝您的購買";
+                bodyBuilder.HtmlBody = "<p>感謝您的購買</p><p>訂單編號: " + orderId+"</p>"+"<p>交易代號: "+transactionId+"</p>";
+                message.Body = bodyBuilder.ToMessageBody();
+
+                using (var client = new MailKit.Net.Smtp.SmtpClient())
+                {
+                    client.Connect("smtp.gmail.com", 587, false);
+                    client.Authenticate("wangbo841019@gmail.com", "chqvfvzimtvnvitp");
+                    client.Send(message);
+                    client.Disconnect(true);
+                }
+            }
+
+           
+
+
+
+
+
+                return View(linepaylist);
+        }
 
         // ============ 柏鈞 End =================
     }

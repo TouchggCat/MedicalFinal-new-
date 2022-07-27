@@ -23,14 +23,14 @@
                             <label style="font-size:24px">@Model.DoctorName</label>
                             <div class="col-md-10">
                                 <label style="font-size:24px">給予分數：</label>
-                                <select name="RatingTypeId" style="width:40px">
+                                <select name="RatingTypeId" style="width:40px" id="selDemo">
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
                                     <option value="4">4</option>
                                     <option value="5">5</option>
                                 </select><br>
-                                <textarea style="resize: none" name="Rating" rows="10" cols="55"></textarea>
+                                <textarea style="resize: none" name="Rating" rows="10" cols="55" id="txtDemo"></textarea>
                             </div>
                             <div class="form-group" style="padding-left:425px">
                                 <input type="submit" value="送出" class="btn btn-primary" />
@@ -43,7 +43,16 @@
         </form>
     </div>
 </div>
+<button id="addDemo" class="btn btn-primary">Demo</button>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $("#addDemo").click(() => {
+            $("#selDemo").val("5");
+            $("#txtDemo").val("醫師幽默又風趣~");
+        })
+
+    </script>
+
 }

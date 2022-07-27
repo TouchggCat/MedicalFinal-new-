@@ -58,7 +58,31 @@ namespace Medical.Controllers
             return View(result);
         }
 
+
+        public IActionResult Listjson()
+        {           
+            var result = _context.ClinicDetails.Where(a => a.ClinicDate.Value.Date.Equals(DateTime.Today.Date));
+            List<Clinictime> list = new List<Clinictime>();
+            foreach (var item in result)
+            {
+                Clinictime t = new Clinictime(_context)
+                {
+                    clinicDetailid=item.ClinicDetailId
+
+                };
+                list.Add(t);
+
+            }
+ 
+            return Json(list);
+        }
+
+
         
+
+
+        
+
 
     }
 }

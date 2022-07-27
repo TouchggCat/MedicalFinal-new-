@@ -57,7 +57,7 @@
 <div class="card" style="padding-top:30px">
     <div class="row">
         <div class="col-md-5">
-            <form asp-action="Edit">
+            <form asp-action="Edit" enctype="multipart/form-data" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="ArticleId" class="control-label " hidden="hidden"></label>
@@ -66,7 +66,7 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Doctor.DoctorName" class="control-label">醫生</label>
-                    <input asp-for="Doctor.DoctorName" class="form-control" disabled="disabled" />
+                    <input asp-for="Doctor.DoctorName" class="form-control form-control-lg " disabled="disabled" />
                     <span asp-validation-for="Doctor.DoctorName" class="text-danger"></span>
                 </div>
                 <div class="form-group">
@@ -76,13 +76,18 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Articeltitle" class="control-label"></label>
-                    <input asp-for="Articeltitle" class="form-control" />
+                    <input asp-for="Articeltitle" class="form-control form-control-lg " />
                     <span asp-validation-for="Articeltitle" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="ArticleContent" class="control-label"></label>
-                    <textarea id="editor" asp-for="ArticleContent" class="form-control" style="width:500px;height:200px;font-size:15px"></textarea>
+                    <textarea id="editor" asp-for="ArticleContent" class="form-control form-control-lg " style="width:500px;height:200px;font-size:15px"></textarea>
                     <span asp-validation-for="ArticleContent" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ArPicturePath" class="control-label"></label>
+                    <input name="photo" type="file" asp-for="ArPicturePath" class="form-control form-control-lg" />
+
                 </div>
                 <div class="form-group">
                     <label asp-for="CreateDate" class="control-label" hidden="hidden"></label>

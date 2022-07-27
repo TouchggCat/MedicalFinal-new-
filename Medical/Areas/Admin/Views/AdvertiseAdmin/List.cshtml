@@ -10,7 +10,7 @@
 <div class="container-fluid">
     <div class="row mb-2">
         <div class="col-sm-6">
-            <h1 style="font-family: 微軟正黑體; font-weight: bold; color: mediumslateblue;">廣告輪播(後臺系統)</h1>
+            <h1 style="font-family: 微軟正黑體; font-weight: bold; color: mediumslateblue;">相關文章(後臺系統)</h1>
         </div>
     </div>
 </div>
@@ -43,7 +43,7 @@
         int count = 0;
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title" style="font-size: 25px; font-family: 微軟正黑體; font-weight: bold; color: mediumslateblue;">廣告表單細節</h3>
+                <h3 class="card-title" style="font-size: 25px; font-family: 微軟正黑體; font-weight: bold; color: mediumslateblue;">相關文章表單細節</h3>
             </div>
 
             <div class="card-body">
@@ -74,9 +74,9 @@
                                                     @Html.DisplayFor(modelItem => item.AdContant)
                                                 </p>
                                             </td>
-                                            <td class="font-weight-bold"><img src="~/uploads/@item.AdPicturePath" style="width:150px;height:150px"></td>
-                                            <td style="width:8%" class="font-weight-bold">@Html.DisplayFor(modelItem => item.Adstatue.Adstatue)</td>
-                                            <td style="width:8%">
+                                            <td class="font-weight-bold" style="width:20%"><img src="~/uploads/@item.AdPicturePath" style="width:150px;height:150px"></td>
+                                            <td style="width:5%" class="font-weight-bold">@Html.DisplayFor(modelItem => item.Adstatue.Adstatue)</td>
+                                            <td style="width:10%">
                                                 <div class="fas fa-pencil-alt" style="color: dodgerblue; margin-block: 3px">
                                                     @Html.ActionLink("修改", "Edit", "AdvertiseAdmin", new { id = item.No }, new { @class = "btn bg-gradient-primary btn-sm" })
                                                 </div>

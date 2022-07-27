@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -114,13 +115,6 @@ namespace Medical.Areas.Admin.Controllers
             Product mp = db.Products.FirstOrDefault(p => p.ProductId == cSelected.ProductId);
             ProductSpecification mps = db.ProductSpecifications.FirstOrDefault(m => m.ProductSpecificationId == cSelected.ProductSpecificationId);
 
-
-
-
-            //"{\"Discontinued\":\"false\",\"ProductId\":\"0\",\"ProductAppearance\":\"最新款黑色太陽眼鏡\",\"ProductImage\":" +
-            //    "\"/images/6143e97f-4d04-439c-bc97-4741069e20db.jpg\",\"ProductMaterial\":\"soft\",\"ProductName\":\"雷朋太陽眼鏡(黑)\"," +
-            //    "\"Shelfdate\":\"999\",\"Stock\":\"16\"," +
-            //    "\"UnitPrice\":\"5003\",\"ProductBrandId\":\"3\",\"ProductCategoryId\":\"1\",\"ProductSpecificationId\":\"2\"}"
 
             if (cSelected.photo != null)
             {
@@ -369,29 +363,182 @@ namespace Medical.Areas.Admin.Controllers
                 return Content("成功");
             }
         }
-
-
-
-
-        // 查詢訂單
+        // 查詢訂單 主頁
         public IActionResult QueryAllOrders()
         {
-            return View();
+            var orderlist = db.Orders.OrderByDescending(o=>o.OrderId).ToList();
+            var memlist = db.Members.ToList();
+
+            return View(orderlist);
         }
-        // 評論查詢/刪除
+
+        public IActionResult GetOrderDetail(int?id)
+        {
+            // orderID MemberName
+            // (od List) Image productName amount 小計 
+            // 折價券 折扣數
+            var productSlist = db.ProductSpecifications.ToList();
+            List<CGetOrderDetailViewModel> odVMList = new List<CGetOrderDetailViewModel>();
+            var odlist = db.OrderDetails.Include(od => od.Order).Include(od => od.Product).Include(od => od.Order.Member).Include(od => od.Order.CouponDetail.Coupon).Where(od => od.OrderId == id).ToList();
+            
+            foreach(var od in odlist)
+            {
+                CGetOrderDetailViewModel odVM = new CGetOrderDetailViewModel();
+
+                if (od.Order.CouponDetailId != null)
+                {
+                    odVM.CouponDiscountNum = od.Order.CouponDetail.Coupon.CouponDiscountNum;                   
+                };
+
+                odVM.MemberName = od.Order.Member.MemberName;
+                odVM.ProductName = od.Product.ProductName;
+                odVM.ProductImage = od.Product.ProductSpecifications.FirstOrDefault(ps => ps.ProductId == od.Product.ProductId).ProductImage;
+                odVM.UnitPrice = od.Product.ProductSpecifications.FirstOrDefault(ps => ps.ProductId == od.Product.ProductId).UnitPrice;
+                odVM.Quantity = od.Quantity;
+                odVM.OrderId = od.OrderId;
+                odVM.Phone = od.Order.Member.Phone;
+                odVM.OrderDate = (DateTime)od.Order.OrderDate;
+                odVM.OrderStateId = od.Order.OrderStateId;
+
+                odVMList.Add(odVM);
+            }
+            
+            return Json(odVMList);
+        }
+
+        public IActionResult checkOrder(int[] multipleD)
+        {
+
+            if (multipleD.Length == 0)
+                return Content("失敗");
+
+
+            foreach (var oId in multipleD)
+            {
+                Order o = db.Orders.FirstOrDefault(o => o.OrderId == oId);
+                o.OrderStateId = 2;
+                db.SaveChanges();
+            }
+
+
+            return Content("成功");
+        }
+
+
+        // 評論查詢/刪除 主頁
         public IActionResult DeleteReviews()
         {
-
-
-            return View();
+            CReviewForEditViewModel cReviewModel = new CReviewForEditViewModel
+            {
+                productList = db.Products.ToList(),
+                memberList = db.Members.ToList(),
+                ratingTypeList = db.RatingTypes.ToList(),
+                reviewList = db.Reviews.ToList()
+            };
+            return View(cReviewModel);
         }
-        // 退貨訂單
-        public IActionResult ReturnOrderList()
+
+        public IActionResult SelectedReview(int? id)
+        {
+            Review review = db.Reviews.FirstOrDefault(r => r.ReviewId == id);
+            string memName = db.Members.FirstOrDefault(m => m.MemberId == review.MemberId).MemberName;
+            string ratingstr = db.RatingTypes.FirstOrDefault(rm => rm.RatingTypeId == review.RatingTypeId).RatingTypeName;
+            string prodName = db.Products.FirstOrDefault(p => p.ProductId == review.ProductId).ProductName;
+            int ratingNum = int.Parse(ratingstr);
+            CselectReviewViewModel cReviewmodel = new CselectReviewViewModel()
+            {
+                shade = (bool)review.Shade,
+                revId = review.ReviewId,
+                productName = prodName,
+                ratingtypeNum = ratingNum,
+                memberName = memName,
+                CommentContent = review.CommentContent,
+                datetimeStr = ((DateTime) review.CreateDate).ToString("yyyy年MM月dd日 hh時mm分"),
+            };
+
+
+            return Json(cReviewmodel);
+        }
+        public IActionResult SingleReviewDelete(string singleR)
+        {
+            
+            //Product p = db.Products.FirstOrDefault(pN => pN.ProductName == singleD);
+
+            Review review = db.Reviews.FirstOrDefault(r => r.ReviewId == int.Parse(singleR));
+
+            if (review != null)
+            {
+                review.Shade=true;
+                db.SaveChanges();
+                return Content("成功");
+            }
+            else
+                return Content("失敗");
+        }
+        public IActionResult SingleReviewRelieve(string singleR)
         {
 
+            //Product p = db.Products.FirstOrDefault(pN => pN.ProductName == singleD);
 
-            return View();
+            Review review = db.Reviews.FirstOrDefault(r => r.ReviewId == int.Parse(singleR));
+
+            if (review != null)
+            {
+                review.Shade = false;
+                db.SaveChanges();
+                return Content("成功");
+            }
+            else
+                return Content("失敗");
+        }
+        public IActionResult MultipleShade(int[] multipleD)
+        {
+            if (multipleD.Length == 0)
+                return Content("失敗");
+
+
+            foreach (var revId in multipleD)
+            {
+                Review r = db.Reviews.FirstOrDefault(rv => rv.ReviewId == revId);
+                r.Shade = true;
+                db.SaveChanges();
+            }
+
+
+            return Content("成功");
         }
 
+        // 退貨訂單
+        public IActionResult CouponList()
+        {
+            CCounponForShowViewModel couponVM = new CCounponForShowViewModel
+            {
+                couponDetaillist = db.CouponDetails.ToList(),
+                couponlist = db.Coupons.ToList()
+            };
+
+            return View(couponVM);
+        }
+
+        public IActionResult SelectedCoupon(int?id)
+        {
+            Coupon c = db.Coupons.FirstOrDefault(cp => cp.CouponId == id);
+            return Json(c);
+        }
+
+        public IActionResult AddNewCoupon(int reqNum , int discountNum)
+        {
+            if (discountNum <= 0)
+                return Content("失敗");
+
+            Coupon coupon = new Coupon();
+            coupon.CouponDiscountNum = discountNum;
+            coupon.CouponRequireNum = reqNum;
+            db.Coupons.Add(coupon);
+            db.SaveChanges();
+
+
+            return Content((coupon.CouponId).ToString());
+        }
     }
 }

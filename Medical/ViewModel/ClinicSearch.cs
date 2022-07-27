@@ -26,7 +26,8 @@ namespace Medical.ViewModel
         public int? roomid { get; set; }        
         
         public int? clinicDetailid { get; set; }
-
+        //醫生照片
+        public string PicturePath { get { return _context.Doctors.FirstOrDefault(n => n.DoctorId == doctorid).PicturePath; } }
         public string clinicdate { get { return ((DateTime)_context.ClinicDetails.FirstOrDefault(n => n.ClinicDate==date).ClinicDate).ToString("yyyy/MM/dd"); } }
         public string doctor { get { return _context.Doctors.FirstOrDefault(n => n.DoctorId == doctorid).DoctorName; } }
         public string department { get { return _context.Departments.FirstOrDefault(n => n.DepartmentId == departmentid).DeptName; } }
@@ -37,10 +38,7 @@ namespace Medical.ViewModel
 
         public string roomName { get { return _context.ClinicRooms.FirstOrDefault(n => n.RoomId == roomid).RoomName; } }
 
-        //public int? treatmentDetailId { get { return _context.Treatments.FirstOrDefault(n => n.DoctorId==doctorid).TreatmentDetailId; } }
-
-        //public string treatmentDetail { get { return _context.TreatmentDetails.FirstOrDefault(n => n.TreatmentDetailId == treatmentDetailId).TreatmentDetail1; } }
-        
+        public int? number { get { return _context.ClinicRooms.FirstOrDefault(n => n.RoomId == roomid).Number; } }
         //剩餘的可預約人數
         public int? sequence_number 
         { 

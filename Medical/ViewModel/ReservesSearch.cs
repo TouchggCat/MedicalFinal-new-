@@ -28,6 +28,9 @@ namespace Medical.ViewModel
         public int? depid { get { return _context.ClinicDetails.FirstOrDefault(n => n.ClinicDetailId == clinicid).DepartmentId; } }
         //醫生
         public int? docid { get { return _context.ClinicDetails.FirstOrDefault(n => n.ClinicDetailId == clinicid).DoctorId; } }
+
+        //醫生照片
+        public string PicturePath { get { return _context.Doctors.FirstOrDefault(n => n.DoctorId == docid).PicturePath; } }
         //時段
         public int? periodid { get { return _context.ClinicDetails.FirstOrDefault(n => n.ClinicDetailId == clinicid).PeriodId; } }
 

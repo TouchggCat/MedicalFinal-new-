@@ -13,5 +13,10 @@ namespace Medical.Areas.Admin.Controllers
         {
             return View();
         }
+        //public IActionResult BackHome()
+        //{
+        //    //只會回相對上一層
+        //    return RedirectToAction("Index", "Home", new { area = "" });
+        //}
     }
 }

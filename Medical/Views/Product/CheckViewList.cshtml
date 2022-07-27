@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Medical.ViewModel.CShoppingCartItem>
+﻿@model List<Medical.ViewModel.CShoppingCartItem>
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -12,140 +12,286 @@
         <li class="breadcrumb-item"><a href="~/Product/CartViewList">我的購物車</a></li>
         <li class="breadcrumb-item"><a href="~/Product/CheckViewList">結帳</a></li>
     </ul>
+    <form action="Reserve" method="post" id="myform">
+        <div class="card" style="width: 100%;">
+            <div class="card-header">1.確認訂單</div>
+            <div class="card-body">
+                <hr>
+                @{
 
-    <div class="card" style="width: 100%;">
-        <div class="card-header">1.確認訂單</div>
-        <div class="card-body">
-            <hr>
-            <table class="table" style="width: 100%; text-align: center;">
-                <thead>
-                    <tr>
-                        <th>圖示</th>
-                        <th>產品名稱</th>
-                        <th>數量</th>
-                        <th>單價</th>
-                        <th>總價</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                    @{int pay = 0;
-                        //decimal tax = 0;
-                        foreach (var item in Model)
-                        {
-                            pay += item.小計;
-                            <tr>
-                                <td><img src="~/images/@item.prodspec.ProductImage" height="160" width="140" alt=""></td>
-                                <td align='center' valign="middle">@item.prod.ProductName</td>
-                                <td align='center' valign="middle">@item.cart.ProductAmount</td>
-                                <td align='center' valign="middle">@item.prodspec.UnitPrice.ToString("C0")</td>
-                                <td align='center' valign="middle">@item.小計.ToString("C0")</td>
-                            </tr>
-
-                        }
+                    if (Model.FirstOrDefault() != null)
+                    {
+                        <input type="hidden" id="getMemid" name="Memberid" value=@Model.FirstOrDefault().MemberId />
                     }
+                }
 
-                </tbody>
-            </table>
-            <hr>
-        </div>
-        <div class="card-footer" style="display: flex; flex-direction: row-reverse; align-items: center;">
+                <table class="table" style="width: 100%; text-align: center;">
+                    <thead>
+                        <tr>
+                            <th>圖示</th>
+                            <th>產品名稱</th>
+                            <th>數量</th>
+                            <th>單價</th>
+                            <th>總價</th>
+                        </tr>
+                    </thead>
 
-            <p>
-                <span>訂單總金額:</span>&nbsp;<span style="font-size: 24px; font-weight: bold; color: rgb(195, 50, 50);">@(pay.ToString("C0"))</span>
-            </p>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <select name="" id="">
-                <option value="">請選擇優惠券</option>
-            </select>
-        </div>
-    </div>
+                    <tbody>
 
-    <br><br>
-    <!-- ============================================2================================================ -->
+                        @{int pay = 0;
+                            //decimal tax = 0;
+                            foreach (var item in Model)
+                            {
 
-
-    <div class="card" style="width: 100%;">
-        <div class="card-header">2.取貨方式</div>
-        <div class="card-body">
-            <span>收件人 : &nbsp;</span> <input type="text" value="收件人姓名">
-            <hr>
-            <div class="row">
-                <div class="col-md-6">
-
-
-                    <span>選擇取貨方式 : </span> <input type="radio" name="r1"> <span>宅配</span>
-                    <br><br>
-                    <span>收件地址 :</span>
-                    <select name="" id="">
-                        <option value="">請選擇縣市</option>
-                    </select>
-                    <br><br>
-                    <span>地址:</span> &nbsp; <input type="text" name="" id="" value="請輸入地址" style="width: 300px;">
-
-                </div>
-                <div class="col-md-6">
-
-
-                    <input type="radio" name="r1"> <span>超商取貨(7-11)</span>
-                    <br><br>
-                    <span>收件地址 :</span>
-                    <select name="" id="">
-                        <option value="">請選擇門市</option>
-                    </select>
-                    <br><br>
-                    <input type="text" name="" id="" value="超商地址" style="width: 300px; color: rgb(139, 140, 140);" readonly>
-
-                </div>
+                                pay += item.小計;
+                                <tr>
+                                    <td valign="middle" align='center'><input type="checkbox" name="pId[]" amount="@item.小計" value="@item.prod.ProductId" checked onchange="changeAmount(event)" /></td>
+                                    <td><img src="~/images/@item.prodspec.ProductImage" height="160" width="140" alt=""></td>
+                                    <td align='center' valign="middle"> @item.prod.ProductName</td>
+                                    <td align='center' valign="middle">@item.cart.ProductAmount</td>
+                                    <td align='center' valign="middle">@item.prodspec.UnitPrice.ToString("C0")</td>
+                                    <td align='center' valign="middle">@item.小計</td>
+                                </tr>
+                            }
+                            for (int i = 0; i < Model.Count(); i++)
+                            {
+                                @Html.HiddenFor(m => m[i].cart.ShoppingCartId)
+                                @Html.HiddenFor(m => m[i].prodspec.ProductImage)
+                                @Html.HiddenFor(m => m[i].prod.ProductName)
+                                @Html.HiddenFor(m => m[i].cart.ProductAmount)
+                                @Html.HiddenFor(m => m[i].prodspec.UnitPrice)
+                                @Html.HiddenFor(m => m[i].prod.ProductId)
+                            }
+                        }
+                    </tbody>
+                </table>
+                <input id="mytotal" type="hidden" name="total" value="@pay" />
+                @*<input type="submit" name="name" value="送出" />*@
+                <hr>
             </div>
+            <div class="card-footer" style="display: flex; flex-direction: row-reverse; align-items: center;">
 
-            <hr>
-
-        </div>
-        <div class="card-footer" style="height: 70px;">
-
-
-        </div>
-    </div>
-
-    <br><br>
-    <!-- =============================================== 3 =================================================== -->
-
-
-    <div class="card" style="width: 100%;">
-        <div class="card-header">3.付款方式</div>
-        <div class="card-body">
-            <span>選擇付款方式: &nbsp;</span>
-            <input type="radio" name="r2"> <span>信用卡</span> &nbsp;
-            <input type="radio" name="r2"> <span>貨到付款</span>
-            <hr>
-
-            <div>
-                <span>信用卡 / 金融卡</span> <br><br>
-                <span>卡片詳情</span> <br>
-                <input type="text" name="" id="" value="信用卡號碼" style="width: 500px; color: rgb(139, 140, 140);"> <br><br>
-                <input type="text" name="" id="" value="到期日(MM/YY)" style="width: 300px; color: rgb(139, 140, 140);">
-                <input type="text" name="" id="" value="安全驗證碼" style="width: 196px; color: rgb(139, 140, 140);">
-                <br><br>
-                <input type="text" name="" id="" value="持卡者名字" style="width: 500px; color: rgb(139, 140, 140);">
-                <br><br>
-                <span>帳單地址</span><br>
-                <input type="text" name="" id="" value="帳單地址" style="width: 500px; color: rgb(139, 140, 140);"> <br><br>
-                <input type="text" name="" id="" value="郵遞區號" style="width: 500px; color: rgb(139, 140, 140);">
-                <br><br>
+                <p>
+                    <span>折扣:</span><span id="discount">0</span>
+                    <span>訂單總金額:</span>&nbsp;<span style="font-size: 24px; font-weight: bold; color: rgb(195, 50, 50);" id="SPtotal">@(pay+60)</span>
+                </p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <select name="couponName" id="mySelect">
+                    <option value="請選擇優惠券">請選擇優惠券</option>
+                </select>
             </div>
         </div>
 
-        <div class="card-footer" style="height: 70px;" " >
+        <br><br>
+        <!-- ============================================2================================================ -->
 
 
+        <div class="card" style="width: 100%;">
+            <div class="card-header">2.取貨方式</div>
+            <div class="card-body">
+                <span>收件人 : &nbsp;</span> <input type="text" name="custName" placeholder="收件人姓名" value="" id="myCustName" required><span style="color:red;margin-left:5px;" hidden id="SPName">(此為必填欄位)</span>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6">
+
+
+                        <span>選擇取貨方式 :</span> <span style="color:red;margin-left:5px;" hidden id="SPdeliveryWay">(此為必填欄位)</span> <input type="radio" name="r1" value="delivery" required id="mydelivery"> <span>宅配</span>
+                        <br><br>
+                        <span>收件地址 :</span>
+                        <select name="" id="">
+                            <option value="">請選擇縣市</option>
+                        </select>
+                        <br><br>
+                        <span>地址:</span> &nbsp; <input type="text" name="address" id="txtaddress" placeholder="請輸入地址" style="width: 300px;"><span style="color:red;margin-left:5px;" hidden id="SPaddress">(此為必填欄位)</span>
+
+                    </div>
+                    <div class="col-md-6">
+
+
+                        <input type="radio" name="r1" value="SevenTake"> <span>超商取貨(7-11)</span>
+                        <br><br>
+                        <span>收件地址 :</span>
+                        <select name="" id="">
+                            <option value="">請選擇門市</option>
+                        </select>
+                        <br><br>
+                        <input type="text" name="sevenAddress" id="txtSevenAddress" value="超商地址"  placeholder="超商地址" style="width: 300px; color: rgb(139, 140, 140);" readonly>
+
+                    </div>
+                </div>
+
+                <hr>
+
+            </div>
+            <div class="card-footer" style="height: 70px;">
+
+
+            </div>
         </div>
-    </div>
 
-    <br>
-    <div style=" text-align: end;">
-        <button type="button" class="btn btn-dark" style="margin-top: 10px; margin-right: 20px; width: 200px; border-radius: 25px;">送出訂單</button>
-    </div>
+        <br><br>
+        <!-- =============================================== 3 =================================================== -->
 
 
+        <div class="card" style="width: 100%;">
+            <div class="card-header">3.付款方式</div>
+            <div class="card-body">
+                <span>選擇付款方式: &nbsp;</span><span style="color:red;margin-left:5px;" hidden id="SPpay">(此為必填欄位)</span>
+                <input type="radio" name="r2" required value="linePay"> <span>LinePay</span> &nbsp;
+                <input type="radio" name="r2" value="noPay"> <span>貨到付款</span>
+                <hr>
+
+                <div>
+                    <img src="~/img/linepay-logo-tw.png" height="260" width="380" />
+                    <img src="~/img/7-11.jpg" height="260" width="340" alt="Alternate Text" />
+                </div>
+            </div>
+
+            <div class="card-footer" style="height: 70px;">
+
+
+            </div>
+        </div>
+
+        <br>
+        <div style=" text-align: end;">
+            <button form="myform" onclick="check()" type="submit" class="btn btn-dark" style="margin-top: 10px; margin-right: 20px; width: 200px; border-radius: 25px;">送出訂單</button>
+        </div>
+
+    </form>
 </div>
+@section Scripts{
+
+    <script>
+        const mySelect = document.querySelector("#mySelect");
+        let TotalSum = document.querySelector("#SPtotal");
+        const getMemid = $("#getMemid").val()
+        let discount = document.querySelector("#discount");
+
+        console.log(getMemid);
+        // 加總陣列數字Function
+        function SumData(array) {
+            var sum = 0;
+            for (var i = 0; i < array.length; i++) {
+                sum += array[i];
+            };
+            return sum;
+        }
+
+        // Checkedbox 變更 更換總數
+        function changeAmount(event) {
+            let arr = $("input:checkbox:checked").map(function () { return parseInt($(this).attr("amount")); }).get();
+            $("#SPtotal").text(`${SumData(arr)}`)
+            $("#mytotal").val(`${SumData(arr)}`)
+            $("#mySelect option:first").prop("selected", "selected")
+            discount.innerText = 0;
+        }
+
+        //取得Coupon Function
+        async function GetCoupon(memId) {
+                const reponse = await fetch('@Url.Content("~/Product/GetCoupon")' + `?id=${memId}`);
+                const datas = await reponse.json();
+                console.log(datas);
+                datas.forEach(coupon => {
+                    const OptCoupon = new Option(`滿${coupon.couponRequireNum}折${coupon.couponDiscountNum}券`, coupon.couponDiscountNum)
+                    OptCoupon.classList.add("myCoupon")
+                    mySelect.options.add(OptCoupon);
+
+                });
+
+        }
+
+        //執行 取得使用者Coupon
+        GetCoupon(getMemid);
+
+        $("#mySelect").on("change", function () {
+            var chooseOpt = $("#mySelect option:selected");
+
+            var tranSumnumber = parseInt($("#mytotal").val());
+            var chooseOptVal = parseInt(chooseOpt.val());
+
+            if (chooseOpt.text() === "請選擇優惠券") {
+                discount.innerText = 0;
+            }
+            else if (tranSumnumber< chooseOptVal * 10) {
+                $("#mySelect option:first").prop("selected", "selected")
+            }
+            else {
+                discount.innerText = chooseOpt.val();
+            }
+            var discountnumber = parseInt(discount.innerText);
+
+            TotalSum.innerHTML = (tranSumnumber - discountnumber);
+
+        })
+
+
+        function check()
+        {
+
+            if ($("#myCustName").val() == "") 
+                $("#SPName").attr("hidden", false);
+            if ($("#mydelivery").prop("checked") == true) {
+                if ($("#SPaddress").val() == "")
+                    $("#SPaddress").attr("hidden", false);
+            }   
+            if ($('[name="r1"]:checked').length == 0)
+                $("#SPdeliveryWay").attr("hidden", false);
+            if ($('[name="r2"]:checked').length == 0)
+                $("#SPpay").attr("hidden", false);
+        }
+
+
+        //測試7-11 
+
+        //const request = require('request');
+        //const cheerio = require('cheerio');
+        //const async = require('async');
+
+        //getCities((cities) => {
+        //    async.map(cities, (city, callback) => {
+        //        getStories(city, (stores) => {
+        //            callback(null, stores);
+        //        })
+        //    }, (err, results) => {
+        //        console.log([].concat.apply([], results));
+        //    })
+        //})
+
+        //function getCities(callback) {
+        //    request('http://www.ibon.com.tw/retail_inquiry.aspx#gsc.tab=0', (err, res, body) => {
+        //        var $ = cheerio.load(body)
+        //        var cities = $('#Class1 option').map((index, obj) => {
+        //            return $(obj).text()
+        //        }).get()
+        //        callback(cities)
+        //    })
+        //}
+
+        //function getStories(city, callback) {
+        //    var options = {
+        //        url: 'http://www.ibon.com.tw/retail_inquiry_ajax.aspx',
+        //        method: 'POST',
+        //        form: {
+        //            strTargetField: 'COUNTY',
+        //            strKeyWords: city,
+        //        }
+        //    }
+        //    request(options, (err, res, body) => {
+        //        var $ = cheerio.load(body)
+        //        var stores = $('tr').map((index, obj) => {
+        //            return {
+        //                id: $(obj).find('td').eq(0).text().trim(),
+        //                store: $(obj).find('td').eq(1).text().trim(),
+        //                address: $(obj).find('td').eq(2).text().trim(),
+        //            }
+        //        }).get()
+        //        stores.shift()
+        //        callback(stores)
+        //    })
+        //}
+
+
+    </script>
+
+    }
