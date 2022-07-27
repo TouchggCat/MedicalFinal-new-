@@ -22,10 +22,9 @@
         <div class="blog__details__text">
             <input type="hidden" value="@Model.ArticleId" name="No" />
             @*<img src="~/uploads/@Model.NewsPicturePath" alt="">*@
-            <i style="display:block;text-align:right;font-size:20px">發表醫生 : @Model.Doctor.DoctorName</i>
-            <div class="breadcrumb__option reveal_t1" style=" margin-block: 40px;">
-                <i style="display:block;text-align:right;font-size:20px">發佈日期 : @Model.CreateDate</i>
-            </div>
+            <h4 style="margin-block:20px;display:inline"><i class="nav-check"></i>@Model.Articeltitle</h4>
+            <i style="display:block;text-align:right;font-size:15px">發表醫生 : @Model.Doctor.DoctorName</i>
+            <i style="display:block;text-align:right;font-size:15px;margin-block:5px">發佈日期 : @Model.CreateDate</i>
             <p>
                 @Html.Raw(@Model.ArticleContent)
             </p>
