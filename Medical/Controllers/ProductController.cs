@@ -8,11 +8,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MimeKit;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -843,7 +845,28 @@ namespace Medical.Controllers
                 linepaylist.Add(linepay);
             }
 
-            return View(linepaylist);
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress("漢克斯眼科", "wangbo841019@gmail.com"));
+            message.To.Add(new MailboxAddress("客戶", "wanbo841019@gmail.com"));
+            message.Subject = "訂單成立通知";
+            var bodyBuilder = new BodyBuilder();
+            bodyBuilder.TextBody = "感謝您的購買";
+            bodyBuilder.HtmlBody = "<p> 內容 </p>";
+            message.Body = bodyBuilder.ToMessageBody();
+
+            using (var client = new MailKit.Net.Smtp.SmtpClient())
+            {
+                client.Connect("smtp.gmail.com", 587, false);
+                client.Authenticate("wangbo841019@gmail.com", "chqvfvzimtvnvitp");
+                client.Send(message);
+                client.Disconnect(true);
+            }
+
+
+
+
+
+                return View(linepaylist);
         }
 
         // ============ 柏鈞 End =================
