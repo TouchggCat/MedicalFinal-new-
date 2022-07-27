@@ -38,10 +38,7 @@ namespace Medical.ViewModel
 
         public string roomName { get { return _context.ClinicRooms.FirstOrDefault(n => n.RoomId == roomid).RoomName; } }
 
-        //public int? treatmentDetailId { get { return _context.Treatments.FirstOrDefault(n => n.DoctorId==doctorid).TreatmentDetailId; } }
-
-        //public string treatmentDetail { get { return _context.TreatmentDetails.FirstOrDefault(n => n.TreatmentDetailId == treatmentDetailId).TreatmentDetail1; } }
-        
+        public int? number { get { return _context.ClinicRooms.FirstOrDefault(n => n.RoomId == roomid).Number; } }
         //剩餘的可預約人數
         public int? sequence_number 
         { 
