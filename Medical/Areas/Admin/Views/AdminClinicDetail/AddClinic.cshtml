@@ -35,10 +35,10 @@
                             <select id="selRoom" class="form-control select2" style="width: 100%;" name="room">
                                 <option value="1">501</option>
                                 <option value="2">502</option>
-                                <option value="3">503</option>
-                                <option value="4">504</option>
-                                <option value="5">505</option>
-                                <option value="6">506</option>
+                                <option value="6">503</option>
+                                <option value="7">504</option>
+                                <option value="8">505</option>
+                                <option value="9">506</option>
                             </select>
                         </div>
                     </div>
@@ -154,12 +154,10 @@
                 </div>
                 <div class="modal-body" id="modalbody">
                 </div>
+
                 <div class="modal-footer">
-                    <button id="btnDelete" type="button" class="btn btn-danger">
-                        刪除已重覆 <span class="badge badge-light" id="repeatCount"></span>
-                    </button>
-                    
-                    <button id="btnCreate" type="button" class="btn btn-primary">新增</button>
+                    <button id="btnCreate" type="button" class="btn btn-primary" data-dismiss="modal" style="width:50px">新增</button>
+                    <button id="btnDelete" type="button" class="btn btn-danger">刪除<span class="badge badge-light" id="repeatCount"></span></button>
                 </div>
             </div>
         </div>
@@ -168,14 +166,19 @@
 
 @section Scripts{
     <script>
-        let selDept = document.querySelector('#selDept'),
-            selDoctor = document.querySelector('#selDoctor'),
-            selRoom = document.querySelector('#selRoom'),
-            DateForm = document.querySelector('#selDateForm'),
-            DateTo = document.querySelector('#selDateTo'),
-            days = [], times = [];
+        var calendar;
+        $(document).ready(function ()
+        {
+            var Calendar = FullCalendar.Calendar;
+            var calendarEl = document.getElementById('calendar');
 
-        $(document).ready(function () {
+            let selDept = document.querySelector('#selDept'),
+                selDoctor = document.querySelector('#selDoctor'),
+                selRoom = document.querySelector('#selRoom'),
+                DateForm = document.querySelector('#selDateForm'),
+                DateTo = document.querySelector('#selDateTo'),
+                days = [], times = [];
+
             $('#selDept').select2();
             $.ajax({
                 url: '/Admin/AdminClinicDetail/Dept',
@@ -201,45 +204,80 @@
                     });
                 })
 
-            var date = new Date()
-            var d = date.getDate(),
-                m = date.getMonth(),
-                y = date.getFullYear()
 
+             calendar = new FullCalendar.Calendar(calendarEl, {
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek'
+                },
+                themeSystem: 'bootstrap',
+                events: "@Url.Content("~/Admin/AdminClinicDetail/loadData")",
+                editable: true,
+                droppable: true,
+                businessHours: [
+                    {
+                        daysOfWeek: [1, 2, 3, 4, 5],
+                        startTime: '09:00',
+                        endTime: '12:00'
+                    },
+                    {
+                        daysOfWeek: [1, 2, 3, 4, 5],
+                        startTime: '13:00',
+                        endTime: '16:00'
+                    },
+                    {
+                        daysOfWeek: [1, 2, 3, 4, 5],
+                        startTime: '17:00',
+                        endTime: '20:00'
+                    }
+                ],
+                eventDrop: function (info) {
+                    const list = {
+                        ClinicDetailId: info.event.id,
+                        DoctorId: info.event.extendedProps.doctorId,
+                        DepartmentId: info.event.extendedProps.deptId,
+                        PeriodId: info.event.extendedProps.periodId,
+                        RoomId: info.event.extendedProps.roomId,
+                        ClinicDate: moment(info.event.start).format("yyyy/MM/D HH:00:00")
+                    };
 
-            var Calendar = FullCalendar.Calendar;
-            var calendarEl = document.getElementById('calendar');
+                    if (!confirm("確定變更嗎?")) {
+                        info.revert();
+                    }
 
-            fetch("@Url.Content("~/Admin/AdminClinicDetail/loadData")")
-                .then(
-                        (respone) => {
-
-                         var calendar = new Calendar(calendarEl, {
-                            headerToolbar: {
-                                left: 'prev,next today',
-                                center: 'title',
-                                right: 'dayGridMonth,timeGridWeek'
-                            },
-                             themeSystem: 'bootstrap',
-                             events: respone,
-                            editable: true,
-                            droppable: true,
-                            drop: function (info) {
-
-                             },
-                             eventRender: function (respone, element) {
-                                 if (respone.extendedProps.periodName == "上午時段")
-                                     element.children(".fc-event").css({ 'background-color': '#2a7568' });
-                                 if (respone.type == "Y")
-                                     element.find(".fc-event-dot").css('color', '#2a7568');
-                             }
-                        });
-
-                        calendar.render();
+                    $.post('@Url.Content("~/Admin/AdminClinicDetail/Update")', list, function () {
+                        calendar.refetchEvents();
+                    });
+                },
+                eventClick: function (info) {
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.post('@Url.Content("~/Admin/AdminClinicDetail/Delete")', { id: info.event.id }, function (status) {
+                                let title = (status == "true") ? "刪除成功" : "刪除失敗";
+                                let information = (status == "true") ? `醫生：${info.event.extendedProps.doctorName} 開診日期：${moment(info.event.start).format("yyyy/MM/D")} ${info.event.extendedProps.periodDetail}  診間：${info.event.extendedProps.roomName}` : '此門診有預約病患，故無法刪除';
+                                let result = (status == "true") ? "success" : "error";
+                                Swal.fire(
+                                    title,
+                                    information,
+                                    result
+                                );
+                                calendar.refetchEvents();
+                            })
+                        }
                     })
-        });
+                }
+            });
 
-        $('#reservationdateForm').datetimepicker({
+            $('#reservationdateForm').datetimepicker({
             format: 'yyyy/MM/DD',
         });
         $('#reservationdateTo').datetimepicker({
@@ -259,7 +297,7 @@
             let list = {
                 DoctorId: selDoctor.value,
                 DepartmentId: selDept.value,
-                room: selRoom.value,
+                RoomId: selRoom.value,
                 dateForm: DateForm.value,
                 dateTo: DateTo.value,
                 day: days,
@@ -269,30 +307,55 @@
             $.post('@Url.Content("~/Admin/AdminClinicDetail/Preview")', list, function (data) {
                 $('.modal-body').empty();
                 $('.modal-body').html(data);
+
             }).then(function () {
-                $('#repeatCount').html($('#repeatDefault').text());
+                let no = $('#repeatDefault').text();
+                if (Number(no) > 0) {
+                    $('#repeatCount').html(no);
+                } else {
+                    $('#btnDelete').addClass("hidden");
+                }
             })
 
             $('#btnCreate').click(function () {
                 let count = $('label[name="count"]'),
-                    doctorlist = $('label[name="doctorName"]'),
-                    deptlist = $('label[name="deptName"]'),
+                    doctorlist = $('label[name="doctorName"]').attr('doctorid'),
+                    deptlist = $('label[name="deptName"]').attr('deptid'),
                     periodlist = $('label[name="periodName"]'),
-                    Roomlist = $('label[name="RoomId"]'),
+                    Roomlist = $('label[name="RoomName"]').attr('roomid'),
                     Datelist = $('label[name="ClinicDate"]'),
                     obj = [];
 
                 $.each(count, function (key, value) {
                     var detail = {
-                        doctorName: doctorlist[key].textContent,
-                        deptName: deptlist[key].textContent,
-                        periodName: periodlist[key].textContent,
-                        room: Roomlist[key].textContent,
+                        DoctorId: doctorlist[0],
+                        DepartmentId: deptlist[0],
+                        periodName: periodlist[0].textContent,
+                        RoomId: Roomlist[0],
                         dateForm: Datelist[key].textContent
                     };
                     obj.push(detail);
                 });
-                $.post('@Url.Content("~/Admin/AdminClinicDetail/Create")', { obj: obj })
+                let objj = { obj: obj };
+
+                @*$.post('@Url.Content("~/Admin/AdminClinicDetail/Create")', objj)*@
+
+
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Content("~/Admin/AdminClinicDetail/Create")',
+                    dataType: 'text',
+                    data: objj,
+                    success: function () {
+                        Swal.fire(
+                            '新增成功',
+                            '',
+                            'success'
+                        );
+                        calendar.refetchEvents();
+                    }
+                });
+
             })
 
 
@@ -304,35 +367,23 @@
                     icon: 'success'
                 });
                 $('#repeatCount').html("");
-                $(this).addClass("disabled");
+                $(this).addClass("hidden");
             })
 
-            //$('#btnDelete').click(function () {
-            //    $('.repeat').parent().parent().remove();
-            //    Swal.fire({
-            //        title: '刪除',
-            //        text: "",
-            //        icon: 'success'
-            //    });
-            //    $('#repeatCount').html("");
-            //    $(this).addClass("disabled");
-            //}) 
         });
 
-        $("#myModal").on('hidden.bs.modal', function () {
+            $("#myModal").on('hidden.bs.modal', function () {
 
-            $("input[name='chkDay']:checked").each(function (index, item) {
-                days.push($(this).val());
-            });
+                $("input[name='chkDay']:checked").each(function (index, item) {
+                    days = [];
+                });
 
-            $("input[name='chkTime']:checked").each(function (index, item) {
-                times.push($(this).val());
-            });
-
-            $('#btnDelete').removeClass("disabled");
+                $("input[name='chkTime']:checked").each(function (index, item) {
+                    times = [];
+                });
+            $(".modal-body").empty();
+            $('#btnDelete').removeClass("hidden");
         });
-
-
 
         $('#selDept').change(function () {
             $('#selDoctor').select2();
@@ -341,7 +392,6 @@
                 url: '/Admin/AdminClinicDetail/doctorList' + `?deptid=${selDept.value}`,
                 dataType: 'json',
                 data: function (params) {
-                    console.log(params);
                     return {
                         q: params.term, // search term
                         page: params.page
@@ -362,5 +412,9 @@
                 });
             })
         });
+
+            calendar.render();
+        });
+
     </script>
 }
