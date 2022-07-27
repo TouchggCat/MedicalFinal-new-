@@ -56,6 +56,7 @@ namespace Medical.Controllers
             return View(datas);
         }
 
+        //讀取治療項
         public IActionResult getTreatment(int? dcID)
         {
             var trt = from a in _db.Treatments
@@ -65,8 +66,18 @@ namespace Medical.Controllers
             
             return Json(trt);
         }
+        public IActionResult getTreatmentByName(string doctorName)
+        {
+            var trt = from a in _db.Treatments
+                      join b in _db.TreatmentDetails on a.TreatmentDetailId equals b.TreatmentDetailId
+                      where a.DoctorId == _db.Doctors.FirstOrDefault(a => a.DoctorName == doctorName).DoctorId
+                      select b.TreatmentDetail1;
+            return Json(trt);
+        }
 
 
+
+        //前往醫生詳細資料
         public IActionResult Detail(int? id)
         {
             if (id == null)
@@ -96,8 +107,9 @@ namespace Medical.Controllers
             
             return View(prod);
         }
-        
-        public IActionResult GetDoctorWeb(string docName)   //讀取醫生資料
+
+        //ListTest讀取醫生資料
+        public IActionResult GetDoctorWeb(string docName)   
         {
             if (docName == null)
             {
@@ -122,18 +134,21 @@ namespace Medical.Controllers
             var Aws1 = new DocJsonViewModel
             {
                 Question = "掛號",
-                Answer = "這是我們的掛號網頁"
+                Answer = "目前我們採用線上和現場掛號\n"+
+                "<a href='/Reserve/ReserveList'>掛號連結</a>"
             };
             var Aws2 = new DocJsonViewModel
             {
                 Question = "交通",
-                Answer = "<iframe src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3615.004559158371!2d121.54122331544684!3d25.033919344447703!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442abd3781b82e1%3A0xc0508038c1566f21!2zMTA25Y-w5YyX5biC5aSn5a6J5Yy65b6p6IiI5Y2X6Lev5LiA5q61Mzkw6JmfMuaokw!5e0!3m2!1szh-TW!2stw!4v1658825160170!5m2!1szh-TW!2stw' width='100%'style='border:0;' allowfullscreen='' loading='lazy' referrerpolicy='no-referrer-when-downgrade'></iframe>"
+                Answer = "106台北市大安區復興南路一段390號2樓\n" + "<iframe src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3615.004559158371!2d121.54122331544684!3d25.033919344447703!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442abd3781b82e1%3A0xc0508038c1566f21!2zMTA25Y-w5YyX5biC5aSn5a6J5Yy65b6p6IiI5Y2X6Lev5LiA5q61Mzkw6JmfMuaokw!5e0!3m2!1szh-TW!2stw!4v1658825160170!5m2!1szh-TW!2stw' width='100%'style='border:0;' allowfullscreen='' loading='lazy' referrerpolicy='no-referrer-when-downgrade'></iframe>"
             };
 
             var Aws3 = new DocJsonViewModel
             {
                 Question = "衛教",
-                Answer = "這是我們推薦的知識型YouTuber"
+                Answer = "這是我們的衛教文章區\n"+"<a href='/FrontArticle/List'>衛教專區</a>"+"\n這是我們推薦的知識型YouTube頻道\n" +
+                "<a href='https://www.youtube.com/c/TheEyedoctorTube/featured'>大學眼科YT頻道</a>"
+                
             };
             var Aws4 = new DocJsonViewModel
             {

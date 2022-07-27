@@ -39,6 +39,20 @@ namespace Medical.Areas.Admin.Controllers
             }
             return View(datas);
         }
+        public IActionResult checkDN(string dcName)
+        {
+            Doctor dcCheck = new Doctor();
+            var answer = new DocJsonViewModel()
+            {
+                Answer = ""
+            };
+            dcCheck = _db.Doctors.FirstOrDefault(d => d.DoctorName == dcName);
+            if (dcCheck != null)
+                answer.Answer = "該名稱已被使用";
+            else
+                answer.Answer = "可以使用的名字";
+            return Json(answer);
+        }
         public IActionResult Dep()
         {
             var deps = _db.Departments.Select(a => a.DeptName).Distinct();
@@ -121,14 +135,12 @@ namespace Medical.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             CDoctorDetailViewModel prod = new CDoctorDetailViewModel();
             prod.doctor = _db.Doctors.FirstOrDefault(t => t.DoctorId == id);
-            Department dep = _db.Departments.FirstOrDefault(t => t.DepartmentId == prod.doctor.DepartmentId);
-            
+            Department dep = _db.Departments.FirstOrDefault(t => t.DepartmentId == prod.doctor.DepartmentId);            
             if (dep != null)
             {
                 prod.department = dep;
             }
-            Experience exp = _db.Experiences.FirstOrDefault(t => t.DoctorId == prod.doctor.DoctorId);
-            
+            Experience exp = _db.Experiences.FirstOrDefault(t => t.DoctorId == prod.doctor.DoctorId);            
             if (exp != null)
                 prod.experience = exp;
             if (prod == null)
@@ -158,7 +170,7 @@ namespace Medical.Areas.Admin.Controllers
             }
             if (p.DepName != null && dep != null)
             {
-                if (_db.Departments.Where(t => t.DeptName.Contains(p.DepName)) != null)
+                if (_db.Departments.Where(t => t.DeptName.Equals(p.DepName)) != null)
                 {
                     dep = _db.Departments.FirstOrDefault(t => t.DeptName == p.DepName);
                     doc.DepartmentId = dep.DepartmentId;
