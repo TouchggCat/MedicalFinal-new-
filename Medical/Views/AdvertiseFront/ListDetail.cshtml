@@ -16,15 +16,17 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="blog__details__text">
-            <input type="hidden" value="@Model.No" name="No" />
-            @*<img src="~/uploads/@Model.NewsPicturePath" alt="">*@
-            <p>
-                @Html.Raw(@Model.AdContant)
-            </p>
-        </div>
-        <div class="card-body" style=" margin-top: 40px;display:inline;text-align:right">
-            <a href="~/AdvertiseFront/List" class="btn btn-outline-primary" style="border-radius: 15px; font-size: 24px; font-weight: bold; float:right; text-align: right;">返回文章</a>
-        </div>
+            <div class="blog__details__text">
+                <input type="hidden" value="@Model.No" name="No" />
+                <h4 style="margin-block:20px"><i class="nav-check"></i>@Model.AdTitle</h4>
+                @*<img src="~/uploads/@Model.NewsPicturePath" alt="">*@
+                <p>
+                    @Html.Raw(@Model.AdContant)
+                </p>
+            </div>
+            <div class="card-body" style=" margin-top: 40px;display:inline;text-align:right">
+                <a href="~/AdvertiseFront/List" class="btn btn-outline-primary" style="border-radius: 15px; font-size: 24px; font-weight: bold; float:right; text-align: right;">返回文章</a>
+            </div>
+
     </div>
 </div>

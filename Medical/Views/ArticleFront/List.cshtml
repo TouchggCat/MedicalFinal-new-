@@ -68,7 +68,7 @@
                             <i class="fa fa-calendar">@item.CreateDate</i>
                         </a>
                         @*===文章內容===*@
-                        <p class="card-text">@item.ArticleContent.Substring(0, Math.Min(item.ArticleContent.Length, 50))......</p>
+                    <p class="card-text">@item.ArticleContent.Substring(0, Math.Min(item.ArticleContent.Length, 50)).Replace("<p>", "").Replace("<strong>", "").Replace("<br/>", "").Replace("</p>", "")........</p>
                     </div>
                     @*===文章連結===*@
                     <div class="card-input" style="margin-left:10px;margin-block:10px">

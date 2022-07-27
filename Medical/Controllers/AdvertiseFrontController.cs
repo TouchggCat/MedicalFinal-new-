@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace Medical.Controllers
 {
-    //d123456789
     public class AdvertiseFrontController : Controller
     {
         public IActionResult Index()
