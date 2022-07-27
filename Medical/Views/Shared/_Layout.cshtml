@@ -134,6 +134,7 @@
                 <div class="navbar-nav ms-auto py-0">
                     <!-- 調整位置狀態 -->
                     <!-- 選單 -->
+                    
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">眼科資訊</a>
                         @*更改處，文章搜尋一起*@
@@ -187,14 +188,24 @@
                     </div>
 
                 </div>
+
+                @*把Button的Bootstrap改寫到div，就不會顯示兩個<a>標籤的按鈕*@
+                <div class="btn btn-light">
+                    <a asp-action="Login" asp-controller="Login" id="loginButton">@LoginbuttonValue</a>
+                    <a asp-action="Logout" asp-controller="Login" id="looutButton">@LogoutbuttonValue</a>
+                </div>
+
+                <div id="showMe" class="fas fa-user" value="@showID @logState">
+                    @showID @logState
+                </div>
                 <!-- 購物車清單開始-->
                 <div class="dropdown ml-auto">
                     <button class="btn btn-cart btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
+                            aria-haspopup="true" aria-expanded="false" style="position: relative; ">
                         <i class="fas fa-shopping-cart text-dark fa-2x"></i>
                         <span class="badge badge-pill badge-danger"></span>
                     </button>
-                    <div class="dropdown-menu dropdown-menu-lg-left" style="min-width: 300px" aria-labelledby="dropdownMenuButton">
+                    <div class="dropdown-menu dropdown-menu-lg-left" style="min-width: 300px; position: absolute; right: 10px; " aria-labelledby="dropdownMenuButton">
                         <div class="p-3">
                             <h6 id="myCartH6">購物車目前沒有商品</h6>
                             <table class="table table-sm" id="myCartTable">
@@ -206,16 +217,6 @@
                     </div>
                 </div>
                 <!-- 購物車清單結束-->
-                @*把Button的Bootstrap改寫到div，就不會顯示兩個<a>標籤的按鈕*@
-                <div class="btn btn-light">
-                    <a asp-action="Login" asp-controller="Login" id="loginButton">@LoginbuttonValue</a>
-                    <a asp-action="Logout" asp-controller="Login" id="looutButton">@LogoutbuttonValue</a>
-                </div>
-
-                <div id="showMe" class="fas fa-user" value="@showID @logState">
-                    @showID @logState
-                </div>
-
             </div>
         </nav>
         <!-- Navbar End -->
@@ -282,16 +283,52 @@
 
 
 
-    <div id="fb-title" style="position: fixed; bottom: 2px; bottom:100px; right: 45px; color: black; font-weight: bold; z-index: 999;">
-        <a href="/SignalR/Index" style="border-radius:20px">
-            <img style="border-radius: 20px;width:50px; display: block; margin: 0 auto 5px;" src="~/images/1111111111.jpg">
-        </a>
+    <div id="fb-title" style="position: fixed; bottom: 2px; bottom:100px; right: 45px; color: black; font-weight: bold; z-index: 999;">      
+            <img style="border-radius: 20px;width:50px; display: block; margin: 0 auto 5px;" src="~/images/1111111111.jpg" data-bs-toggle="modal" data-bs-target="#exampleModal">          
         <span style="display: block; text-align: center;">
             聊天室<br>
         </span>
     </div>
 
+    <!-- Modal -->
 
+    <div class="modal " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-content">              
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card card-primary card-outline direct-chat direct-chat-primary">
+                                @*====標題====*@
+                                <div class="card-header">
+                                    <h3 class="card-title">眼科聊天室</h3>
+                                </div>
+                                @*====聊天內容====*@
+                                <input type="hidden" value="@Model" id="inpUser" />
+                                <div class="card-body">
+                                    <div class="direct-chat-messages" id="MSN">
+                                        @*====聊天內容====*@
+                                    </div>
+                                </div>
+
+                                @*============尾巴輸入字串的地方=============*@
+                                <div class="card-footer">
+                                    <form action="#" method="post">
+                                        <div class="input-group">
+                                            <input type="text" id="messageInput" name="message" placeholder="Type Message ..." class="form-control">
+                                            <span class="input-group-append">
+                                                <button type="submit" class="btn btn-primary" id="sendButton" value="Send Message">Send</button>
+                                            </span>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>               
+            </div>
+        </div>
+    </div>
 
 
 
