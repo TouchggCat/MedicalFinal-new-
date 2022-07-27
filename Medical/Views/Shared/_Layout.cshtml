@@ -183,7 +183,7 @@
                             <a href="/PatientRecord/List" class="dropdown-item">診療紀錄</a>
                             <a href="/Product/OrderList" class="dropdown-item">歷史訂單</a>
                             @*測試用，可刪掉*@
-                            <a href="/SignalR/Index" class="dropdown-item">聊天室測試</a>
+                            <a href="/SignalR/Index" class="dropdown-item">線上客服</a>
                         </div>
                     </div>
 
@@ -280,7 +280,7 @@
         </div>
     </div>
     <!-- Footer End -->
-    <!-- Back to Top -->
+
 
 
     <div id="fb-title" style="position: fixed; bottom: 2px; bottom:100px; right: 45px; color: black; font-weight: bold; z-index: 999;">
@@ -292,21 +292,22 @@
         </span>
     </div>
 
- 
-
-
-    
 
 
 
 
+
+
+
+    <!-- Back to Top -->
     <div class="card">
         <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
 
 
 
-
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/chat.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/wow/wow.min.js"></script>
@@ -411,7 +412,7 @@
     @await RenderSectionAsync("Scripts", required: false)
 
 
-   
+
 
 
 </body>

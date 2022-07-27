@@ -67,6 +67,10 @@
 
   <ItemGroup>
 
+    <PackageReference Include="GoogleRecaptcha" Version="1.2.1" />
+
+    <PackageReference Include="GoogleRecaptchaMvc" Version="1.0.1" />
+
     <PackageReference Include="LinePayOnlineAPIv3" Version="1.0.0" />
 
 
