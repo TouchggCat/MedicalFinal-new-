@@ -8,50 +8,47 @@
 @section Styles{
 
     @*修改*@
-<style>
+    <style>
 
-    .card {
-        margin-left: 20px;
-    }
-
-        .card div {
+        .card {
             margin-left: 20px;
         }
 
+            .card div {
+                margin-left: 20px;
+            }
 
-    .form-group select {
-        border: 2px solid gold;
-        border-radius: 10px;
-    }
 
-    .form-group .form-control {
-        border: 2px solid gold;
-        border-radius: 10px;
-    }
+        .form-group select {
+            border: 2px solid gold;
+            border-radius: 10px;
+        }
 
-    .form-group textarea {
-        border: 2px solid gold;
-        border-radius: 10px;
-        padding-left: 20px
-    }
+        .form-group .form-control {
+            border: 2px solid gold;
+            border-radius: 10px;
+        }
 
-    .form-group label {
-        font-size: 20px;
-        font-family: 微軟正黑體;
-        font-weight: bold;
-    }
+        .form-group textarea {
+            border: 2px solid gold;
+            border-radius: 10px;
+            padding-left: 20px
+        }
 
-    #selCategoryName option {
-        font-size: 20px;
-        font-family: 微軟正黑體;
-        font-weight: bold;
-    }
-</style>
+        .form-group label {
+            font-size: 20px;
+            font-family: 微軟正黑體;
+            font-weight: bold;
+        }
+
+        #selCategoryName option {
+            font-size: 20px;
+            font-family: 微軟正黑體;
+            font-weight: bold;
+        }
+    </style>
 
 }
-
-
-
 
 <div class="container-fluid">
     <div class="row mb-2">
@@ -69,7 +66,6 @@
 
     @*修改*@
     <div class="col-md-5">
-        <div class="row">
             <form asp-action="Create" enctype="multipart/form-data" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
@@ -79,47 +75,46 @@
                 <div class="form-group">
                     <label asp-for="AdminId" class="control-label" hidden="hidden"></label>
                     <input asp-for="AdminId" class="form-control" hidden="hidden" />
-
                 </div>
 
                 <div class="form-group">
                     <label asp-for="NewsTitle" class="control-label"></label>
-                    <input asp-for="NewsTitle" class="form-control" />
+                    <input asp-for="NewsTitle" class="form-control form-control-lg " />
                     <span asp-validation-for="NewsTitle" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
                     <label asp-for="NewsContent" class="control-label"></label>
-                    <textarea id="editor" asp-for="NewsContent" class="form-control" style="width:500px;height:200px;font-size:15px"></textarea>
+                    <textarea id="editor" asp-for="NewsContent" class="form-control form-control-lg " style="width:500px;height:200px;font-size:15px"></textarea>
                     <span asp-validation-for="NewsContent" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
                     <label asp-for="NewsPicturePath" class="control-label"></label>
-                    <input name="photo" type="file" asp-for="NewsPicturePath" class="form-control" />
+                    <input name="photo" type="file" asp-for="NewsPicturePath" class="form-control form-control-lg" />
 
                 </div>
                 <div class="form-group">
                     <label asp-for="PublishDate" class="control-label"></label>
-                    <input asp-for="PublishDate" class="form-control" id="datetimepicker1" />
+                    <input asp-for="PublishDate" class="form-control form-control-lg" id="datetimepicker1" />
                     <span asp-validation-for="PublishDate" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
                     <label asp-for="NewsCategory.NewsCategoryName" class="control-label">分類</label>
-                    <select asp-for="NewsCategory.NewsCategoryName" class="form-control" id="selCategoryName" />
+                    <select asp-for="NewsCategory.NewsCategoryName" class="form-control form-control-lg" id="selCategoryName" />
+                    <span asp-validation-for="NewsCategory.NewsCategoryName" class="text-danger"></span>
                 </div>
 
-
                 @*修改*@
-                <div class="form-group btn btn-success">
+
+                <div class="form-group btn btn-success" >
                     <i class="fas fa-plus">
-                        <input type="submit" value="新增" class="btn btn-success" onclick="return confirm('確定新增此資料嗎??')" style="width:40px;height:30px;margin:0;padding:0;font-weight:bold;" />
+                        <input type="submit" value="新增" class="btn btn-success" onclick="return confirm('確定新增此資料嗎??')" style="width:75px;height:40px;margin:0;padding:0;font-weight:bold;" />
                     </i>
                 </div>
             </form>
         </div>
-    </div>
     @*修改*@
     <div style="margin: 0 0 50px 45px">
         <a asp-action="List" type="button" class="btn bg-gradient-warning" style="border-radius: 5px; font-weight: bold"><i class="fa fa-book" style="margin-right: 10px;"></i>回到消息內容</a>
@@ -132,43 +127,10 @@
 
 
     <script>
-        //日立樣式
-        $(function () {
-            $('#datetimepicker1').datetimepicker({
-                format: "yyyy/MM/dd"
-
-            });
-        });
-
-
+       
         //增加文章內容的格式轉換
         ClassicEditor
             .create(document.querySelector('#editor'));
-
-
-
-
-
-        //$.fn.datepicker.dates = {
-        //    days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-        //    daysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-        //    daysMin: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
-        //    months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-        //    monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-        //    today: "Today",
-        //    clear: "Clear",
-        //    format: "mm/dd/yyyy",
-        //    titleFormat: "MM yyyy", /* Leverages same syntax as 'format' */
-        //    weekStart: 0
-        //};
-        //$('#Date1').datepicker({
-        //    todayBtn: "linked",
-        //    autoclose: true,
-        //    todayHighlight: true,
-        //}).on('changeDate', function (e) {
-        //    var Time = e.date;
-        //    $('#Date1').val(Time);
-        //});
 
 
         LoadCategoryName();
