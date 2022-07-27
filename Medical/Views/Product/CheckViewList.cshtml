@@ -76,88 +76,89 @@
                     <span>訂單總金額:</span>&nbsp;<span style="font-size: 24px; font-weight: bold; color: rgb(195, 50, 50);" id="SPtotal">@(pay+60)</span>
                 </p>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <select name="" id="mySelect">
+                <select name="couponName" id="mySelect">
                     <option value="請選擇優惠券">請選擇優惠券</option>
                 </select>
             </div>
         </div>
+
+        <br><br>
+        <!-- ============================================2================================================ -->
+
+
+        <div class="card" style="width: 100%;">
+            <div class="card-header">2.取貨方式</div>
+            <div class="card-body">
+                <span>收件人 : &nbsp;</span> <input type="text" name="custName" placeholder="收件人姓名" value="" id="myCustName" required><span style="color:red;margin-left:5px;" hidden id="SPName">(此為必填欄位)</span>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6">
+
+
+                        <span>選擇取貨方式 :</span> <span style="color:red;margin-left:5px;" hidden id="SPdeliveryWay">(此為必填欄位)</span> <input type="radio" name="r1" value="delivery" required id="mydelivery"> <span>宅配</span>
+                        <br><br>
+                        <span>收件地址 :</span>
+                        <select name="" id="">
+                            <option value="">請選擇縣市</option>
+                        </select>
+                        <br><br>
+                        <span>地址:</span> &nbsp; <input type="text" name="address" id="txtaddress" placeholder="請輸入地址" style="width: 300px;"><span style="color:red;margin-left:5px;" hidden id="SPaddress">(此為必填欄位)</span>
+
+                    </div>
+                    <div class="col-md-6">
+
+
+                        <input type="radio" name="r1" value="SevenTake"> <span>超商取貨(7-11)</span>
+                        <br><br>
+                        <span>收件地址 :</span>
+                        <select name="" id="">
+                            <option value="">請選擇門市</option>
+                        </select>
+                        <br><br>
+                        <input type="text" name="sevenAddress" id="txtSevenAddress" value="超商地址"  placeholder="超商地址" style="width: 300px; color: rgb(139, 140, 140);" readonly>
+
+                    </div>
+                </div>
+
+                <hr>
+
+            </div>
+            <div class="card-footer" style="height: 70px;">
+
+
+            </div>
+        </div>
+
+        <br><br>
+        <!-- =============================================== 3 =================================================== -->
+
+
+        <div class="card" style="width: 100%;">
+            <div class="card-header">3.付款方式</div>
+            <div class="card-body">
+                <span>選擇付款方式: &nbsp;</span><span style="color:red;margin-left:5px;" hidden id="SPpay">(此為必填欄位)</span>
+                <input type="radio" name="r2" required value="linePay"> <span>LinePay</span> &nbsp;
+                <input type="radio" name="r2" value="noPay"> <span>貨到付款</span>
+                <hr>
+
+                <div>
+                    <img src="~/img/linepay-logo-tw.png" height="260" width="380" />
+                    <img src="~/img/7-11.jpg" height="260" width="340" alt="Alternate Text" />
+                </div>
+            </div>
+
+            <div class="card-footer" style="height: 70px;">
+
+
+            </div>
+        </div>
+
+        <br>
+        <div style=" text-align: end;">
+            <button form="myform" onclick="check()" type="submit" class="btn btn-dark" style="margin-top: 10px; margin-right: 20px; width: 200px; border-radius: 25px;">送出訂單</button>
+        </div>
+
     </form>
-    <br><br>
-    <!-- ============================================2================================================ -->
-
-
-    <div class="card" style="width: 100%;">
-        <div class="card-header">2.取貨方式</div>
-        <div class="card-body">
-            <span>收件人 : &nbsp;</span> <input type="text" value="收件人姓名">
-            <hr>
-            <div class="row">
-                <div class="col-md-6">
-
-
-                    <span>選擇取貨方式 : </span> <input type="radio" name="r1"> <span>宅配</span>
-                    <br><br>
-                    <span>收件地址 :</span>
-                    <select name="" id="">
-                        <option value="">請選擇縣市</option>
-                    </select>
-                    <br><br>
-                    <span>地址:</span> &nbsp; <input type="text" name="" id="" value="請輸入地址" style="width: 300px;">
-
-                </div>
-                <div class="col-md-6">
-
-
-                    <input type="radio" name="r1"> <span>超商取貨(7-11)</span>
-                    <br><br>
-                    <span>收件地址 :</span>
-                    <select name="" id="">
-                        <option value="">請選擇門市</option>
-                    </select>
-                    <br><br>
-                    <input type="text" name="" id="" value="超商地址" style="width: 300px; color: rgb(139, 140, 140);" readonly>
-
-                </div>
-            </div>
-
-            <hr>
-
-        </div>
-        <div class="card-footer" style="height: 70px;">
-
-
-        </div>
-    </div>
-
-    <br><br>
-    <!-- =============================================== 3 =================================================== -->
-
-
-    <div class="card" style="width: 100%;">
-        <div class="card-header">3.付款方式</div>
-        <div class="card-body">
-            <span>選擇付款方式: &nbsp;</span>
-            <input type="radio" name="r2"> <span>LinePay</span> &nbsp;
-            <input type="radio" name="r2"> <span>貨到付款</span>
-            <hr>
-
-            <div>
-                <img src="~/img/linepay-logo-tw.png" height="260" width="380" />
-            </div>
-        </div>
-
-        <div class="card-footer" style="height: 70px;">
-
-
-        </div>
-    </div>
-
-    <br>
-    <div style=" text-align: end;">
-        <button form="myform" type="submit" class="btn btn-dark" style="margin-top: 10px; margin-right: 20px; width: 200px; border-radius: 25px;">送出訂單</button>
-    </div>
-
-
 </div>
 @section Scripts{
 
@@ -182,7 +183,6 @@
             let arr = $("input:checkbox:checked").map(function () { return parseInt($(this).attr("amount")); }).get();
             $("#SPtotal").text(`${SumData(arr)}`)
             $("#mytotal").val(`${SumData(arr)}`)
-            console.log($("#mytotal").val())
             $("#mySelect option:first").prop("selected", "selected")
             discount.innerText = 0;
         }
@@ -225,6 +225,21 @@
 
         })
 
+
+        function check()
+        {
+
+            if ($("#myCustName").val() == "") 
+                $("#SPName").attr("hidden", false);
+            if ($("#mydelivery").prop("checked") == true) {
+                if ($("#SPaddress").val() == "")
+                    $("#SPaddress").attr("hidden", false);
+            }   
+            if ($('[name="r1"]:checked').length == 0)
+                $("#SPdeliveryWay").attr("hidden", false);
+            if ($('[name="r2"]:checked').length == 0)
+                $("#SPpay").attr("hidden", false);
+        }
 
 
         //測試7-11 

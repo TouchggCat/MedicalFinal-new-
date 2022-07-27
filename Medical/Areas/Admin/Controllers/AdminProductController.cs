@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -362,14 +363,69 @@ namespace Medical.Areas.Admin.Controllers
                 return Content("成功");
             }
         }
-        // 查詢訂單
+        // 查詢訂單 主頁
         public IActionResult QueryAllOrders()
         {
-            return View();
+            var orderlist = db.Orders.OrderByDescending(o=>o.OrderId).ToList();
+            var memlist = db.Members.ToList();
+
+            return View(orderlist);
+        }
+
+        public IActionResult GetOrderDetail(int?id)
+        {
+            // orderID MemberName
+            // (od List) Image productName amount 小計 
+            // 折價券 折扣數
+            var productSlist = db.ProductSpecifications.ToList();
+            List<CGetOrderDetailViewModel> odVMList = new List<CGetOrderDetailViewModel>();
+            var odlist = db.OrderDetails.Include(od => od.Order).Include(od => od.Product).Include(od => od.Order.Member).Include(od => od.Order.CouponDetail.Coupon).Where(od => od.OrderId == id).ToList();
+            
+            foreach(var od in odlist)
+            {
+                CGetOrderDetailViewModel odVM = new CGetOrderDetailViewModel();
+
+                if (od.Order.CouponDetailId != null)
+                {
+                    odVM.CouponDiscountNum = od.Order.CouponDetail.Coupon.CouponDiscountNum;                   
+                };
+
+                odVM.MemberName = od.Order.Member.MemberName;
+                odVM.ProductName = od.Product.ProductName;
+                odVM.ProductImage = od.Product.ProductSpecifications.FirstOrDefault(ps => ps.ProductId == od.Product.ProductId).ProductImage;
+                odVM.UnitPrice = od.Product.ProductSpecifications.FirstOrDefault(ps => ps.ProductId == od.Product.ProductId).UnitPrice;
+                odVM.Quantity = od.Quantity;
+                odVM.OrderId = od.OrderId;
+                odVM.Phone = od.Order.Member.Phone;
+                odVM.OrderDate = (DateTime)od.Order.OrderDate;
+                odVM.OrderStateId = od.Order.OrderStateId;
+
+                odVMList.Add(odVM);
+            }
+            
+            return Json(odVMList);
+        }
+
+        public IActionResult checkOrder(int[] multipleD)
+        {
+
+            if (multipleD.Length == 0)
+                return Content("失敗");
+
+
+            foreach (var oId in multipleD)
+            {
+                Order o = db.Orders.FirstOrDefault(o => o.OrderId == oId);
+                o.OrderStateId = 2;
+                db.SaveChanges();
+            }
+
+
+            return Content("成功");
         }
 
 
-        // 評論查詢/刪除
+        // 評論查詢/刪除 主頁
         public IActionResult DeleteReviews()
         {
             CReviewForEditViewModel cReviewModel = new CReviewForEditViewModel

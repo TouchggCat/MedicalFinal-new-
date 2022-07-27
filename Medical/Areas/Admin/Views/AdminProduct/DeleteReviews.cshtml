@@ -36,7 +36,7 @@
 
                 <div class="row mt-1" style=" width:100%;margin:auto;">
                     <div class="input-group rounded" style="padding: 0;">
-                        <input type="search" class="form-control rounded" placeholder="搜尋.." aria-label="Search" aria-describedby="search-addon" style="margin-left: 0;" />
+                        <input id="mySearch" type="search" class="form-control rounded" placeholder="搜尋.." aria-label="Search" aria-describedby="search-addon" style="margin-left: 0;" />
                         <span class="input-group-text border-0" id="search-addon">
                             <i class="fas fa-search"></i>
                         </span>
@@ -50,7 +50,7 @@
                                 foreach (var item in Model.reviewList.OrderBy(r => r.Product.ProductName).ThenBy(r=>r.RatingType.RatingTypeName))
                                 {
                                     i++;
-                                    <tr><td style="margin-right:0px;color:gray;width:1em;">@i</td><td onclick="Selected(event)"><input class="myCheckbox" type="checkbox" name="checkedB" style=" transform: scale(1.4);margin-right:1em;" value="@item.ReviewId"><span style="margin-left: 0px;">@item.Product.ProductName (@item.RatingType.RatingTypeName 顆星)</span></td></tr>
+                                    <tr class="myTrTohide"><td style="margin-right:0px;color:gray;width:1em;">@i</td><td onclick="Selected(event)"><input class="myCheckbox" type="checkbox" name="checkedB" style=" transform: scale(1.4);margin-right:1em;" value="@item.ReviewId"><span style="margin-left: 0px;">@item.Product.ProductName (@item.RatingType.RatingTypeName 顆星)</span></td></tr>
 
                                 }
                             }
@@ -161,8 +161,19 @@
         let myReviewTime = $("#myReviewTime");
         let myReviewId = $("#myReviewId");
         let myShade = $("#myShade");
+        const mySearch = $("#mySearch");
 
+        //搜尋
 
+        mySearch.on("blur", function () {
+            var myKeyword = (this).value;
+            $(".myTrTohide").hide();
+
+            if ($(`td:contains(${myKeyword})`).length == 0) {
+            }
+            else
+                $(`td:contains(${myKeyword})`).parents(".myTrTohide").show();
+        })
 
         //=================== ajax解除隱藏 start===============
 
