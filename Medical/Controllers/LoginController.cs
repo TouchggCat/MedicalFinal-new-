@@ -275,7 +275,7 @@ namespace Medical.Controllers
                 //window.location.href跳轉業面
             }
             else
-                return Content("<script>alert('未註冊的帳號，請確認輸入是否正確');window.location.href='https://localhost:44302/'</script>", "text/html", System.Text.Encoding.UTF8);
+                return Content("<script>alert('未註冊的帳號，請確認輸入是否正確');window.location.href='https://localhost:44302/Login/ForgetPassword'</script>", "text/html", System.Text.Encoding.UTF8);
 
         }
 
