@@ -10,8 +10,8 @@ connection.on("ReceiveMessage", function (user, message) {
     var MSN = document.querySelector("#MSN");
     var time = moment(Date.now()).format("LTS")
     if (user == `客服`) {
-        
-                $("#MSN").append(`<div class="direct-chat-msg right">
+        console.log(user);
+        $("#MSN").append(`<div class="direct-chat-msg text-md-end">
                                 <div class="direct-chat-infos clearfix">
                                     <span class="direct-chat-name float-left" id="name_player1">客服</span>
                                     <span class="direct-chat-timestamp float-right" id="time_player1">${time}</span>
@@ -25,9 +25,9 @@ connection.on("ReceiveMessage", function (user, message) {
                             </div>`)
 
     }
-    else if (user == "訪客") {
-        
-        $("#MSN").append(`<div class="direct-chat-msg">
+    else{
+        console.log(user);
+        $("#MSN").append(`<div class="direct-chat-msg text-md-end">
                         <div class="direct-chat-infos clearfix">
                             <span class="direct-chat-name float-left" id="name_player1">訪客</span>
                             <span class="direct-chat-timestamp float-right" id="time_player1">${time}</span>
@@ -41,21 +41,25 @@ connection.on("ReceiveMessage", function (user, message) {
                     </div>
                     </div>`)
     }
-    else {
-        $("#MSN").append(`<div class="direct-chat-msg right">
-                        <div class="direct-chat-infos clearfix">
-                            <span class="direct-chat-name float-left" id="name_player1">${user}</span>
-                            <span class="direct-chat-timestamp float-right" id="time_player1">${time}</span>
-                        </div>
-                        <img class="direct-chat-img" src="../img/訪客.jpg" alt="Message User Image" style="border-radius:50%">
-                    <div class="direct-chat-text">
-                        <ul id="message_player1">
-                           <li>${message}</li>
-                        </ul>
-                    </div>
-                    </div>`)
-    }
 });
+
+
+    //可新增
+    //else {
+    //    $("#MSN").append(`<div class="direct-chat-msg right text-md-start">
+    //                    <div class="direct-chat-infos clearfix">
+    //                        <span class="direct-chat-name float-left" id="name_player1">${user}</span>
+    //                        <span class="direct-chat-timestamp float-right" id="time_player1">${time}</span>
+    //                    </div>
+    //                    <img class="direct-chat-img" src="../img/訪客.jpg" alt="Message User Image" style="border-radius:50%">
+    //                <div class="direct-chat-text">
+    //                    <ul id="message_player1">
+    //                       <li>${message}</li>
+    //                    </ul>
+    //                </div>
+    //                </div>`)
+    //}
+/*});*/
 
 
 

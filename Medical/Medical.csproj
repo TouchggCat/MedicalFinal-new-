@@ -17,8 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-
-    <None Include="Areas\Admin\Views\AdminDoctor\CreateDetail.cshtml" />
     <None Include="Areas\Admin\Views\AdminDoctor\depEdit.cshtml" />
     <None Include="Areas\Admin\Views\AdminDoctor\Details.cshtml" />
     <None Include="Areas\Admin\Views\AdminDoctor\DoctorRatinglist.cshtml" />
@@ -28,13 +26,15 @@
 
     <None Include="Views\ClinicDetail\List.cshtml" />
 
+    <None Include="Views\Reserve\ReserveList.cshtml" />
+
+    <None Include="Views\Reserve\ReserveSearch.cshtml" />
+
     <None Include="wwwroot\img\emptyCart.gif" />
 
     <None Include="Views\Doctor\Details.cshtml" />
     <None Include="Views\Doctor\Index.cshtml" />
     <None Include="Views\Doctor\IndexTest.cshtml" />
-    <None Include="Views\Doctor\List.cshtml" />
-    <None Include="Views\Doctor\ListTest.cshtml" />
     <None Include="Views\Doctor\RatingDoctorpartail.cshtml" />
 
     <None Include="wwwroot\js\site.js" />
@@ -66,9 +66,19 @@
   </ItemGroup>
 
   <ItemGroup>
+
     <PackageReference Include="LinePayOnlineAPIv3" Version="1.0.0" />
+
+
+    <PackageReference Include="Bootstrap.v3.Datetimepicker" Version="4.17.49" />
+    <PackageReference Include="Bootstrap.v3.Datetimepicker.CSS" Version="4.17.49" />
+
+    <PackageReference Include="Google.Apis.Auth" Version="1.57.0" />
+
+
     <PackageReference Include="Microsoft.AspNet.SignalR" Version="2.4.3" />
     <PackageReference Include="Microsoft.AspNet.WebPages" Version="3.2.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="5.0.17" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.17" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="5.0.17" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.17" />
