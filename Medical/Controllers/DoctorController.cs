@@ -114,6 +114,7 @@ namespace Medical.Controllers
         /////////機器人問題集/////////
         public IActionResult GetAnswer(string Qs)
         {
+            Doctor dc = new Doctor();
             var Aws0 = new DocJsonViewModel
             {
                 Answer = "請您說的詳細一點"

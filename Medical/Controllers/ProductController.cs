@@ -40,7 +40,7 @@ namespace Medical.Controllers
 
                 string logJson = "";
                 logJson = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USE);
-                vm = JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
+                vm = System.Text.Json.JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
                 ViewBag.name = vm.MemberName;
 
                 list = _medicalContext.Orders.Where(a => a.MemberId == vm.MemberId)

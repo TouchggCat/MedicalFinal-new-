@@ -141,18 +141,17 @@
 
         .topDialogue {
             max-width: 500px;
-            width: 100%;
-            height: 600px;
+            display: none;
             padding: 20px;
             box-shadow: 0 0 10px #000;
             background-color: #E0DFC0;
             border-radius: 20px;
-            overflow: auto;
-            display:none;
         }
 
         .dialogue {
-            
+            width: 100%;
+            height: 600px;            
+            overflow: auto;
         }
 
         .dialogue img {
@@ -234,6 +233,13 @@
             display:block;
             font-size:30px;
             font-weight:bold;
+        }
+        .inputText {
+            background-color: #bfbea0;
+            padding: 15px;
+            box-shadow: 0 0 10px #000;            
+            border-radius: 20px;
+            width:100%;
         }
     </style>
 
@@ -497,6 +503,7 @@
         }
 
     @*機器人*@
+        const dialogue = document.querySelector(".dialogue")
         function Register() {
             txt = $(event.target).attr("value")
             GetA(txt);
@@ -520,7 +527,8 @@
                     <input type="button" value="衛教健保" onclick="Register()">
                     <input type="button" value="該掛哪科" onclick="Register()">
                 </div>`
-            document.querySelector(".dialogue").innerHTML += Remotetext;
+            dialogue.innerHTML += Remotetext;
+            dialogue.scrollTop = dialogue.scrollHeight;
         }
         async function GetA(txt) {
             if (txt != "") {
@@ -548,8 +556,10 @@
                 </div>
         </div>`
 
-                document.querySelector(".dialogue").innerHTML += Usertext;
-                document.querySelector(".dialogue").innerHTML += Remotetext;
+                dialogue.innerHTML += Usertext;
+                dialogue.innerHTML += Remotetext;
+                dialogue.scrollTop = dialogue.scrollHeight;
+
             }
             else {
                 alert("請輸入文字");

@@ -17,6 +17,9 @@
             width:100%;
             height:450px;
         }
+        .actbtn button,input{
+            font-size:14px;
+        }
     </style>
 }
 
@@ -64,7 +67,7 @@
 
             </dd>
         </dl>
-        <div>
+        <div class="actbtn">
             <button class="btn btn-success btn-sm">我要掛號</button>
             <input type="button" onclick="location.href='@Url.Action("ListTest","Doctor")'" value="返回醫生" class="btn btn-info btn-sm" />
         </div>
