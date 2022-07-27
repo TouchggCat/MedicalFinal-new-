@@ -7,11 +7,10 @@
     <style>
         @*醫生標題*@
         .listFCN {
-            color: black !important;
-            font-size: 20px;
+            color: #06a3da !important;
+            font-size: 26px;
             font-weight: bold;
-            margin-bottom: 10px;
-            color: #00EEFF;
+            margin-bottom: 10px;            
             font-family: Jost, sans-serif !important;
         }
         @*醫生內文1*@
@@ -61,10 +60,11 @@
         }
         @*醫生外框*@
         .team-item {
-            background: #cbe0ff;
+            background: #ffffff;
             margin-top: 20px;
             border-radius: 10px;
             padding: 15px;
+            border: 2px solid #D3D3D3
         }
         @*選項框*@
         .list {
@@ -135,29 +135,28 @@
 
         .dcimg {
             height: 250px;
-            object-fit: cover;
+            object-fit: contain;
         }
         @*以下皆為聊天機器人*@
         .upDialogue {
             position: fixed;
-            bottom: 75%;
-            right: 500px;
-            z-index: 999999;
-        }
-        .topDialogue {
-            max-width: 500px;
-            display: none;
-            padding: 20px;
-            box-shadow: 0 0 10px #000;
-            background-color: #E0DFC0;
-            border-radius: 20px;            
-            position:absolute;
-        }
+            bottom: -100%;
+            right: 200px;
+            z-index: 10;
+        }          
+            .topDialogue {
+                max-width: 500px;
+                padding: 20px 0px 0px;
+                box-shadow: 0 0 10px #000;
+                background-color: #d4e6ed;
+                border-radius: 20px;
+            }
 
         .dialogue {
             width: 100%;
             height: 600px;            
             overflow: auto;
+            padding:0 20px 0 20px;
         }
 
         .dialogue img {
@@ -199,9 +198,9 @@
 
         .remote .text {
             margin-left: 20px;
-            margin-right: 80px;
+            margin-right: 20px;
             color: #eee;
-            background-color: #4179f1;
+            background-color: #06a3da;
         }
 
         .remote .text &::before {
@@ -241,14 +240,17 @@
             font-weight:bold;
         }
         .inputText {
-            background-color: #bfbea0;
+            background-color: #8ebcff;
             padding: 15px;
-            box-shadow: 0 0 10px #000;            
-            border-radius: 20px;
-            width:100%;
+            box-shadow: 0 0 2px #000;
+            border-radius:0px 0px 20px 20px;
+            width: 100%;
         }
         .user a {
             color: #06da9f
+        }
+        #txtBox{
+            height:38px;
         }
     </style>
 
@@ -266,13 +268,10 @@
 
 @using (Html.BeginForm())
 {
-    <div>
-        <input type="button" value="點我推薦醫生" class="btn btn-success" onclick="location.href='@Url.ActionLink("SugDoc","Doctor")'" />
-    </div>
     <div class="d-flex flex-wrap mt-2">
         <div class="muti-selector">
             <div class="select-field">
-                <input type="text" name="" placeholder="篩選專長" class="input-selector" />
+                <input type="text" name="" placeholder="篩選科別" class="input-selector" />
                 <span class="down-arrow">&blacktriangledown;</span>
 
             </div>
@@ -347,8 +346,8 @@
         </div>
         <div class="inputText">
             <input id="txtBox" type="text" value="" />
-            <input type="button" value="輸入" onclick="Insert()" />
-            <input type="button" value="不知道問甚麼" onclick="QuestionButton()" />
+            <input class="btn btn-primary" type="button" value="輸入" onclick="Insert()" />
+            <input class="btn btn-warning" type ="button" value="不知道問甚麼" onclick="QuestionButton()" />
         </div>
     </div>
 </div>
@@ -669,11 +668,11 @@
         var x = false;
         function show() {
             if (x == false) {
-                document.querySelector('.topDialogue').style.display = "block"
+                document.querySelector('.upDialogue').style.bottom = "0%"
                 x = true;
             }
             else {
-                document.querySelector('.topDialogue').style.display = "none"
+                document.querySelector('.upDialogue').style.bottom = "-100%"
                 x = false;
             }
         }
