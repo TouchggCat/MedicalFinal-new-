@@ -42,13 +42,15 @@ namespace Medical.ViewComponents
                             foreach (var t in time)
                             {
                                 CClinicDetailAdminViewModel cc = new CClinicDetailAdminViewModel();
-                                //cc.DoctorId = cVM.DoctorId;
+                                cc.DoctorId = cVM.DoctorId;
                                 cc.doctorName = _medicalContext.Doctors.Where(x => x.DoctorId.Equals(cVM.DoctorId)).SingleOrDefault().DoctorName;
-                                //cc.DepartmentId = (int)cVM.DepartmentId;
+                                cc.DepartmentId = (int)cVM.DepartmentId;
                                 cc.deptName = _medicalContext.Departments.Where(x => x.DepartmentId.Equals(cVM.DepartmentId)).SingleOrDefault().DeptName;
                                 cc.ClinicDate = dt;
+                                cc.PeriodId = t;
                                 cc.periodName = _medicalContext.Periods.Where(x => x.PeriodId.Equals(t)).SingleOrDefault().PeriodDetail;
-                                cc.RoomId = cVM.room;
+                                cc.RoomId = cVM.RoomId;
+                                cc.roomName = _medicalContext.ClinicRooms.Where(x => x.RoomId.Equals(cVM.RoomId)).SingleOrDefault().RoomName;
                                 cc.Online = 0;
 
                                 var qry = _medicalContext.ClinicDetails.Where(x => x.ClinicDate.Value.Date.Equals(dt.Date) && x.PeriodId.Equals(t));
