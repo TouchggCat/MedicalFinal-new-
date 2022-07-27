@@ -24,8 +24,8 @@
             {
                 <div class="row featurette" style="display: flex; justify-content: center; align-items: center;">
                     <div class="col-md-7">
-                        <h3><i class="nav-check"></i>@item.AdTitle</h3>
-                        <p>@item.AdContant.Substring(0, Math.Min(item.AdContant.Length, 100))......</p>
+                        <h2><i class="nav-check"></i>@item.AdTitle</h2>
+                        <p>@item.AdContant.Substring(0, Math.Min(item.AdContant.Length, 80)).Replace("<p>", "").Replace("<strong>", "").Replace("<br/>", "").Replace("</p>", "")........</p>
                         <a href="~/AdvertiseFront/ListDetail?id=@item.No" class="btn btn-outline-primary" style="border-radius:15px">Read more...</a>
                     </div>
                     <div class="col-md-5">
@@ -39,8 +39,8 @@
             {
                 <div class="row featurette" style="display: flex; justify-content: center; align-items: center;">
                     <div class="col-md-7 order-md-2">
-                        <h3><i class="nav-check"></i>@item.AdTitle</h3>
-                        <p>@item.AdContant.Substring(0, Math.Min(item.AdContant.Length, 100))......</p>
+                        <h2><i class="nav-check"></i>@item.AdTitle</h2>
+                        <p>@item.AdContant.Substring(0, Math.Min(item.AdContant.Length, 80)).Replace("<p>", "").Replace("<strong>", "").Replace("<br/>", "").Replace("</p>", "")</p>
                         <a href="~/AdvertiseFront/ListDetail?id=@item.No" class="btn btn-outline-primary" style="border-radius:15px">Read more...</a>
                     </div>
                     <div class="col-md-5 order-md-1">
