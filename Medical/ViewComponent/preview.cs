@@ -30,7 +30,7 @@ namespace Medical.ViewComponents
 
             List<CClinicDetailAdminViewModel> list = new List<CClinicDetailAdminViewModel>();
 
-            for (int i = 0; i < Diff_dates.Days; i++)
+            for (int i = 0; i < Diff_dates.Days+1 ; i++)
             {
                 DateTime dt = dtForm.AddDays(i);
                 if (dt.DayOfWeek != DayOfWeek.Saturday || dt.DayOfWeek != DayOfWeek.Sunday)
@@ -53,7 +53,7 @@ namespace Medical.ViewComponents
                                 cc.roomName = _medicalContext.ClinicRooms.Where(x => x.RoomId.Equals(cVM.RoomId)).SingleOrDefault().RoomName;
                                 cc.Online = 0;
 
-                                var qry = _medicalContext.ClinicDetails.Where(x => x.ClinicDate.Value.Date.Equals(dt.Date) && x.PeriodId.Equals(t));
+                                var qry = _medicalContext.ClinicDetails.Where(x => x.ClinicDate.Value.Month.Equals(dt.Date.Month) && x.ClinicDate.Value.Day.Equals(dt.Date.Day) && x.PeriodId.Equals(t));
                                 if (qry.Count() > 0)
                                 {
                                     cc.repeat = true;

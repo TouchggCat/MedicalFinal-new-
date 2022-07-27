@@ -1,6 +1,7 @@
 ﻿using Medical.Models;
 using Medical.ViewModel;
 using Medical.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,10 +23,19 @@ namespace Medical.Areas.Doctors.Controllers
 
         public IActionResult List()
         {
-            int doctorId = 2;
+            int doctorId = 1;
+
+            //CMemberAdminViewModel vm = null;
+
+            //string logJson = "";
+            //logJson = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USE);
+            //vm = System.Text.Json.JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
+            //ViewBag.name = vm.MemberId;
+            //doctorId = _medicalContext.Doctors.Where(x=>x.MemberId.Equals(vm.MemberId)).SingleOrDefault().DoctorId;
+
             List<CClinicDetailAdminViewModel> list = new List<CClinicDetailAdminViewModel>();
             var result = _medicalContext.ClinicDetails.Include(x=>x.Doctor).Include(x=>x.Department)
-                .Include(x=>x.Room).Include(x=>x.Period).Where(x => x.DoctorId.Equals(doctorId));
+                .Include(x=>x.Room).Include(x=>x.Period).Where(x => x.DoctorId.Equals(doctorId) && x.Online.Equals(0));
 
             foreach (var c in result)
             {
@@ -39,15 +49,22 @@ namespace Medical.Areas.Doctors.Controllers
         public IActionResult WorkSpace(int id)
         {
             List<CReserveViewModel> list = new List<CReserveViewModel>();
+            TempData["ClinicDetailId"] = id;
             var result = _medicalContext.Reserves.Include(x => x.Member).Where(x => x.ClinicDetailId.Equals(id));
-            TempData["ClinicDetailId"] = result.FirstOrDefault().ClinicDetailId;
 
-            foreach (var c in result)
+            if (result.Count() > 0)
             {
-                CReserveViewModel cr = new CReserveViewModel();
-                cr.reserve = c;
-                list.Add(cr);
+                foreach (var c in result)
+                {
+                    CReserveViewModel cr = new CReserveViewModel();
+                    cr.reserve = c;
+                    list.Add(cr);
+                }
             }
+
+            //TempData["ClinicDetailId"] = result.FirstOrDefault().ClinicDetailId;
+
+            
             return View(list.ToList());
         }
 
@@ -102,6 +119,22 @@ namespace Medical.Areas.Doctors.Controllers
             }
 
             return RedirectToAction("List", "Consultation");
+        }
+
+
+        public void sendSquNo(int id, int squNo) 
+        {
+            var qry = _medicalContext.ClinicDetails.Include(x => x.Room).Where(x => x.ClinicDetailId.Equals(id)).SingleOrDefault();
+            var qry2 = _medicalContext.Reserves.Where(x => x.MemberId.Equals(squNo)).SingleOrDefault().SequenceNumber;
+            if (qry!=null & qry2!=null)
+            {
+                ClinicRoom clinicRoom = _medicalContext.ClinicRooms.Where(x => x.RoomId.Equals(qry.RoomId)).FirstOrDefault();
+                if (clinicRoom != null)
+                {
+                    clinicRoom.Number = qry2;
+                    _medicalContext.SaveChanges();
+                }
+            }
         }
     }
 }

@@ -168,7 +168,9 @@
                 $('#tbPatient').find('tr').eq(pre).css("background-color", "white");
 
                 removeData();
-                loadPatientDetial($('#tbPatient').find('tr').eq(pre).children().eq(1).children().val());
+                let patientId = $('#tbPatient').find('tr').eq(count).children().eq(1).children().val();
+                loadPatientDetial(patientId);
+                updateNo(patientId);
                 pre = count;
                 count++;
             }
@@ -267,6 +269,11 @@
             }
 
         });
+
+        async function updateNo(squ) {
+            let clinicId = await $('span#ClinicDetailId').html();
+            $.post('@Url.Content("~/Doctors/Consultation/sendSquNo")', { id: clinicId , squNo: squ });
+        }
 
         function removeData() {
             let card = document.querySelector("#card");
