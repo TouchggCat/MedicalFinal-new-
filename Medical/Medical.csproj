@@ -30,6 +30,8 @@
 
     <None Include="Views\Reserve\ReserveSearch.cshtml" />
 
+    <None Include="wwwroot\img\7-11.jpg" />
+
     <None Include="wwwroot\img\emptyCart.gif" />
 
     <None Include="Views\Doctor\Details.cshtml" />

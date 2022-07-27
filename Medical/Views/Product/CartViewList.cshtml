@@ -35,7 +35,7 @@
                                         <input type="hidden" name="ShoppingCartId" value="@item.cart.ShoppingCartId" />
                                         <input type="hidden" name="ProductId" value="@item.cart.ProductId" />
                                         <p class="mt-3" style="margin-bottom:0%;font-size: larger;color: gray;margin-bottom:10px">@item.prod.ProductName</p>
-                                        <p class="mt-3" style="font-size:medium ;color: gray;display:inline;"> @item.prodspec.UnitPrice</p><span> 庫存:</span><span>@item.prod.Stock</span><br />
+                                        <p class="mt-3" style="font-size:medium ;color: gray;display:inline;"><span>NT$</span><span>@item.prodspec.UnitPrice</span></p><span> 庫存:</span><span>@item.prod.Stock</span><br />
                                         <div class="btn-group mt-4" role="group" aria-label="Basic example" style="text-align: center;">
                                             <button type="button" class="btn btn-outline-dark btn-sm btnAdd">+</button>
                                             <input class="inputNum" type="number" style="height: 2em;text-align:center" value="@item.cart.ProductAmount" name="ProductAmount" min="1" max="@item.prod.Stock" oninput="if(value>@item.prod.Stock)value=@item.prod.Stock;if(value<1)value=1" required>
@@ -44,7 +44,7 @@
                                     </div>
                                     <div class="col col-md-3" style="height: 100%;padding-right: 0%;">
                                         <div style="width: 100%;height:50%;text-align: end;padding-right: 1em;">
-                                            <p class="mt-4 sub" style="font-size: larger;color: rgb(0, 0, 0); font-weight: bold;">@item.小計</p>
+                                            <p class="mt-4" style="font-size: larger;color: rgb(0, 0, 0); font-weight: bold;"><span>NT$</span><span class="sub">@item.小計</span></p>
                                         </div>
                                         <div style="width: 100%;height:50%;text-align: end;padding-right: 1em;">
                                             <button type="button" class="btn btn-light btnClick"><i class="fa-solid fa-trash-can"></i> &nbsp; 刪除 </button>
@@ -73,18 +73,18 @@
                     </div>
                     <hr style="width: 85%;margin: auto;" class="mt-3">
                     <div class="mt-4" style="width: 80%; display: flex ; justify-content: space-between; margin: auto;">
-                        <h6>交易金額:</h6><h6 id="tranSum">@pay</h6>
+                        <h6>交易金額:</h6><h6 ><span>NT$</span><span id="tranSum">@pay</span></h6>
                     </div>
                     <div style="width: 80%; display: flex ; justify-content: space-between; margin: auto;">
-                        <h6>運費:</h6><h6 id="ship">@ship </h6>
+                        <h6>運費:</h6><h6 ><span>NT$</span><span id="ship"> @ship</span> </h6>
                     </div>
                     <div style="width: 80%; display: flex ; justify-content: space-between; margin: auto;">
-                        <h6>折扣:</h6><h6 id="discount">0</h6>
+                        <h6>折扣:</h6><h6 style="color: red"><span>(-)NT$</span><span id="discount">0</span></h6>
                     </div>
                     <hr style="width: 85%;margin: auto;" class="mt-4">
 
                     <div style="width: 80%; display: flex ; justify-content: space-between; margin: auto; margin-top:15px">
-                        <h6>總額:</h6><h6 style="color: red" id="TotalSum">@(pay+ship)</h6>
+                        <h6>總額:</h6><h6 style="color: red" ><span>NT$</span><span id="TotalSum">@(pay+ship)</span> </h6>
                     </div>
                     <div style=" width: 85%; margin: auto; margin-top: 15px;">
                         <a class="btn btn-dark" href="/Product/CheckViewList" style="width: 97%; height:40px;margin-left: 10px;color: white;">前往結帳</a>
@@ -286,9 +286,9 @@
                 let prodname = $(event.target).parents(".prod").children("p")[0].innerText;
                 let amount = $(event.target)[0].value;
                 Intamount = parseInt(amount);
-                let unitprice = $(event.target).parents(".prod").children("p")[1].innerText;
+                let unitprice = $(event.target).parents(".prod").children("p").eq(1).children("span")[1].innerText; //ok
                 Intunitprice = parseInt(unitprice);
-                let Subtotal = $(event.target).parents(".prodDiv").children("div:last-child").children("div:first-child").children("p:first-child")[0];
+                let Subtotal = $(event.target).parents(".prodDiv").children("div:last-child").children("div:first-child").children("p:first-child").eq(0).children("span")[1];
 
                 let myform = $(event.target).parents("form");
 
@@ -370,8 +370,15 @@
                                     '您已將此商品移出購物車',
                                     'success'
                                 )
+                                let delNum = parseInt($(".sub")[0].innerHTML);
+                                let beforesum =  parseInt(TotaltranSum.innerHTML);
+                                let discountNum = parseInt(discount.innerText);
+
+                                tranSum.innerHTML = beforesum - delNum;
+                                TotalSum.innerHTML = beforesum-delNum+60-discountNum;
+
                                 deleteitem.remove();
-                                loadCartData(memberId);
+                                loadCartData(memberId); // 更新購物車
                             }
                         })
                     }

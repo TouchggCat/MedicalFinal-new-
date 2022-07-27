@@ -749,7 +749,7 @@ namespace Medical.Controllers
         }
 
 
-        public async Task<IActionResult> Reserve(List<CShoppingCartItem> SList,int total, int[] pId)
+        public async Task<IActionResult> Reserve(List<CShoppingCartItem> SList,int total, int[] pId,string custName,string r1,string r2,string address,string sevenAddress,string couponName)
         {
             List<Products> pList = new List<Products>();
             List<Order> oList = new List<Order>();
@@ -800,7 +800,8 @@ namespace Medical.Controllers
                 ShipAddress = "test",
                 IsPaid = true,
                 PayTypeId = 1,
-                ShipTypeId = 1
+                ShipTypeId = 1,
+                //CouponDetail = 
             };
             _medicalContext.Orders.Add(o);
             _medicalContext.SaveChanges();
@@ -845,22 +846,27 @@ namespace Medical.Controllers
                 linepaylist.Add(linepay);
             }
 
-            var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("漢克斯眼科", "wangbo841019@gmail.com"));
-            message.To.Add(new MailboxAddress("客戶", "wanbo841019@gmail.com"));
-            message.Subject = "訂單成立通知";
-            var bodyBuilder = new BodyBuilder();
-            bodyBuilder.TextBody = "感謝您的購買";
-            bodyBuilder.HtmlBody = "<p> 內容 </p>";
-            message.Body = bodyBuilder.ToMessageBody();
-
-            using (var client = new MailKit.Net.Smtp.SmtpClient())
+            if (orderId != null && transactionId != null)
             {
-                client.Connect("smtp.gmail.com", 587, false);
-                client.Authenticate("wangbo841019@gmail.com", "chqvfvzimtvnvitp");
-                client.Send(message);
-                client.Disconnect(true);
+                var message = new MimeMessage();
+                message.From.Add(new MailboxAddress("漢克斯眼科", "wangbo841019@gmail.com"));
+                message.To.Add(new MailboxAddress("客戶", "wanbo841019@gmail.com"));
+                message.Subject = "訂單成立通知";
+                var bodyBuilder = new BodyBuilder();
+                bodyBuilder.TextBody = "感謝您的購買";
+                bodyBuilder.HtmlBody = "<p>感謝您的購買</p><p>訂單編號: " + orderId+"</p>"+"<p>交易代號: "+transactionId+"</p>";
+                message.Body = bodyBuilder.ToMessageBody();
+
+                using (var client = new MailKit.Net.Smtp.SmtpClient())
+                {
+                    client.Connect("smtp.gmail.com", 587, false);
+                    client.Authenticate("wangbo841019@gmail.com", "chqvfvzimtvnvitp");
+                    client.Send(message);
+                    client.Disconnect(true);
+                }
             }
+
+           
 
 
 
