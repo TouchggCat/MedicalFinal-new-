@@ -13,16 +13,17 @@
     int showID2 = 0;
     string LoginbuttonValue = "";
     string LogoutbuttonValue = "";
-
+    CLoginViewModel gg = null;
+    
     CMemberAdminViewModel vm = null;
-    if (!Context.Session.Keys.Contains(CDictionary.SK_LOGINED_USE))
+    if (!Context.Session.Keys.Contains(CDictionary.SK_LOGINED_USE)) && !Context.Session.Keys.Contains(CDictionary.SK_GOOGLELOGINED_USE))
     {
 
         showID = "尚未登入";
         LoginbuttonValue = "請登入";
         LogoutbuttonValue = "";
     }
-    else
+    else if (Context.Session.Keys.Contains(CDictionary.SK_LOGINED_USE))
     {
         logJson = Context.Session.GetString(CDictionary.SK_LOGINED_USE);
         vm = JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
@@ -31,6 +32,13 @@
         logState = "";
         LogoutbuttonValue = "登出";
 
+    }
+    else if (Context.Session.Keys.Contains(CDictionary.SK_GOOGLELOGINED_USE))
+    {
+        logGoogle = Context.Session.GetString(CDictionary.SK_GOOGLELOGINED_USE);
+        gg = JsonSerializer.Deserialize<CLoginViewModel>(logGoogle);
+        showID = gg.txtName;
+        LogoutbuttonValue = "登出";
     }
 }
 <html lang="en">
