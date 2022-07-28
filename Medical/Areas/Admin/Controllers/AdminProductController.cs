@@ -323,46 +323,49 @@ namespace Medical.Areas.Admin.Controllers
         }
 
         // ==========================刪除單筆商品=============================
-        public IActionResult SingleProductDelete(string singleD)
-        {
+        //public int?[] SingleProductDelete(string singleD)
+        //{
 
-            Product p = db.Products.FirstOrDefault(pN => pN.ProductName == singleD);
+        //    Product p = db.Products.FirstOrDefault(pN => pN.ProductName == singleD);
 
-            ProductSpecification ps = db.ProductSpecifications.FirstOrDefault(pps => pps.ProductId == p.ProductId);
-            List<OtherProductImage> otherpList = db.OtherProductImages.Where(otp => otp.ProductId ==p.ProductId).ToList();
-            int[] oplist = db.OtherProductImages.Where(o => o.ProductId == p.ProductId).Select(op=>op.ProductId).ToArray();
-            int[] cartlist = db.ShoppingCarts.Where(c => c.ProductId == p.ProductId).Select(cc => cc.ProductId).ToArray();
-            int[] orderlist = db.ShoppingCarts.Where(od => od.ProductId == p.ProductId).Select(odd => odd.ProductId).ToArray();
+        //    ProductSpecification ps = db.ProductSpecifications.FirstOrDefault(pps => pps.ProductId == p.ProductId);
+        //    List<OtherProductImage> otherpList = db.OtherProductImages.Where(otp => otp.ProductId ==p.ProductId).ToList();
+        //    int[] oplist = db.OtherProductImages.Where(o => o.ProductId == p.ProductId).Select(op=>op.ProductId).ToArray();
+        //    int[] cartlist = db.ShoppingCarts.Where(c => c.ProductId == p.ProductId).Select(cc => cc.ProductId).ToArray();
+        //    int[] orderlist = db.OrderDetails.Where(od => od.ProductId == p.ProductId).Select(odd => odd.ProductId).ToArray();
+        //    //var reviewlist = db.Reviews.Where(r => r.ProductId == p.ProductId).Select(odd => odd.ProductId).ToArray();
+            
+
+        //    //Array.Exists<int>(oplist, x => x == p.ProductId);
+        //    var mybool1= oplist.Contains<int>(p.ProductId);
+        //    var mybool2 = cartlist.Contains<int>(p.ProductId);
+        //    var mybool3 = orderlist.Contains<int>(p.ProductId);
+        //    //var mybool4 = reviewlist.Contains<int>(p.ProductId);
 
 
-            //Array.Exists<int>(oplist, x => x == p.ProductId);
-            var mybool1= oplist.Contains<int>(p.ProductId);
-            var mybool2 = cartlist.Contains<int>(p.ProductId);
-            var mybool3 = orderlist.Contains<int>(p.ProductId);
-           
-            if(mybool2||mybool3==true)
-            {
-                return Content("失敗");
-            }
-            else
-            {
-                if (mybool1 == true)
-                {
-                    foreach (var otherp in otherpList)
-                    {
-                        db.OtherProductImages.Remove(otherp);
-                        db.SaveChanges();
-                    }
-                }
+        //    if (mybool2||mybool3==true)
+        //    {
+        //        //return Content("失敗");
+        //    }
+        //    else
+        //    {
+        //        if (mybool1 == true)
+        //        {
+        //            foreach (var otherp in otherpList)
+        //            {
+        //                db.OtherProductImages.Remove(otherp);
+        //                db.SaveChanges();
+        //            }
+        //        }
 
-                db.ProductSpecifications.Remove(ps);
-                db.SaveChanges();
-                db.Products.Remove(p);
-                db.SaveChanges();
+        //        db.ProductSpecifications.Remove(ps);
+        //        db.SaveChanges();
+        //        db.Products.Remove(p);
+        //        db.SaveChanges();
 
-                return Content("成功");
-            }
-        }
+        //        //return Content("成功");
+        //    }
+        //}
         // 查詢訂單 主頁
         public IActionResult QueryAllOrders()
         {
