@@ -329,18 +329,21 @@ namespace Medical.Areas.Admin.Controllers
             Product p = db.Products.FirstOrDefault(pN => pN.ProductName == singleD);
 
             ProductSpecification ps = db.ProductSpecifications.FirstOrDefault(pps => pps.ProductId == p.ProductId);
-            List<OtherProductImage> otherpList = db.OtherProductImages.Where(otp => otp.ProductId ==p.ProductId).ToList();
-            int[] oplist = db.OtherProductImages.Where(o => o.ProductId == p.ProductId).Select(op=>op.ProductId).ToArray();
+            List<OtherProductImage> otherpList = db.OtherProductImages.Where(otp => otp.ProductId == p.ProductId).ToList();
+            int[] oplist = db.OtherProductImages.Where(o => o.ProductId == p.ProductId).Select(op => op.ProductId).ToArray();
             int[] cartlist = db.ShoppingCarts.Where(c => c.ProductId == p.ProductId).Select(cc => cc.ProductId).ToArray();
-            int[] orderlist = db.ShoppingCarts.Where(od => od.ProductId == p.ProductId).Select(odd => odd.ProductId).ToArray();
+            int[] orderlist = db.OrderDetails.Where(od => od.ProductId == p.ProductId).Select(odd => odd.ProductId).ToArray();
+            int[] reviewlist = db.Reviews.Where(r => r.ProductId == p.ProductId).Select(odd => odd.ProductId).ToArray();
 
 
             //Array.Exists<int>(oplist, x => x == p.ProductId);
-            var mybool1= oplist.Contains<int>(p.ProductId);
+            var mybool1 = oplist.Contains<int>(p.ProductId);
             var mybool2 = cartlist.Contains<int>(p.ProductId);
             var mybool3 = orderlist.Contains<int>(p.ProductId);
-           
-            if(mybool2||mybool3==true)
+            var mybool4 = reviewlist.Contains<int>(p.ProductId);
+
+
+            if (mybool2 || mybool3 || mybool4== true)
             {
                 return Content("失敗");
             }
