@@ -264,6 +264,7 @@
                 });
 
                 if (finish > 4) {
+                    $.post('@Url.Content("~/Doctors/Consultation/Finish")', { id: $('span#ClinicDetailId').html() });
                     $('#nextNum').attr({ "value": "結束看診" }).removeClass("btn-info").addClass("btn-danger");
                 }
             }

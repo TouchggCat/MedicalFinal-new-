@@ -25,13 +25,13 @@ namespace Medical.Areas.Doctors.Controllers
         {
             int doctorId = 1;
 
-            //CMemberAdminViewModel vm = null;
+            CMemberAdminViewModel vm = null;
 
-            //string logJson = "";
-            //logJson = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USE);
-            //vm = System.Text.Json.JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
-            //ViewBag.name = vm.MemberId;
-            //doctorId = _medicalContext.Doctors.Where(x=>x.MemberId.Equals(vm.MemberId)).SingleOrDefault().DoctorId;
+            string logJson = "";
+            logJson = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USE);
+            vm = System.Text.Json.JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
+            TempData["DoctorName"] = vm.MemberName;
+            doctorId = _medicalContext.Doctors.Where(x => x.MemberId.Equals(vm.MemberId)).SingleOrDefault().DoctorId;
 
             List<CClinicDetailAdminViewModel> list = new List<CClinicDetailAdminViewModel>();
             var result = _medicalContext.ClinicDetails.Include(x=>x.Doctor).Include(x=>x.Department)
