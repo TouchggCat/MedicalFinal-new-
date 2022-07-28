@@ -52,7 +52,7 @@ namespace Medical.ViewModel
             set { _review.MemberId = value; }
         }
         [DisplayName("產品名稱")]
-        public int? ProductId
+        public int ProductId
         {
             get { return _review.ProductId; }
             set { _review.ProductId = value; }
