@@ -797,7 +797,7 @@ namespace Medical.Controllers
                 OrderDate = DateTime.Now,
                 OrderStateId = 1,
                 MemberId = cartList.FirstOrDefault().MemberId,
-                ShipAddress = "test",
+                ShipAddress = address,
                 IsPaid = true,
                 PayTypeId = 1,
                 ShipTypeId = 1,
