@@ -752,6 +752,7 @@ namespace Medical.Models
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.Reviews)
                     .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Review_Product");
 
                 entity.HasOne(d => d.RatingType)
