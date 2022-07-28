@@ -127,7 +127,7 @@ namespace Medical.ViewModels
         }
 
 
-
+        [DisplayName("照片")]
         public IFormFile photo { get; set; }
         [DisplayName("身分證字號")]
         public string IdentityID

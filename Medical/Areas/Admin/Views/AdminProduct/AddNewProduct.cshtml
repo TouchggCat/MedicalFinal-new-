@@ -110,6 +110,8 @@
 
 
                                                     <button class="btn btn-danger btn-sm " id="btnAddNewProd" type="button" style="width:30%;">確認新增 </button>
+                                                    <button  class="btn btn-dark btn-sm" id="btnDemo" type="button" style="width:30%;margin-left:25em;">Demo </button>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -353,6 +355,25 @@
 
 
         //===================================== 多圖 End ==============================================
+
+        $("#btnDemo").on("click", function () {
+
+
+            myProductAppearance.text("300ml(2瓶)");
+            myProductColor.val("白色");
+
+            myProductMaterial.val("液體");
+            myProductName.val("智慧多功能隱形眼鏡保養液");
+
+            myProductShelfdate.val("365");
+            myProductStock.val("10");
+            myProductPrice.val("399");
+            myProductCost.val("250");
+        })
+
+
+
+
 
 
         //======================= ajax-ADD Start=========================

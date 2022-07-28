@@ -1,9 +1,11 @@
 ﻿using Medical.Models;
 using Medical.ViewModel;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,10 +18,14 @@ namespace Medical.Controllers
         {
             return View();
         }
+        private readonly IWebHostEnvironment _host;
+
         private readonly MedicalContext _medicalContext;
-        public ArticleAdminController(MedicalContext medicalContext)
+
+        public ArticleAdminController(MedicalContext medicalContext, IWebHostEnvironment hostEnvironment)
         {
             _medicalContext = medicalContext;
+            _host = hostEnvironment;
         }
 
 
@@ -62,10 +68,25 @@ namespace Medical.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(Article a)
+        public IActionResult Create(Article ar,AArticleViewModel a)
         {
-            a.CreateDate = DateTime.Now.ToString("yyyy/MM/dd");
-            _medicalContext.Articles.Add(a);
+            if (a.photo != null)
+            {
+                string path = Path.Combine(_host.WebRootPath, "uploads", a.photo.FileName);
+                using (var fileStream = new FileStream(path, FileMode.Create))
+                {
+                    a.photo.CopyTo(fileStream);
+                    a.ArPicturePath = a.photo.FileName;
+                }
+            }
+            ar.ArPicturePath = a.ArPicturePath;
+            ar.AdminId = 1;
+            ar.Articeltitle = a.Articeltitle;
+            ar.ArticleContent = a.ArticleContent;
+            ar.CreateDate = DateTime.Now.ToString("yyyy/MM/dd");
+            ar.Doctor= a.Doctor;
+
+            _medicalContext.Articles.Add(ar);
             _medicalContext.SaveChanges();
             return RedirectToAction("List");
         }
@@ -91,12 +112,24 @@ namespace Medical.Controllers
             return View(article);
         }
         [HttpPost]
-        public IActionResult Edit(Article a)
+        public IActionResult Edit(AArticleViewModel a)
         {
             Article ar = _medicalContext.Articles.FirstOrDefault(t => t.ArticleId == a.ArticleId);
             if (ar != null)
             {
+                if (a.photo != null)
+                {
+                    //string aName = Guid.NewGuid().ToString() + ".jpg";
+                    string path = Path.Combine(_host.WebRootPath, "uploads", a.photo.FileName);
+                    using (var fileStream = new FileStream(path, FileMode.Create))
+                    {
+                        a.photo.CopyTo(fileStream);
+                        a.ArPicturePath = a.photo.FileName;
+                    }
+                }
                 ar.Doctor = a.Doctor;
+                ar.AdminId = 1;
+                ar.ArPicturePath = a.ArPicturePath;
                 ar.CreateDate = DateTime.Now.ToString("yyyy/MM/dd");
                 ar.ArticleContent = a.ArticleContent;
                 ar.Articeltitle = a.Articeltitle;

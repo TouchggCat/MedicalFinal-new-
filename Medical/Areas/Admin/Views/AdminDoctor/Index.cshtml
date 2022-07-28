@@ -84,11 +84,11 @@
         }
     </style>
 }
-<h1>醫生後台</h1><button class="btn btn-primary" onclick="location.href='@Url.Action("CreateDetail","AdminDoctor")'">
-    <img class="icon" src="~/img/add.png" />新增醫生
-</button>
+<h1>醫生後台</h1>
+
 @using (Html.BeginForm())
-{
+{<div>
+
     <div class="muti-selector">
         <div class="select-field">
             <input type="text" name="" placeholder="篩選專長" class="input-selector" />
@@ -97,7 +97,7 @@
         </div>
         <div class="list">
             <label for="" class="task">
-                <input type="checkbox" class="checkAll" onclick="check_all()" name="123" id="c"/>
+                <input type="checkbox" class="checkAll" onclick="check_all()" name="123" id="c" />
                 全選
             </label>
         </div>
@@ -110,13 +110,14 @@
         <div class="list" id="list1">
             <label for="" class="task">
                 @*<input type="checkbox" onclick="check_allDp()"/>
-                全選*@
+                    全選*@
             </label>
         </div>
     </div>
     <input id="txtKeyword" hidden="hidden" type="text" name="txtKeyword" value="" />
-    <input type="submit" id="sub" value="查詢" />
-
+    <input type="submit" class="btn btn-primary" id="sub" value="查詢" />
+    <a href="/Admin/AdminDoctor/CreateDetail" class="btn btn-success">新增醫生</a>
+</div>
 
 
 

@@ -17,7 +17,7 @@
 @section Scripts{
     <script>
             $(function () {
-                @*var total;
+                var total;
                 fetch("@Url.Content("~/Admin/AdminClinicDetail/loadData")")
                     .then(
                         (respone) => {
@@ -229,7 +229,7 @@
                     };
 
                     $.post('@Url.Content("~/Admin/AdminClinicDetail/Method")', list);
-                }*@
+                }
 
                 @*async function loadRooms() {
                     const response = await fetch('@Url.Content("~/Admin/AdminClinicDetail/roomList")');

@@ -39,9 +39,9 @@
         </a>
         @*====熱搜按鈕====*@
         @*需要更改*@
-        <a href="~/ArticleFront/List?txtKeyword=青光眼" class="col-2 btn btn-outline-primary" style="border-radius:15px">青光眼</a>
-        <a href="~/ArticleFront/List?txtKeyword=白內障" class="col-2 btn btn-outline-primary" style="border-radius:15px">白內障</a>
-        <a href="~/ArticleFront/List?txtKeyword=Smile" class="col-2 btn btn-outline-primary" style="border-radius:15px">Smile</a>
+    <a href="~/ArticleFront/List?txtKeyword=飛秒雷射" class="col-2 btn btn-outline-primary" style="border-radius:15px">飛秒雷射</a>
+        <a href="~/ArticleFront/List?txtKeyword=近視" class="col-2 btn btn-outline-primary" style="border-radius:15px">近視</a>
+        <a href="~/ArticleFront/List?txtKeyword=老花" class="col-2 btn btn-outline-primary" style="border-radius:15px">老花</a>
     </div>
 
 
@@ -68,7 +68,7 @@
                             <i class="fa fa-calendar">@item.CreateDate</i>
                         </a>
                         @*===文章內容===*@
-                    <p class="card-text">@item.ArticleContent.Substring(0, Math.Min(item.ArticleContent.Length, 50)).Replace("<p>", "").Replace("<strong>", "").Replace("<br/>", "").Replace("</p>", "")........</p>
+                    <p class="card-text">@item.ArticleContent.Substring(0, Math.Min(item.ArticleContent.Length, 100)).Replace("<p>", "").Replace("<strong>", "").Replace("</strong>", "").Replace("<h4>", "").Replace("</h4>", "").Replace("<br/>", "").Replace("</p>", "")........</p>
                     </div>
                     @*===文章連結===*@
                     <div class="card-input" style="margin-left:10px;margin-block:10px">

@@ -3,19 +3,19 @@
 @{
     ViewData["Title"] = "confirm";
 }
-@section css{ 
+@section css{
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 }
 
 <div class="container">
-    <div style="margin:auto;">
-        <div style="height: 4em; width: 60%; background-color:#003060; margin: auto;">
+    <div style="margin:auto;width:60%;" id="capture">
+        <div style="height: 4em; width: 100%; background-color:#003060; margin: auto;">
             <div style="height:2em;width:20%;margin-left:2em;">
-                <img  src="~/img/LINE-Pay(h)_W119_n.png" style="height:100%;width:100%;margin-top:1em;" />
+                <img src="~/img/LINE-Pay(h)_W119_n.png" style="height:100%;width:100%;margin-top:1em;" />
             </div>
         </div>
-        <div style=" width: 60%; margin: auto; background-color: rgb(236, 236, 236);">
+        <div style=" width: 100%; margin: auto; background-color: rgb(236, 236, 236);">
             @{
                 foreach (var item in Model)
                 {
@@ -39,7 +39,30 @@
                     <br />
                     <span>交易代號:</span><span>@Model.FirstOrDefault().transactionId</span>
                 </p>
+
             </div>
         </div>
     </div>
+    <p style="text-align:end;">
+        <button style="margin-right:14em;color:gray;" class="btn btn-warning mt-2" onclick="block_capture()">下載圖片</button>
+    </p>
 </div>
+
+
+@section Scripts{
+
+    <script type="text/javascript" src="http://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+    <script>
+        function block_capture() {
+            html2canvas(document.querySelector("#capture")).then(function (canvas) {
+                a = document.createElement('a');
+                a.href = canvas.toDataURL("image/jpeg", 0.92).replace("image/jpeg",
+                    "image/octet-stream");
+                a.download = 'image.jpg';
+                a.click();
+            });
+
+        }
+    </script>
+}

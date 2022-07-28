@@ -78,7 +78,7 @@ namespace Medical.Controllers
                 }
             }
 
-            ad.AdminId = a.AdminId;
+            ad.AdminId = 1;
             ad.AdTitle = a.AdTitle;
             ad.Adstatue = a.Adstatue;
             ad.AdContant = a.AdContant;

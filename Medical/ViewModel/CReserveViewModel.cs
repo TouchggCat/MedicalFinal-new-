@@ -9,6 +9,8 @@ namespace Medical.ViewModel
 {
     public class CReserveViewModel
     {
+        public List<Reserve> patientList { get; set; }
+
         private Reserve _reserve;
 
         public CReserveViewModel()
@@ -57,12 +59,11 @@ namespace Medical.ViewModel
             get { return _reserve.RemarkAdmin; }
             set { _reserve.RemarkAdmin = value; }
         }
-        //public int? SourceId
-        //{
-        //    get { return _reserve.SourceId; }
-        //    set { _reserve.SourceId = value; }
-        //}
-
+        public int? SequenceNumber
+        {
+            get { return _reserve.SequenceNumber; }
+            set { _reserve.SequenceNumber = value; }
+        }
         public virtual ClinicDetail ClinicDetail
         {
             get { return _reserve.ClinicDetail; }
