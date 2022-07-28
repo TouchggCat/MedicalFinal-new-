@@ -22,11 +22,11 @@ namespace Medical.Controllers
         }
         public IActionResult List()
         {
-            //CMemberAdminViewModel vm = null;
+            CMemberAdminViewModel vm = null;
             string logJson = "";
             logJson = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USE);
-            //vm = JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
-            var id = 2 /*vm.Member.MemberId*/;
+            vm = JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
+            var id = vm.Member.MemberId;
             var doctorID = _context.Doctors.Where(m => m.MemberId == id ).Select(m => m.DoctorId).FirstOrDefault();
             var reserveID = _context.CaseRecords.Include(x => x.TreatmentDetail).Include(x => x.Member).Include(x => x.Reserve).ThenInclude(x => x.ClinicDetail).ThenInclude(x => x.Doctor).
                Where(x => x.Reserve.ClinicDetail.DoctorId == doctorID);
