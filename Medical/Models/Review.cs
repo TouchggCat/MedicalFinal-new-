@@ -9,7 +9,7 @@ namespace Medical.Models
     {
         public int ReviewId { get; set; }
         public int MemberId { get; set; }
-        public int? ProductId { get; set; }
+        public int ProductId { get; set; }
         public int? RatingTypeId { get; set; }
         public string CommentContent { get; set; }
         public DateTime? CreateDate { get; set; }
