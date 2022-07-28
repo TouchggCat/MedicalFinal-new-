@@ -326,6 +326,24 @@ namespace Medical.Controllers
             }
         }
 
-
+        public IActionResult LoginPwCheck(string pw,string mail)
+        {
+            if (!string.IsNullOrWhiteSpace(pw))
+            {
+                Member mem = _context.Members.Where(n => n.Password == pw&&n.Email==mail).FirstOrDefault();
+                if (mem != null)
+                {
+                    return Ok();
+                }
+                else
+                {    
+                    return Content("密碼錯誤，請再試一次，或按 [忘記密碼] 以重設密碼。", "text/html", System.Text.Encoding.UTF8);
+                }
+            }
+            else
+            {
+                return Content("請輸入密碼", "text/html", System.Text.Encoding.UTF8);
+            }
+        }
     }
 }
