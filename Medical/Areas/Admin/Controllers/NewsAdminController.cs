@@ -75,6 +75,7 @@ namespace Medical.Areas.Admin.Controllers
                     n.NewsPicturePath = n.photo.FileName;
                 }
             }
+            news.AdminId = 1;
             news.NewsTitle = n.NewsTitle;
             news.NewsContent = n.NewsContent;
             news.NewsPicturePath = n.NewsPicturePath;
@@ -123,6 +124,7 @@ namespace Medical.Areas.Admin.Controllers
                         n.NewsPicturePath = n.photo.FileName;
                     }
                 }
+                news.AdminId = 1;
                 news.NewsTitle = n.NewsTitle;
                 news.NewsContent = n.NewsContent;
                 news.NewsPicturePath = n.NewsPicturePath;

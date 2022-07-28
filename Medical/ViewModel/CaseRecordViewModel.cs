@@ -24,7 +24,6 @@ namespace Medical.ViewModels
             _treatmentDetail = new TreatmentDetail();
             _doctor = new Doctor();
             _clinicDetail = new ClinicDetail();
-
         }
 
         public CaseRecord caseRecord
@@ -69,20 +68,22 @@ namespace Medical.ViewModels
             set { _caseRecord.TreatmentDetailId = value; }
         }
 
+        public int clinicId { set; get; }
+
         public virtual Member Member
         {
-            get { return _member; }
-            set { _member = value; }
+            get { return _caseRecord.Member; }
+            set { _caseRecord.Member = value; }
         }
         public virtual Reserve Reserve
         {
-            get { return _reserve; }
-            set { _reserve = value; }
+            get { return _caseRecord.Reserve; }
+            set { _caseRecord.Reserve = value; }
         }
         public virtual TreatmentDetail TreatmentDetail
         {
-            get { return _treatmentDetail; }
-            set { _treatmentDetail = value; }
+            get { return _caseRecord.TreatmentDetail; }
+            set { _caseRecord.TreatmentDetail = value; }
         }
         public virtual Doctor Doctor
         {

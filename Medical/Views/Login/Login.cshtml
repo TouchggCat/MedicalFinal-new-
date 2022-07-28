@@ -48,62 +48,68 @@
 <div id="logreg-forms">
     @*id="demo-form" method="POST"給reCAPCHA使用*@
     <form class="form-signin" asp-action="Login" id="demo-form" method="POST">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <h1 class="h3 mb-3 font-weight-normal" style="text-align: center">登入</h1>
-        @*↓Google登入部分↓*@
-        @*參考
+        @*在這邊寫callback，submit時會先驗證required屬性*@
+        <div class="g-recaptcha"
+             data-sitekey="6Lfk2AkhAAAAAOtIbeGmRkHUqjne2XfLYmM21Kg3"
+             data-size="invisible"
+             data-callback="formSubmit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <h1 class="h3 mb-3 font-weight-normal" style="text-align: center">登入</h1>
+            @*↓Google登入部分↓*@
+            @*參考
             https://developers.google.com/identity/gsi/web/guides/display-button#html
             https://developers.google.com/identity/gsi/web/reference/html-reference#element_with_class_g_id_signin*@
-        <script src="https://accounts.google.com/gsi/client" async defer></script>
-        <div class="googlePosition">
-            <div id="g_id_onload"
-                 data-client_id="1087362159078-lu36dve3c34na91pmke4rp4dkdcdlsp5.apps.googleusercontent.com"
-                 data-login_uri="https://localhost:44302/Login/Login"
-                 data-auto_prompt="false">
+            <script src="https://accounts.google.com/gsi/client" async defer></script>
+            <div class="googlePosition">
+                <div id="g_id_onload"
+                     data-client_id="1087362159078-lu36dve3c34na91pmke4rp4dkdcdlsp5.apps.googleusercontent.com"
+                     data-login_uri="https://localhost:44302/Login/Login"
+                     data-auto_prompt="false">
+                </div>
+                <div class="g_id_signin "
+                     data-type="standard"
+                     data-width=380
+                     data-size="large"
+                     data-theme="filled_black"
+                     data-text="sign_in_with"
+                     data-shape="pill"
+                     data-logo_alignment="left">
+                </div>
             </div>
-            <div class="g_id_signin "
-                 data-type="standard"
-                 data-width=380
-                 data-size="large"
-                 data-theme="filled_black"
-                 data-text="sign_in_with"
-                 data-shape="pill"
-                 data-logo_alignment="left">
+            @*↑Google登入部分↑*@
+            <p style="text-align:center"> OR  </p>
+            <div class="input-group">
+                <input type="email" class="form-control" placeholder="電子郵件信箱" required="" autofocus="" asp-for="txtAccount" id="email">
+                <br />
             </div>
-        </div>
-        @*↑Google登入部分↑*@
-        <p style="text-align:center"> OR  </p>
-        <div class="input-group">
-            <input type="email" class="form-control" placeholder="電子郵件信箱" required="" autofocus="" asp-for="txtAccount" id="email">
-            <br />
-        </div>
-        <span asp-validation-for="txtAccount" class="text-danger"></span>
-        <div class="input-group">
-            <input type="password" class="form-control" placeholder="密碼" required="" asp-for="txtPassword" id="pass">
-            <br />
-        </div>
-        <span asp-validation-for="txtPassword" class="text-danger"></span>
-        <div class="input-group">
-            @*reCAPTCHA登入<button class="g-recaptcha" data-sitekey="your_site_key" data-callback="onSubmit">*@
-            <button class="g-recaptcha btn btn-md btn-rounded btn-block form-control submit" type="submit" data-sitekey="6Lfk2AkhAAAAAOtIbeGmRkHUqjne2XfLYmM21Kg3" data-callback="onSubmit">
-                <i class="fas fa-sign-in-alt"></i> 登入
-            </button>
-        </div>
-        <div>
-            <a asp-action="ForgetPassword" style="color: mediumslateblue">忘記密碼?</a>
-        </div>
-        <hr>
-        <!-- <p>Don't have an account!</p>  -->
-        <a asp-action="Register" class="btn btn-primary mb-2"><i class="fas fa-user-plus"></i>註冊新會員</a>
-        <br>
-        <input type="button" value="AdminDemo" class="btn btn-primary btn-block " id="adDemo" />
+            <span asp-validation-for="txtAccount" class="text-danger"></span>
+            <div class="input-group">
+                <input type="password" class="form-control" placeholder="密碼" required="" asp-for="txtPassword" id="pass">
+                <br />
+            </div>
+            <span asp-validation-for="txtPassword" class="text-danger"></span>
+            <div class="input-group">
+                @*reCAPTCHA登入已改到上方div<button class="g-recaptcha" data-sitekey="your_site_key" data-callback="onSubmit">*@
+                <button class="btn btn-md btn-rounded btn-block form-control submit" type="submit">
+                    <i class="fas fa-sign-in-alt"></i> 登入
+                </button>
+            </div>
+            <div>
+                <a asp-action="ForgetPassword" style="color: mediumslateblue">忘記密碼?</a>
+            </div>
+            <hr>
+            <!-- <p>Don't have an account!</p>  -->
+            <a asp-action="Register" class="btn btn-primary mb-2"><i class="fas fa-user-plus"></i>註冊新會員</a>
+            <br>
+            <input type="button" value="AdminDemo" class="btn btn-primary btn-block " id="adDemo" />
 
-        <input type="button" value="DoctorDemo" class="btn btn-primary btn-block " id="docDemo" />
+            <input type="button" value="DoctorDemo" class="btn btn-primary btn-block " id="docDemo" />
 
-        <input type="button" value="CustomerDemo" class="btn btn-primary btn-block" id="cusDemo" />
-        <br>
-        <br>
-        <input type="hidden" asp-for="reserve" value="reserve" class="btn btn-primary btn-block" id="cusDemo" />
+            <input type="button" value="CustomerDemo" class="btn btn-primary btn-block" id="cusDemo" />
+            <br>
+            <br>
+            <input type="hidden" asp-for="reserve" value="reserve" class="btn btn-primary btn-block" id="cusDemo" />
+        </div>
     </form>
 
 </div>
@@ -123,16 +129,16 @@
 
     <script>
         $("#adDemo").click(() => {
-            $("#email").val(6);
-            $("#pass").val("AAA")
+            $("#email").val("hanks@gmail.com");
+            $("#pass").val("hankseye001")
         })
         $("#docDemo").click(() => {
             $("#email").val("candy@gmail.com");
-            $("#pass").val("841120")
+            $("#pass").val("ff000000")
         })
         $("#cusDemo").click(() => {
-            $("#email").val("s86821993");
-            $("#pass").val("851208")
+            $("#email").val("c121474790@gmail.com");
+            $("#pass").val("sgsdg5049")
         })
 
     </script>
@@ -142,6 +148,10 @@
     <script>
         function onSubmit(token) {
             document.getElementById("demo-form").submit();
+        }
+
+        function formSubmit(response) {
+            // submit the form which now includes a g-recaptcha-response input
         }
     </script>
 }

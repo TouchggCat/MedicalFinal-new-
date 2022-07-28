@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>漢克斯智能眼科 | 後臺管理系統</title>
-
+    <link href="~/css/buttons.css" rel="stylesheet" />
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -108,10 +108,22 @@
         <!-- /.navbar -->
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <a href="~/home/index" class="brand-link">
+                <img src="~/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <span class="brand-text font-weight-light">後臺管理系統</span>
+            </a>
             <!-- Sidebar -->
             <div class="sidebar">
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                    <div class="image">
+                        <img src="~/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                    </div>
+                    <div class="info">
+                        <a href="#" class="d-block">Administrator</a>
+                    </div>
+                </div>
                 <!-- SidebarSearch Form -->
-                <div class="form-inline">
+                @*<div class="form-inline">
                     <div class="input-group" data-widget="sidebar-search">
                         <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
                         <div class="input-group-append">
@@ -120,7 +132,7 @@
                             </button>
                         </div>
                     </div>
-                </div>
+                </div>*@
 
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
@@ -148,13 +160,13 @@
                                     </a>
                                 </li>
                                 @*<li class="nav-item">
-                                        <a href="~/Admin/AdminClinicDetail/Index" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>
-                                                編輯門診
-                                            </p>
-                                        </a>
-                                    </li>*@
+                                <a href="~/Admin/AdminClinicDetail/Index" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>
+                                        編輯門診
+                                    </p>
+                                </a>
+                            </li>*@
                             </ul>
 
 
@@ -302,8 +314,8 @@
                         </li>
                     </ul>
 
-                    <a href="https://localhost:44302/"><img class="backButton" src="~/img/dentist-icon.jpg"  width="50"/></a>
-                                        @*使用絕對路徑*@
+                    <a href="https://localhost:44302/"><img class="backButton" src="~/img/dentist-icon.jpg" width="50" /></a>
+                    @*使用絕對路徑*@
 
 
 

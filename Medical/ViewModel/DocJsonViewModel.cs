@@ -7,8 +7,8 @@ namespace Medical.ViewModel
 {
     public class DocJsonViewModel
     {
-        public string? Answer { get; set; }
-        public string? Question { get; set; }
+        public string Answer { get; set; }
+        public string Question { get; set; }
         
     }
 }

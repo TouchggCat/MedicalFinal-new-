@@ -60,7 +60,8 @@ namespace Medical.Controllers
                 {
 
                     //新增評論
-
+                    addReviewView.CreateDate = DateTime.Now;
+                    addReviewView.Shade = false;
                     addReviewView.MemberId = vm.MemberId;
                     _medicalContext.Reviews.Add(addReviewView);
                     _medicalContext.SaveChanges();
@@ -85,8 +86,8 @@ namespace Medical.Controllers
                 oddetailviewmodel t = new oddetailviewmodel(_medicalContext)
                 {
 
-                    orderid =item.OrderId
-
+                    orderid =item.OrderId,
+                    detailid=item.OrderDetailId
                 };
 
                 list.Add(t);
@@ -850,7 +851,7 @@ namespace Medical.Controllers
             {
                 var message = new MimeMessage();
                 message.From.Add(new MailboxAddress("漢克斯眼科", "wangbo841019@gmail.com"));
-                message.To.Add(new MailboxAddress("客戶", "wanbo841019@gmail.com"));
+                message.To.Add(new MailboxAddress("客戶", "c121474790@gmail.com"));
                 message.Subject = "訂單成立通知";
                 var bodyBuilder = new BodyBuilder();
                 bodyBuilder.TextBody = "感謝您的購買";

@@ -6,12 +6,22 @@
 
   <ItemGroup>
 
+    <Compile Remove="Areas\Admin\Data\**" />
+
+    <Compile Remove="Areas\Admin\Models\**" />
+
     <Compile Remove="Areas\Doctors\Data\**" />
     <Compile Remove="Areas\Doctors\Models\**" />
+    <Content Remove="Areas\Admin\Data\**" />
+    <Content Remove="Areas\Admin\Models\**" />
     <Content Remove="Areas\Doctors\Data\**" />
     <Content Remove="Areas\Doctors\Models\**" />
+    <EmbeddedResource Remove="Areas\Admin\Data\**" />
+    <EmbeddedResource Remove="Areas\Admin\Models\**" />
     <EmbeddedResource Remove="Areas\Doctors\Data\**" />
     <EmbeddedResource Remove="Areas\Doctors\Models\**" />
+    <None Remove="Areas\Admin\Data\**" />
+    <None Remove="Areas\Admin\Models\**" />
     <None Remove="Areas\Doctors\Data\**" />
     <None Remove="Areas\Doctors\Models\**" />
   </ItemGroup>
@@ -69,6 +79,10 @@
 
   <ItemGroup>
 
+    <PackageReference Include="GoogleRecaptcha" Version="1.2.1" />
+
+    <PackageReference Include="GoogleRecaptchaMvc" Version="1.0.1" />
+
     <PackageReference Include="LinePayOnlineAPIv3" Version="1.0.0" />
 
 
@@ -96,12 +110,6 @@
     <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <PackageReference Include="Wahid-SweetAlert2" Version="1.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Areas\Admin\Data\" />
-    <Folder Include="Areas\Admin\Models\" />
-    <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 
 </Project>

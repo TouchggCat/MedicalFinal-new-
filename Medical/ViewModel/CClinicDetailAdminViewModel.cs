@@ -10,12 +10,13 @@ namespace Medical.ViewModel
 {
     public class CClinicDetailAdminViewModel
     {
-
         private ClinicDetail _clinicDetail;
+        private Reserve _reserve;
 
         public CClinicDetailAdminViewModel()
         {
             _clinicDetail = new ClinicDetail();
+            _reserve = new Reserve();
         }
         public ClinicDetail clinicDetail
         {
@@ -69,41 +70,27 @@ namespace Medical.ViewModel
         {
             set; get;
         }
-        //public int doctorId
-        //{
-        //    set; get;
-        //}
 
         public string doctorName
         {
             set; get;
-        }
 
-        //public int deptId
-        //{
-        //    set; get;
-        //}
+        }
 
         public string deptName
         {
             set; get;
         }
 
-        //public int period
-        //{
-        //    set; get;
-        //}
-
         public string periodName
         {
             set; get;
         }
 
-        public int room
+        public string roomName
         {
             set; get;
         }
-
 
         public string dateForm
 
@@ -130,13 +117,32 @@ namespace Medical.ViewModel
         {
             set; get;
         }
+        public virtual Department Department
+        {
+            get { return _clinicDetail.Department; }
+            set { _clinicDetail.Department = value; }
+        }
 
+        public virtual Doctor Doctor
+        {
+            get { return _clinicDetail.Doctor; }
+            set { _clinicDetail.Doctor = value; }
+        }
 
-
-        public virtual Department Department { get { return _clinicDetail.Department; } set { _clinicDetail.Department = value; } }
-        public virtual Doctor Doctor { get { return _clinicDetail.Doctor; } set { _clinicDetail.Doctor = value; } }
-        public virtual Period Period { get { return _clinicDetail.Period; } set { _clinicDetail.Period = value; } }
-        public virtual ClinicRoom Room { get { return _clinicDetail.Room; } set { _clinicDetail.Room = value; } }
-        public virtual ICollection<Reserve> Reserves { get { return _clinicDetail.Reserves; } set { _clinicDetail.Reserves = value; } }
+        public virtual Period Period
+        {
+            get { return _clinicDetail.Period; }
+            set { _clinicDetail.Period = value; }
+        }
+        public virtual ClinicRoom Room
+        {
+            get { return _clinicDetail.Room; }
+            set { _clinicDetail.Room = value; }
+        }
+        public virtual Reserve Reserves
+        {
+            get { return _reserve; }
+            set { _reserve = value; }
+        }
     }
 }

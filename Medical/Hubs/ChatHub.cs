@@ -15,18 +15,33 @@ namespace Medical.Hubs
 {
     public class ChatHub : Hub
     {
-        public async Task SendMessage(string message)
+        public async Task SendMessage(string sendUser, string message)
         {
-            string user = "";
-            if (Context.GetHttpContext().Session.Keys.Contains(CDictionary.SK_LOGINED_USE))
-            {
-                user = "客服";
-            }
-            else
-            {
-                user = "訪客";
-            }
-            await Clients.All.SendAsync("ReceiveMessage",user,message);
+            //string user = "";
+            //if (sendUser==3||sendUser==2)
+            //{
+            //    user = "客服";
+            //}
+            //else 
+            //{
+            //    user = "訪客";
+            //}
+            await Clients.All.SendAsync("ReceiveMessage",sendUser,message);
+
+
+            
+
+
         }
+
+        //public Task sendmessage(string message)
+        //{
+        //    string user = "";
+
+        //    await Clients.All.SendAsync("ReceiveMessage", user, message);
+        //}
+
+
+
     }
 }
