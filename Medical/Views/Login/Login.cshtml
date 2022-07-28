@@ -87,7 +87,7 @@
                 <input type="password" class="form-control" placeholder="密碼" required="" asp-for="txtPassword" id="pass">
                 <br />
             </div>
-            <span asp-validation-for="txtPassword" class="text-danger"></span>
+            <span asp-validation-for="txtPassword" class="text-danger" id="pwAlert"></span>
             <div class="input-group">
                 @*reCAPTCHA登入已改到上方div<button class="g-recaptcha" data-sitekey="your_site_key" data-callback="onSubmit">*@
                 <button class="btn btn-md btn-rounded btn-block form-control submit" type="submit">
@@ -133,12 +133,29 @@
             $("#pass").val("hankseye001")
         })
         $("#docDemo").click(() => {
-            $("#email").val("candy@gmail.com");
-            $("#pass").val("ff000000")
+            $("#email").val("mnbvcxz@gmail.com");
+            $("#pass").val("851208")
         })
         $("#cusDemo").click(() => {
             $("#email").val("c121474790@gmail.com");
             $("#pass").val("sgsdg5049")
+        })
+
+
+        //密碼錯誤顯示
+        $("#pass").blur(function () {
+            const mailstr = $("#email").val();
+            const pwstr = $(this).val();
+            $.ajax({
+                url: "/Login/LoginPwCheck?pw=" + pwstr+"&mail="+mailstr,
+                method: "GET",
+                success: function (data) {
+                    $("#pwAlert").text(data);
+                },
+                error: function (msg) {
+                    alert('error：' + msg.toLabel);
+                }
+            })
         })
 
     </script>

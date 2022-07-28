@@ -265,13 +265,13 @@
                 },
                 eventClick: function (info) {
                     Swal.fire({
-                        title: 'Are you sure?',
-                        text: "You won't be able to revert this!",
+                        title: '確定刪除嗎?',
+                        text: "刪除後無法變更!",
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
                         cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, delete it!'
+                        confirmButtonText: '確定'
                     }).then((result) => {
                         if (result.isConfirmed) {
                             $.post('@Url.Content("~/Admin/AdminClinicDetail/Delete")', { id: info.event.id }, function (status) {

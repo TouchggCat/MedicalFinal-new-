@@ -15,6 +15,7 @@ namespace Medical.ViewModel
         }
 
         public int? clinicDetailid { get; set; }
+        public int? online { get { return _context.ClinicDetails.FirstOrDefault(n => n.ClinicDetailId == clinicDetailid).Online; } }
 
         public int? roomid { get { return _context.ClinicDetails.FirstOrDefault(n => n.ClinicDetailId == clinicDetailid).RoomId; } }
         public string roomName { get { return _context.ClinicRooms.FirstOrDefault(n => n.RoomId == roomid).RoomName; } }
