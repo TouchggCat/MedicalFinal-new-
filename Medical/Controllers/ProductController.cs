@@ -56,7 +56,7 @@ namespace Medical.Controllers
                     });
                 ViewBag.count = list.Count();
 
-                if (addReviewView.ProductId != null)
+                if (addReviewView.ProductId != -1)
                 {
 
                     //新增評論

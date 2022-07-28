@@ -123,7 +123,7 @@
                 let room505 = "";
                 let room506 = "";
                 $.each(datas, function (index, item) {
-                    if (item.roomName == 501)
+                    if (item.roomName == 501 && item.online == 0)
                     {
                         room501 += `        <h2>診間:${item.roomName}</h2>
                                         <div class="d-flex justify-content-between text-white mb-3">
@@ -150,7 +150,7 @@
                                                  ${item.number}
                                             </h1>`
                     }
-                    if (item.roomName == 502) {
+                    if (item.roomName == 502 && item.online == 0) {
                         room502 += `        <h2>診間:${item.roomName}</h2>
                                         <div class="d-flex justify-content-between text-white mb-3">
                                             <h4 class="text-white mb-3">
@@ -176,7 +176,7 @@
                                                     ${item.number}
                                             </h1>`
                     }
-                    if (item.roomName == 503) {
+                    if (item.roomName == 503 && item.online == 0) {
                         room503 += `        <h2>診間:${item.roomName}</h2>
                                         <div class="d-flex justify-content-between text-white mb-3">
                                             <h4 class="text-white mb-3">
@@ -202,7 +202,7 @@
                                                     ${item.number}
                                             </h1>`
                     }
-                    if (item.roomName == 504) {
+                    if (item.roomName == 504 && item.online == 0) {
                         room504 += `        <h2>診間:${item.roomName}</h2>
                                         <div class="d-flex justify-content-between text-white mb-3">
                                             <h4 class="text-white mb-3">
@@ -228,7 +228,7 @@
                                                             ${item.number}
                                             </h1>`
                     }
-                    if (item.roomName == 505) {
+                    if (item.roomName == 505 && item.online == 0) {
                         room505 += `        <h2>診間:${item.roomName}</h2>
                                         <div class="d-flex justify-content-between text-white mb-3">
                                             <h4 class="text-white mb-3">
@@ -254,7 +254,7 @@
                                                            ${item.number}
                                             </h1>`
                     }
-                    if (item.roomName == 506) {
+                    if (item.roomName == 506 && item.online==0) {
                         room506 += `        <h2>診間:${item.roomName}</h2>
                                         <div class="d-flex justify-content-between text-white mb-3">
                                             <h4 class="text-white mb-3">
