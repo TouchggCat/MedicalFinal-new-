@@ -55,6 +55,15 @@ namespace Medical.Controllers
             }
             return View(datas);
         }
+        //醫生id找科別
+        public IActionResult getDepartment(string dcName)
+        {
+            var deps = from a in _db.Departments
+                       join b in _db.Doctors on a.DepartmentId equals b.DepartmentId
+                       where b.DoctorName == dcName
+                       select a.DeptName;
+            return Json(deps);
+        }
 
         //讀取治療項
         public IActionResult getTreatment(int? dcID)
