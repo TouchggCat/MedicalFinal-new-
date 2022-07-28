@@ -277,7 +277,7 @@ namespace Medical.Controllers
                 //window.location.href跳轉業面
             }
             else
-                return Content("<script>alert('未註冊的帳號，請確認輸入是否正確');window.location.href='https://localhost:44302/'</script>", "text/html", System.Text.Encoding.UTF8);
+                return Content("<script>alert('未註冊的帳號，請確認輸入是否正確');window.location.href='https://localhost:44302/Login/ForgetPassword'</script>", "text/html", System.Text.Encoding.UTF8);
 
         }
 
@@ -326,6 +326,24 @@ namespace Medical.Controllers
             }
         }
 
-
+        public IActionResult LoginPwCheck(string pw,string mail)
+        {
+            if (!string.IsNullOrWhiteSpace(pw))
+            {
+                Member mem = _context.Members.Where(n => n.Password == pw&&n.Email==mail).FirstOrDefault();
+                if (mem != null)
+                {
+                    return Ok();
+                }
+                else
+                {    
+                    return Content("密碼錯誤，請再試一次，或按 [忘記密碼] 以重設密碼。", "text/html", System.Text.Encoding.UTF8);
+                }
+            }
+            else
+            {
+                return Content("請輸入密碼", "text/html", System.Text.Encoding.UTF8);
+            }
+        }
     }
 }
