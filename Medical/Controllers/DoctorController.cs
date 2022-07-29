@@ -127,7 +127,7 @@ namespace Medical.Controllers
             }
             else
             {
-                var docs = _db.Doctors.Where(d => d.DoctorName == docName).Distinct();
+                var docs = _db.Doctors.Where(d => d.DoctorName == docName).Distinct().OrderBy(d=>d.DoctorId).Select(a=>a);
                 return Json(docs);
             }
         }

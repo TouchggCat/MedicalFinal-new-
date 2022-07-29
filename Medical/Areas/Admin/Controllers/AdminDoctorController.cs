@@ -53,15 +53,28 @@ namespace Medical.Areas.Admin.Controllers
                 answer.Answer = "可以使用的名字";
             return Json(answer);
         }
+        public IActionResult DocWeb(string docName)
+        {
+            if (docName == null)
+            {
+                var docs = _db.Doctors.Where(t => t.DoctorName.Contains(""));
+                return Json(docs);
+            }
+            else
+            {
+                var docs = _db.Doctors.Where(d => d.DoctorName == docName).Distinct().OrderBy(d => d.DoctorId).Select(a => a);
+                return Json(docs);
+            }
+        }
         public IActionResult Dep()
         {
-            var deps = _db.Departments.Select(a => a.DeptName).Distinct();
+            var deps = _db.Departments.OrderBy(a=>a.DepartmentId).Select(a => a.DeptName).Distinct();
             return Json(deps);
         }
         public IActionResult Doc(string depName)
         {
             Department seleddep = _db.Departments.FirstOrDefault(b => b.DeptName == depName);
-            var docNs = _db.Doctors.Where(d => d.DepartmentId == seleddep.DepartmentId).Select(b => b.DoctorName).Distinct();
+            var docNs = _db.Doctors.Where(d => d.DepartmentId == seleddep.DepartmentId).OrderBy(a=>a.DoctorId).Select(b => b.DoctorName).Distinct();
             return Json(docNs);
         }
         public IActionResult CreateDetail()           //新增醫生資料
