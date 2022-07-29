@@ -113,7 +113,7 @@
                             </div>
                             <input type="hidden" name="txtPId" value="@cprod.ProductId" />
                             <input type="hidden" name="txtCount" value="1" />
-
+                            <input type="hidden" name="MemberID" value="@Model.MemberId" id="myMemid" />
 
                             <div class="team-text position-relative text-center rounded-bottom p-4 pt-5">
                                 <a href="~/Product/ProductDetail?productName=@cprod.Product.ProductName" id="@cprod.ProductId" onclick="detail(event)"> <h5 class="prodName">@Html.DisplayFor(modelItem => cprod.Product.ProductName)</h5> </a>
@@ -158,7 +158,7 @@
                                     }
 
                                 }
-                            <span class="SPstar"> @avgScore.ToString()</span><span>(@count2)</span>
+                                <span class="SPstar"> @avgScore.ToString()</span><span>(@count2)</span>
                             </div>
                         </form>
                     </div>
@@ -212,6 +212,8 @@
         </script>*@
 
     <script>
+
+        console.log($("#myMemid").val())
 
         const mySearch = $("#mySearch");
 
@@ -271,6 +273,7 @@
 
 
                 success: function (message) {
+                    console.log(message);
                     if (message.includes("成功")) {
                         let word = message.split('+');
                         let memberId= word[1];

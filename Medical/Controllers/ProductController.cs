@@ -135,6 +135,17 @@ namespace Medical.Controllers
 
         private CProductForShowViewModel GetProducts(/*int currentPage*/)
         {
+            CMemberAdminViewModel vm = null;
+
+            int showID2 = 0;
+            string logJson = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USE);
+
+            if (logJson != null)
+            {
+                vm = System.Text.Json.JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
+                showID2 = vm.MemberId;
+            }
+
             //int maxRows = 8;
             CProductForShowViewModel prodModel = new CProductForShowViewModel()
             {
@@ -142,7 +153,8 @@ namespace Medical.Controllers
                 brandList = _medicalContext.ProductBrands.Include(b => b.Products).ToList(),
                 cateList = _medicalContext.ProductCategories.Include(c => c.Products).ToList(),
                 prodSpec = _medicalContext.ProductSpecifications.ToList(),
-                reviewList =_medicalContext.Reviews.Include(r=>r.RatingType).ToList()
+                reviewList = _medicalContext.Reviews.Include(r => r.RatingType).ToList(),
+                MemberId = showID2
             };
 
             prodModel.prodSpec = (from prod in this._medicalContext.ProductSpecifications
@@ -233,18 +245,10 @@ namespace Medical.Controllers
         {
             CMemberAdminViewModel vm = null;
 
-            int showID2 = 0;
-            string logJson = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USE);
-
-            if (logJson != null)
-            {
-                vm = System.Text.Json.JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
-                showID2 = vm.MemberId;
-            }
 
             bool isSuccess = true;
 
-            if(showID2==0)
+            if(AddToCartvModel.MemberID==0)
                 return Json(Url.Action("Login","Login"));
 
 
@@ -258,7 +262,7 @@ namespace Medical.Controllers
             var IsSuccess = isSuccess;
 
 
-            ShoppingCart hasCart = (_medicalContext.ShoppingCarts.Where(c => c.Product.ProductId == AddToCartvModel.txtPId && c.MemberId == showID2)).FirstOrDefault();
+            ShoppingCart hasCart = (_medicalContext.ShoppingCarts.Where(c => c.Product.ProductId == AddToCartvModel.txtPId && c.MemberId == AddToCartvModel.MemberID).FirstOrDefault());
             if (hasCart != null)
             {
                 int beforeAmount = hasCart.ProductAmount;
@@ -274,14 +278,14 @@ namespace Medical.Controllers
                 {
                     hasCart.ProductAmount = afterAmount;
                     _medicalContext.SaveChanges();
-                    return Content("成功+"+showID2);
+                    return Content("成功+"+ AddToCartvModel.MemberID);
                 }
             }
             else
             {
                 ShoppingCart cart = new ShoppingCart()
                 {
-                    MemberId = showID2,
+                    MemberId = AddToCartvModel.MemberID,
                     ProductId = AddToCartvModel.txtPId,
                     ProductAmount = AddToCartvModel.txtCount
                 };
@@ -291,7 +295,7 @@ namespace Medical.Controllers
 
                 var a = Json(cart);
 
-                return Content("成功");
+                return Content("成功+" + AddToCartvModel.MemberID);
             }
         }
      
@@ -438,6 +442,12 @@ namespace Medical.Controllers
                 return RedirectToAction("Login", "Login");
 
 
+            IEnumerable<SelectListItem> citySelectListItem = (from c in _medicalContext.Cities
+                                                               where c.CityName != null
+                                                               select c).ToList().Select(c => new SelectListItem
+                                                               { Value = c.CityName, Text = c.CityName });
+
+            ViewBag.citySelectListItem = citySelectListItem;
 
 
             List<ShoppingCart> cartList = _medicalContext.ShoppingCarts.Where(c => c.MemberId == showID2).ToList();
@@ -750,7 +760,7 @@ namespace Medical.Controllers
         }
 
 
-        public async Task<IActionResult> Reserve(List<CShoppingCartItem> SList,int total, int[] pId,string custName,string r1,string r2,string address,string sevenAddress,string couponName)
+        public async Task<IActionResult> Reserve(List<CShoppingCartItem> SList,int total, int[] pId,string custName,string r1,string r2,string address,string sevenAddress,string couponName,string cityname)
         {
             List<Products> pList = new List<Products>();
             List<Order> oList = new List<Order>();
@@ -793,17 +803,47 @@ namespace Medical.Controllers
             var result = await client.ReserveAsync(reserveData, nonce, signature);
 
 
-            Order o = new Order
+            Order o = new Order();
+
+            o.OrderDate = DateTime.Now;
+            o.OrderStateId = 1;
+            o.MemberId = cartList.FirstOrDefault().MemberId;
+
+            if (r1 == "delivery")
             {
-                OrderDate = DateTime.Now,
-                OrderStateId = 1,
-                MemberId = cartList.FirstOrDefault().MemberId,
-                ShipAddress = address,
-                IsPaid = true,
-                PayTypeId = 1,
-                ShipTypeId = 1,
-                //CouponDetail = 
-            };
+                o.ShipTypeId = 1;
+                o.ShipAddress = address;
+                //o.CityId = 
+                var city = _medicalContext.Cities.FirstOrDefault(c => c.CityName == cityname);
+                o.CityId = city.CityId;
+            }
+            else
+            {
+                o.ShipAddress = sevenAddress;
+                o.ShipTypeId = 2;
+                o.CityId = 1;
+            }
+                
+
+            if(r2 == "linePay")
+            {
+                o.PayTypeId = 2;
+                o.IsPaid = true;
+            }
+            else
+            {
+                o.PayTypeId = 1;
+                o.IsPaid = false;
+            }
+
+            if (couponName !="請選擇優惠券")
+            {
+                var q = _medicalContext.CouponDetails.FirstOrDefault(c => c.Coupon.CouponDiscountNum == int.Parse(couponName) && c.MemberId == cartList.FirstOrDefault().MemberId);
+                o.CouponDetailId = q.CouponDetailId;
+                q.CouponUsed = true;
+                _medicalContext.SaveChanges();
+            }
+
             _medicalContext.Orders.Add(o);
             _medicalContext.SaveChanges();
 

@@ -37,9 +37,7 @@
                                         <p class="mt-3" style="margin-bottom:0%;font-size: larger;color: gray;margin-bottom:10px">@item.prod.ProductName</p>
                                         <p class="mt-3" style="font-size:medium ;color: gray;display:inline;"><span>NT$</span><span>@item.prodspec.UnitPrice</span></p><span> 庫存:</span><span>@item.prod.Stock</span><br />
                                         <div class="btn-group mt-4" role="group" aria-label="Basic example" style="text-align: center;">
-                                            <button type="button" class="btn btn-outline-dark btn-sm btnAdd">+</button>
-                                            <input class="inputNum" type="number" style="height: 2em;text-align:center" value="@item.cart.ProductAmount" name="ProductAmount" min="1" max="@item.prod.Stock" oninput="if(value>@item.prod.Stock)value=@item.prod.Stock;if(value<1)value=1" required>
-                                            <button type="button" class="btn btn-outline-dark btn-sm btnReduce">-</button>
+                                            <input class="inputNum" type="number" size="10" style="height: 2em;text-align:center" value="@item.cart.ProductAmount" name="ProductAmount" min="1" max="@item.prod.Stock" oninput="if(value>@item.prod.Stock)value=@item.prod.Stock;if(value<1)value=1" required>  
                                         </div>
                                     </div>
                                     <div class="col col-md-3" style="height: 100%;padding-right: 0%;">
@@ -52,7 +50,7 @@
                                     </div>
                                 </div>
                             </form>
-                            <hr style="width: 93%;margin: auto;" class="mt-3">
+                            <hr style="width: 93%;margin: auto;" class="mt-3 myhr">
                             <!-- 卡片一組 End -->
                         }
                     }
@@ -327,25 +325,14 @@
                 })
             })
 
-            //todo
-            //$(".btnAdd").on("click", function () {
-
-            //    let myinputNum = $(event.target).parent().children("input")[0];
-            //    myinputNum.value = 2;
-
-            //})
-
-                //$("#mySelect").on("click", function () {
-                //    let memId = parseInt(getMemId.val());
-                //    GetCoupon(memId);
-                //})
 
             $(".btnClick").on("click", function () {
 
                 let myform = $(event.target).parents("form");
                 let deleteitem = $(event.target).parents(".prodDiv");
-
-
+                let delNum = parseInt($(event.target).parents(".prodDiv").children("div:last-child").children("div:first-child").children("p:first-child").eq(0).children("span")[1].innerText);
+                let deleteHr = $(event.target).parents("form").next();
+                console.log(delNum);
                 Swal.fire({
                     title: '確定要刪除此商品嗎?',
                     text: "這項商品將被移出購物車!",
@@ -363,6 +350,9 @@
                             enctype: "multipart/form-data",
                             data: myform.serialize(),
                             success: function (message) {
+
+                                
+
                                 let word = message.split('+');
                                 let memberId = word[1];
                                 Swal.fire(
@@ -375,14 +365,16 @@
                                 let discountNum = parseInt(discount.innerText);
 
                                 tranSum.innerHTML = beforesum - delNum;
-                                TotalSum.innerHTML = beforesum-delNum+60-discountNum;
-
+                                TotalSum.innerHTML = beforesum - delNum + 60 - discountNum;
+                                deleteHr.remove();
                                 deleteitem.remove();
+                                
+                              
                                 loadCartData(memberId); // 更新購物車
                             }
                         })
                     }
-                })
+                }) 
             })
 
         </script>
