@@ -305,8 +305,80 @@ namespace Medical.Controllers
         }
 
 
-        //============================================AJAX API
-        public IActionResult AccountCheck(string account)
+        public IActionResult LeadTobyRole()
+        {
+            string logJson = "";
+            CMemberViewModel vm = null;
+            int? roleID = -1;
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USE))
+            {
+                logJson = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USE);
+                vm = JsonSerializer.Deserialize<CMemberViewModel>(logJson);
+                roleID = vm.Role;
+                if(roleID==1)   //導入修改頁面
+                    return RedirectToAction("EditMember", "Login");
+                else if(roleID==2)
+                    return RedirectToAction("List", "Consultation", new { area = "Doctors" });
+                else if(roleID==3)
+                    return RedirectToAction("Index", "Home", new { area = "Admin" });
+
+            }
+            return RedirectToAction("Index", "Home");
+        }
+        public IActionResult EditMember()
+        {
+            string logJson = "";
+            CMemberViewModel vm = null;
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USE))
+            {
+                logJson = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USE);
+                vm = JsonSerializer.Deserialize<CMemberViewModel>(logJson);
+
+                CMemberViewModel memVModel = new CMemberViewModel();
+                memVModel.MemberId = _context.Members.FirstOrDefault(n => n.MemberId == vm.MemberId).MemberId;
+                memVModel.MemberName = _context.Members.FirstOrDefault(n => n.MemberId == vm.MemberId).MemberName;
+                memVModel.Email = _context.Members.FirstOrDefault(n => n.MemberId == vm.MemberId).Email;
+                memVModel.BirthDay = _context.Members.FirstOrDefault(n => n.MemberId == vm.MemberId).BirthDay;
+                memVModel.Address = _context.Members.FirstOrDefault(n => n.MemberId == vm.MemberId).Address;
+                memVModel.Phone = _context.Members.FirstOrDefault(n => n.MemberId == vm.MemberId).Phone;
+                memVModel.Password = _context.Members.FirstOrDefault(n => n.MemberId == vm.MemberId).Password;
+                memVModel.GenderId = _context.Members.FirstOrDefault(n => n.MemberId == vm.MemberId).GenderId;
+                memVModel.CityId = _context.Members.FirstOrDefault(n => n.MemberId == vm.MemberId).CityId;
+                memVModel.MemGender = _context.Genders.ToList();
+
+                memVModel.MemCity = _context.Cities.ToList();
+
+
+                return View(memVModel);
+            }
+        else
+                return RedirectToAction("Index", "Home");
+        }
+        [HttpPost]
+        public IActionResult EditMember(CMemberViewModel vm)
+        {
+            //_context.Members.Add(vm.member);   //這樣寫會新增一筆
+            Member mem = _context.Members.FirstOrDefault(c => c.MemberId == vm.MemberId);//這裡要等於vm.MemberId而不是@Html.ActionLink的id
+            if (mem != null)
+            {
+                mem.MemberId = vm.MemberId;
+                mem.MemberName = vm.MemberName;
+                mem.Email = vm.Email;
+                mem.Password = vm.Password;
+                mem.BirthDay = vm.BirthDay;
+                mem.GenderId = vm.GenderId;
+                mem.IcCardNo = vm.IcCardNo;
+                mem.Phone = vm.Phone;
+                mem.CityId = vm.CityId;
+                mem.Address = vm.Address;
+
+
+                _context.SaveChanges();
+            }
+            return RedirectToAction("Index", "Home");
+        }
+            //============================================AJAX API
+            public IActionResult AccountCheck(string account)
         {
             if (!string.IsNullOrWhiteSpace(account))
             {
