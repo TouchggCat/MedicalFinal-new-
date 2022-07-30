@@ -286,8 +286,10 @@
                     data: myForm.serialize(),
 
 
-                    success: function (message) {
-                        if (message === "成功") {
+                      success: function (message) {
+                          let word = message.split('+');
+                          let memberId = word[1];
+                          if (message === "成功+" + memberId) {
                             let timerInterval
                             Swal.fire({
                                 icon: 'success',
@@ -340,7 +342,9 @@
 
 
                     success: function (message) {
-                        if (message === "成功") {
+                        let word = message.split('+');
+                        let memberId = word[1];
+                        if (message === "成功+"+memberId) {
                             let timerInterval
                             Swal.fire({
                                 icon: 'success',

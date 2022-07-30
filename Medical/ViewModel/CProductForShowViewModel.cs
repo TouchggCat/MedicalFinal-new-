@@ -18,5 +18,6 @@ namespace Medical.ViewModel
         public IFormFile photo { get; set; }
         public int CurrentPageIndex { get; set; }
         public int PageCount { get; set; }
+        public int MemberId { get; set; }
     }
 }
