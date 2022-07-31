@@ -48,7 +48,7 @@ namespace Medical.ViewModel
         public string docname { get { return _context.Doctors.FirstOrDefault(n => n.DoctorId==docid).DoctorName; } }
 
         //得到門診時間
-        public string DateTime { get { return ((DateTime)_context.ClinicDetails.FirstOrDefault(n => n.ClinicDetailId==clinicid).ClinicDate).ToString("yyyy/MM/dd"); } }
+        public string DateTime { get { return ((DateTime)_context.ClinicDetails.FirstOrDefault(n => n.ClinicDetailId==clinicid ).ClinicDate).ToString("yyyy/MM/dd"); } }
 
 
     }

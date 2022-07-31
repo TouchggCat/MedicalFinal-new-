@@ -27,20 +27,7 @@ namespace Medical.Controllers
 
         public IActionResult Index()
         {
-            //int user = 0;
-            //if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USE))
-            //{
-            //    CMemberAdminViewModel vm = null;
-
-            //    string logJson = "";
-            //    logJson = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USE);
-            //    vm = JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
-
-
-            //    user = (int)vm.Role;
-            //}
-
-            //return View(user);
+            
             return View();
         }
 

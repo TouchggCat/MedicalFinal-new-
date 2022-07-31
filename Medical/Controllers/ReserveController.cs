@@ -49,7 +49,7 @@ namespace Medical.Controllers
         //條件查詢門診
         public IActionResult ReserveResult(reserveViewModel result)
         {
-
+            int member = 0;
             int departmentId = _context.Departments.Where(a => a.DeptName == result.departmentname)
                 .Select(a => a.DepartmentId).FirstOrDefault();
             int doctorId = _context.Doctors.Where(a => a.DoctorName == result.doctorname)
@@ -59,60 +59,68 @@ namespace Medical.Controllers
 
             if (departmentId == 0 && doctorId == 0 && date == null)
             {
-                id = _context.ClinicDetails.Where(n=>n.Online==0).Where(n=>n.ClinicDate>DateTime.Now);
+                id = _context.ClinicDetails.Where(n=>n.Online==0).Where(n=>n.ClinicDate>=DateTime.Now && n.ClinicDate.Value.Date < DateTime.Now.AddDays(7));
             }
             else if (departmentId == 0 && doctorId>0 &&date!=null)
             {
                 id = _context.ClinicDetails.Where(a => a.DoctorId == doctorId)
-                 .Where(a => a.ClinicDate.Value.Date > date).Where(n => n.Online == 0);
+                 .Where(a => a.ClinicDate.Value.Date >=date&& a.ClinicDate.Value.Date< date.Value.AddDays(7)).Where(n => n.Online == 0);
             }
             else if (doctorId == 0 && departmentId>0 &&date!=null)
             {
                 id = _context.ClinicDetails.Where(a => a.DepartmentId == departmentId)
-                 .Where(a => a.ClinicDate.Value.Date > date).Where(n => n.Online == 0);
+                 .Where(a => a.ClinicDate.Value.Date >= date && a.ClinicDate.Value.Date < date.Value.AddDays(7)).Where(n => n.Online == 0);
             }
             else if (date == null &&departmentId >0 && doctorId>0)
             {
                 id = _context.ClinicDetails.Where(a => a.DepartmentId == departmentId)
-                 .Where(a => a.DoctorId == doctorId).Where(n => n.Online == 0).Where(n => n.ClinicDate > DateTime.Now);
+                 .Where(a => a.DoctorId == doctorId).Where(n => n.Online == 0).Where(n => n.ClinicDate >= DateTime.Now && n.ClinicDate.Value.Date < DateTime.Now.AddDays(7));
             }
             else if (departmentId == 0 && date == null)
             {
                 id = _context.ClinicDetails
-                 .Where(a => a.DoctorId == doctorId).Where(n => n.Online == 0).Where(n => n.ClinicDate > DateTime.Now);
+                 .Where(a => a.DoctorId == doctorId).Where(n => n.Online == 0).Where(n => n.ClinicDate >= DateTime.Now && n.ClinicDate.Value.Date < DateTime.Now.AddDays(7));
             }
             else if (departmentId == 0 && doctorId == 0)
             {
                 id = _context.ClinicDetails
-                 .Where(a => a.ClinicDate.Value.Date > date).Where(n => n.Online == 0);
+                 .Where(a => a.ClinicDate.Value.Date >= date && a.ClinicDate.Value.Date < date.Value.AddDays(7)).Where(n => n.Online == 0);
             }
             else if (date == null && doctorId == 0)
             {
                 id = _context.ClinicDetails
-                 .Where(a => a.DepartmentId == departmentId).Where(n => n.Online == 0).Where(n => n.ClinicDate > DateTime.Now);
+                 .Where(a => a.DepartmentId == departmentId).Where(n => n.Online == 0).Where(n => n.ClinicDate >= DateTime.Now && n.ClinicDate.Value.Date < DateTime.Now.AddDays(7));
             }
             else
             {
-                id = _context.ClinicDetails.Where(a => a.ClinicDate.Value.Date > date)
+                id = _context.ClinicDetails.Where(a => a.ClinicDate.Value.Date >= date && a.ClinicDate.Value.Date < date.Value.AddDays(7))
                     .Where(a => a.DoctorId == doctorId).Where(a => a.DepartmentId == departmentId).Where(n => n.Online == 0);
-            }                              
+            }
 
 
-            //.Where(a => a.ClinicDate.Value.Date > result.txtdate).Where(a => a.DoctorId == doctorId)
-            //.Where(a => a.DepartmentId == departmentId)
-            
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USE))
+            {
+                CMemberAdminViewModel vm = null;
 
-            List<ClinicSearch> list = new List<ClinicSearch>();
-            foreach (var item in id)
+                string logJson = "";
+                logJson = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USE);
+                vm = JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
+                member = vm.MemberId;
+            }
+
+
+                List<ClinicSearch> list = new List<ClinicSearch>();
+            foreach (var item in id.OrderBy(n=>n.ClinicDate))
             {
                 ClinicSearch t = new ClinicSearch(_context)
                 {
                     doctorid = item.DoctorId,
                     departmentid = item.DepartmentId,
                     periodid = item.PeriodId,
-                    roomid=item.RoomId,
-                    date = item.ClinicDate,                
-                    clinicDetailid = item.ClinicDetailId,                    
+                    roomid = item.RoomId,
+                    date = item.ClinicDate,
+                    clinicDetailid = item.ClinicDetailId,
+                    memberid = member
                 };
                 
                 list.Add(t);
@@ -243,7 +251,7 @@ namespace Medical.Controllers
                 memberid = vm.MemberId;
 
                 ViewBag.name = _context.Reserves.Where(a => a.MemberId == memberid).Select(a => a.Member.MemberName).FirstOrDefault();
-                var id = _context.Reserves.Where(n => n.MemberId == memberid).Select(n => n.ClinicDetailId);
+                var id = _context.Reserves.Where(n => n.MemberId == memberid ).OrderByDescending(n=>n.ReserveDate ).Select(n => n.ClinicDetailId);
                 List<ReservesSearch> list = new List<ReservesSearch>();
                 foreach (var item in id)
                 {

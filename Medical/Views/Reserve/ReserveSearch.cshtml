@@ -82,7 +82,7 @@
                                         <td>線上</td>
                                         <td><span class="badge bg-@sign">@item.state</span></td>
                                         <td>
-                                            @Html.ActionLink("刪除預約", "Delete", "Reserve", new { id = item.reserveid }, new { onclick = "return confirm('確定要刪除?')", @class = "btn btn-primary" })
+                                            @Html.ActionLink("取消預約", "Delete", "Reserve", new { id = item.reserveid }, new { onclick = "return confirm('是否確定取消預約? ')", @class = "btn btn-primary" })
                                         </td>
                                     </tr>
                                 }
