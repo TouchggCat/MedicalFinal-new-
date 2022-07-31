@@ -56,9 +56,8 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <h1 class="h3 mb-3 font-weight-normal" style="text-align: center">登入</h1>
             @*↓Google登入部分↓*@
-            @*參考
-            https://developers.google.com/identity/gsi/web/guides/display-button#html
-            https://developers.google.com/identity/gsi/web/reference/html-reference#element_with_class_g_id_signin*@
+            @*參考https://developers.google.com/identity/gsi/web/guides/display-button#html*@
+            @*參考https://developers.google.com/identity/gsi/web/reference/html-reference#element_with_class_g_id_signin*@
             <script src="https://accounts.google.com/gsi/client" async defer></script>
             <div class="googlePosition">
                 <div id="g_id_onload"
@@ -147,7 +146,7 @@
             const mailstr = $("#email").val();
             const pwstr = $(this).val();
             $.ajax({
-                url: "/Login/LoginPwCheck?pw=" + pwstr+"&mail="+mailstr,
+                url: "/Login/LoginPwCheck?pw=" + pwstr + "&mail=" + mailstr,
                 method: "GET",
                 success: function (data) {
                     $("#pwAlert").text(data);
@@ -160,8 +159,8 @@
 
     </script>
     @*==========================================================*@
-    @*reCAPTCHA套件使用*@
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    @*reCAPTCHA套件使用，要使用有較多控制權的JS連結*@
+    <script src="https://www.google.com/recaptcha/api.js?render=6Lfk2AkhAAAAAOtIbeGmRkHUqjne2XfLYmM21Kg3"></script>
     <script>
         function onSubmit(token) {
             document.getElementById("demo-form").submit();
