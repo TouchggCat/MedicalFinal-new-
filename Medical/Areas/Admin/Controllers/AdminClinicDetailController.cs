@@ -190,6 +190,25 @@ namespace Medical.Controllers
             return Content(result, "text/plain", System.Text.Encoding.UTF8);
         }
 
+        public IActionResult Check(CClinicDetailAdminViewModel cVM)
+        {
+            string result = "此時段";
+            DateTime dt = (DateTime)cVM.ClinicDate.Value;
+            var qry_room = _medicalContext.ClinicDetails.Where(x => x.ClinicDate.Value.Month.Equals(dt.Month) && x.ClinicDate.Value.Day.Equals(dt.Date.Day) && x.PeriodId.Equals(cVM.PeriodId) && x.RoomId.Equals(cVM.RoomId));
+            var qry_doctor = _medicalContext.ClinicDetails.Where(x => x.ClinicDate.Value.Month.Equals(dt.Date.Month) && x.ClinicDate.Value.Day.Equals(dt.Date.Day) && x.PeriodId.Equals(cVM.PeriodId) && x.DoctorId.Equals(cVM.DoctorId));
+            var roomName = _medicalContext.ClinicRooms.Where(x => x.RoomId.Equals(cVM.RoomId)).FirstOrDefault().RoomName;
+            var doctorName = _medicalContext.Doctors.Where(x => x.DoctorId.Equals(cVM.DoctorId)).FirstOrDefault().DoctorName;
+
+            if (qry_room.Count() > 0)
+                result = $"診間{roomName} ";
+            if (qry_doctor.Count() > 0)
+                result += $" {doctorName}醫師 ";
+
+            result += "已重覆";
+
+            return Content(result, "text/plain", System.Text.Encoding.UTF8);
+        }
+
         public IActionResult Dept()
         {
             var dept = _medicalContext.Departments.Select(x => new { x.DeptName, x.DepartmentId });
