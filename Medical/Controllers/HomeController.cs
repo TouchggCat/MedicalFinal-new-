@@ -10,18 +10,20 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Medical.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace Medical.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<HomeController> _logger; 
+        private readonly MedicalContext _medicalContext;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, MedicalContext medicalContext)
         {
             _logger = logger;
+            _medicalContext = medicalContext;
         }
-
 
         public IActionResult Index()
         {
@@ -42,7 +44,9 @@ namespace Medical.Controllers
             return View();
         }
 
-        
+      
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 
