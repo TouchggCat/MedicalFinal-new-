@@ -1,6 +1,5 @@
 ﻿using Medical.Controllers;
 using Medical.Models;
-using Medical.Repo;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
