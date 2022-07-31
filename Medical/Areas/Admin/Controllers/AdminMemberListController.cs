@@ -161,26 +161,56 @@ namespace Medical.Areas.Admin.Controllers
 
         //=================for Ajax API
 
-        //public IActionResult showRolebyAjax(CMemberAdminViewModel AdminVModel)
-        //{
+        public IActionResult Role()
+        {
+            var roles = _context.RoleTypes.OrderBy(a => a.Role).Select(a => a.RoleName).Distinct();
+            return Json(roles);
+        }
 
-        //    Member mb = _context.Members.FirstOrDefault(n => n.Email == AdminVModel.Email);
-        //    if (String.IsNullOrEmpty(AdminVModel.Email))
-        //    {
-        //        AdminVModel.emailState = "請填入信箱";
-        //    }
-        //    else if (mb != null)
-        //    {
-        //        AdminVModel.emailState = "帳號已存在";
-        //    }
-        //    else
-        //    {
-        //        user.emailState = "帳號可使用";
-        //    }
+        public IActionResult City(string roName)
+        {
+            //先改成顯示name
+            RoleType ro = _context.RoleTypes.FirstOrDefault(b => b.RoleName == roName);
+            var memid = _context.Members.Where(d => d.Role == ro.Role).OrderBy(a => a.Role).Select(b => b.MemberId).Distinct();  //用ID才是唯一值
+            return Json(memid);
+        }
+        public IActionResult CityWeb(int memid)
+        {
+            if (memid == null)
+            {
 
-        //    return Content(user.emailState, "text/html", System.Text.Encoding.UTF8);
-        //}
-
-
+                //var cities = _context.Members.Where(t => t.MemberName.Contains(""));  //隨便找個東西塞 反正空的
+                var cities = "";
+                return Json(cities);
+            }
+            else
+            {
+                //City cityselect = _context.Cities.FirstOrDefault(n => n.CityName == citiName);
+                //var citiesMem = _context.Members.Where(d => d.CityId == cityselect.CityId).Distinct().OrderBy(d => d.CityId).Select(a => a);
+                var citiesMem = _context.Members.Where(d => d.MemberId == memid).Distinct().OrderBy(d => d.MemberId).Select(s => s);
+                return Json(citiesMem);
+            }
+        }
+        public IActionResult GetMemWeb(int kity)
+        {
+            if (kity == null)
+            {
+                var docs = _context.Members.Where(t => t.MemberName.Contains(""));
+                return Json(docs);
+            }
+            else
+            {
+                var docs = _context.Members.Where(d => d.MemberId == kity).Distinct().OrderBy(d => d.MemberId).Select(a => a);
+                return Json(docs);
+            }
+        }
+        public IActionResult GetGenderName(int gengen)
+        {
+            var gend = from a in _context.Members
+                       join b in _context.Genders on a.GenderId equals b.GenderId
+                       where b.GenderId == gengen
+                       select b.Gender1;
+            return Json(gend);
+        }
     }
 }
