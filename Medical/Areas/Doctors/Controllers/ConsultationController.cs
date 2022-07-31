@@ -26,7 +26,6 @@ namespace Medical.Areas.Doctors.Controllers
             int doctorId = 1;
 
             CMemberAdminViewModel vm = null;
-
             string logJson = "";
             logJson = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USE);
             vm = System.Text.Json.JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);

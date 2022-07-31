@@ -27,11 +27,6 @@ namespace Medical.Hubs
             //    user = "訪客";
             //}
             await Clients.All.SendAsync("ReceiveMessage",sendUser,message);
-
-
-            
-
-
         }
 
         //public Task sendmessage(string message)
@@ -40,8 +35,5 @@ namespace Medical.Hubs
 
         //    await Clients.All.SendAsync("ReceiveMessage", user, message);
         //}
-
-
-
     }
 }
