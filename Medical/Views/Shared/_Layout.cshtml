@@ -11,7 +11,6 @@
     string logJson = "";
     string logGoogle = "";
     string showID = "";
-    string logState = "";
     int showID2 = 0;
     string LoginbuttonValue = "";
     string LogoutbuttonValue = "";
@@ -31,7 +30,6 @@
         vm = JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
         showID = vm.MemberName;
         showID2 = vm.MemberId;
-        logState = "";
         LogoutbuttonValue = "登出";
 
     }
@@ -195,8 +193,9 @@
                     <a asp-action="Logout" asp-controller="Login" id="looutButton">@LogoutbuttonValue</a>
                 </div>
 
-                <div id="showMe" class="fas fa-user" value="@showID @logState">
-                    @showID @logState
+                <div id="showMe" class="fas fa-user" value="@showID">
+                    <a asp-action="LeadTobyRole" asp-controller="Login">@showID</a>
+                    @*@showID*@
                 </div>
                 <!-- 購物車清單開始-->
                 <div class="dropdown ml-auto">
