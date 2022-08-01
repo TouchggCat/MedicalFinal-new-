@@ -97,7 +97,9 @@
     const setdep = document.getElementById("DepName")
     const seldep = document.getElementById("selDep")
     function selVal(sel) {
-        setdep.value=sel.options[sel.selectedIndex].text
+        console.log(sel.options[sel.selectedIndex].text)
+        setdep.setAttribute('value', sel.options[sel.selectedIndex].text)
+        console.log(setdep.value)
     }
     
         getDep()
@@ -131,8 +133,7 @@
     async function getDep() {
         obj = document.getElementById("selDep")
         const deps = await fetch('@Url.Content("~/Admin/AdminDoctor/Dep")').then(response => response.json())
-        deps.forEach((DeptName) => {
-            console.log(DeptName)
+        deps.forEach((DeptName) => {            
             obj.options.add(new Option(DeptName,DeptName))
         })
     }
