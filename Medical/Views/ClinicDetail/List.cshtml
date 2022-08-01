@@ -213,11 +213,11 @@
                             string online = "";
                             if (item.Online == 0)
                             {
-                                online = "看診中";
+                                online = "";
                             }
                             else if (item.Online == 1)
                             {
-                                online = "已結束";
+                                online = "(已結束)";
                             }
                             <tr>
                                 <td>
@@ -230,7 +230,7 @@
                                 <td>@item.Department.DeptName</td>
                                 <td>
                                     <div class="sparkbar" data-color="#00a65a" data-height="20" name="Period">
-                                        @item.Period.PeriodDetail (@online)
+                                        @item.Period.PeriodDetail @online
                                     </div>
                                 </td>
                                 <td>
