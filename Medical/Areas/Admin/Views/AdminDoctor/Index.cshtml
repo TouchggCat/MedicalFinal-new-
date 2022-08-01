@@ -87,17 +87,16 @@
 <h1>醫生後台</h1>
 
 @using (Html.BeginForm())
-{<div>
-
+{<div class="d-flex flex-wrap mt-2">
     <div class="muti-selector">
         <div class="select-field">
-            <input type="text" name="" placeholder="篩選專長" class="input-selector" />
+            <input type="text" name="" placeholder="篩選科別" class="input-selector" />
             <span class="down-arrow">&blacktriangledown;</span>
 
         </div>
         <div class="list">
             <label for="" class="task">
-                <input type="checkbox" class="checkAll" onclick="check_all()" name="123" id="c" />
+                <input type="checkbox" class="checkAll1" name="123" id="c" onclick="check_all()" />
                 全選
             </label>
         </div>
@@ -109,23 +108,19 @@
         </div>
         <div class="list" id="list1">
             <label for="" class="task">
-                @*<input type="checkbox" onclick="check_allDp()"/>
-                    全選*@
+                <input type="checkbox" class="checkAll2" onclick="check_allDp()" id="d" />
+                全選
             </label>
         </div>
     </div>
-    <input id="txtKeyword" hidden="hidden" type="text" name="txtKeyword" value="" />
-    <input type="submit" class="btn btn-primary" id="sub" value="查詢" />
+    @*<input id="txtKeyword" hidden="hidden" type="text" name="txtKeyword" value="" />*@
+    @*<input type="submit" class="btn btn-primary" id="sub" value="查詢" />*@
     <a href="/Admin/AdminDoctor/CreateDetail" class="btn btn-success">新增醫生</a>
 </div>
 
 
 
 } 
-    @*<button class="btn btn-primary" onclick="location.href='@Url.Action("CreateDetail","AdminDoctor")'">
-        <img class="icon" src="~/img/add.png" />新增醫生
-    </button>*@
-
 @*\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*@
 
 @*\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*@
@@ -155,8 +150,8 @@
             </th>
         </tr>
     </thead>
-    <tbody>
-        @{ int count = 0;
+    <tbody class="tbody">
+        @*@{ int count = 0;
             foreach (var item in Model)
             {
                 count++;
@@ -185,25 +180,43 @@
                     </td>
                 </tr>
             }
-        }
+        }*@
     </tbody>
 </table>
 @section Scripts{
 
     <script>
-        
-    @* 醫生全選 *@
-        function check_allDp() {
-            var ckboxs = document.getElementsByClassName("check1")
-            for (var i = 0; i < ckboxs.length; i++) {
-                ckboxs[i].checked = !ckboxs[i].checked;
-                //if (ckboxs[i].checked == true)
-                //    loadWebDoc(ckboxs[i].name)
-                //else
-                //    cancelWebDoc(ckboxs[i].name)
-            }
+    @*網頁開始全選*@
+        function firstCheck() {
+            document.getElementById("c").checked = true;
         }
-
+        function firstCheck1() {
+            document.getElementById("d").checked = true;
+        }
+    @*網頁開始時執行*@
+        loadDep();
+        @* 醫生全選 *@
+            function check_allDp() {
+                var ckboxs = document.getElementsByClassName("check1")
+                for (var i = 0; i < ckboxs.length; i++) {
+                    ckboxs[i].checked = !ckboxs[i].checked;
+                    if (ckboxs[i].checked == true)
+                        loadWebDoc(ckboxs[i].name)
+                    else
+                        cancelWebDoc(ckboxs[i].name)
+                }
+        }
+        @* 科別全選 *@
+            function check_all() {
+                var checkboxs = document.getElementsByClassName("check")
+                for (var i = 0; i < checkboxs.length; i++) {
+                    checkboxs[i].checked = !checkboxs[i].checked;
+                    if (checkboxs[i].checked == true)
+                        loadDoc(checkboxs[i].name);
+                    else
+                        cancelDoc(checkboxs[i].name);
+                }
+            }
     @* 專長全選 *@
         function check_all() {
 
@@ -223,8 +236,18 @@
                 depName = N;
                 const trtDs = await fetch('@Url.Content("~/Admin/AdminDoctor/Doc")' + `?depName=${depName}`).then(response => response.json());
                 trtDs.forEach((DoctorName) => {
-                    document.querySelector(`#${DoctorName}`).remove();                   
+                    document.querySelector(`#${DoctorName}`).remove();
+                    document.getElementById(`${DoctorName}Div`).remove();
                 })
+        }
+    @*取消全選醫生Ajax*@
+        async function cancelWebDoc(N) {
+            dcName = N;
+            const doctors = await fetch('@Url.Content("~/doctor/GetDoctorWeb")' + `?docName=${dcName}`).then(response => response.json());
+            doctors.forEach((DoctorName) => {
+                var div = document.getElementById(`${doctors[0].doctorName}Div`);
+                div.remove()
+            })
         }
     @*選單下拉*@
         document.querySelector('.select-field').addEventListener('click', () => {
@@ -236,29 +259,22 @@
             document.querySelector('#list1').classList.toggle('show');
             document.querySelector('#down-arrow1').classList.toggle('rotate180')
         })
-
-    @*網頁開始*@
-        loadDep();
-        //document.querySelector('.check').addEventListener('checked', () => {
-        //    loadDoc()
-        //})
-
     @*勾選專長*@
         function CCC() {
             if ($(event.target)[0].checked == true) {
                 loadDoc($(event.target)[0].name);
             }
             else
-                cancelDoc();
+                cancelDoc($(event.target)[0].name);
         }
 
     @*勾選醫生*@
         function DDD() {
             if ($(event.target)[0].checked == true) {
-                $('#txtKeyword').val($(event.target)[0].name);
+                loadWebDoc($(event.target)[0].name);
             }
-            if ($(event.target)[0].checked != true)
-                $('#txtKeyword').val="";
+            else
+                cancelWebDoc($(event.target)[0].name)
         }
 
     @*讀取專長選單*@
@@ -266,14 +282,14 @@
 
             const deps = await fetch('@Url.Content("~/Admin/AdminDoctor/Dep")').then(response => response.json())
             deps.forEach((DeptName) => {
-                console.log(DeptName)
                 name =`<label for="" class="task">
                 <input type="checkbox" class="check" onclick="CCC()" id="${DeptName}" name="${DeptName}" value="${DeptName}"/>
                 ${DeptName}
             </label>`;
                 document.querySelector('.list').innerHTML += name;
             })
-
+            firstCheck();
+            check_all();
         }
 
     @*讀取TreatmentDetail*@
@@ -282,15 +298,50 @@
                 const trtDs = await fetch('@Url.Content("~/Admin/AdminDoctor/Doc")' + `?depName=${depName}`).then(response => response.json());
                 trtDs.forEach((DoctorName) => {
                     name = `<label for="" class="task" id="${DoctorName}">
-                <input type="checkbox" class="checkDC" name="${DoctorName}" onclick="DDD()" value="${DoctorName}"/>
+                <input type="checkbox" class="check1" checked="true" name="${DoctorName}" onclick="DDD()" value="${DoctorName}"/>
                 ${DoctorName}
             </label>`;
-                    document.querySelector('#list1').innerHTML+= name;
+                    document.querySelector('#list1').innerHTML += name;
+                    loadWebDoc(`${DoctorName}`)
                 })
+            firstCheck1()
         }
 
-        
-        
+        async function loadWebDoc(dcname) {
+            const doctors = await fetch('@Url.Content("~/Admin/AdminDoctor/DocWeb")' + `?docName=${dcname}`).then(response => response.json());
+            console.log(doctors)
+            count = 0
+            doctors.forEach((DoctorName) => {
+                count++
+                web = `<tr id="${doctors[0].doctorName}Div">
+                    <td>
+                        ${count}
+                    </td>
+                    <td>
+                        ${doctors[0].doctorName}
+                    </td>
+
+                    <td>
+                        ${doctors[0].education}
+                    </td>
+                    <td>
+                        ${doctors[0].jobTitle}
+                    </td>
+
+                    <td>
+                        <img width="100" height="100" src="/images/${doctors[0].picturePath}" />
+                    </td>
+                    <td>
+                        <a class = "btn btn-primary" href="/Admin/AdminDoctor/DoctorRatingList/${doctors[0].doctorId}">管理醫師評論</a>
+                        <a class = "btn btn-secondary" href="/Admin/AdminDoctor/EditDetail/${doctors[0].doctorId}">修改資料</a>
+                        <a class = "btn btn-danger" onclick = "return confirm('確定刪除?')" href="/Admin/AdminDoctor/Delete/${doctors[0].doctorId}">刪除</a>
+                    </td>
+                </tr>`
+                document.querySelector('.tbody').innerHTML += web
+            })
+
+        }
+
 
     </script>
 }

@@ -1,5 +1,6 @@
 using Medical.Hubs;
 using Medical.Models;
+using Microsoft.AspNet.SignalR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -7,6 +8,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
+using SignalR.EventAggregatorProxy.AspNetCore.Middlewares;
+using SignalR.EventAggregatorProxy.Boostrap;
+using SignalR.EventAggregatorProxy.Event;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,14 +31,21 @@ namespace Medical
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddDbContext<MedicalContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("MedicalConnection"));
             });
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddNewtonsoftJson(options => {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });
             services.AddSession();
-            services.AddSignalR();
+            services.AddSignalR(o =>
+            {
+                o.EnableDetailedErrors = true;
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,15 +61,17 @@ namespace Medical
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+  
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSession();
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<DashboardHub>("/dashboardHub");
+                endpoints.MapHub<CallHub>("/callHub");
                 endpoints.MapHub<ChatHub>("/chatHub");
                 endpoints.MapControllerRoute(
                     name: "areas",
@@ -68,6 +82,7 @@ namespace Medical
                     pattern: "{controller=home}/{action=index}/{id?}");
                 
             });
+
         }
     }
 }

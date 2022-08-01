@@ -86,62 +86,49 @@ namespace Medical.Controllers
             return Content(count, "text/plain", System.Text.Encoding.UTF8);
         }
 
-        public void Method(CClinicDetailViewModel cVM)
-        {
-            var result = _medicalContext.ClinicDetails.Where(x => x.ClinicDetailId.Equals(cVM.clinicId));
-            var resultDoctor = _medicalContext.Doctors.Where(x => x.DoctorName.Equals(cVM.doctorname)).SingleOrDefault();
-            cVM.DoctorId = resultDoctor.DoctorId;
-            cVM.DepartmentId = resultDoctor.DepartmentId;
-
-            if (result.Count() > 0)
-            {
-                Update(cVM);
-            }
-        }
-
         public IActionResult Create(CClinicDetailAdminViewModel[] obj)
         {
-            string result = "";
-
+            string result = "新增失敗"; int a = 0;
             if (obj != null)
             {
                 foreach (var i in obj)
                 {
                     DateTime dt = Convert.ToDateTime(i.dateForm);
-                    var qry = _medicalContext.Periods.Where(x => x.PeriodDetail.Equals(i.periodName)).Single().PeriodId;
-                    if (qry == 1)
-                    {
-                        dt = dt.AddHours(9);
-                    }
-                    else if (qry == 2)
-                    {
-                        dt = dt.AddHours(13);
-                    }
-                    else if (qry == 3)
-                    {
-                        dt = dt.AddHours(17);
-                    }
 
-                    ClinicDetail c = new ClinicDetail()
+                    if (DateTime.Now.Date.CompareTo(dt.Date) < 0)
                     {
-                        DoctorId = i.DoctorId,
-                        DepartmentId = i.DepartmentId,
-                        ClinicDate = dt,
-                        PeriodId = qry,
-                        RoomId = i.RoomId,
-                        Online = 0,
-                        LimitNum = 6
-                    };
-                    _medicalContext.ClinicDetails.Add(c);
-                    _medicalContext.SaveChanges();
-                    result = "新增成功";
+                        var qry = _medicalContext.Periods.Where(x => x.PeriodDetail.Equals(i.periodName)).Single().PeriodId;
+                        if (qry == 1)
+                        {
+                            dt = dt.AddHours(9);
+                        }
+                        else if (qry == 2)
+                        {
+                            dt = dt.AddHours(13);
+                        }
+                        else if (qry == 3)
+                        {
+                            dt = dt.AddHours(17);
+                        }
+
+                        ClinicDetail c = new ClinicDetail()
+                        {
+                            DoctorId = i.DoctorId,
+                            DepartmentId = i.DepartmentId,
+                            ClinicDate = dt,
+                            PeriodId = qry,
+                            RoomId = i.RoomId,
+                            Online = 0,
+                            LimitNum = 6
+                        };
+
+                        _medicalContext.Add(c);
+                        _medicalContext.SaveChanges();
+                        a++;
+                        result = "新增成功";
+                    } 
                 }
             }
-            else
-            {
-                result = "新增失敗";
-            }
-
             return Content(result, "text/plain", System.Text.Encoding.UTF8);
         }
 
@@ -183,6 +170,44 @@ namespace Medical.Controllers
             }
             return Content(result, "text/plain", System.Text.Encoding.UTF8);
         }
+
+        public IActionResult Check(CClinicDetailAdminViewModel cVM)
+        {
+            string result = "此時段";
+            DateTime dt = (DateTime)cVM.ClinicDate.Value;
+            var qry_room = _medicalContext.ClinicDetails.Where(x => x.ClinicDate.Value.Month.Equals(dt.Month) && x.ClinicDate.Value.Day.Equals(dt.Date.Day) && x.PeriodId.Equals(cVM.PeriodId) && x.RoomId.Equals(cVM.RoomId));
+            var qry_doctor = _medicalContext.ClinicDetails.Where(x => x.ClinicDate.Value.Month.Equals(dt.Date.Month) && x.ClinicDate.Value.Day.Equals(dt.Date.Day) && x.PeriodId.Equals(cVM.PeriodId) && x.DoctorId.Equals(cVM.DoctorId));
+            var roomName = _medicalContext.ClinicRooms.Where(x => x.RoomId.Equals(cVM.RoomId)).FirstOrDefault().RoomName;
+            var doctorName = _medicalContext.Doctors.Where(x => x.DoctorId.Equals(cVM.DoctorId)).FirstOrDefault().DoctorName;
+
+            if (qry_room.Count() > 0)
+                result = $"診間{roomName} ";
+            if (qry_doctor.Count() > 0)
+                result += $" {doctorName}醫師 ";
+
+            result += "已重覆";
+
+            return Content(result, "text/plain", System.Text.Encoding.UTF8);
+        }
+
+        //public IActionResult Check(CClinicDetailAdminViewModel cVM)
+        //{
+        //    string result = "此時段";
+        //    DateTime dt = (DateTime)cVM.ClinicDate.Value;
+        //    var qry_room = _medicalContext.ClinicDetails.Where(x => x.ClinicDate.Value.Month.Equals(dt.Month) && x.ClinicDate.Value.Day.Equals(dt.Date.Day) && x.PeriodId.Equals(cVM.PeriodId) && x.RoomId.Equals(cVM.RoomId));
+        //    var qry_doctor = _medicalContext.ClinicDetails.Where(x => x.ClinicDate.Value.Month.Equals(dt.Date.Month) && x.ClinicDate.Value.Day.Equals(dt.Date.Day) && x.PeriodId.Equals(cVM.PeriodId) && x.DoctorId.Equals(cVM.DoctorId));
+        //    var roomName = _medicalContext.ClinicRooms.Where(x => x.RoomId.Equals(cVM.RoomId)).FirstOrDefault().RoomName;
+        //    var doctorName = _medicalContext.Doctors.Where(x => x.DoctorId.Equals(cVM.DoctorId)).FirstOrDefault().DoctorName;
+
+        //    if (qry_room.Count() > 0)
+        //        result = $"診間{roomName} ";
+        //    if (qry_doctor.Count() > 0)
+        //        result += $" {doctorName}醫師 ";
+
+        //    result += "已重覆";
+
+        //    return Content(result, "text/plain", System.Text.Encoding.UTF8);
+        //}
 
         public IActionResult Dept()
         {

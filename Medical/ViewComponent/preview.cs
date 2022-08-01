@@ -29,43 +29,49 @@ namespace Medical.ViewComponents
             int count = 0;
 
             List<CClinicDetailAdminViewModel> list = new List<CClinicDetailAdminViewModel>();
-
+                
             for (int i = 0; i < Diff_dates.Days+1 ; i++)
             {
                 DateTime dt = dtForm.AddDays(i);
-                if (dt.DayOfWeek != DayOfWeek.Saturday || dt.DayOfWeek != DayOfWeek.Sunday)
+
+                if (DateTime.Now.Date.CompareTo(dt.Date) < 0)
                 {
-                    foreach (var d in day)
+                    if (dt.DayOfWeek != DayOfWeek.Saturday || dt.DayOfWeek != DayOfWeek.Sunday)
                     {
-                        if ((int)dt.DayOfWeek == d)
+                        foreach (var d in day)
                         {
-                            foreach (var t in time)
+                            if ((int)dt.DayOfWeek == d)
                             {
-                                CClinicDetailAdminViewModel cc = new CClinicDetailAdminViewModel();
-                                cc.DoctorId = cVM.DoctorId;
-                                cc.doctorName = _medicalContext.Doctors.Where(x => x.DoctorId.Equals(cVM.DoctorId)).SingleOrDefault().DoctorName;
-                                cc.DepartmentId = (int)cVM.DepartmentId;
-                                cc.deptName = _medicalContext.Departments.Where(x => x.DepartmentId.Equals(cVM.DepartmentId)).SingleOrDefault().DeptName;
-                                cc.ClinicDate = dt;
-                                cc.PeriodId = t;
-                                cc.periodName = _medicalContext.Periods.Where(x => x.PeriodId.Equals(t)).SingleOrDefault().PeriodDetail;
-                                cc.RoomId = cVM.RoomId;
-                                cc.roomName = _medicalContext.ClinicRooms.Where(x => x.RoomId.Equals(cVM.RoomId)).SingleOrDefault().RoomName;
-                                cc.Online = 0;
-
-                                var qry = _medicalContext.ClinicDetails.Where(x => x.ClinicDate.Value.Month.Equals(dt.Date.Month) && x.ClinicDate.Value.Day.Equals(dt.Date.Day) && x.PeriodId.Equals(t));
-                                if (qry.Count() > 0)
+                                foreach (var t in time)
                                 {
-                                    cc.repeat = true;
-                                    count++;
-                                }
-                                else
-                                {
-                                    cc.repeat = false;
+                                    CClinicDetailAdminViewModel cc = new CClinicDetailAdminViewModel();
+                                    cc.DoctorId = cVM.DoctorId;
+                                    cc.doctorName = _medicalContext.Doctors.Where(x => x.DoctorId.Equals(cVM.DoctorId)).SingleOrDefault().DoctorName;
+                                    cc.DepartmentId = (int)cVM.DepartmentId;
+                                    cc.deptName = _medicalContext.Departments.Where(x => x.DepartmentId.Equals(cVM.DepartmentId)).SingleOrDefault().DeptName;
+                                    cc.ClinicDate = dt;
+                                    cc.PeriodId = t;
+                                    cc.periodName = _medicalContext.Periods.Where(x => x.PeriodId.Equals(t)).SingleOrDefault().PeriodDetail;
+                                    cc.RoomId = cVM.RoomId;
+                                    cc.roomName = _medicalContext.ClinicRooms.Where(x => x.RoomId.Equals(cVM.RoomId)).SingleOrDefault().RoomName;
+                                    cc.Online = 0;
 
-                                }
+                                    var qry = _medicalContext.ClinicDetails.Where(x =>
+                                    x.ClinicDate.Value.Month.Equals(dt.Date.Month) && x.ClinicDate.Value.Day.Equals(dt.Date.Day) && x.PeriodId.Equals(t) && x.RoomId.Equals(cVM.RoomId) ||
+                                    x.ClinicDate.Value.Month.Equals(dt.Date.Month) && x.ClinicDate.Value.Day.Equals(dt.Date.Day) && x.PeriodId.Equals(t) && x.DoctorId.Equals(cVM.DoctorId)
+                                    );
+                                    if (qry.Count() > 0)
+                                    {
+                                        cc.repeat = true;
+                                        count++;
+                                    }
+                                    else
+                                    {
+                                        cc.repeat = false;
+                                    }
 
-                                list.Add(cc);
+                                    list.Add(cc);
+                                }
                             }
                         }
                     }

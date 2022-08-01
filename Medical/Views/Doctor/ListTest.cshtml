@@ -297,9 +297,7 @@
         <input id="txtKeyword" hidden="hidden" type="text" name="txtKeyword" value="" />
         @*<input type="submit" id="sub" value="查詢" class="btn btn-primary" />*@
     </div>
-
     <input id="txtKeyword" hidden="hidden" type="text" name="txtKeyword" value="" />
-   
 }
 
 @*Ajax醫生加載*@
@@ -328,10 +326,10 @@
                 <div class="name">漢克斯</div>
                 </div>
                 <div class="text">
-                    <input type="button" value="我要掛號" onclick="Register()">
-                    <input type="button" value="交通指引" onclick="Register()">
-                    <input type="button" value="衛教健保" onclick="Register()">
-                    <input type="button" value="該掛哪科" onclick="WhichDep()">
+                    <input class="btn btn-info" type="button" value="我要掛號" onclick="Register()">
+                    <input class="btn btn-info"type="button" value="交通指引" onclick="Register()">
+                    <input class="btn btn-info"type="button" value="衛教健保" onclick="Register()">
+                    <input class="btn btn-info"type="button" value="該掛哪科" onclick="WhichDep()">
                 </div>
             </div>
         @*<div class="user local">
@@ -382,8 +380,6 @@
 
 
     @*網頁開始全選*@
-        const ck1 = document.querySelector('.checkAll1')
-        const ck2 = document.querySelector('.checkAll2')
         function firstCheck() {
             document.getElementById("c").checked = true;
         }
@@ -401,7 +397,7 @@
                     cancelWebDoc(ckboxs[i].name)
             }
         }
-    @*專長全選*@
+    @*科別全選*@
         function check_all() {
             var checkboxs = document.getElementsByClassName("check")
             for (var i = 0; i < checkboxs.length; i++) {
@@ -423,7 +419,7 @@
         })
     @*網頁開始執行*@
         loadDep()
-    @*取消全選專長勾選*@
+    @*取消全選科別勾選*@
         async function cancelDoc(N) {
                 depName = N;
                 const trtDs = await fetch('@Url.Content("~/Admin/AdminDoctor/Doc")' + `?depName=${depName}`).then(response => response.json());
@@ -457,7 +453,7 @@
             else
                 cancelWebDoc($(event.target)[0].name)
         }
-    @*讀取專長選單*@
+    @*讀取科別選單*@
         async function loadDep() {
             const deps = await fetch('@Url.Content("~/Admin/AdminDoctor/Dep")').then(response => response.json())
             deps.forEach((DeptName) => {
@@ -481,6 +477,7 @@
                             </label>`;
                     document.querySelector('#list1').innerHTML += name;
                     loadWebDoc(`${DoctorName}`)
+                    
                 })
             firstCheck1()
         }
@@ -488,30 +485,41 @@
         async function loadWebDoc(dcname) {
             docName = dcname;
             const doctors = await fetch('@Url.Content("~/doctor/GetDoctorWeb")' + `?docName=${docName}`).then(response => response.json());
+            console.log(doctors)
             doctors.forEach((DoctorName) => {
+                
                 web = `<div id="${doctors[0].doctorName}Div" class="col-lg-4 col-md-6 col-12 doctor_item">
                         <div class="team-item">
                             <div class="position-relative rounded-top  listFCP" style="z-index: 1;">
                                 <img class="img-fluid w-100 dcimg" src="/images/${doctors[0].picturePath}">
                             </div>
-                            <div>
-                                <div class="listFCN">${doctors[0].doctorName}</div>
-                                <div class="listFCS">現職:${doctors[0].jobTitle}</div>
-                                <div class="listFCC">學歷:${doctors[0].education}</div>
+                            <div >
+                                <div class="${doctors[0].doctorName}">
+                                    <div class="listFCN">${doctors[0].doctorName}</div>
+                                    <div class="listFCS">現職:${doctors[0].jobTitle}</div>
+                                    <div class="listFCC">學歷:${doctors[0].education}</div>
+                                </div>
                                 <div class="d-flex justify-content-center">
                                     <button class = "btn btn-outline-success detail" name="${doctors[0].DoctorID}" onclick="location.href='/doctor/detail/${doctors[0].doctorId}'">詳細資料</button>
-
                                     <button type="button" id="buttonLoad" onclick="buttonLoad()" class="btn btn-primary buttonLoad" data-bs-toggle="modal" data-bs-target="#exampleModal" data-docid="${doctors[0].doctorId}">
-                                查看評價
-                                </button>
+                                    查看評價
+                                    </button>
+                                    <a href="/Reserve/ReserveList" class="btn btn-outline-success detail">我要掛號</a>
                                 </div>
                             </div>
                         </div>
-                    </div>`;
+                    </div>`                                
                 document.querySelector('.webShow').innerHTML += web;
+                loadWebDep(`${doctors[0].doctorName}`)
+                
             })
         }
-
+        async function loadWebDep(dcName) {
+            const dep = await fetch('@Url.Content("~/doctor/GetDepartment")' + `?dcName=${dcName}`).then(response => response.json());
+            web = `</br>科別:${dep[0]}`
+            document.querySelector(`.${dcName} .listFCC`).innerHTML += web;
+        }
+        
     @*機器人*@
         const dialogue = document.querySelector(".dialogue")
         function Register() {
@@ -532,10 +540,10 @@
                     <div class="name">漢克斯</div>
                 </div>
                 <div class="text">
-                    <input type="button" value="我要掛號" onclick="Register()">
-                    <input type="button" value="交通指引" onclick="Register()">
-                    <input type="button" value="衛教健保" onclick="Register()">
-                    <input type="button" value="該掛哪科" onclick="WhichDep()">
+                    <input class="btn btn-info" type="button" value="我要掛號" onclick="Register()">
+                    <input class="btn btn-info" type="button" value="交通指引" onclick="Register()">
+                    <input  class="btn btn-info"type="button" value="衛教健保" onclick="Register()">
+                    <input  class="btn btn-info"type="button" value="該掛哪科" onclick="WhichDep()">
                 </div>`
             dialogue.innerHTML += Remotetext;
             dialogue.scrollTop = dialogue.scrollHeight;

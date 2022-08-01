@@ -10,39 +10,30 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Medical.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace Medical.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<HomeController> _logger; 
+        private readonly MedicalContext _medicalContext;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, MedicalContext medicalContext)
         {
             _logger = logger;
+            _medicalContext = medicalContext;
         }
-
 
         public IActionResult Index()
         {
-            //int user = 0;
-            //if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USE))
-            //{
-            //    CMemberAdminViewModel vm = null;
-
-            //    string logJson = "";
-            //    logJson = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USE);
-            //    vm = JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
-
-
-            //    user = (int)vm.Role;
-            //}
-
-            //return View(user);
+            
             return View();
         }
 
-        
+      
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 
