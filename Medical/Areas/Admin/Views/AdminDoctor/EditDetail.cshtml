@@ -49,6 +49,10 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="DepName" class="control-label"></label>
+                        @*<input id="DepName" hidden="hidden" type="text" name="DepName" value="DepName" />*@
+                        <select id="selDep" onchange="selVal(this)">
+                            <option value="asd">請選擇科別</option>
+                        </select>
                         <input asp-for="DepName" class="form-control" id="dpn" />
                         <span asp-validation-for="DepName" class="text-danger"></span>
                     </div>
@@ -65,7 +69,8 @@
 }
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script>
+<script>
+    getDep()
         $('#btnDmo').click(() => {
             document.getElementById("dcN").value = "高壹陞";
             document.getElementById("edu").value = "博士";
@@ -83,5 +88,19 @@
             };
             reader.readAsDataURL(file);
         })
-    </script>
+        const setdep = document.getElementById("dpn")
+        const seldep = document.getElementById("selDep")
+        function selVal(sel) {
+            console.log(sel.options[sel.selectedIndex].text)
+            setdep.setAttribute('value', sel.options[sel.selectedIndex].text)
+            console.log(setdep.value)
+        }
+        async function getDep() {
+        obj = document.getElementById("selDep")
+        const deps = await fetch('@Url.Content("~/Admin/AdminDoctor/Dep")').then(response => response.json())
+        deps.forEach((DeptName) => {
+            obj.options.add(new Option(DeptName,DeptName))
+        })
+    }
+</script>
 }

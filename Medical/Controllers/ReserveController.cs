@@ -251,13 +251,14 @@ namespace Medical.Controllers
                 memberid = vm.MemberId;
 
                 ViewBag.name = _context.Reserves.Where(a => a.MemberId == memberid).Select(a => a.Member.MemberName).FirstOrDefault();
-                var id = _context.Reserves.Where(n => n.MemberId == memberid ).OrderByDescending(n=>n.ReserveDate ).Select(n => n.ClinicDetailId);
+                var id = _context.Reserves.Where(n => n.MemberId == memberid ).Select(n => n.ClinicDetailId);
                 List<ReservesSearch> list = new List<ReservesSearch>();
                 foreach (var item in id)
                 {
                     ReservesSearch t = new ReservesSearch(_context)
                     {
-                        clinicid = item
+                        clinicid = item,
+                        memberid=vm.MemberId
 
                     };
                     list.Add(t);

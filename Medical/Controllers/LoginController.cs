@@ -323,7 +323,7 @@ namespace Medical.Controllers
                     return RedirectToAction("Index", "Home", new { area = "Admin" });
 
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Login");
         }
         public IActionResult EditMember()
         {

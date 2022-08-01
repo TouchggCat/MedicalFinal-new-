@@ -119,7 +119,7 @@ namespace Medical.ViewModels
         //    get { return department.DepartmentId; }
         //    set { department.DepartmentId = value; }
         //}
-        [DisplayName("專長")]
+        [DisplayName("科別")]
         public string DepName
         {
             get { return _dep.DeptName; }
