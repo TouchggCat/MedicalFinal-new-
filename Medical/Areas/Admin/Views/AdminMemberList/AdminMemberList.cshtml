@@ -82,95 +82,131 @@
             height: 16px;
             margin-bottom: 9px;
         }
+        .form-control{
+            width:100px;
+        }
     </style>
 }
 <h1>會員管理頁面</h1>
+<div class="col-xs-4">
+    <input type="text" class="form-control" placeholder="搜尋" id="searchingKey">
+  </div>
 
-@using (Html.BeginForm())
-{<div class="d-flex flex-wrap mt-2">
-        <div class="muti-selector">
-            <div class="select-field">
-                <input type="text" name="" placeholder="權限篩選" class="input-selector" />
-                <span class="down-arrow">&blacktriangledown;</span>
+    @using (Html.BeginForm())
+    {<div class="d-flex flex-wrap mt-2">
+            <div class="muti-selector">
+                <div class="select-field">
+                    <input type="text" name="" placeholder="權限篩選" class="input-selector" />
+                    <span class="down-arrow">&blacktriangledown;</span>
 
+                </div>
+                <div class="list">
+                    <label for="" class="task">
+                        <input type="checkbox" class="checkAll1" name="123" id="c" onclick="rolecheck_all()" />
+                        全選
+                    </label>
+                </div>
             </div>
-            <div class="list">
-                <label for="" class="task">
-                    <input type="checkbox" class="checkAll1" name="123" id="c" onclick="rolecheck_all()" />
-                    全選
-                </label>
+
+            <div class="muti-selector" hidden="hidden">  @*改為隱藏*@
+                <div class="select-field" id="select-field1">
+                    <input type="text" name="" placeholder="縣市篩選" class="input-selector" />
+                    <span class="down-arrow" id="down-arrow1">&blacktriangledown;</span>
+                </div>
+                <div class="list" id="list1">
+                    <label for="" class="task">
+                        <input type="checkbox" class="checkAll2" onclick="check_allDp()" id="d" />
+                        全選
+                    </label>
+                </div>
+            </div>
+            <div>
+                <a asp-action="AdminCreate" class="fas fa-user-plus">新增會員</a>
             </div>
         </div>
-        <div class="muti-selector">
-            <div class="select-field" id="select-field1">
-                <input type="text" name="" placeholder="縣市篩選" class="input-selector" />
-                <span class="down-arrow" id="down-arrow1">&blacktriangledown;</span>
-            </div>
-            <div class="list" id="list1">
-                <label for="" class="task">
-                    <input type="checkbox" class="checkAll2" onclick="check_allDp()" id="d" />
-                    全選
-                </label>
-            </div>
-        </div>
-
-        <a asp-action="AdminCreate" class="fas fa-user-plus">新增會員</a>
-    </div>
 
 
 
-}
-@*\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*@
+    }
+    @*\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*@
 
-@*\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*@
+    @*\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*@
 
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>
-                序號
-            </th>
-            <th>
-                信箱
-            </th>
-            <th>
-                姓名
-            </th>
-            <th>
-                使用者ID
-            </th>
-            <th>
-                密碼
-            </th>
-            <th>
-                生日
-            </th>
-            <th>
-                性別
-            </th>
-            <th>
-                健保卡
-            </th>
-            <th>
-                電話
-            </th>
-            <th>
-                權限
-            </th>
-            <th>
-                城市
-            </th>
-            <th>
-                地址
-            </th>
-            <th></th>
-        </tr>
-    <tbody class="tbody">
-    </tbody>
-</table>
-@section Scripts{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>
+                    序號
+                </th>
+                <th>
+                    信箱
+                </th>
+                <th>
+                    姓名
+                </th>
+                <th>
+                    使用者ID
+                </th>
+                <th>
+                    密碼
+                </th>
+                <th>
+                    生日
+                </th>
+                <th>
+                    性別
+                </th>
+                <th>
+                    健保卡
+                </th>
+                <th>
+                    電話
+                </th>
+                <th>
+                    權限
+                </th>
+                <th>
+                    城市
+                </th>
+                <th>
+                    地址
+                </th>
+                <th></th>
+            </tr>
+        <tbody class="tbody">
+        </tbody>
+    </table>
+    @section Scripts{
 
-    <script>
+        <script>
+            //關鍵字搜尋
+            $("#searchingKey").keydown(function () {
+                keyword($("#searchingKey").val());
+                });
+            async function keyword(keystring) {
+                console.log(keystring);
+                const kw = await fetch('@Url.Content("~/Admin/AdminMemberList/keyword")' + `?thekey=${keystring}`).then(response => response.json());
+                console.log(kw);
+                for (var i = 0; i < kw.length; i++) {
+                    console.log(kw[i].memberId);
+                    loadWebCity(kw[i].memberId);
+                    
+                }
+                //還要清除掉勾選的項目
+                document.getElementById("c").checked = false;
+                document.getElementById("d").checked = false;
+                var checkboxs = document.getElementsByClassName("check")
+                for (var i = 0; i < checkboxs.length; i++) {
+                    checkboxs[i].checked = !checkboxs[i].checked;
+                    cancelCity(checkboxs[i].name);
+                }
+                var ckboxs = document.getElementsByClassName("check1")
+                for (var i = 0; i < ckboxs.length; i++) {
+                    ckboxs[i].checked = !ckboxs[i].checked;
+                    cancelWebMem(ckboxs[i].name);
+                }
+            }
+
     @*網頁開始全選*@
         function rolefirstCheck() {
             document.getElementById("c").checked = true;
@@ -203,20 +239,7 @@
                         cancelCity(checkboxs[i].name);
                 }
             }
-    @* 專長全選 重複?*@
-        //function rolecheck_all() {
 
-        //    var checkboxs = document.getElementsByClassName("check")
-
-        //    for (var i = 0; i < checkboxs.length; i++) {
-
-        //        checkboxs[i].checked = !checkboxs[i].checked;
-        //        if (checkboxs[i].checked == true)
-        //            loadDoc(checkboxs[i].name);
-        //        else
-        //            cancelDoc(checkboxs[i].name);
-        //    }
-        //}
     @* 刪除取消勾選Role *@
         async function cancelCity(N) {
             roleName = N;
@@ -297,7 +320,7 @@
         var count = 0;
         async function loadWebCity(ctName) {
             const members = await fetch('@Url.Content("~/Admin/AdminMemberList/CityWeb")' + `?memid=${ctName}`).then(response => response.json());
-            //console.log(members)
+            console.log(members)
             //console.log(members[0]);
             //console.log(members[0].memberName);
             //console.log(members[0].email)
@@ -313,7 +336,7 @@
               async function loadGender(gid,memid) {
                const genderff = await fetch('@Url.Content("~/Admin/AdminMemberList/GetGenderName")' + `?gengen=${gid}`).then(response => response.json());
                        let web = `${genderff[0]}`
-                       console.log(web);
+                       //console.log(web);
                        if (web == "undefined") {
                            document.querySelector(`#gen${memid}`).innerHTML = "";
                        }
@@ -336,7 +359,7 @@
                 //地址不顯示為null=======================================
                 let addStr = "";  //要用let 不能用const
                 letAddressNotNull(members[0].address);
-                
+
                 function letAddressNotNull(add) {
                     //console.log(add);
                     if (add == null)
@@ -363,7 +386,7 @@
                         icCardStr = card;
                 }
                 //=================================================
-                
+
                var date_value="";   //日期格式化部分，要避免null時預設值Thu Jan 01 1970 08:00:00 GMT+0800
                 if (members[0].birthDay != null) {
                     const date = new Date(members[0].birthDay);
@@ -423,5 +446,5 @@
         }
 
 
-    </script>
-}
+        </script>
+    }
