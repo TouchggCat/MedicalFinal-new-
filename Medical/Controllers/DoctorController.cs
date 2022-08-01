@@ -144,7 +144,7 @@ namespace Medical.Controllers
             {
                 Question = "掛號",
                 Answer = "目前我們採用線上和現場掛號\n"+
-                "<a href='/Reserve/ReserveList' class='reserve'>掛號連結</a>"
+                "<a href='/Reserve/ReserveList/' class='reserve'>掛號連結</a>"
             };
             var Aws2 = new DocJsonViewModel
             {
@@ -167,7 +167,9 @@ namespace Medical.Controllers
             var Aws5 = new DocJsonViewModel
             {
                 Question = "痠痛",
-                Answer = "是否伴隨頭暈頭痛?"
+                Answer = "是否過度、長時間、專注於電腦、手機、文件或書籍?\n" +
+                "閉眼放鬆十五分鐘，工作之餘起來走走、看向遠方，" +
+                "讓眼睛休息一下。若症狀持續數天，可以來漢克斯眼科預約掛號，檢查眼睛是否出問題。"
             };
             var Aws6 = new DocJsonViewModel
             {
@@ -189,6 +191,23 @@ namespace Medical.Controllers
                 Question = "該掛哪科",
                 Answer = "請描述一下您的症狀"
             };
+            var Aws10 = new DocJsonViewModel
+            {
+                Question = "乾眼症",
+                Answer = "是否有眼睛乾澀、畏光、溢淚、異物感、刺痛、張眼困難、眼睛癢、眼睛不適等，乾眼症的成因有百百種，" +
+                "若發生此症狀，建議找專業醫生治療，可以來漢克斯眼科預約掛號，檢查眼睛是否出問題。"
+            };
+            var Aws11 = new DocJsonViewModel
+            {
+                Question = "加入會員",
+                Answer = "加入會員能讓我們為您提供更多服務，" +
+                "<a href='/Login/Register' class='reserve'>歡迎加入</a>"
+            };
+            var Aws12 = new DocJsonViewModel
+            {
+                Question = "線上購物",
+                Answer = "<a href='/Product/ProductList' class='reserve'>漢克斯線上商城</a>"
+            };
             if (Qs.Contains(Aws1.Question))
                 return Json(Aws1);
             if (Qs.Contains(Aws2.Question))
@@ -207,6 +226,12 @@ namespace Medical.Controllers
                 return Json(Aws8);
             if (Qs.Contains(Aws9.Question))
                 return Json(Aws9);
+            if (Qs.Contains(Aws10.Question))
+                return Json(Aws10);
+            if (Qs.Contains(Aws11.Question))
+                return Json(Aws11);
+            if (Qs.Contains(Aws12.Question))
+                return Json(Aws12);
             else
                 return Json(Aws0);
         }
