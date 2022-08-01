@@ -303,14 +303,67 @@
             //console.log(members[0].email)
             //console.log(members[0].address)
             //console.log(members[0].phone)
-
+            //物件名稱大小寫會改變，要用console.log去抓
             members.forEach((CityName) => {
                 count++;
 
                 //========================================
                 loadGender(members[0].genderId, members[0].memberId);
-                console.log(members[0].genderId);
+                //console.log(members[0].genderId);
+              async function loadGender(gid,memid) {
+               const genderff = await fetch('@Url.Content("~/Admin/AdminMemberList/GetGenderName")' + `?gengen=${gid}`).then(response => response.json());
+                       let web = `${genderff[0]}`
+                       console.log(web);
+                       if (web == "undefined") {
+                           document.querySelector(`#gen${memid}`).innerHTML = "";
+                       }
+                       else
+                       document.querySelector(`#gen${memid}`).innerHTML = web;
+                }
                 //=======================================
+                loadCity(members[0].cityId, members[0].memberId);
+
+                async function loadCity(ctid,memid) {
+                    const ctct = await fetch('@Url.Content("~/Admin/AdminMemberList/GetCityName")' + `?yourCityid=${ctid}`).then(response => response.json());
+                    let web = `${ctct[0]}`
+                       //console.log(web);
+                       if (web == "undefined") {
+                           document.querySelector(`#city${members[0].memberId}`).innerHTML = "";
+                       }
+                       else
+                           document.querySelector(`#city${members[0].memberId}`).innerHTML = web;
+                }
+                //地址不顯示為null=======================================
+                let addStr = "";  //要用let 不能用const
+                letAddressNotNull(members[0].address);
+                
+                function letAddressNotNull(add) {
+                    //console.log(add);
+                    if (add == null)
+                        addStr = "";
+                    else
+                        addStr = add;
+                }
+                //電話不顯示為null=======================================
+                let phoneStr = "";
+                letPhoneNotNull(members[0].phone);
+                function letPhoneNotNull(telphone) {
+                    if (telphone == null)
+                        phoneStr = "";
+                    else
+                        phoneStr = telphone;
+                }
+                //=================================================
+                let icCardStr = "";
+                letIcCardNotNull(members[0].icCardNo);
+                function letIcCardNotNull(card) {
+                    if (card == null)
+                        icCardStr = "";
+                    else
+                        icCardStr = card;
+                }
+                //=================================================
+                
                var date_value="";   //日期格式化部分，要避免null時預設值Thu Jan 01 1970 08:00:00 GMT+0800
                 if (members[0].birthDay != null) {
                     const date = new Date(members[0].birthDay);
@@ -345,19 +398,19 @@
 
                     </td>
                     <td>
-                        ${members[0].icCardNo}
+                        ${icCardStr}
                     </td>
                     <td>
-                        ${members[0].phone}
+                        ${phoneStr}
                     </td>
                    <td>
                         ${members[0].role}
                     </td>
-                        <td>
-                        ${members[0].cityId}
+                        <td id="city${members[0].memberId}">
+
                     </td>
                <td>
-                        ${members[0].address}
+                        ${addStr}
                     </td>
                     <td>
                         <a class = "btn btn-primary fas fa-edit" href="/Admin/AdminMemberList/Edit/${members[0].memberId}"></a>
@@ -369,15 +422,6 @@
 
         }
 
-                   async function loadGender(gid,memid) {
-               const genderff = await fetch('@Url.Content("~/Admin/AdminMemberList/GetGenderName")' + `?gengen=${gid}`).then(response => response.json());
-                       let web = `${genderff[0]}`
-                       console.log(web);
-                       if (web == "undefined") {
-                           document.querySelector(`#gen${memid}`).innerHTML = "";
-                       }
-                       else
-                       document.querySelector(`#gen${memid}`).innerHTML = web;
-                }
+
     </script>
 }

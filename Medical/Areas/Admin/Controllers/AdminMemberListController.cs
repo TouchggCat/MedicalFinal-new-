@@ -212,5 +212,14 @@ namespace Medical.Areas.Admin.Controllers
                        select b.Gender1;
             return Json(gend);
         }
+
+        public IActionResult GetCityName(int yourCityid)
+        {
+            var ctjson = from a in _context.Members
+                       join b in _context.Cities on a.CityId equals b.CityId
+                       where b.CityId == yourCityid
+                       select b.CityName;
+            return Json(ctjson);
+        }
     }
 }
