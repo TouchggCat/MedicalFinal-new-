@@ -144,7 +144,7 @@ namespace Medical.Controllers
             {
                 Question = "掛號",
                 Answer = "目前我們採用線上和現場掛號\n"+
-                "<a href='/Reserve/ReserveList'>掛號連結</a>"
+                "<a href='/Reserve/ReserveList' class='reserve'>掛號連結</a>"
             };
             var Aws2 = new DocJsonViewModel
             {
