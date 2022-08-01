@@ -243,7 +243,7 @@ namespace Medical.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult AddToCart(CAddToCartViewModel AddToCartvModel)
         {
-            CMemberAdminViewModel vm = null;
+            //CMemberAdminViewModel vm = null;
 
 
             bool isSuccess = true;

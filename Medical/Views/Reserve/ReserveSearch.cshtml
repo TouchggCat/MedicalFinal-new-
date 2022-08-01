@@ -61,19 +61,37 @@
                         <tbody>
                             @{
                                 string sign = "";
+                                string h = "";
 
                                 foreach (var item in Model)
                                 {
-                                    if (item.state == "完成看診") sign = "success";
-                                    if (item.state == "取消掛號") sign = "secondary";
-                                    if (item.state == "未報到") sign = "secondary";
-                                    if (item.state == "掛號成功") sign = "success";
+                                    if (item.state == "完成看診")
+                                    {
+
+                                        sign = "success";
+                                        h = "hidden=hidden";
+                                    }
+                                    if (item.state == "取消掛號")
+                                    {
+                                        h = "";
+                                        sign = "secondary";
+                                    }
+                                    if (item.state == "未報到")
+                                    {
+                                        sign = "secondary";
+                                        h = "";
+                                    }
+                                    if (item.state == "掛號成功")
+                                    {
+                                        sign = "success";
+                                        h = "";
+                                    }
 
 
 
                                     <tr class="odd">
                                         <td class="dtr-control sorting_1" tabindex="0">
-                                            <img class="img-fluid rounded-top mb-2" src="/images/@item.PicturePath" alt="" style="width:200px" />
+                                            <img class="img-fluid rounded-top mb-2" src="/images/@item.PicturePath" alt="" style="width:100px" />
                                             @item.docname
                                         </td>
                                         <td>@item.DateTime @item.PeriodDetail</td>
@@ -82,7 +100,9 @@
                                         <td>線上</td>
                                         <td><span class="badge bg-@sign">@item.state</span></td>
                                         <td>
-                                            @Html.ActionLink("取消預約", "Delete", "Reserve", new { id = item.reserveid }, new { onclick = "return confirm('是否確定取消預約? ')", @class = "btn btn-primary" })
+                                            <div @h>
+                                                @Html.ActionLink("取消預約", "Delete", "Reserve", new { id = item.reserveid }, new { onclick = "return confirm('是否確定取消預約? ')", @class = "btn btn-primary" })
+                                            </div>                                           
                                         </td>
                                     </tr>
                                 }

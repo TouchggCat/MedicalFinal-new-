@@ -19,10 +19,10 @@ namespace Medical.ViewModel
         public int clinicid { get; set; }
                                                                                                                                              
         //得到預約的ID
-        public int? reserveid { get { return _context.Reserves.FirstOrDefault(n => n.ClinicDetailId== clinicid).ReserveId; } }
+        public int? reserveid { get { return _context.Reserves.FirstOrDefault(n => n.ClinicDetailId== clinicid && n.MemberId==memberid).ReserveId; } }
         //得到狀態ID
-        public int? stateid { get { return _context.Reserves.FirstOrDefault(n => n.ClinicDetailId == clinicid).State; } }
-        public string state { get { return _context.States.FirstOrDefault(n => n.StateId==stateid).State1; } }
+        public int? stateid { get { return _context.Reserves.FirstOrDefault(n => n.ClinicDetailId == clinicid && n.MemberId == memberid).State; } }
+        public string state { get { return _context.States.FirstOrDefault(n => n.StateId==stateid ).State1; } }
 
         //得到專科ID
         public int? depid { get { return _context.ClinicDetails.FirstOrDefault(n => n.ClinicDetailId == clinicid).DepartmentId; } }
