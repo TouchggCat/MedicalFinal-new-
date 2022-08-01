@@ -94,7 +94,7 @@
                 </button>
             </div>
             <div style="width:80px">
-                <a asp-action="ForgetPassword" style="color: mediumslateblue" >忘記密碼?</a>
+                <a asp-action="ForgetPassword" style="color: mediumslateblue">忘記密碼?</a>
             </div>
             <hr>
             <!-- <p>Don't have an account!</p>  -->
@@ -106,6 +106,8 @@
 
             <input type="button" value="CustomerDemo" class="btn btn-primary btn-block" id="cusDemo" />
             <br>
+            <br>
+            <input type="button" value="ForgotDemo" class="btn btn-primary btn-block" id="fgotDemo" />
             <br>
             <input type="hidden" asp-for="reserve" value="reserve" class="btn btn-primary btn-block" id="cusDemo" />
         </div>
@@ -139,7 +141,10 @@
             $("#email").val("c121474790@gmail.com");
             $("#pass").val("sgsdg5049")
         })
+        $("#fgotDemo").click(() => {
+            $("#email").val("giraffegod@gmail.com");
 
+        })
 
         //密碼錯誤顯示
         $("#pass").blur(function () {

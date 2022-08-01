@@ -160,6 +160,26 @@ namespace Medical.Areas.Admin.Controllers
         }
 
         //=================for Ajax API
+        public IActionResult keywordnew(string thekey)
+        {
+            var keymem = _context.Members.Where(t => t.MemberName.Contains(thekey) ||
+                          t.Email.Contains(thekey) || t.Phone.Contains(thekey)).Select(n => n).OrderBy(t => t.MemberId);
+            return Json(keymem);
+
+            //var citiesMem = _context.Members.Where(d => d.MemberId == memid).Distinct().OrderBy(d => d.MemberId).Select(s => s);
+            //return Json(citiesMem);
+        }
+
+        public IActionResult loadnewTbody(int memid)
+        {
+                //City cityselect = _context.Cities.FirstOrDefault(n => n.CityName == citiName);
+                //var citiesMem = _context.Members.Where(d => d.CityId == cityselect.CityId).Distinct().OrderBy(d => d.CityId).Select(a => a);
+                var Mem = _context.Members.Where(d => d.MemberId == memid).OrderBy(d => d.MemberId).Select(s => s);
+                return Json(Mem);
+            
+        }
+
+        //====================================
         public IActionResult keyword(string thekey)
         {
             var keymem = _context.Members.Where(t => t.MemberName.Contains(thekey) ||
