@@ -290,18 +290,19 @@
 @section scripts
 {
     <script>
+        /////進入網頁查詢
         const submit = document.querySelector('#submit')
-
-         const id = @ViewBag.id
-        console.log(id)
+        const id = @ViewBag.id
         load(id);
-
         async function load(id) {
             const dc = await fetch('@Url.Content("~/doctor/getDocName")' + `?id=${id}`).then(response => response.json());
             console.log(dc[0])
             document.getElementById('doc').value = dc[0]
             submit.click();
         }
+        /////
+
+
         let table;
         var result = false; //是否勾選同意協議
         //查詢預約

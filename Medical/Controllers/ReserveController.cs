@@ -45,9 +45,7 @@ namespace Medical.Controllers
                 ViewBag.id = id;
             else
                 ViewBag.id = 1;
-
             return View(datas);
-
         }
         
 
