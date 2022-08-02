@@ -11,16 +11,18 @@
 <div class="col-md-3">
     <div>
         <div class="col-xs-4">
-            <input type="text" class="form-control" placeholder="搜尋" id="searchingKey"/>
+            <input type="text" class="form-control" placeholder="搜尋" id="searchingKey" oninput="myInputFunction()"/>
         </div>
 
-        <a>權限篩選</a>
+       
 
         @*下拉選單篩選，method="post" action="AdminMemberList"*@
         <form name="Role" method="post" action="AdminMemberList">
             <div class="form-group">
-                <select asp-for="Role">
-                    <option value="2">權限篩選</option>
+                <a>權限篩選:</a>
+                <select asp-for="Role" id="roleSelect">
+                    @*-1時回controller搜全部會員*@
+                    <option value="-1">全部會員</option>
                     @foreach (var item in Model.roleTypes)
                     {
                         <option value="@item.Role">@item.RoleName</option>
@@ -51,9 +53,9 @@
             <th>
                 使用者ID
             </th>
-            <th>
+            @*<th>
                 密碼
-            </th>
+            </th>*@
             <th>
                 生日
             </th>
@@ -125,9 +127,9 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.IdentityId)
                     </td>
-                    <td>
+                    @*<td>
                         @Html.DisplayFor(modelItem => item.Password)
-                    </td>
+                    </td>*@
                     <td>
                         @happyBD
                     </td>
@@ -164,26 +166,53 @@
 
 @section Scripts{
     <script>
-        //使用keyup字串輸進去後觸發
-        $("#searchingKey").keyup(function () {
-           //檢查空字串要3個等號===
-            if ($(this).val() === null || $(this).val() === "") {
-                console.log("hihi");
-                //$("#tbd").removeProp("hidden");
+
+        //使用keyup字串輸進去後會觸發2次
+        //!!!!!!!改用oninput="myInputFunction()
+        //$("#searchingKey").keyup(function () {
+
+        function myInputFunction() {
+           // var inputkey = $("#searchingKey").val();
+           ////檢查空字串要3個等號===
+           // if (inputkey === null || inputkey=== "") {
+           //     console.log("空值觸發");
+           //     $("#tbd").prop('hidden', false);
+           //     //要做一個清空tbody的動作，把查詢表格刪掉
+           //     $("#newtbd").empty();
+           // }
+           // else {
+           //     console.log("myInputFunction觸發")
+           //     $("#newtbd").empty();  //多打一個字就先清空避免重複
+           //     count = 0;  //重新歸0避免累加
+           //     $("#tbd").prop("hidden", "hidden");
+           //     console.log(inputkey);
+           //     keywordnew(inputkey);
+           // }
+        };
+
+        //用change事件不會有延遲問題
+        $("#searchingKey").change(function () {
+            var inputkey = $("#searchingKey").val();
+            //檢查空字串要3個等號===
+            if (inputkey === null || inputkey === "") {
+                console.log("空值觸發");
                 $("#tbd").prop('hidden', false);
                 //要做一個清空tbody的動作，把查詢表格刪掉
                 $("#newtbd").empty();
             }
             else {
+                console.log("myInputFunction觸發")
+                $("#newtbd").empty();  //輸入完清空避免重複
+                count = 0;  //序號計數重新歸0避免累加
                 $("#tbd").prop("hidden", "hidden");
-                console.log($(this).val());
-                keywordnew($(this).val());
+                console.log(inputkey);
+                keywordnew(inputkey);
             }
         });
         async function keywordnew(keystring) {
              //console.log(keystring);
              const kw = await fetch('@Url.Content("~/Admin/AdminMemberList/keywordnew")' + `?thekey=${keystring}`).then(response => response.json());
-            console.log(kw);
+            //console.log(kw);
             for (var i = 0; i < kw.length; i++) {
                 console.log(kw[i].memberId);
                 loadnewTbody(kw[i].memberId);
@@ -191,19 +220,100 @@
         }
         var count = 0;
         async function loadnewTbody(menID) {
-            count++;
+
             console.log("===================");
-            console.log(menID);
+            $("#newtbd").empty();  //再清一次避免延遲重複(不完全)
+            //console.log(menID);
             const members = await fetch('@Url.Content("~/Admin/AdminMemberList/loadnewTbody")' + `?memid=${menID}`).then(response => response.json());
-            console.log(members);   
+            console.log(members);
             //console.log(members[0]);
             //console.log(members[0].memberName);
             //console.log(members[0].email)
             //console.log(members[0].address)
             //console.log(members[0].phone)
             //物件名稱大小寫會改變，要用console.log去抓
+            //顯示權限Name======================================
+            loadRole(members[0].role, members[0].memberId);
+            async function loadRole(roleid,memid) {
+                const rorero = await fetch('@Url.Content("~/Admin/AdminMemberList/GetRoleName")' + `?roro=${roleid}`).then(response => response.json());
+                let web = `${rorero[0]}`
+                       //console.log(web);
+                       if (web == "undefined") {
+                           document.querySelector(`#ro${memid}`).innerHTML = "";
+                       }
+                       else
+                       document.querySelector(`#ro${memid}`).innerHTML = web;
+                }
+            //顯示性別Name======================================
+                loadGender(members[0].genderId, members[0].memberId);
+                //console.log(members[0].genderId);
+              async function loadGender(gid,memid) {
+               const genderff = await fetch('@Url.Content("~/Admin/AdminMemberList/GetGenderName")' + `?gengen=${gid}`).then(response => response.json());
+                       let web = `${genderff[0]}`
+                       //console.log(web);
+                       if (web == "undefined") {
+                           document.querySelector(`#gen${memid}`).innerHTML = "";
+                       }
+                       else
+                       document.querySelector(`#gen${memid}`).innerHTML = web;
+                }
+                //顯示CityName=====================================
+                loadCity(members[0].cityId, members[0].memberId);
+
+                async function loadCity(ctid,memid) {
+                    const ctct = await fetch('@Url.Content("~/Admin/AdminMemberList/GetCityName")' + `?yourCityid=${ctid}`).then(response => response.json());
+                    let web = `${ctct[0]}`
+                       //console.log(web);
+                       if (web == "undefined") {
+                           document.querySelector(`#city${members[0].memberId}`).innerHTML = "";
+                       }
+                       else
+                           document.querySelector(`#city${members[0].memberId}`).innerHTML = web;
+                }
+            //地址不顯示為null=======================================
+            let addStr = "";  //要用let 不能用const
+            letAddressNotNull(members[0].address);
+
+            function letAddressNotNull(add) {
+                //console.log(add);
+                if (add == null)
+                    addStr = "";
+                else
+                    addStr = add;
+            }
+            //電話不顯示為null=======================================
+            let phoneStr = "";
+            letPhoneNotNull(members[0].phone);
+            function letPhoneNotNull(telphone) {
+                if (telphone == null)
+                    phoneStr = "";
+                else
+                    phoneStr = telphone;
+            }
+            //健保卡不顯示為null=========================================
+            let icCardStr = "";
+            letIcCardNotNull(members[0].icCardNo);
+            function letIcCardNotNull(card) {
+                if (card == null)
+                    icCardStr = "";
+                else
+                    icCardStr = card;
+            }
+            //=================================================
+
+            var date_value = "";   //日期格式化部分，要避免null時預設值Thu Jan 01 1970 08:00:00 GMT+0800
+            if (members[0].birthDay != null) {
+                const date = new Date(members[0].birthDay);
+                date_value = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+                //console.log(date);
+                //console.log(date_value);
+            }
+            else
+                date_value = "";
             //===================================================
-            web = `<tr id="${members[0].memberId}Div">
+            members.forEach(() => {
+                count++;
+                web = `<tr id="${members[0].memberId}Div">
                     <td>
                         ${count}
                     </td>
@@ -217,37 +327,35 @@
                     <td>
                         ${members[0].identityId}
                     </td>
-                 <td>
-                        ${members[0].password}
-                    </td>
                    <td>
-                        
+                         ${date_value}
                     </td>
                     <td id="gen${members[0].memberId}">
 
                     </td>
                     <td>
-                       
+                        ${icCardStr}
                     </td>
                     <td>
-                       
+                          ${phoneStr}
                     </td>
-                   <td>
-                        ${members[0].role}
-                    </td>
-                        <td id="city${members[0].memberId}">
+                   <td id="ro${members[0].memberId}">
 
                     </td>
-               <td>
-                      
+                    <td id="city${members[0].memberId}">
+
+                    </td>
+                   <td>
+                       ${addStr}
                     </td>
                     <td>
                         <a class = "fas fa-edit" href="/Admin/AdminMemberList/Edit/${members[0].memberId}"></a>
                         <a class = "fas fa-trash" onclick = "return confirm('確定刪除?')" href="/Admin/AdminMemberList/Delete/${members[0].memberId}"></a>
                     </td>
                 </tr>`
-            document.querySelector('#newtbd').innerHTML += web
-           }
+                document.querySelector('#newtbd').innerHTML += web;
+            })
+        }
 
     </script>
 }

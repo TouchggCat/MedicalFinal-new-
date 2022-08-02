@@ -25,7 +25,7 @@ namespace Medical.Areas.Admin.Controllers
             {
                 if (string.IsNullOrEmpty(keyVModel.txtKeyword))    //沒關鍵字時
                 {
-                    if (Role!=null)   //使用下拉選單時
+                    if (Role!=null&&Role!=-1)   //使用下拉選單時
                     {
                         CMemberViewModel memVModel = new CMemberViewModel();
                    
@@ -180,28 +180,28 @@ namespace Medical.Areas.Admin.Controllers
         }
 
         //====================================
-        public IActionResult keyword(string thekey)
-        {
-            var keymem = _context.Members.Where(t => t.MemberName.Contains(thekey) ||
-                          t.Email.Contains(thekey) || t.Phone.Contains(thekey)).Select(n=>n).OrderBy(t=>t.MemberId);
-            return Json(keymem);
+        //public IActionResult keyword(string thekey)
+        //{
+        //    var keymem = _context.Members.Where(t => t.MemberName.Contains(thekey) ||
+        //                  t.Email.Contains(thekey) || t.Phone.Contains(thekey)).Select(n=>n).OrderBy(t=>t.MemberId);
+        //    return Json(keymem);
 
-            //var citiesMem = _context.Members.Where(d => d.MemberId == memid).Distinct().OrderBy(d => d.MemberId).Select(s => s);
-            //return Json(citiesMem);
-        }
-        public IActionResult Role()
-        {
-            var roles = _context.RoleTypes.OrderBy(a => a.Role).Select(a => a.RoleName).Distinct();
-            return Json(roles);
-        }
+        //    //var citiesMem = _context.Members.Where(d => d.MemberId == memid).Distinct().OrderBy(d => d.MemberId).Select(s => s);
+        //    //return Json(citiesMem);
+        //}
+        //public IActionResult Role()
+        //{
+        //    var roles = _context.RoleTypes.OrderBy(a => a.Role).Select(a => a.RoleName).Distinct();
+        //    return Json(roles);
+        //}
 
-        public IActionResult City(string roName)
-        {
-            //先改成顯示name
-            RoleType ro = _context.RoleTypes.FirstOrDefault(b => b.RoleName == roName);
-            var memid = _context.Members.Where(d => d.Role == ro.Role).OrderBy(a => a.Role).Select(b => b.MemberId).Distinct();  //用ID才是唯一值
-            return Json(memid);
-        }
+        //public IActionResult City(string roName)
+        //{
+        //    //先改成顯示name
+        //    RoleType ro = _context.RoleTypes.FirstOrDefault(b => b.RoleName == roName);
+        //    var memid = _context.Members.Where(d => d.Role == ro.Role).OrderBy(a => a.Role).Select(b => b.MemberId).Distinct();  //用ID才是唯一值
+        //    return Json(memid);
+        //}
         public IActionResult CityWeb(int memid)
         {
             if (memid == null)
@@ -248,6 +248,15 @@ namespace Medical.Areas.Admin.Controllers
                        where b.CityId == yourCityid
                        select b.CityName;
             return Json(ctjson);
+        }
+
+        public IActionResult GetRoleName(int roro)
+        {
+            var rolejson = from a in _context.Members
+                         join b in _context.RoleTypes on a.Role equals b.Role
+                         where b.Role == roro
+                         select b.RoleName;
+            return Json(rolejson);
         }
     }
 }
