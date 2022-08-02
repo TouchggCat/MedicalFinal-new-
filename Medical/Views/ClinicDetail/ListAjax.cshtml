@@ -38,20 +38,62 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr id="morning">
+                            <tr class="period1">
                                 <th>
                                     上午<br />08:00<br />|<br />12:00
                                 </th>
+                                <td class="day1">
+                                </td>
+                                <td class="day2">
+                                </td>
+                                <td class="day3">
+                                </td>
+                                <td class="day4">
+                                </td>
+                                <td class="day5">
+                                </td>
+                                <td class="day6">
+                                </td>
+                                <td class="day0">
+                                </td>
                             </tr>
-                            <tr id="afternoon">
+                            <tr class="period2">
                                 <th>
                                     下午<br />14:00<br />|<br />17:30
                                 </th>
+                                <td class="day1">
+                                </td>
+                                <td class="day2">
+                                </td>
+                                <td class="day3">
+                                </td>
+                                <td class="day4">
+                                </td>
+                                <td class="day5">
+                                </td>
+                                <td class="day6">
+                                </td>
+                                <td class="day0">
+                                </td>
                             </tr>
-                            <tr id="night">
+                            <tr class="period3">
                                 <th>
                                     晚上<br />17:30<br />|<br />20:30
                                 </th>
+                                <td class="day1">
+                                </td>
+                                <td class="day2">
+                                </td>
+                                <td class="day3">
+                                </td>
+                                <td class="day4">
+                                </td>
+                                <td class="day5">
+                                </td>
+                                <td class="day6">
+                                </td>
+                                <td class="day0">
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -62,18 +104,23 @@
 </div>
 @section Scripts{ 
     <script>
+        loadClinicDetail(1)
+        loadClinicDetail(2)
+        loadClinicDetail(3)
         async function loadClinicDetail(period) {
-            dcName=null
             const details = await fetch('@Url.Content("~/ClinicDetail/loadClinicDetail")' + `?period=${period}`).then(response => response.json());
             console.log(details)
-            details.forEach((clinicdetailId) => {
-                td = `<td>
-                        <a>
-                          <b>${DoctorName}</b>
-                        </a>
-                      </td>`
-                document.getElementById("morning").innerHTML+=td
-            })
+            if (details.length != 0) {
+                for (let i = 0; i < details.length; i++) {
+                    td = ` <a href="/reserve/reservelist">
+                          <b>${details[i].doctorName}</b>
+                        </a><br />`
+
+                    document.querySelector(`.period${period} .day${new Date(details[i].clinicDate).getDay()}`).innerHTML += td;
+                }
+            }
+            else
+                return;
     }
     </script>
 }

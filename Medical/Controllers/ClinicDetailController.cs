@@ -86,7 +86,7 @@ namespace Medical.Controllers
                               join d in _context.Doctors on c.DoctorId equals d.DoctorId
                               join p in _context.Periods on c.PeriodId equals p.PeriodId
                               where c.PeriodId == period
-                          select new { c.ClinicDetailId,d.DoctorName, p.PeriodDetail };
+                          select new { c.ClinicDetailId,d.DoctorName, p.PeriodDetail,c.ClinicDate};
             return Json(details);
         }
 
