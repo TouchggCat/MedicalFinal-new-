@@ -79,12 +79,17 @@ namespace Medical.Controllers
         {
             var trt = from a in _db.Treatments
                       join b in _db.TreatmentDetails on a.TreatmentDetailId equals b.TreatmentDetailId
+                      join c in _db.Doctors on a.DoctorId equals c.DoctorId
                       where a.DoctorId == _db.Doctors.FirstOrDefault(a => a.DoctorName == doctorName).DoctorId
-                      select b.TreatmentDetail1;
+                      select new { b.TreatmentDetail1,c.DoctorId};
             return Json(trt);
         }
 
-
+        public IActionResult getDocName(int? id)
+        {
+            var dc = _db.Doctors.Where(d => d.DoctorId == id).Select(d => d.DoctorName);
+            return Json(dc);
+        }
 
         //前往醫生詳細資料
         public IActionResult Detail(int? id)

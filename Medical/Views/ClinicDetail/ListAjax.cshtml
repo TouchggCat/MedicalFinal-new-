@@ -112,7 +112,7 @@
             console.log(details)
             if (details.length != 0) {
                 for (let i = 0; i < details.length; i++) {
-                    td = ` <a href="/reserve/reservelist">
+                    td = ` <a href="/doctor/detail?id=${details[i].doctorId}">
                           <b>${details[i].doctorName}</b>
                         </a><br />`
 

@@ -28,7 +28,7 @@ namespace Medical.Controllers
         }
 
         // 得到篩選表資料(醫生 專科 門診日期)
-        public IActionResult ReserveList()
+        public IActionResult ReserveList(int? id)
         {
 
             CReserveforShowViewModel datas = null;
@@ -41,11 +41,16 @@ namespace Medical.Controllers
                 periodlist = _context.Periods.ToList(),
                 clinicRoomlist = _context.ClinicRooms.ToList()
             };
+            if (id != null)
+                ViewBag.id = id;
+            else
+                ViewBag.id = 1;
 
             return View(datas);
 
         }
         
+
         //條件查詢門診
         public IActionResult ReserveResult(reserveViewModel result)
         {
@@ -108,6 +113,7 @@ namespace Medical.Controllers
                 member = vm.MemberId;
             }
 
+            
 
                 List<ClinicSearch> list = new List<ClinicSearch>();
             foreach (var item in id.OrderBy(n=>n.ClinicDate))
