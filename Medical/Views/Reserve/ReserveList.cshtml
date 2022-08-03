@@ -38,9 +38,150 @@
 </div>
 <!-- Hero End -->
 <hr />
+
+<!-- 查詢預約 Start -->
+<div class="container-fluid bg-primary bg-appointment mb-5 wow fadeInUp" data-wow-delay="0.1s" style="margin-top: 90px;">
+    <div class="container">
+        <div class="row gx-5">
+            <div class="col-lg-6 py-5">
+                <div class="py-5">
+                    <h1 class="display-5 text-white mb-4">漢克斯眼科|近視控制的專家</h1>
+                    <ol>
+                        <li class=" text-white ">若有其他眼科門診需求，請現場掛號或電話詢問離您最近的門診單位，謝謝!</li>
+                        <li class=" text-white ">網路預約恕不接受當日預約，請於1天前預約，以便安排！</li>
+                        <li class=" text-white ">因檢查時間較長，請於門診時間結束前1小時到達，術前檢查請勿自行開車或騎車前往！</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="appointment-form h-100 d-flex flex-column justify-content-center text-center p-5 wow zoomIn" data-wow-delay="0.6s">
+                    <h1 class="text-white mb-4">線上預約</h1>
+                    <form>
+                        <div class="row g-3">
+                            <div class="col-12 col-sm-6">
+                                <select id="dep" class="form-select bg-light border-0" style="height: 55px;">
+                                    <option selected>選擇科別</option>
+                                    @foreach (var item in Model.departmentList)
+                                    {
+                                        <option name="@item.DeptName" value="@item.DeptName">@item.DeptName</option>
+
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <select id="doc" class="form-select bg-light border-0" style="height: 55px;">
+                                    <option selected>選擇醫生</option>
+                                    @foreach (var item in Model.doctorsList)
+                                    {
+                                        <option name="@item.DoctorName" value="@item.DoctorName">@item.DoctorName</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <input id="date" type="date" name="txtdate" class="form-control bg-light border-0" placeholder="選擇日期" style="height: 55px;">
+                            </div>
+                            <div class="col-12">
+                                <button id="submit" class="btn btn-dark w-100 py-3" data-bs-toggle="modal" data-bs-target="#exampleModa2" type="submit" >查詢門診</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 查詢預約 End -->
+<!-- 跳出提示Modal -->
+<div class="modal fade" id="exampleModa2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">注意事項!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ol style="padding-left:30px;list-style:disc;margin-top:15px;">
+                    <li>預約完成後，將由諮詢專員於1~2個工作天內電話與您聯繫。</li>
+                    <li style="color:#f00">預約諮詢時間以諮詢專員電話聯繫為主。</li>
+                    <li>欲預約3天內的諮詢檢查，建議電話洽詢(02-2431123456)。</li>
+                </ol>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">確定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@*結果顯現*@
+<div class="card">
+    <div class="card-header">
+        <h3 id="title" class="card-title">查詢結果</h3>
+    </div>
+    <div class="card-body">
+        <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+            <div class="row">
+                <div class="col-sm-12">
+                    <table id="example1" class="table table-bordered table-striped" aria-describedby="example1_info">
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@*結果顯現結束*@
+
+
+@*進入預約畫面*@
+<!-- Modal -->
+<div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">預約</h5>
+                <input type="hidden" id="hiddenID" />
+                <input type="hidden" id="hiddenID2" />
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="card-body pt-0">
+                    <div class="row">
+                        <div id="re" class="col-7">
+                            <h1>確認預約</h1>
+
+                        </div>
+                        <div class="col-5 text-center" id="docimage">
+                            @*<img src="../../dist/img/user1-128x128.jpg" alt="user-avatar" class="img-circle img-fluid">*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="informationBox" class="Personal_informationBox" style="background: none;">
+                <input type="checkbox" name="use_Personal_information" id="use_Personal_information" value="1">
+                <label for="use_Personal_information">我同意「漢克斯智能眼科診所」使用本人之個人資料，做為預約資訊之提供、提升服務品質及客戶關懷使用。</label>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModa3">
+                    隱私權保護政策
+                </button>
+                <span id="txtPersonal_informationMsg" class="txtMsg"></span>
+
+            </div>
+            <div class="modal-footer">
+                <button id="out" type="button" class="btn btn-secondary" data-bs-dismiss="modal">退出</button>
+                <button id="startReserve" type="button" class="btn btn-primary" @*disabled="disabled"*@>送出預約</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!-- 隱私權保護政策Modal -->
 <div class="modal fade" id="exampleModa3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog-scrollable">
+    <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">隱私權保護政策</h5>
@@ -138,166 +279,10 @@
                     若您對於本隱私權政策有任何疑問，請與個人資料管理責任者聯絡。
                 </p>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
         </div>
     </div>
 </div>
-
-
-
-
-<!-- 查詢預約 Start -->
-<div class="container-fluid bg-primary bg-appointment mb-5 wow fadeInUp" data-wow-delay="0.1s" style="margin-top: 90px;">
-    <div class="container">
-        <div class="row gx-5">
-            <div class="col-lg-6 py-5">
-                <div class="py-5">
-                    <h1 class="display-5 text-white mb-4">漢克斯眼科|近視控制的專家</h1>
-                    <ol>
-                        <li class=" text-white ">若有其他眼科門診需求，請現場掛號或電話詢問離您最近的門診單位，謝謝!</li>
-                        <li class=" text-white ">網路預約恕不接受當日預約，請於1天前預約，以便安排！</li>
-                        <li class=" text-white ">因檢查時間較長，請於門診時間結束前1小時到達，術前檢查請勿自行開車或騎車前往！</li>
-                    </ol>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="appointment-form h-100 d-flex flex-column justify-content-center text-center p-5 wow zoomIn" data-wow-delay="0.6s">
-                    <h1 class="text-white mb-4">線上預約</h1>
-                    <form>
-                        <div class="row g-3">
-                            <div class="col-12 col-sm-6">
-                                <select id="dep" class="form-select bg-light border-0" style="height: 55px;">
-                                    <option selected>選擇科別</option>
-                                    @foreach (var item in Model.departmentList)
-                                    {
-                                        <option name="@item.DeptName" value="@item.DeptName">@item.DeptName</option>
-
-                                    }
-                                </select>
-                            </div>
-                            <div class="col-12 col-sm-6">
-                                <select id="doc" class="form-select bg-light border-0" style="height: 55px;">
-                                    <option selected>選擇醫生</option>
-                                    @foreach (var item in Model.doctorsList)
-                                    {
-                                        <option name="@item.DoctorName" value="@item.DoctorName">@item.DoctorName</option>
-                                    }
-                                </select>
-                            </div>
-                            <div class="col-12 col-sm-6">
-                                <input id="date" type="date" name="txtdate" class="form-control bg-light border-0" placeholder="選擇日期" style="height: 55px;">
-                            </div>
-                            <div class="col-12">
-                                <button id="submit" class="btn btn-dark w-100 py-3" data-bs-toggle="modal" data-bs-target="#exampleModa2" type="submit">查詢門診</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- 查詢預約 End -->
-<!-- 跳出提示Modal -->
-<div class="modal fade" id="exampleModa2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">注意事項!</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <ol style="padding-left:30px;list-style:disc;margin-top:15px;">
-                    <li>預約完成後，將由諮詢專員於1~2個工作天內電話與您聯繫。</li>
-                    <li style="color:#f00">預約諮詢時間以諮詢專員電話聯繫為主。</li>
-                    <li>欲預約3天內的諮詢檢查，建議電話洽詢(02-2431123456)。</li>
-                </ol>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">確定</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-@*結果顯現*@
-<div class="card">
-    <div class="card-header">
-        <h3 id="title" class="card-title">查詢結果</h3>
-    </div>
-    <div class="card-body">
-        <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
-            <div class="row">
-                <div class="col-sm-12">
-                    <table id="example1" class="table table-bordered table-striped" aria-describedby="example1_info">
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-@*結果顯現結束*@
-
-
-
-
-@*進入預約畫面*@
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">預約</h5>
-                <input type="hidden" id="hiddenID" />
-                <input type="hidden" id="hiddenID2" />
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="card-body pt-0">
-                    <div class="row">
-                        <div id="re" class="col-7">
-                            <h1>確認預約</h1>
-
-                        </div>
-                        <div class="col-5 text-center" id="docimage">
-                            @*<img src="../../dist/img/user1-128x128.jpg" alt="user-avatar" class="img-circle img-fluid">*@
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="informationBox" class="Personal_informationBox" style="background: none;">
-                <input type="checkbox" name="use_Personal_information" id="use_Personal_information" value="1">
-                <label for="use_Personal_information">我同意「漢克斯智能眼科診所」使用本人之個人資料，做為預約資訊之提供、提升服務品質及客戶關懷使用。</label>
-                @*<button type="button" data-bs-toggle="modal" data-bs-target="#exampleModa3 "></button>*@@*<span id="praviteBtn" style="padding-left: 28px;">隱私權保護政策</span>*@
-                <span id="txtPersonal_informationMsg" class="txtMsg"></span>
-                
-            </div>
-            <div class="modal-footer">
-                <button id="out" type="button" class="btn btn-secondary" data-bs-dismiss="modal">退出</button>
-                <button id="startReserve" type="button" class="btn btn-primary" @*disabled="disabled"*@>送出預約</button>
-
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
+<!-- 隱私權保護政策結束Modal -->
 
 
 
@@ -305,10 +290,24 @@
 @section scripts
 {
     <script>
+        /////進入網頁查詢
+        const submit = document.querySelector('#submit')
+        const id = @ViewBag.id
+        if(id!=0)
+        load(id);
+        async function load(id) {
+            const dc = await fetch('@Url.Content("~/doctor/getDocName")' + `?id=${id}`).then(response => response.json());
+            console.log(dc[0])
+            document.getElementById('doc').value = dc[0]
+            submit.click();
+        }
+        /////
+
+
         let table;
         var result = false; //是否勾選同意協議
         //查詢預約
-        $('#submit').click(function (evt) {
+        $('#submit').click(function loderesult(evt) {
             evt.preventDefault();
             $("#example1").empty();
             const doc = $("#doc").val();
@@ -347,17 +346,38 @@
                         result += `<td>${item.clinicdate} ${item.period}</td>`
                         if (item.online == 0) {
                             result += `<td>剩餘:${item.sequence_number}位</td>`
-                            result += `<td><button type="button" id="GoReserve" name=${item.clinicDetailid} onclick="GoReserve()" class="btn btn-primary GoReserve" data-bs-toggle="modal" data-bs-target="#exampleModal">我要預約</button></td></tr></tbody>`
+                            result += `<td><button type="button" id="GoReserve" name=${item.clinicDetailid} onclick="GoReserve()" class="btn btn-primary GoReserve" data-bs-toggle="modal" data-bs-target="#exampleModal4">我要預約</button></td></tr></tbody>`
+
                         }
-                        else if (item.online == 1)
-                        {
-                            result += `<td>已逾期</td>`
-                            result += `<td><button type="button" id="GoReserve" disabled = "disabled" name=${item.clinicDetailid} onclick="GoReserve()" class="btn btn-denger GoReserve" data-bs-toggle="modal" data-bs-target="#exampleModal ">我要預約</button></td></tr></tbody>`
-                        }
-                        
+                        //else if (item.online == 1)
+                        //{
+                        //    result += `<td>已逾期</td>`
+                        //    result += `<td><button type="button" id="GoReserve" disabled = "disabled" name=${item.clinicDetailid} onclick="GoReserve()" class="btn btn-denger GoReserve" data-bs-toggle="modal" data-bs-target="#exampleModal ">我要預約</button></td></tr></tbody>`
+                        //    result += `<tfoot>
+                        //                    <tr>
+                        //                        <th rowspan="1" colspan="1">醫生姓名</th>
+                        //                        <th rowspan="1" colspan="1">治療科別</th>
+                        //                        <th rowspan="1" colspan="1">診間</th>
+                        //                        <th rowspan="1" colspan="1">開診日期</th>
+                        //                        <th rowspan="1" colspan="1">狀態</th>
+                        //                        <th rowspan="1" colspan="1"></th>
+                        //                    </tr>
+                        //                </tfoot>`
+                        //}
+
                         count++;
                         $("#title").html(`查詢結果共有${count}筆`);
                     })
+                    result += `<tfoot>
+                                            <tr>
+                                                <th rowspan="1" colspan="1">醫生姓名</th>
+                                                <th rowspan="1" colspan="1">治療科別</th>
+                                                <th rowspan="1" colspan="1">診間</th>
+                                                <th rowspan="1" colspan="1">開診日期</th>
+                                                <th rowspan="1" colspan="1">狀態</th>
+                                                <th rowspan="1" colspan="1"></th>
+                                            </tr>
+                                        </tfoot>`
 
                     $("#example1").html(result);
 
@@ -376,6 +396,7 @@
 
         })
 
+        /*loderesult();*/
 
         //setInterval($(function () {
         //    $("#example1").DataTable({
@@ -417,13 +438,16 @@
                              $("#hiddenID2").val(7 - item.sequence_number);
                              result1 += `<h1 class="lead" style="color:red;"><b>順位:${7 - item.sequence_number}</b></h1>`
                              result1 += `<h2 class="lead"><b>姓名:${item.membername}</b></h2>`
-                             result1 += `<h2 class="lead"><b>信箱:${item.email}</b></h2>`
+                             result1 += `<h2 class="lead"><b>信箱: ${item.email}</b></h2>`
                              result1 += `<h2 class="lead"><b>預約日期:${item.clinicdate}</b></h2>`
                              result1 += `<h2 class="lead"><b>時段: ${item.period}</b></h2>`
                              result1 += `<h2 class="lead"><b>科別:${item.department}</b></h2>`
                              /*result1 += `<h2 class="lead"><b>醫師:${item.doctor}</b></h2>`*/
                              /*result1 += `<h2 class="lead"><img src="/images/${item.picturePath}" alt="user-avatar" class="img-circle img-fluid"></h2>`*/
                              result1 += `<h2 class="lead"><b>備註</b></h2><textarea id="Remark_Patient" name="Remark_Patient" rows="5" cols="33"></textarea>`
+                             result1 +=`<div class="form-group">
+                                            <input type="button" value="Demo" class="btn btn-primary" onclick="demo()" />
+                                        </div>`
                          }
                          $("#re").html(result1);
 
@@ -491,7 +515,12 @@
             //    $("#informationBox").attr("style", "background:rgb(255, 249, 134)");
 
         })
+        function demo() {
+            $("#Remark_Patient").val("我是瞎子");
 
+
+
+        }
 
 
 

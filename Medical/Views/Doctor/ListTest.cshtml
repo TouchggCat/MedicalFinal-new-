@@ -247,10 +247,26 @@
             width: 100%;
         }
         .user a {
-            color: #06da9f
+            color: #ffc107;
         }
         #txtBox{
             height:38px;
+        }
+        .text .btn {
+            background-color: #ffffff;
+            color: #f08300;
+        }
+        .text .dep {
+            color: #b9ab47;
+        }
+        .text .doc {
+            color: #255bbd;
+        }
+        .trt {
+            color: #43e110;
+        }
+        .text .reserve {
+            color: #9b609f;
         }
     </style>
 
@@ -325,12 +341,14 @@
                 </div>
                 <div class="name">漢克斯</div>
                 </div>
-                <div class="text">
-                    <input class="btn btn-info" type="button" value="我要掛號" onclick="Register()">
-                    <input class="btn btn-info"type="button" value="交通指引" onclick="Register()">
-                    <input class="btn btn-info"type="button" value="衛教健保" onclick="Register()">
-                    <input class="btn btn-info"type="button" value="該掛哪科" onclick="WhichDep()">
-                </div>
+            <div class="text">
+                <input class="btn" type="button" value="加入會員" onclick="Register()">
+                <input class="btn" type="button" value="我要掛號" onclick="Register()">
+                </br><input class="btn" type="button" value="交通指引" onclick="Register()">
+                <input class="btn" type="button" value="衛教健保" onclick="Register()">
+                </br><input class="btn" type="button" value="該掛哪科" onclick="WhichDep()">
+                <input class="btn" type="button" value="線上購物" onclick="Register()">
+            </div>
             </div>
         @*<div class="user local">
                 <div class="avatar">
@@ -345,7 +363,9 @@
         <div class="inputText">
             <input id="txtBox" type="text" value="" />
             <input class="btn btn-primary" type="button" value="輸入" onclick="Insert()" />
-            <input class="btn btn-warning" type ="button" value="不知道問甚麼" onclick="QuestionButton()" />
+            <input class="btn btn-warning" type="button" value="不知道問甚麼" onclick="QuestionButton()" />
+            <input class="btn btn-sm" type="button" value="Demo" onclick="demo()" />
+            <input class="btn btn-sm" type="button" value="Demo2" onclick="demo2()" />
         </div>
     </div>
 </div>
@@ -370,7 +390,13 @@
 @section Scripts{
     <script> src = "https://code.jquery.com/jquery-3.4.1.min.js"</script>
     <script>
-
+        @*Demo*@
+        function demo(){
+            document.getElementById("txtBox").value="眼睛痠痛"
+        }
+        function demo2() {
+            document.getElementById("txtBox").value = "乾眼症"
+        }
     @*冠名*@
         function buttonLoad() {
             var id = $(event.target).attr("data-docid");
@@ -504,7 +530,7 @@
                                     <button type="button" id="buttonLoad" onclick="buttonLoad()" class="btn btn-primary buttonLoad" data-bs-toggle="modal" data-bs-target="#exampleModal" data-docid="${doctors[0].doctorId}">
                                     查看評價
                                     </button>
-                                    <a href="/Reserve/ReserveList" class="btn btn-outline-success detail">我要掛號</a>
+                                    <a href="/Reserve/ReserveList?id=${doctors[0].doctorId}" class="btn btn-outline-success detail">我要掛號</a>
                                 </div>
                             </div>
                         </div>
@@ -540,10 +566,12 @@
                     <div class="name">漢克斯</div>
                 </div>
                 <div class="text">
-                    <input class="btn btn-info" type="button" value="我要掛號" onclick="Register()">
-                    <input class="btn btn-info" type="button" value="交通指引" onclick="Register()">
-                    <input  class="btn btn-info"type="button" value="衛教健保" onclick="Register()">
-                    <input  class="btn btn-info"type="button" value="該掛哪科" onclick="WhichDep()">
+                    <input class="btn" type="button" value="加入會員" onclick="Register()">
+                    <input class="btn" type="button" value="我要掛號" onclick="Register()">
+                    </br><input class="btn" type="button" value="交通指引" onclick="Register()">
+                    <input  class="btn"type="button" value="衛教健保" onclick="Register()">
+                    </br><input  class="btn"type="button" value="該掛哪科" onclick="WhichDep()">
+                    <input class="btn" type="button" value="線上購物" onclick="Register()">
                 </div>`
             dialogue.innerHTML += Remotetext;
             dialogue.scrollTop = dialogue.scrollHeight;
@@ -595,7 +623,7 @@
                                 <div class="text">我們有服務的科目有\n`
             const deps = await fetch('@Url.Content("~/Admin/AdminDoctor/Dep")').then(response => response.json())
             deps.forEach((deptName)=>{
-                Remotetext +=`<input type="button" value="${deptName}" onclick="Docbtn()">`
+                Remotetext +=`</br><input type="button" class="btn dep" value="${deptName}" onclick="Docbtn()">`
             })
             Usertext = `<div class="user local">
                             <div class="avatar">
@@ -624,7 +652,7 @@
                                 </div>
                                 <div class="text">目前該科看診醫生有`
             docs.forEach((DoctorName) => {
-                Remotetext += `<input type="button" name="${docs[0].doctorId}" value="${DoctorName}" onclick="Trtbtn()">`
+                Remotetext += `</br><input class="btn doc" type="button" name="${docs[0].doctorId}" value="${DoctorName}" onclick="Trtbtn()">`
             })
             Usertext = `<div class="user local">
                             <div class="avatar">
@@ -649,14 +677,15 @@
                                     </div>
                                     <div class="name">漢克斯</div>
                                 </div>
-                                <div class="text">該醫生的治療項有\n`
+                                <div class="text">該醫生的治療項有\n<div class="trt">`
             dcID = $(event.target).attr("value");
             console.log(dcID)
             const trts = await fetch('@Url.Content("~/doctor/getTreatmentByName")' + `?doctorName=${dcID}`).then(response => response.json());
-            trts.forEach((TreatmentDetail1) => {
-                Remotetext += `<input type="button" value="${TreatmentDetail1}">`
-            })
-            Usertext = `<div class="user local">
+            console.log(trts)
+            for (let i = 0; i < trts.length; i++) {
+                Remotetext += `${trts[i].treatmentDetail1}</br>`
+            }
+            Usertext = `</div><div class="user local">
                             <div class="avatar">
                                 <div class="pic">
                                     <img src="https://picsum.photos/100/100?random=16" />
@@ -665,7 +694,7 @@
                             </div>
                             <div class="text">${dcID}</div>
                         </div>`;
-            Remotetext +=           `<input type="button" value="我要掛號" onclick="Register()">`+
+            Remotetext += `</br><a href="/Reserve/ReserveList?id=${trts[0].doctorId}" class="btn reserve">我要掛號</a>`+
                                 `</div>
                               </div>`
             dialogue.innerHTML += Remotetext;

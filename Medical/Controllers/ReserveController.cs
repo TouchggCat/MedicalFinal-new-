@@ -28,7 +28,7 @@ namespace Medical.Controllers
         }
 
         // 得到篩選表資料(醫生 專科 門診日期)
-        public IActionResult ReserveList()
+        public IActionResult ReserveList(int? id)
         {
 
             CReserveforShowViewModel datas = null;
@@ -41,11 +41,14 @@ namespace Medical.Controllers
                 periodlist = _context.Periods.ToList(),
                 clinicRoomlist = _context.ClinicRooms.ToList()
             };
-
+            if (id != null)
+                ViewBag.id = id;
+            else
+                ViewBag.id = 0;
             return View(datas);
-
         }
         
+
         //條件查詢門診
         public IActionResult ReserveResult(reserveViewModel result)
         {
@@ -108,6 +111,7 @@ namespace Medical.Controllers
                 member = vm.MemberId;
             }
 
+            
 
                 List<ClinicSearch> list = new List<ClinicSearch>();
             foreach (var item in id.OrderBy(n=>n.ClinicDate))
@@ -251,13 +255,14 @@ namespace Medical.Controllers
                 memberid = vm.MemberId;
 
                 ViewBag.name = _context.Reserves.Where(a => a.MemberId == memberid).Select(a => a.Member.MemberName).FirstOrDefault();
-                var id = _context.Reserves.Where(n => n.MemberId == memberid ).OrderByDescending(n=>n.ReserveDate ).Select(n => n.ClinicDetailId);
+                var id = _context.Reserves.Where(n => n.MemberId == memberid ).Select(n => n.ClinicDetailId);
                 List<ReservesSearch> list = new List<ReservesSearch>();
                 foreach (var item in id)
                 {
                     ReservesSearch t = new ReservesSearch(_context)
                     {
-                        clinicid = item
+                        clinicid = item,
+                        memberid=vm.MemberId
 
                     };
                     list.Add(t);

@@ -323,7 +323,7 @@ namespace Medical.Controllers
                     return RedirectToAction("Index", "Home", new { area = "Admin" });
 
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Login");
         }
         public IActionResult EditMember()
         {
@@ -341,7 +341,8 @@ namespace Medical.Controllers
                 memVModel.BirthDay = _context.Members.FirstOrDefault(n => n.MemberId == vm.MemberId).BirthDay;
                 memVModel.Address = _context.Members.FirstOrDefault(n => n.MemberId == vm.MemberId).Address;
                 memVModel.Phone = _context.Members.FirstOrDefault(n => n.MemberId == vm.MemberId).Phone;
-                memVModel.Password = _context.Members.FirstOrDefault(n => n.MemberId == vm.MemberId).Password;
+                //memVModel.Password = _context.Members.FirstOrDefault(n => n.MemberId == vm.MemberId).Password;
+                memVModel.Password = "";    //要做修改，安全性考量給空字串
                 memVModel.GenderId = _context.Members.FirstOrDefault(n => n.MemberId == vm.MemberId).GenderId;
                 memVModel.CityId = _context.Members.FirstOrDefault(n => n.MemberId == vm.MemberId).CityId;
                 memVModel.MemGender = _context.Genders.ToList();
@@ -415,6 +416,26 @@ namespace Medical.Controllers
             else
             {
                 return Content("請輸入密碼", "text/html", System.Text.Encoding.UTF8);
+            }
+        }
+
+        public IActionResult EditPwCheck(string pw, string mail)
+        {
+            if (!string.IsNullOrWhiteSpace(pw))
+            {
+                Member mem = _context.Members.Where(n => n.Password == pw && n.Email == mail).FirstOrDefault();
+                if (mem != null)
+                {
+                    return Content("true", "text/html", System.Text.Encoding.UTF8);
+                }
+                else
+                {
+                    return Content("false", "text/html", System.Text.Encoding.UTF8);
+                }
+            }
+            else
+            {
+                return Content("false", "text/html", System.Text.Encoding.UTF8);
             }
         }
     }

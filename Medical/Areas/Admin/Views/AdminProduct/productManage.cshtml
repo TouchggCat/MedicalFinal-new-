@@ -432,7 +432,11 @@
                 success: function (message) {
 
                     $(`span:contains(${productBeforeName})`).text(`${myProductName.val()}`);
-                    alert("修改成功");
+                    Swal.fire(
+                        '修改成功!',
+                        '產品資料已更改!',
+                        'success'
+                    )
                     productBeforeName = myProductName.val();
                 }
             })

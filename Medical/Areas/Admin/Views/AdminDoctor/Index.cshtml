@@ -134,7 +134,9 @@
             <th>
                 醫生姓名
             </th>
-
+            <th>
+                科別
+            </th>
             <th>
                 學歷
             </th>
@@ -309,7 +311,6 @@
 
         async function loadWebDoc(dcname) {
             const doctors = await fetch('@Url.Content("~/Admin/AdminDoctor/DocWeb")' + `?docName=${dcname}`).then(response => response.json());
-            console.log(doctors)
             count = 0
             doctors.forEach((DoctorName) => {
                 count++
@@ -320,7 +321,8 @@
                     <td>
                         ${doctors[0].doctorName}
                     </td>
-
+                    <td class="${doctors[0].doctorName}">
+                    </td>
                     <td>
                         ${doctors[0].education}
                     </td>
@@ -338,10 +340,15 @@
                     </td>
                 </tr>`
                 document.querySelector('.tbody').innerHTML += web
+                loadWebDep(doctors[0].doctorName)
             })
 
         }
-
+        async function loadWebDep(dcName) {
+            const dep = await fetch('@Url.Content("~/doctor/GetDepartment")' + `?dcName=${dcName}`).then(response => response.json());
+            web = dep[0]
+            document.querySelector(`.${dcName}`).innerHTML += web;
+        }
 
     </script>
 }
