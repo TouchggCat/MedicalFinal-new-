@@ -278,6 +278,7 @@ namespace Medical.Controllers
         {
             Reserve result = new Reserve();
             result = _context.Reserves.FirstOrDefault(a => a.ReserveId == id);
+            
             if (result != null)
             {
                 _context.Reserves.Remove(result);

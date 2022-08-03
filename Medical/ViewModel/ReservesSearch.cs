@@ -36,10 +36,10 @@ namespace Medical.ViewModel
 
         public string PeriodDetail { get { return _context.Periods.FirstOrDefault(n => n.PeriodId==periodid).PeriodDetail; } }
         //得到預約的會員備註
-        public string Remark_Patient { get { return _context.Reserves.FirstOrDefault(n => n.ClinicDetailId == clinicid).RemarkPatient; } }
+        public string Remark_Patient { get { return _context.Reserves.FirstOrDefault(n => n.ClinicDetailId == clinicid && n.MemberId == memberid).RemarkPatient; } }
 
         //得到預約順位
-        public int? sequence_number { get { return _context.Reserves.FirstOrDefault(n => n.ClinicDetailId == clinicid).SequenceNumber; } }
+        public int? sequence_number { get { return _context.Reserves.FirstOrDefault(n => n.ClinicDetailId == clinicid && n.MemberId == memberid).SequenceNumber; } }
 
         //得到專科名稱
         public string depname { get { return _context.Departments.FirstOrDefault(n => n.DepartmentId== depid).DeptName; } }
