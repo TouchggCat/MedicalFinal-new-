@@ -293,6 +293,7 @@
         /////進入網頁查詢
         const submit = document.querySelector('#submit')
         const id = @ViewBag.id
+        if(id!=0)
         load(id);
         async function load(id) {
             const dc = await fetch('@Url.Content("~/doctor/getDocName")' + `?id=${id}`).then(response => response.json());
