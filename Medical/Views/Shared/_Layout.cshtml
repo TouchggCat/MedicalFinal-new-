@@ -1,5 +1,4 @@
-﻿@*123456789*@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 @using Medical.Models;
 @using Medical.ViewModel;
 @using Microsoft.AspNetCore.Http;
@@ -12,10 +11,11 @@
     string logGoogle = "";
     string showID = "";
     int showID2 = 0;
+    int user = 0;
     string LoginbuttonValue = "";
     string LogoutbuttonValue = "";
     CLoginViewModel gg = null;
-    
+
     CMemberAdminViewModel vm = null;
     if (!Context.Session.Keys.Contains(CDictionary.SK_LOGINED_USE) && !Context.Session.Keys.Contains(CDictionary.SK_GOOGLELOGINED_USE))
     {
@@ -31,7 +31,7 @@
         showID = vm.MemberName;
         showID2 = vm.MemberId;
         LogoutbuttonValue = "登出";
-
+        user = (int)vm.Role;
     }
     else if (Context.Session.Keys.Contains(CDictionary.SK_GOOGLELOGINED_USE))
     {
@@ -39,6 +39,7 @@
         gg = JsonSerializer.Deserialize<CLoginViewModel>(logGoogle);
         showID = gg.txtName;
         LogoutbuttonValue = "登出";
+        
     }
 }
 <html lang="en">
@@ -132,7 +133,7 @@
                 <div class="navbar-nav ms-auto py-0">
                     <!-- 調整位置狀態 -->
                     <!-- 選單 -->
-                    
+
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">眼科資訊</a>
                         @*更改處，文章搜尋一起*@
@@ -145,11 +146,12 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">智能資訊</a>
                         @*有更改，獨立到上面*@
-                        <div class="dropdown-menu m-0">
-                            <a href="~/clinicdetail/listajax" class="dropdown-item">門診時間表</a>
-                            <a href="~/SignalR/index" class="dropdown-item">智能客服</a>
-                            <a href="~/QandA/List" class="dropdown-item">Q&A常見問題</a>
-                        </div>
+                    <div class="dropdown-menu m-0">
+                        <a href="~/clinicdetail/listajax" class="dropdown-item">門診時間表</a>
+                        @*取消這行*@
+                        @*<a href="~/SignalR/index" class="dropdown-item">智能客服</a>*@
+                        <a href="~/QandA/List" class="dropdown-item">Q&A常見問題</a>
+                    </div>
                     </div>
                     <div class="nav-item dropdown">
                         <a href="~/Doctor/ListTest" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">醫療團隊</a>
@@ -181,11 +183,9 @@
                             <a href="/Login/EditMember" class="dropdown-item">會員修改</a>
                             <a href="/PatientRecord/List" class="dropdown-item">診療紀錄</a>
                             <a href="/Product/CartViewList" class="dropdown-item">我的購物車</a>
-                            <a href="/Product/OrderList" class="dropdown-item">歷史訂單</a>
-                            <a href="/SignalR/Index" class="dropdown-item">線上客服</a>
+                            <a href="/Product/OrderList" class="dropdown-item">歷史訂單</a>                        
                         </div>
                     </div>
-
                 </div>
 
                 @*把Button的Bootstrap改寫到div，就不會顯示兩個<a>標籤的按鈕*@
@@ -258,7 +258,7 @@
 
                     <img src="~/images/LineCord.png" />
                 </div>
-                
+
             </div>
         </div>
     </div>
@@ -282,11 +282,11 @@
 
 
 
-    <div id="fb-title" style="position: fixed; bottom: 2px; bottom:100px; right: 45px; color: black; font-weight: bold; z-index: 999;">      
-        <a href="/SignalR/index" style="border-radius:15px">
-            <img style="border-radius: 20px;width:50px; display: block; margin: 0 auto 5px;" src="~/images/1111111111.jpg"/>
-        </a>    
-        @*<img style="border-radius: 20px;width:50px; display: block; margin: 0 auto 5px;" src="~/images/1111111111.jpg" data-bs-toggle="modal" data-bs-target="#exampleModal">*@          
+    <div id="fb-title" style="position: fixed; bottom: 2px; bottom:100px; right: 45px; color: black; font-weight: bold; z-index: 999;">
+        @*<a href="/SignalR/index" style="border-radius:15px">
+                <img style="border-radius: 20px;width:50px; display: block; margin: 0 auto 5px;" src="~/images/1111111111.jpg"/>
+            </a>*@
+        <img style="border-radius: 20px;width:50px; display: block; margin: 0 auto 5px;" src="~/images/1111111111.jpg" data-bs-toggle="modal" data-bs-target="#exampleModal">
         <span style="display: block; text-align: center;">
             聊天室<br>
         </span>
@@ -294,27 +294,27 @@
 
     <!-- Modal -->
 
-    <div class="modal " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+    <div class="modal " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-lg">
-            <div class="modal-content">              
+            <div class="modal-content">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="" style="background-color: #FFFCEC ">
                             <div class="card card-primary card-outline direct-chat direct-chat-primary">
                                 @*====標題====*@
-                                <div class="card-header">
+                                <div class="card-header" style="background-color: #FFFCEC ">
                                     <h3 class="card-title">眼科聊天室</h3>
                                 </div>
                                 @*====聊天內容====*@
-                                <input type="hidden" value="@Model" id="inpUser" />
-                                <div class="card-body">
+                                <input type="hidden" value="@user" id="inpUser" />
+                                <div class="card-body" style="background-color: #FFFCEC ">
                                     <div class="direct-chat-messages" id="MSN">
                                         @*====聊天內容====*@
                                     </div>
                                 </div>
 
                                 @*============尾巴輸入字串的地方=============*@
-                                <div class="card-footer">
+                                <div class="card-footer" style="background-color: #FFFCEC ">
                                     <form action="#" method="post">
                                         <div class="input-group">
                                             <input type="text" id="messageInput" name="message" placeholder="Type Message ..." class="form-control">
@@ -324,10 +324,16 @@
                                         </div>
                                     </form>
                                 </div>
+                                <div>
+                                    <button id="btnChatDemo1" class="btn btn-light">Demo1</button>
+                                    <button id="btnChatDemo2" class="btn btn-light">Demo2</button>
+                                    <button id="btnChatDemo3" class="btn btn-light">Demo3</button>
+                                    <button id="btnChatDemo4" class="btn btn-light">Demo4</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>               
+                </div>
             </div>
         </div>
     </div>
@@ -364,6 +370,30 @@
 
     <!-- SweetAlert -->
     <script src="~/plugins/sweetalert2/sweetalert2.all.min.js"></script>
+
+    
+    <!-- SignalR聊天室 -->
+    @*Demo鍵*@
+    <script>
+        $("#btnChatDemo1").click(function () {
+            $("#messageInput").val("您好呀，我想知道有關你們家的產品有哪些?")
+
+        })
+        $("#btnChatDemo2").click(function () {
+            $("#messageInput").val("你好，很高興為您服務")
+
+        })
+        $("#btnChatDemo3").click(function () {
+            $("#messageInput").val("您可以先進入我們上方的線上商城進行瀏覽哦!!")
+
+        })
+        $("#btnChatDemo4").click(function () {
+            $("#messageInput").val("好的，謝謝你~~<3")
+
+        })
+
+
+    </script>
 
     <!--購物清單-->
     <script>

@@ -55,7 +55,6 @@
                                         <th class="sorting sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">序</th>
                                         <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">發佈日期</th>
                                         <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">標題</th>
-                                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">消息內容</th>
                                         <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending">圖片</th>
                                     </tr>
                                 </thead>
@@ -66,16 +65,11 @@
                                         count++;
                                         <tr class="odd">
                                             <td class="dtr-control sorting_1 font-weight-bold" tabindex="0" style="width:5%">@count</td>
-                                            <td style="width:10%" class="font-weight-bold">@Html.DisplayFor(modelItem => item.PublishDate)</td>
-                                            <td style="width:10%" class="font-weight-bold">@Html.DisplayFor(modelItem => item.NewsTitle)</td>
-                                            <td style="width:50%" class="font-weight-bold">
-                                                <p>
-                                                    @item.NewsContent
-                                                </p>
-                                            </td>
+                                            <td style="width:20%" class="font-weight-bold">@Html.DisplayFor(modelItem => item.PublishDate)</td>
+                                            <td style="width:40%" class="font-weight-bold">@Html.DisplayFor(modelItem => item.NewsTitle)</td>
+                                            
                                             <td class="font-weight-bold"><img src="~/uploads/@item.NewsPicturePath" style="width:150px;height:150px"></td>
-                                            @*<td style="width:8%" class="font-weight-bold">@Html.DisplayFor(modelItem => item.Adstatue.Adstatue)</td>*@
-                                            <td style="width:8%">
+                                            <td style="width:10%">
                                                 <div class="fas fa-pencil-alt" style="color: dodgerblue; margin-block: 3px">
                                                     @Html.ActionLink("修改", "Edit", "NewsAdmin", new { id = item.No }, new { @class = "btn bg-gradient-primary btn-sm" })
                                                 </div>

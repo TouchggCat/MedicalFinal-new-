@@ -31,6 +31,10 @@ namespace Medical.Areas.Admin.Controllers
         {
             return View();
         }
+        public IActionResult PowerB()
+        {
+            return View();
+        }
 
         public IActionResult productManage()
         {

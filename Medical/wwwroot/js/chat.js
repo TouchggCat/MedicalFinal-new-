@@ -23,9 +23,9 @@ connection.on("ReceiveMessage", function (sendUser, message) {
                                     <span class="direct-chat-name float-left" id="name_player1">《${role}》</span>
                                     <span class="direct-chat-timestamp float-right" id="time_player1">(${time})</span>
                                 </div>
+                                <span class="text-bold" style="font-size:25px;background-color:#ACD6FF;border-radius:10px;border:2px solid #F0F0F0">   ${message}  </span>
                                 <img class="direct-chat-img" src="../img/${role}.jpg" alt="Message User Image" style="border-radius:50%">
-                            <div class="direct-chat-text">
-                                <span class="text-bold">${message}</span>
+                            <div class="direct-chat-text" >
                             </div>
                             </div>`)
 
@@ -37,9 +37,9 @@ connection.on("ReceiveMessage", function (sendUser, message) {
                             <span class="direct-chat-timestamp float-right" id="time_player1">(${time})</span>
                         </div>
                         <img class="direct-chat-img" src="../img/${role1}.jpg" alt="Message User Image" style="border-radius:50%">
-                       
+                        <span class="text-bold" style="font-size:25px;background-color:#FFF4C1	;border-radius:10px;border:2px solid #F0F0F0">   ${message}  </span>
                     <div class="direct-chat-text">
-                        <span class="text-bold">${message}</span>
+                        
                     </div>
                     </div>`)
     }

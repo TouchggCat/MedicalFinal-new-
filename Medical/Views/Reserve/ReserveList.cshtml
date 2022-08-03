@@ -138,7 +138,7 @@
 
 @*進入預約畫面*@
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -346,7 +346,7 @@
                         result += `<td>${item.clinicdate} ${item.period}</td>`
                         if (item.online == 0) {
                             result += `<td>剩餘:${item.sequence_number}位</td>`
-                            result += `<td><button type="button" id="GoReserve" name=${item.clinicDetailid} onclick="GoReserve()" class="btn btn-primary GoReserve" data-bs-toggle="modal" data-bs-target="#exampleModal">我要預約</button></td></tr></tbody>`
+                            result += `<td><button type="button" id="GoReserve" name=${item.clinicDetailid} onclick="GoReserve()" class="btn btn-primary GoReserve" data-bs-toggle="modal" data-bs-target="#exampleModal4">我要預約</button></td></tr></tbody>`
 
                         }
                         //else if (item.online == 1)
