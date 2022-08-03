@@ -445,6 +445,9 @@
                              /*result1 += `<h2 class="lead"><b>醫師:${item.doctor}</b></h2>`*/
                              /*result1 += `<h2 class="lead"><img src="/images/${item.picturePath}" alt="user-avatar" class="img-circle img-fluid"></h2>`*/
                              result1 += `<h2 class="lead"><b>備註</b></h2><textarea id="Remark_Patient" name="Remark_Patient" rows="5" cols="33"></textarea>`
+                             result1 +=`<div class="form-group">
+                                            <input type="button" value="Demo" class="btn btn-primary" onclick="demo()" />
+                                        </div>`
                          }
                          $("#re").html(result1);
 
@@ -512,7 +515,12 @@
             //    $("#informationBox").attr("style", "background:rgb(255, 249, 134)");
 
         })
+        function demo() {
+            $("#Remark_Patient").val("我是瞎子");
 
+
+
+        }
 
 
 
