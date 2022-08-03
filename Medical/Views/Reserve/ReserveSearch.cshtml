@@ -40,12 +40,15 @@
 <div class="card">
     <div class="card-header">
         <h3 class="card-title">@ViewBag.name</h3>
+        
     </div>
 
     <div class="card-body">
         <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+ 
             <div class="row">
                 <div class="col-sm-12">
+
                     <table id="example1" class="table table-bordered table-striped" aria-describedby="example1_info">
                         <thead>
                             <tr>
@@ -102,7 +105,7 @@
                                         <td>
                                             <div @h>
                                                 @Html.ActionLink("取消預約", "Delete", "Reserve", new { id = item.reserveid }, new { onclick = "return confirm('是否確定取消預約? ')", @class = "btn btn-primary" })
-                                            </div>                                           
+                                            </div>
                                         </td>
                                     </tr>
                                 }
@@ -182,5 +185,7 @@
                 "buttons": ["copy", "excel", "pdf", "print", "colvis"], "retrieve": true
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
         });
+
+     
     </script>
 }
