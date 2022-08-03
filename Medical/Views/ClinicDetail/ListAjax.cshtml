@@ -4,8 +4,18 @@
 }
 @section css{ 
 <style>
-    .container th{
-        text-align:center;
+    .container th {
+        text-align: center;
+        background-color: #00aef0;
+        color:#ffffff;
+        vertical-align:middle;
+    }
+    .container td {
+        text-align: center;
+        vertical-align: middle;
+    }
+    a{
+        color:#000000;
     }
 </style>
 }
@@ -43,18 +53,25 @@
                                     上午<br />08:00<br />|<br />12:00
                                 </th>
                                 <td class="day1">
+                                    休診
                                 </td>
                                 <td class="day2">
+                                    休診
                                 </td>
                                 <td class="day3">
+                                    休診
                                 </td>
                                 <td class="day4">
+                                    休診
                                 </td>
                                 <td class="day5">
+                                    休診
                                 </td>
                                 <td class="day6">
+                                    休診
                                 </td>
                                 <td class="day0">
+                                    休診
                                 </td>
                             </tr>
                             <tr class="period2">
@@ -62,18 +79,25 @@
                                     下午<br />14:00<br />|<br />17:30
                                 </th>
                                 <td class="day1">
+                                    休診
                                 </td>
                                 <td class="day2">
+                                    休診
                                 </td>
                                 <td class="day3">
+                                    休診
                                 </td>
                                 <td class="day4">
+                                    休診
                                 </td>
                                 <td class="day5">
+                                    休診
                                 </td>
                                 <td class="day6">
+                                    休診
                                 </td>
                                 <td class="day0">
+                                    休診
                                 </td>
                             </tr>
                             <tr class="period3">
@@ -81,18 +105,25 @@
                                     晚上<br />17:30<br />|<br />20:30
                                 </th>
                                 <td class="day1">
+                                    休診
                                 </td>
                                 <td class="day2">
+                                    休診
                                 </td>
                                 <td class="day3">
+                                    休診
                                 </td>
                                 <td class="day4">
+                                    休診
                                 </td>
                                 <td class="day5">
+                                    休診
                                 </td>
                                 <td class="day6">
+                                    休診
                                 </td>
                                 <td class="day0">
+                                    休診
                                 </td>
                             </tr>
                         </tbody>
@@ -107,10 +138,14 @@
         loadClinicDetail(1)
         loadClinicDetail(2)
         loadClinicDetail(3)
+        rest()
         async function loadClinicDetail(period) {
             const details = await fetch('@Url.Content("~/ClinicDetail/loadClinicDetail")' + `?period=${period}`).then(response => response.json());
             console.log(details)
             if (details.length != 0) {
+                for (let i = 0; i < details.length; i++) {
+                    document.querySelector(`.period${period} .day${new Date(details[i].clinicDate).getDay()}`).innerHTML = "";
+                }
                 for (let i = 0; i < details.length; i++) {
                     td = ` <a href="/doctor/detail?id=${details[i].doctorId}">
                           <b>${details[i].doctorName}</b>
@@ -121,6 +156,11 @@
             }
             else
                 return;
-    }
+        }
+        function rest() {
+            td = "休診";
+            $(`td[text==""]`).textContent = td;
+           
+        }
     </script>
 }

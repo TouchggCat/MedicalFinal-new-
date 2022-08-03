@@ -83,9 +83,9 @@ namespace Medical.Controllers
         public IActionResult loadClinicDetail(int period)
         {
             var details = from c in _context.ClinicDetails
-                              join d in _context.Doctors on c.DoctorId equals d.DoctorId
-                              join p in _context.Periods on c.PeriodId equals p.PeriodId
-                              where c.PeriodId == period
+                          join d in _context.Doctors on c.DoctorId equals d.DoctorId
+                          join p in _context.Periods on c.PeriodId equals p.PeriodId
+                          where c.PeriodId == period
                           select new { c.ClinicDetailId,c.DoctorId,d.DoctorName, p.PeriodDetail,c.ClinicDate};
             return Json(details);
         }

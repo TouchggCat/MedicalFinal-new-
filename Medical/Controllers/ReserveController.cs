@@ -44,7 +44,7 @@ namespace Medical.Controllers
             if (id != null)
                 ViewBag.id = id;
             else
-                ViewBag.id = 1;
+                ViewBag.id = 0;
             return View(datas);
         }
         
