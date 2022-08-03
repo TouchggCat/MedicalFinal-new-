@@ -27,22 +27,28 @@ namespace Medical.Areas.Doctors.Controllers
 
             CMemberAdminViewModel vm = null;
             string logJson = "";
-            logJson = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USE);
-            vm = System.Text.Json.JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
-            TempData["DoctorName"] = vm.MemberName;
-            doctorId = _medicalContext.Doctors.Where(x => x.MemberId.Equals(vm.MemberId)).SingleOrDefault().DoctorId;
 
-            List<CClinicDetailAdminViewModel> list = new List<CClinicDetailAdminViewModel>();
-            var result = _medicalContext.ClinicDetails.Include(x=>x.Doctor).Include(x=>x.Department)
-                .Include(x=>x.Room).Include(x=>x.Period).Where(x => x.DoctorId.Equals(doctorId) && x.Online.Equals(0));
-
-            foreach (var c in result)
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USE))
             {
-                CClinicDetailAdminViewModel cc = new CClinicDetailAdminViewModel();
-                cc.clinicDetail = c;
-                list.Add(cc);
+                logJson = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USE);
+                vm = System.Text.Json.JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
+                TempData["DoctorName"] = vm.MemberName;
+                doctorId = _medicalContext.Doctors.Where(x => x.MemberId.Equals(vm.MemberId)).SingleOrDefault().DoctorId;
+                List<CClinicDetailAdminViewModel> list = new List<CClinicDetailAdminViewModel>();
+                var result = _medicalContext.ClinicDetails.Include(x => x.Doctor).Include(x => x.Department)
+                    .Include(x => x.Room).Include(x => x.Period).Where(x => x.DoctorId.Equals(doctorId) && x.Online.Equals(0));
+
+                foreach (var c in result)
+                {
+                    CClinicDetailAdminViewModel cc = new CClinicDetailAdminViewModel();
+                    cc.clinicDetail = c;
+                    list.Add(cc);
+                }
+                return View(list.ToList());
+
             }
-            return View(list.ToList());
+            else          
+                return RedirectToAction("Index", "Home", new { Area = "" });
         }
 
         public IActionResult WorkSpace(int id)

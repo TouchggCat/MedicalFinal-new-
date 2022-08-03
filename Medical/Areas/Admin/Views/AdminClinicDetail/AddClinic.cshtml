@@ -152,9 +152,58 @@
     </div>
 </div>
 
+<!-- Edit Modal -->
+<div class="modal fade" id="schedule-edit">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">編輯門診</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label>門診類別:</label>
+                        <select class="form-control" id="ModalSelDept" >
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>醫生:</label>
+                        <select class="form-control" id="ModalSelDoctor">
+                            <option disabled selected value=""></option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>診間:</label>
+                        <select class="form-control" id="ModalSelRoom">
+                        <option value="1">501</option>
+                        <option value="2">502</option>
+                        <option value="6">503</option>
+                        <option value="7">504</option>
+                        <option value="8">505</option>
+                        <option value="9">506</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button id="btnModalSave" type="button" class="btn btn-success" data-dismiss="modal">儲存</button>
+                <button id="btnModalDelete" type="button" class="btn btn-danger" data-dismiss="modal">刪除</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
 @section Scripts{
     <script>
-        var calendar;
+        var calendar; var modaldoctor; var modalclinicid; var doctor, date, room;
         $(document).ready(function ()
         {
             var calendarEl = document.getElementById('calendar');
@@ -186,6 +235,8 @@
 
 
             $('#selDept').select2();
+            $('#ModalSelDept').select2();
+
             $.ajax({
                 url: '/Admin/AdminClinicDetail/Dept',
                 dataType: 'json',
@@ -199,10 +250,34 @@
                 .then(function (data) {
                     data.forEach((data) => {
                         const option = new Option(data["deptName"], data["departmentId"]);
-                        $('#selDept').append(option).trigger('change');;
+                        $('#selDept').append(option).trigger('change');
                     })
 
                     $('#selDept').trigger({
+                        type: 'select2:select',
+                        params: {
+                            data: data
+                        }
+                    });
+                })
+
+            $.ajax({
+                url: '/Admin/AdminClinicDetail/Dept',
+                dataType: 'json',
+                data: function (params) {
+                    return {
+                        q: params.term,
+                        page: params.page
+                    };
+                }
+            })
+                .then(function (data) {
+                    data.forEach((data) => {
+                        const option = new Option(data["deptName"], data["departmentId"]);
+                        $('#ModalSelDept').append(option).trigger('change');
+                    })
+
+                    $('#ModalSelDept').trigger({
                         type: 'select2:select',
                         params: {
                             data: data
@@ -239,6 +314,7 @@
                     }
                 ],
                 eventDrop: function (info) {
+
                     const list = {
                         ClinicDetailId: info.event.id,
                         DoctorId: info.event.extendedProps.doctorId,
@@ -282,36 +358,64 @@
                     }).then((res) => { calendar.refetchEvents(); })
                 },
                 eventClick: function (info) {
-
-                    let doctor = info.event.extendedProps.doctorName,
-                        date = moment(info.event.start).format("yyyy/MM/D") + info.event.extendedProps.periodDetail,
-                        room = info.event.extendedProps.roomName;
-
-                    Swal.fire({
-                        title: '確定刪除',
-                        text: "刪除後無法回覆!",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: '確定'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            $.post('@Url.Content("~/Admin/AdminClinicDetail/Delete")', { id: info.event.id }, function (status) {
-                                let title = (status == "true") ? "刪除成功" : "刪除失敗";
-                                let information = (status == "true") ? `刪除資訊: ${doctor}醫師 ${date} 診間${room}` : '此門診有預約病患，故無法刪除';
-                                let result = (status == "true") ? "success" : "error";
-                                Swal.fire(
-                                    title,
-                                    information,
-                                    result
-                                );
-                                calendar.refetchEvents();
-                            })
-                        }
-                    })
+                    var modal = $("#schedule-edit");
+                    modal.modal();
+                    modalclinicid = info.event.id;
+                    $('#ModalSelDept').val(`${info.event.extendedProps.deptId}`).trigger("change");
+                    modaldoctor = info.event.extendedProps.doctorId;
+                    $('#ModalSelDoctor').trigger("change");
+                    $('#ModalSelRoom').val(`${info.event.extendedProps.roomId}`).trigger("change");
+                    doctor = info.event.extendedProps.doctorName,
+                    date = moment(info.event.start).format("yyyy/MM/D") + info.event.extendedProps.periodDetail,
+                    room = info.event.extendedProps.roomName;
                 }
             });
+
+            $('#btnModalSave').on("click", function () {
+                let list = {
+                    ClinicDetailId: modalclinicid,
+                    DoctorId: $('#ModalSelDoctor').val(),
+                    DepartmentId: $('#ModalSelDept').val(),
+                    RoomId: $('#ModalSelRoom').val(),
+                }
+
+                $.post('@Url.Content("~/Admin/AdminClinicDetail/updateMimi")', list, function (data) {
+                    Swal.fire(
+                        '儲存成功',
+                        '',
+                        'success'
+                    );
+                    calendar.refetchEvents();
+                });
+            });
+
+            $('#btnModalDelete').on("click", function () {
+
+                Swal.fire({
+                    title: '確定刪除',
+                    text: "刪除後無法回復!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '確定'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.post('@Url.Content("~/Admin/AdminClinicDetail/Delete")', { id: modalclinicid }, function (status) {
+                            let title = (status == "true") ? "刪除成功" : "刪除失敗";
+                            let information = (status == "true") ? `刪除資訊: ${doctor}醫師 ${date} 診間${room}` : '此門診有預約病患，故無法刪除';
+                            let result = (status == "true") ? "success" : "error";
+                            Swal.fire(
+                                title,
+                                information,
+                                result
+                            );
+                            calendar.refetchEvents();
+                        })
+                    }
+                })
+            });
+
 
             //預覽視窗開啟
             $("#myModal").on('show.bs.modal', function () {
@@ -348,17 +452,24 @@
                             $('#btnClose').hide();
                         }
                     });
+                }
+                else {
+                    $('.modal-body').html('無符合條件的門診，請確定再次確定篩選條件');
+                    $('#btnCreate').hide();
+                    $('#btnDelete').hide();
+                }
+            });
 
-                    $('#btnCreate').click(function () {
-                        let count = $('label[name="count"]'),
-                            doctorlist = $('label[name="doctorName"]').attr('doctorid'),
-                            deptlist = $('label[name="deptName"]').attr('deptid'),
-                            periodlist = $('label[name="periodName"]'),
-                            Roomlist = $('label[name="RoomName"]').attr('roomid'),
-                            Datelist = $('label[name="ClinicDate"]'),
+            $('#btnCreate').on("click", function () {
+                        let count = $('#tbl_result').find('label[name="count"]'),
+                            doctorlist = $('#tbl_result').find('label[name="doctorName"]').attr('doctorid'),
+                            deptlist = $('#tbl_result').find('label[name="deptName"]').attr('deptid'),
+                            periodlist = $('#tbl_result').find('label[name="periodName"]'),
+                            Roomlist = $('#tbl_result').find('label[name="RoomName"]').attr('roomid'),
+                            Datelist = $('#tbl_result').find('label[name="ClinicDate"]'),
                             obj = [];
 
-                        $.each(count, function (key, value) {
+                        $.each(count,function (key, value) {
                             var detail = {
                                 DoctorId: doctorlist,
                                 DepartmentId: deptlist,
@@ -382,33 +493,23 @@
                                     '',
                                     'success'
                                 );
+
                                 calendar.refetchEvents();
                             }
-                        }).then(function () {
-                            obj = [];
-                        });
-                    });
-
-                    $('#btnDelete').on('click', function () {
-                        $('.repeat').parent().parent().remove();
-                        Swal.fire({
-                            title: '刪除',
-                            text: "",
-                            icon: 'success'
-                        });
-                        $('#repeatCount').html("");
-                        $('#btnCreate').prop("disabled", false);
-                        $(this).prop("disabled", true);
-                    });
-                }
-                else {
-                    $('.modal-body').html('無符合條件的門診，請確定再次確定篩選條件');
-                    $('#btnCreate').hide();
-                    $('#btnDelete').hide();
-                }
+                        })
             });
 
-
+            $('#btnDelete').on('click', function () {
+                $('.repeat').parent().parent().remove();
+                Swal.fire({
+                    title: '刪除',
+                    text: "",
+                    icon: 'success'
+                });
+                $('#repeatCount').html("");
+                $('#btnCreate').prop("disabled", false);
+                $(this).prop("disabled", true);
+            });
 
             //預覽視窗關閉
             $("#myModal").on('hidden.bs.modal', function () {
@@ -438,7 +539,6 @@
                     data.forEach((data) => {
                         const option = new Option(data["doctorName"], data["doctorId"]);
                         $('#selDoctor').append(option).trigger('change');;
-                        console.log(data["doctorName"], data["doctorId"]);
                     })
                     $('#selDoctor').trigger({
                         type: 'select2:select',
@@ -446,6 +546,37 @@
                             data: data
                         }
                     });
+                });
+            });
+
+            $('#ModalSelDept').change(function () {
+                $('#ModalSelDoctor').select2();
+
+                $.ajax({
+                    url: '/Admin/AdminClinicDetail/doctorList' + `?deptid=${ModalSelDept.value}`,
+                    dataType: 'json',
+                    data: function (params) {
+                        return {
+                            q: params.term, // search term
+                            page: params.page
+                        };
+                    }
+                }).then(function (data) {
+                    $('#ModalSelDoctor option').remove();
+
+                    data.forEach((data) => {
+                        const option = new Option(data["doctorName"], data["doctorId"]);
+                        $('#ModalSelDoctor').append(option).trigger('change');;
+                    })
+
+                    $('#ModalSelDoctor').trigger({
+                        type: 'select2:select',
+                        params: {
+                            data: data
+                        }
+                    });
+
+                    $('#ModalSelDoctor').val(`${modaldoctor}`);
                 });
             });
 
