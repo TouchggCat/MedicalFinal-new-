@@ -43,7 +43,7 @@
             <input type="password" class="form-control" placeholder="密碼確認" id="passCheck">
 
             @*<input class="form-control" placeholder="身分證字號" required autofocus="" asp-for="IdentityId" id="idid">
-                <span asp-validation-for="IdentityId" class="text-danger"></span>*@
+        <span asp-validation-for="IdentityId" class="text-danger"></span>*@
 
             @*日期格式type="date" 預設值value="2000-01-01"*@
             <label asp-for="BirthDay" class="control-label"></label>
@@ -79,12 +79,14 @@
             <input asp-for="Address" class="form-control" id="address" placeholder="地址" />
 
             <div class="input-group">
-                <button id="regBtn" class="btn btn-md btn-block submit" type="submit">
+                @*用 onclick="verification(); return false;"來阻止繼續進行*@
+                <button class="btn btn-md btn-block submit" type="submit" id="submitbutton" onclick="verification(); return false;">
                     <i class="fas fa-user-plus"></i> 註冊
                 </button>
             </div>
             <br />
-            <input type="button" value="RegisterDemo" class="btn btn-primary btn-block" id="regiDemo" />
+            <input type="button" value="帳號重複Demo" class="btn btn-primary btn-block" id="regiDemo1" />
+            <input type="button" value="RegisterDemo" class="btn btn-primary btn-block" id="regiDemo2" />
         </div>
     </form>
 </div>
@@ -98,7 +100,25 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
-        $("#regiDemo").click(() => {
+        $("#regiDemo1").click(() => {
+            $("#txtEmail").val("asd@gmail.com");
+            $("#pass").val("abcd1234")
+            $("#passCheck").val("abcd1234")
+
+            $("#idid").val("LC23426789")
+            $("#memName").val("陪落溪")
+
+
+            //====================自動跳出下拉選單!!!   
+            $('#citySelect').val("1");
+            $('#genSelect').val("2");
+            //生日值顯示
+            $('#bday').val("2022-08-02");
+            $("#txtEmail").blur();
+            $("#passCheck").blur();
+        })
+
+        $("#regiDemo2").click(() => {
             $("#txtEmail").val("giraffegod@gmail.com");
             $("#pass").val("abcd1234")
             $("#passCheck").val("abcd1234")
@@ -113,7 +133,8 @@
             $('#genSelect').val("1");
             //生日值顯示
             $('#bday').val("2012-02-06");
-
+            $("#txtEmail").blur();
+            $("#passCheck").blur();
         })
 
 
@@ -123,7 +144,15 @@
                 url: "/Login/AccountCheck?account=" + str,
                 method: "GET",
                 success: function (data) {
-                    $("#accountAlert").text(data);
+                    if (data == "true") {
+                        $("#accountAlert").text("帳號可使用");
+                    }
+                    else if (data == "used") {
+                        $("#accountAlert").text("此帳號已被使用");
+                    }
+                    else if (data == "false") {
+                        $("#accountAlert").text("請輸入帳號");
+                    }
                     /*把span擺在label後面靠右顯示，省一行*/
                     $("#accountAlert").css("float", "right");
                 },
@@ -140,21 +169,81 @@
                 $("#passAlert").text("輸入錯誤，請重新輸入");
                 /*把span擺在label後面靠右顯示，省一行*/
                 $("#passAlert").css("float", "right");
-
                 //$("#regBtn").removeProp("data-callback")
             }
             else
                 $("#passAlert").text("");
             //$("#regBtn").prop("data-callback", "onSubmit")
-
+        })
+        $("#pass").blur(function () {
+            const str = $("#pass").val();
+            const pass = $("#passCheck").val();
+            if (str != pass) {
+                $("#passAlert").text("輸入錯誤，請重新輸入");
+                /*把span擺在label後面靠右顯示，省一行*/
+                $("#passAlert").css("float", "right");
+                //$("#regBtn").removeProp("data-callback")
+            }
+            else
+                $("#passAlert").text("");
+            //$("#regBtn").prop("data-callback", "onSubmit")
         })
     </script>
 
     <script src="https://www.google.com/recaptcha/api.js?render=6Lfk2AkhAAAAAOtIbeGmRkHUqjne2XfLYmM21Kg3"></script>
     <script>
-        function onSubmit(token) {
-            document.getElementById("demo-form").submit();
-        }
+        //function onSubmit(token) {
+        //    document.getElementById("demo-form").submit();
+        //}
+        function verification() {
+            //Write verification
+            const pwstr = $("#pass").val();
+            const passcheckstr = $("#passCheck").val();
+
+            let flag = false;
+                const str = $("#txtEmail").val();
+                $.ajax({
+                    url: "/Login/AccountCheck?account=" + str,
+                    method: "GET",
+                    success: function (data) {
+                        if (data == "true") {
+
+                            $("#accountAlert").text("帳號可使用");
+                            checkpwFunction();
+                        }
+                        else if (data == "used") {
+                            $("#accountAlert").text("此帳號已被使用");
+                        }
+                        else if(data=="false"){
+                            $("#accountAlert").text("請輸入帳號");
+                        }
+                        /*把span擺在label後面靠右顯示，省一行*/
+                        $("#accountAlert").css("float", "right");
+                    },
+                    error: function (msg) {
+                        alert('error：' + msg.toLabel);
+                    }
+                })
+           function checkpwFunction(){
+            if (pwstr == passcheckstr && passcheckstr !== "") {
+                        console.log("驗證通過");
+                        //window.event.returnValue = true; 或是 return true都沒用 乾脆把屬性拔掉
+                        $("#submitbutton").removeAttr("onclick");
+                        $("#submitbutton").click();   //直接觸發click事件
+                    }
+            else if (pwstr != passcheckstr) {
+                        console.log("驗證不通過");
+                $("#passAlert").text("輸入錯誤，請重新輸入");
+                        window.event.returnValue = false;  //應該也沒用，主要依靠onclick="verification(); return false;
+                    }
+                    else {
+                        console.log("驗證大便");
+                $("#passAlert").text("輸入錯誤，請重新輸入");
+                        window.event.returnValue = false;
+                    }
+                }
+            }
+
     </script>
     <script>
 

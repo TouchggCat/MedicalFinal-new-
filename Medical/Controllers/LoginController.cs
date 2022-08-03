@@ -386,16 +386,19 @@ namespace Medical.Controllers
                 Member mem = _context.Members.Where(n => n.Email == account).FirstOrDefault();
                 if (mem != null)
                 {
-                    return Content("此帳號已被使用", "text/html", System.Text.Encoding.UTF8);
+                    //return Content("此帳號已被使用", "text/html", System.Text.Encoding.UTF8);
+                    return Content("used", "text/html", System.Text.Encoding.UTF8);
                 }
                 else
                 {
-                    return Ok();
+                    //return Ok();
+                    return Content("true", "text/html", System.Text.Encoding.UTF8);
                 }
             }
             else
             {
-                return Content("請輸入帳號", "text/html", System.Text.Encoding.UTF8);
+                //return Content("請輸入帳號", "text/html", System.Text.Encoding.UTF8);
+                return Content("false", "text/html", System.Text.Encoding.UTF8);
             }
         }
 
