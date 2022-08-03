@@ -1,4 +1,5 @@
-﻿using Medical.Hubs;
+﻿using Medical.Class;
+using Medical.Hubs;
 using Medical.Models;
 using Medical.ViewModel;
 using Microsoft.AspNetCore.Mvc;
@@ -14,14 +15,20 @@ namespace Medical.Areas.Admin.Controllers
     [Area(areaName: "Admin")]
     public class HomeController : Controller
     {
-        private readonly MedicalContext _medicalContext;
-        public HomeController(MedicalContext medicalContext)
+        private readonly IDashboard dashboard;
+        public HomeController(IDashboard dashboard)
         {
-            _medicalContext = medicalContext;
+            this.dashboard = dashboard;
         }
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult GetEmployees()
+        {
+            return Ok(dashboard.GetAllProducts());
         }
     }
 }

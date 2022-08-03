@@ -363,7 +363,9 @@
         <div class="inputText">
             <input id="txtBox" type="text" value="" />
             <input class="btn btn-primary" type="button" value="輸入" onclick="Insert()" />
-            <input class="btn btn-warning" type ="button" value="不知道問甚麼" onclick="QuestionButton()" />
+            <input class="btn btn-warning" type="button" value="不知道問甚麼" onclick="QuestionButton()" />
+            <input class="btn btn-sm" type="button" value="Demo" onclick="demo()" />
+            <input class="btn btn-sm" type="button" value="Demo2" onclick="demo2()" />
         </div>
     </div>
 </div>
@@ -388,7 +390,13 @@
 @section Scripts{
     <script> src = "https://code.jquery.com/jquery-3.4.1.min.js"</script>
     <script>
-
+        @*Demo*@
+        function demo(){
+            document.getElementById("txtBox").value="眼睛痠痛"
+        }
+        function demo2() {
+            document.getElementById("txtBox").value = "乾眼症"
+        }
     @*冠名*@
         function buttonLoad() {
             var id = $(event.target).attr("data-docid");
@@ -675,7 +683,7 @@
             const trts = await fetch('@Url.Content("~/doctor/getTreatmentByName")' + `?doctorName=${dcID}`).then(response => response.json());
             console.log(trts)
             for (let i = 0; i < trts.length; i++) {
-                Remotetext += `${trts[i].treatmentDetail1}`
+                Remotetext += `${trts[i].treatmentDetail1}</br>`
             }
             Usertext = `</div><div class="user local">
                             <div class="avatar">
