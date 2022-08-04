@@ -127,10 +127,10 @@ namespace Medical.Areas.Doctors.Controllers
         }
 
 
-        public void sendSquNo(int id, int squNo) 
+        public void sendSquNo(int id, int paitentId)
         {
             var qry = _medicalContext.ClinicDetails.Include(x => x.Room).Where(x => x.ClinicDetailId.Equals(id)).SingleOrDefault();
-            var qry2 = _medicalContext.Reserves.Where(x => x.MemberId.Equals(squNo)).SingleOrDefault().SequenceNumber;
+            var qry2 = _medicalContext.Reserves.Where(x => x.MemberId.Equals(paitentId)&&x.ClinicDetailId.Equals(id)).SingleOrDefault().SequenceNumber;
             if (qry!=null & qry2!=null)
             {
                 ClinicRoom clinicRoom = _medicalContext.ClinicRooms.Where(x => x.RoomId.Equals(qry.RoomId)).FirstOrDefault();
