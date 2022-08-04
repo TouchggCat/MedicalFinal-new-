@@ -60,17 +60,36 @@ namespace Medical.Controllers
 
 
         public IActionResult Listjson()
-        {           
+        {
+            int hour = DateTime.Now.Hour;
+            int Period = 0;
+
+            if (hour <= 12)
+            {
+                Period = 1; //上午時段
+            }
+            if (hour > 12 && hour < 17)
+            {
+                Period = 2; //下午時段
+            }
+            if (hour > 17 && hour < 21)
+            {
+                Period = 3; //晚上時段
+            }
             var result = _context.ClinicDetails.Where(a => a.ClinicDate.Value.Date.Equals(DateTime.Today.Date));
             List<Clinictime> list = new List<Clinictime>();
             foreach (var item in result)
             {
-                Clinictime t = new Clinictime(_context)
+                if (item.PeriodId == Period)
                 {
-                    clinicDetailid=item.ClinicDetailId
+                       Clinictime t = new Clinictime(_context)
+                    {
+                        clinicDetailid=item.ClinicDetailId
 
-                };
-                list.Add(t);
+                    };
+                    list.Add(t); 
+                }
+                
 
             }
  
