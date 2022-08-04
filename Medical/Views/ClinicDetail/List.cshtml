@@ -234,7 +234,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <div class="sparkbar" data-color="#00a65a" data-height="20" name="roomNO"></div>
+                                    <div class="sparkbar" data-color="#00a65a" data-height="20" name="roomNO">@item.Room.Number</div>
                                 </td>
                             </tr>
                         }
@@ -253,25 +253,21 @@
 {
     <script src="~/js/signalr/dist/browser/signalr.js"></script>
     <script src="~/js/call.js"></script>
-
-
-
-
-
-
-
-
     <script>
+
+        $(function () {
+           /* Loadroom();*/
+        })
 
         function Loadroom() {
             $.get('@Url.Content("~/ClinicDetail/Listjson")', {}, function (datas) {
-                console.log(datas);
                 let room501 = "";
                 let room502 = "";
                 let room503 = "";
                 let room504 = "";
                 let room505 = "";
                 let room506 = "";
+
                 $.each(datas, function (index, item) {
                     console.log(item);
                     if (item.roomName == 501 && item.online == 0)
@@ -293,7 +289,15 @@
                                                 ${item.depName}
                                             </p>
                                         </div>
-       `
+
+                                        <div class="d-flex justify-content-between text-white mb-3">
+                                           <h4 class="text-white mb-3">
+                                               現在號碼:
+                                           </h4>
+                                           <h1 class="mb-0" style="color:red;font-size:50px" name="roomNO">
+                                                ${item.number}
+                                           </h1>
+                                        </div>`
 
                     }
                     if (item.roomName == 502 && item.online == 0) {
@@ -314,7 +318,14 @@
                                                 ${item.depName}
                                             </p>
                                         </div>
-                                      `
+
+                                        <div class="d-flex justify-content-between text-white mb-3">
+                                           <h4 class="text-white mb-3">
+                                               現在號碼:
+                                           </h4>
+                                           <h1 class="mb-0" style="color:red;font-size:50px" name="roomNO"> ${item.number}</h1>
+                                        </div>`
+
                     }
                     if (item.roomName == 503 && item.online == 0) {
                         room503 += `        <h2>診間:${item.roomName}</h2>
@@ -334,7 +345,14 @@
                                                 ${item.depName}
                                             </p>
                                         </div>
-                                    `
+
+                                        <div class="d-flex justify-content-between text-white mb-3">
+                                           <h4 class="text-white mb-3">
+                                               現在號碼:
+                                           </h4>
+                                           <h1 class="mb-0" style="color:red;font-size:50px" name="roomNO"> ${item.number}</h1>
+                                        </div>`
+
                     }
                     if (item.roomName == 504 && item.online == 0) {
                         room504 += `        <h2>診間:${item.roomName}</h2>
@@ -354,7 +372,15 @@
                                                 ${item.depName}
                                             </p>
                                         </div>
-                                       `
+
+                                        <div class="d-flex justify-content-between text-white mb-3">
+                                           <h4 class="text-white mb-3">
+                                               現在號碼:
+                                           </h4>
+                                           <h1 class="mb-0" style="color:red;font-size:50px" name="roomNO"> ${item.number}
+                                           </h1>
+                                        </div>`
+
                     }
                     if (item.roomName == 505 && item.online == 0) {
                         room505 += `        <h2>診間:${item.roomName}</h2>
@@ -374,7 +400,15 @@
                                                 ${item.depName}
                                             </p>
                                         </div>
-                                       `
+
+                                         <div class="d-flex justify-content-between text-white mb-3">
+                                           <h4 class="text-white mb-3">
+                                               現在號碼:
+                                           </h4>
+                                           <h1 class="mb-0" style="color:red;font-size:50px" name="roomNO">
+                                           </h1>
+                                        </div>`
+
                     }
                     if (item.roomName == 506 && item.online==0) {
                         room506 += `        <h2>診間:${item.roomName}</h2>
@@ -394,7 +428,15 @@
                                                 ${item.depName}
                                             </p>
                                         </div>
-                                       `
+
+                                        <div class="d-flex justify-content-between text-white mb-3">
+                                           <h4 class="text-white mb-3">
+                                               現在號碼:
+                                           </h4>
+                                           <h1 class="mb-0" style="color:red;font-size:50px" name="roomNO"> ${item.number}
+                                           </h1>
+                                        </div>`
+
                     }
                 })
 
@@ -407,17 +449,7 @@
             })
         };
 
-        Loadroom();
-
-        /*setInterval(Loadroom, 4000);*/
-
-
-
-
-
-
 
 
     </script>
-
 }

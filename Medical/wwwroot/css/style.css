@@ -330,6 +330,20 @@ h6,
 
 
 /*=====================================士華登入部分======================================*/
+.EditMemberDiv {
+    width: 412px;
+    margin: 10vh auto;
+    background-color: #ffffff4d;
+    box-shadow: 0 7px 7px rgba(0, 0, 0, 0.12), 0 12px 40px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+}
+.EditMemberDiv form {
+    width: 100%;
+    max-width: 410px;
+    padding: 15px;
+    margin: auto;
+}
 /*會整個版面變色*/
 /*body {
     width: 100%;

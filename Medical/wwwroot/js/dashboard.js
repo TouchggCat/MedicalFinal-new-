@@ -14,12 +14,12 @@ $(function () {
 });
 
 function InvokeProducts() {
-	client.invoke("SendRooomNo").catch(function (err) {
+    client.invoke("GetAllProducts").catch(function (err) {
 		return console.error(err.toString());
 	});
 }
 
-client.on("ReceivedProducts", function (products) {
+client.on("refreshProducts", function (products) {
 	BindProductsToGrid(products);
 });
 
@@ -32,7 +32,32 @@ function BindProductsToGrid(products) {
 		tr.append(`<td>${(index + 1)}</td>`);
 		tr.append(`<td>${product.productName}</td>`);
 		tr.append(`<td>${product.stock}</td>`);
-		tr.append(`<td>${product.productName}</td>`);
+		tr.append(`<td>${product.shelfdate}</td>`);
 		$('#tblProduct').append(tr);
 	});
+}
+
+
+
+function loadData() {
+    var tr = ''
+
+    $.ajax({
+        url: '/Admin/Home/GetEmployees',
+        method: 'GET',
+        success: (result) => {
+            $.each(result, (k, v) => {
+                tr = tr + `<tr>
+                        <td>${v.productName}</td>
+                        <td>${v.stock}</td>
+                        <td>${v.shelfdate}</td>
+                    </tr>`
+            })
+
+            $("#tblProduct").html(tr)
+        },
+        error: (error) => {
+            console.log(error)
+        }
+    })
 }

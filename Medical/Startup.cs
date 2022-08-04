@@ -1,6 +1,6 @@
+using Medical.Class;
 using Medical.Hubs;
 using Medical.Models;
-using Microsoft.AspNet.SignalR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -36,7 +36,7 @@ namespace Medical
             {
                 options.UseSqlServer(Configuration.GetConnectionString("MedicalConnection"));
             });
-
+            services.AddTransient<IDashboard, Dashboard>();
             services.AddControllersWithViews().AddNewtonsoftJson(options => {
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });

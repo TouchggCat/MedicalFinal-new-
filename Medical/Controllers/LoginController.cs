@@ -341,7 +341,8 @@ namespace Medical.Controllers
                 memVModel.BirthDay = _context.Members.FirstOrDefault(n => n.MemberId == vm.MemberId).BirthDay;
                 memVModel.Address = _context.Members.FirstOrDefault(n => n.MemberId == vm.MemberId).Address;
                 memVModel.Phone = _context.Members.FirstOrDefault(n => n.MemberId == vm.MemberId).Phone;
-                memVModel.Password = _context.Members.FirstOrDefault(n => n.MemberId == vm.MemberId).Password;
+                //memVModel.Password = _context.Members.FirstOrDefault(n => n.MemberId == vm.MemberId).Password;
+                memVModel.Password = "";    //要做修改，安全性考量給空字串
                 memVModel.GenderId = _context.Members.FirstOrDefault(n => n.MemberId == vm.MemberId).GenderId;
                 memVModel.CityId = _context.Members.FirstOrDefault(n => n.MemberId == vm.MemberId).CityId;
                 memVModel.MemGender = _context.Genders.ToList();
@@ -385,16 +386,19 @@ namespace Medical.Controllers
                 Member mem = _context.Members.Where(n => n.Email == account).FirstOrDefault();
                 if (mem != null)
                 {
-                    return Content("此帳號已被使用", "text/html", System.Text.Encoding.UTF8);
+                    //return Content("此帳號已被使用", "text/html", System.Text.Encoding.UTF8);
+                    return Content("used", "text/html", System.Text.Encoding.UTF8);
                 }
                 else
                 {
-                    return Ok();
+                    //return Ok();
+                    return Content("true", "text/html", System.Text.Encoding.UTF8);
                 }
             }
             else
             {
-                return Content("請輸入帳號", "text/html", System.Text.Encoding.UTF8);
+                //return Content("請輸入帳號", "text/html", System.Text.Encoding.UTF8);
+                return Content("false", "text/html", System.Text.Encoding.UTF8);
             }
         }
 
@@ -415,6 +419,26 @@ namespace Medical.Controllers
             else
             {
                 return Content("請輸入密碼", "text/html", System.Text.Encoding.UTF8);
+            }
+        }
+
+        public IActionResult EditPwCheck(string pw, string mail)
+        {
+            if (!string.IsNullOrWhiteSpace(pw))
+            {
+                Member mem = _context.Members.Where(n => n.Password == pw && n.Email == mail).FirstOrDefault();
+                if (mem != null)
+                {
+                    return Content("true", "text/html", System.Text.Encoding.UTF8);
+                }
+                else
+                {
+                    return Content("false", "text/html", System.Text.Encoding.UTF8);
+                }
+            }
+            else
+            {
+                return Content("false", "text/html", System.Text.Encoding.UTF8);
             }
         }
     }

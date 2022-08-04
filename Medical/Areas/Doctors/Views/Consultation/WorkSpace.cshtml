@@ -38,7 +38,6 @@
                                             count++;
                                             <tr>
                                                 <td id=@item.SequenceNumber>
-                                                    @*@count sequence_number*@
                                                     @Html.DisplayFor(modelItem => item.SequenceNumber)
                                                 </td>
                                                 <td>
@@ -147,9 +146,11 @@
     <script src="~/js/signalr/dist/browser/signalr.js"></script>
     <script src="~/js/call.js"></script>
     <script>
-        var count = 0, finish = 0, pre = -1;
-        let ResrveID = $('#ReserveId').value, trAll = $('#tbPatient').find('tr');
         var client = new signalR.HubConnectionBuilder().withUrl("/callHub").build();
+
+        var now = 0, finish = 0, pre = -1, waiting = 0;
+        let ResrveID = $('#ReserveId').value, trAll = $('#tbPatient').find('tr'), max = trAll.length;
+        
 
         //進入後載入病患歷史紀錄
         $(function () {
@@ -161,88 +162,99 @@
 
         //叫號
         $('#nextNum').click(function () {
-            $('#inputMessage').val('');
 
-            if (finish < 6) {
-                $('#nextNum').attr({ "value": "叫號" });
-                $('#btSave').removeClass("disabled");
-                $('textarea#inputMessage').removeAttr("disabled");
-                $('textarea#inputMessage').val('');
-                $('#tbPatient').find('tr').eq(count).css("background-color", "pink");
-                $('#tbPatient').find('tr').eq(pre).css("background-color", "white");
-
-                removeData();
-                let patientId = $('#tbPatient').find('tr').eq(count).children().eq(1).children().val();
-                loadPatientDetial(patientId);
-                updateNo(patientId);
-                pre = count;
-                count++;
+            if (!$.trim($("textarea#inputMessage").val()) && now > 0)
+            {
+                Swal.fire('尚未輸入診斷紀錄')
+                now++; pre++;
             }
             else
             {
-                Swal.fire({
-                    title: '結束看診?',
-                    text: "",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: '確定'
-                }).then((result) => {
-                    if (result.isConfirmed)
+                if ($.trim($("textarea#inputMessage").val()) != null)
+                {
+                    if (finish < max)
                     {
-                        Swal.fire(
-                            '完成看診',
-                            '',
-                            'success'
-                        );
-                        $.post('@Url.Content("~/Doctors/Consultation/Save")', { id: $('span#ClinicDetailId').html() }, function ()
-                        {
-                            window.location.href = " @Url.Action("List", "Consultation") ";
-                        });
+                        let patientId = $('#tbPatient').children().children().eq(pre).children().eq(1).children().val();
+                        $('#nextNum').attr({ "value": "叫號" });
+                        $('#btSave').removeClass("disabled");
+                        $('textarea#inputMessage').removeAttr("disabled").val('');
+                        $('#tbPatient').children().children().eq(now).css("background-color", "pink").find('button').removeClass('btn-info').addClass('btn-danger').eq(0).html('看診中');;
+                        $('#tbPatient').children().children().eq(pre).css("background-color", "white");
+            
+                        removeData();
+                        loadPatientDetial(patientId);
+                        updateNo();
+                        now++; pre++;                    
                     }
-                })
+                    else
+                    {
+                        Swal.fire({
+                        title: '結束看診?',
+                        text: "",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: '確定'
+                        }).then((result) => {
+                            if (result.isConfirmed)
+                            {
+                                Swal.fire('完成看診', '', 'success');
+                                $.post('@Url.Content("~/Doctors/Consultation/Save")', { id: $('span#ClinicDetailId').html() }, function () {
+                                    window.location.href = " @Url.Action("List", "Consultation") ";
+                                })
+                            }
+                        })
+                    }
+                }
             }
         });
 
         //過號候補
         $('.dropdown-item').click(function () {
             let tr = $(this).parents("tr"), len = $('.dropdown-item').length;
+
             if (tr.index() != len - 1) {
                 tr.css("background-color", "white");
                 tr.find('button').removeClass('btn-info').addClass('btn-warning').eq(0).html('過號候補');
-                /*tr.find('button').eq(1).addClass('disabled');*/
                 tr.fadeOut().fadeIn();
-                if (count < 4) {
-                    tr.parent().children().eq(pre).next().next().after(tr);
-                } else {
-                    tr.parent().children().eq(pre).next().after(tr);
-                }
 
-                count--;
-                pre--;
-                $('#tbPatient').find('tr').eq(pre).css("background-color", "pink");
+                if (now < max - 1){
+                    tr.parent().children().eq(pre).next().next().after(tr);
+                }
+                else{
+                    tr.parent().children().eq(pre).last().after(tr);
+                }
+                waiting++; now--; pre--;
+                updateNo();
             }
         })
 
         //未報到
-        $('#btnNotCome').click(function () {
-            //tr.eq(count).css("background-color", "pink");
-            //tr.eq(pre).css("background-color", "white");
-            $('#tbPatient').find('tr').find('button').removeClass('btn-info').addClass('btn-warning').eq(0).html('未報到');
+        $('#btnNotCome').click(function (){
+            let tr = $('#tbPatient').find('tr');
+            tr.eq(pre).find('button').removeClass('btn-danger').addClass('btn-warning').eq(0).html('未報到');
+            tr.eq(pre).css("background-color", "white");
+            tr.eq(now).css("background-color", "Pink");
+            tr.eq(now).css("background-color", "pink").find('button').removeClass('btn-info').addClass('btn-danger').eq(0).html('看診中');
 
-            //pre = count;
-            //count++;
+            pre++; now++;
+
+            let patientId = $('#tbPatient').children().children().eq(pre).children().eq(1).children().val();
+            removeData();
+            loadPatientDetial(patientId);
+            updateNo();
         })
 
-        $('#btnDemo').click(function () {
+        $('#btnDemo').click(function ()
+        {
             $('textarea#inputMessage').val('病毒性結膜炎，患者自覺眼睛發癢、異物感和眼睛疲勞感，伴有輕度的充血與少量分泌物');
         })
 
         $('#btSave').click(function () {
             let list = {
                 clinicId: $('span#ClinicDetailId').html(),
-                MemberId: $('#tbPatient').find('tr').eq(pre).children().eq(1).children().val(),
+                MemberId: $('input[name="item.Member.MemberId"]').eq(pre).val(),
                 DiagnosticRecord: $('textarea#inputMessage').val()
             };
 
@@ -253,7 +265,7 @@
             else
             {
                 $.post('@Url.Content("~/Doctors/Consultation/Save")', list, function (status) {
-                    $('#tbPatient').find('tr').eq(pre).find('button').removeClass('btn-info btn-warning').addClass('btn-success disabled').eq(0).html('看診完畢');
+                    $('#tbPatient').children().children().eq(pre).find('button').removeClass('btn-info btn-danger btn-warning').addClass('btn-success disabled').eq(0).html('看診完畢');
                     $('textarea#inputMessage').attr("disabled", "disabled");
                     $('#btSave').addClass('disabled');
                     let title = (status == "true") ? "新增成功" : "新增失敗";
@@ -274,12 +286,12 @@
 
         });
 
-        
-        
-        async function updateNo(squ) {
+
+
+        async function updateNo() {
             let clinicId = await $('span#ClinicDetailId').html();
-            @*$.post('@Url.Content("~/Doctors/Consultation/sendSquNo")', { id: clinicId, squNo: squ });*@
-            await client.invoke("SendRooomNo", clinicId, count).catch(function (err) {
+            let paitentId = await $('input[name="item.Member.MemberId"]').eq(pre).val();
+            await client.invoke("SendRooomNo", clinicId, paitentId).catch(function (err) {
                 return console.error(err.toString());
             });
         }
@@ -309,17 +321,6 @@
             let headerTr = document.createElement('tr')
             let tr = document.createElement("tr");
 
-            //$.each(datas, function (index, value) {
-            //    if (index == 1) {
-            //        $.each(value, function (key, val) {
-            //            let th = document.createElement('th');
-            //            th.textContent = key;
-            //            headerTr.appendChild(th);
-            //        });
-            //        thead.append(headerTr);
-            //    }
-            //});
-
             for (let i = 0; i < 2; i++) {
                 let th = document.createElement('th');
                 th.textContent = (i == 0) ? "看診日期" : "診斷紀錄";
@@ -345,7 +346,6 @@
             card.append(tablediv);
 
             document.querySelector("#custom-tabs-four-profile").appendChild(card);
-
         }
 
     </script>
