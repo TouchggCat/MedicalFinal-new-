@@ -92,7 +92,11 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
         $("#pwDemo").click(() => {
-            $("#pass").val("abcd1234")
+            $("#pass").val("abcd1234");
+            $("#newPass").val("aaaa1111");
+            $("#passCheck").val("aaaa1111");
+            $("#pass").blur();
+            $("#newPass").blur();
         })
         //舊密碼錯誤錯誤顯示
         $("#pass").blur(function () {

@@ -15,7 +15,7 @@
     <form class="form-signin" asp-action="Register" id="demo-form" method="POST">
         @*在這邊寫callback，submit時會先驗證required屬性*@
         <div class="g-recaptcha"
-             data-sitekey="6Lfk2AkhAAAAAOtIbeGmRkHUqjne2XfLYmM21Kg3"
+             @*data-sitekey="6Lfk2AkhAAAAAOtIbeGmRkHUqjne2XfLYmM21Kg3"*@
              data-size="invisible"
              data-callback="formSubmit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -124,7 +124,7 @@
             $("#passCheck").val("abcd1234")
 
             $("#idid").val("A123456789")
-            $("#memName").val("湛士華")
+            $("#memName").val("陳小名")
             $("#phone").val("0900999999")
             $("#address").val("新店區中正路1號1樓")
 

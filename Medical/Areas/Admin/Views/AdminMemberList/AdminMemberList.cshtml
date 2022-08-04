@@ -11,10 +11,10 @@
 <div class="col-md-3">
     <div>
         <div class="col-xs-4">
-            <input type="text" class="form-control" placeholder="搜尋" id="searchingKey" oninput="myInputFunction()"/>
+            <input type="text" class="form-control" placeholder="搜尋" id="searchingKey" oninput="myInputFunction()" />
+            <input type="button" value="小名Demo" class="btn btn-primary" id="mingDemo" />
         </div>
-
-       
+        
 
         @*下拉選單篩選，method="post" action="AdminMemberList"*@
         <form name="Role" method="post" action="AdminMemberList">
@@ -357,5 +357,11 @@
             })
         }
 
+        //==============
+        $("#mingDemo").click(() => {
+            $("#searchingKey").val("名");
+
+            $("#searchingKey").change();
+        })
     </script>
 }
