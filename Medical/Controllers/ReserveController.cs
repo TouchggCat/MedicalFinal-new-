@@ -219,7 +219,7 @@ namespace Medical.Controllers
             {
                 MailMessage mmsg = new MailMessage();
                 
-                mmsg.From = new MailAddress("hankseyes@gmail.com", "漢克斯眼科");
+                mmsg.From = new MailAddress("wangbo841019@gmail.com", "漢克斯眼科");
 
                 mmsg.To.Add(new MailAddress("c121474790@gmail.com"));//應該要抓會員的email
                 mmsg.Subject = "漢克斯眼科|預約通知信 ";
