@@ -101,6 +101,7 @@ namespace Medical.Controllers
             }
 
 
+
             if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USE))
             {
                 CMemberAdminViewModel vm = null;
@@ -113,21 +114,26 @@ namespace Medical.Controllers
 
             
 
-                List<ClinicSearch> list = new List<ClinicSearch>();
+            List<ClinicSearch> list = new List<ClinicSearch>();
+
             foreach (var item in id.OrderBy(n=>n.ClinicDate))
             {
-                ClinicSearch t = new ClinicSearch(_context)
-                {
-                    doctorid = item.DoctorId,
-                    departmentid = item.DepartmentId,
-                    periodid = item.PeriodId,
-                    roomid = item.RoomId,
-                    date = item.ClinicDate,
-                    clinicDetailid = item.ClinicDetailId,
-                    memberid = member
-                };
+                //if (_context.Reserves.Where(n => n.ClinicDetailId == item.ClinicDetailId && n.MemberId==member).Count()>0)
+                //{
+                    ClinicSearch t = new ClinicSearch(_context)
+                    {
+                        doctorid = item.DoctorId,
+                        departmentid = item.DepartmentId,
+                        periodid = item.PeriodId,
+                        roomid = item.RoomId,
+                        date = item.ClinicDate,
+                        clinicDetailid = item.ClinicDetailId,
+                        memberid = member
+                    };
                 
                 list.Add(t);
+                //}
+                
 
             }
             
