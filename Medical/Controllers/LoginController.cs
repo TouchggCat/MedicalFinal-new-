@@ -258,7 +258,8 @@ namespace Medical.Controllers
                 mail.Subject = "[漢斯眼科]一密碼重設通知信";  //標題
                 mail.SubjectEncoding = System.Text.Encoding.UTF8;   //標題使用UTF8編碼
                 mail.IsBodyHtml = true;   //內容使用html
-                mail.Body = $"<h1>漢斯眼科會員一{member.MemberName}，您好:</h1><br><h2>如欲重新設定密碼<a href='https://localhost:44302/Login/ResetPassword?email={vModel.txtAccount}'>請點我</a></h2>";
+                //mail.Body = $"<h1>漢斯眼科會員一{member.MemberName}，您好:</h1><br><h2>如欲重新設定密碼<a href='https://localhost:44302/Login/ResetPassword?email={vModel.txtAccount}'>請點我</a></h2>";
+                mail.Body = $"<h1>漢斯眼科會員一{member.MemberName}，您好:</h1><br><h2>如欲重新設定密碼<a href='http://localhost/Login/ResetPassword?email={vModel.txtAccount}'>請點我</a></h2>";
                 mail.BodyEncoding = System.Text.Encoding.UTF8;       //內文使用UTF8編碼
                 try
                 {
@@ -273,11 +274,13 @@ namespace Medical.Controllers
                     mail.Dispose();
                     client.Dispose();//釋放資源
                 }
-                return Content("<script>alert('信件已送出，請至信箱查看');window.location.href='https://localhost:44302/'</script>", "text/html", System.Text.Encoding.UTF8);
+                //return Content("<script>alert('信件已送出，請至信箱查看');window.location.href='https://localhost:44302/'</script>", "text/html", System.Text.Encoding.UTF8);    //localhost版本
+                return Content("<script>alert('信件已送出，請至信箱查看');window.location.href='http://localhost/Home/index'</script>", "text/html", System.Text.Encoding.UTF8);  //IIS版本
                 //window.location.href跳轉業面
             }
             else
-                return Content("<script>alert('未註冊的帳號，請確認輸入是否正確');window.location.href='https://localhost:44302/Login/ForgetPassword'</script>", "text/html", System.Text.Encoding.UTF8);
+                //return Content("<script>alert('未註冊的帳號，請確認輸入是否正確');window.location.href='https://localhost:44302/Login/ForgetPassword'</script>", "text/html", System.Text.Encoding.UTF8);
+            return Content("<script>alert('未註冊的帳號，請確認輸入是否正確');window.location.href='http://localhost/Login/ForgetPassword'</script>", "text/html", System.Text.Encoding.UTF8);
 
         }
 
@@ -286,10 +289,15 @@ namespace Medical.Controllers
             //把忘記密碼輸入的信箱傳入參數
             CLoginViewModel LogVM = new CLoginViewModel();
             Member mem = new Member();
-            mem = _context.Members.Where(n => n.Email == email).FirstOrDefault();
-            LogVM.txtAccount = mem.Email;
+                mem = _context.Members.Where(n => n.Email == email).FirstOrDefault();
+        if (mem!=null)
+            {
+                LogVM.txtAccount = mem.Email;
+                return View(LogVM);
+            }
+            else
+                return RedirectToAction("Index", "Home");
 
-            return View(LogVM);
         }
         [HttpPost]
         public IActionResult ResetPassword(CLoginViewModel LogVM)
@@ -299,7 +307,8 @@ namespace Medical.Controllers
                 Member mem = _context.Members.Where(n => n.Email == LogVM.txtAccount).FirstOrDefault();
                 mem.Password = LogVM.txtPassword;
                 _context.SaveChanges();
-                return Content("<script>alert('修改密碼成功');window.location.href='https://localhost:44302/';</script>", "text/html", System.Text.Encoding.UTF8);
+                //return Content("<script>alert('修改密碼成功');window.location.href='https://localhost:44302/';</script>", "text/html", System.Text.Encoding.UTF8);
+                return Content("<script>alert('修改密碼成功');window.location.href='http://localhost/Home/index';</script>", "text/html", System.Text.Encoding.UTF8);
             }
             return RedirectToAction("Index", "Home");
         }
