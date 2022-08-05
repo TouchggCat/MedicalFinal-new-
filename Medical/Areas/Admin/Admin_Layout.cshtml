@@ -107,222 +107,247 @@
         </nav>
         <!-- /.navbar -->
         <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
-            <a href="~/home/index" class="brand-link">
-                <img src="~/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">後臺管理系統</span>
-            </a>
-            <!-- Sidebar -->
-            <div class="sidebar">
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div class="image">
-                        <img src="~/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-                    </div>
-                    <div class="info">
-                        <a href="#" class="d-block">Administrator</a>
-                    </div>
-                </div>
-                <!-- SidebarSearch Form -->
-                @*<div class="form-inline">
-                    <div class="input-group" data-widget="sidebar-search">
-                        <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-                        <div class="input-group-append">
-                            <button class="btn btn-sidebar">
-                                <i class="fas fa-search fa-fw"></i>
-                            </button>
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">  
+            <div class="os-padding">
+                    <div class="os-viewport os-viewport-native-scrollbars-invisible" style="overflow-y: scroll;">
+                        <div class="os-content" style="padding: 0px 8px; height: 100%; width: 100%;">
+                            <a href="~/home/index" class="brand-link">
+                                <img src="~/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                                <span class="brand-text font-weight-light">後臺管理系統</span>
+                            </a>
+                            <!-- Sidebar -->
+                            <div class="sidebar">
+                                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                                    <div class="image">
+                                        <img src="~/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                                    </div>
+                                    <div class="info">
+                                        <a href="~/Admin/Home/Index" class="d-block">Administrator</a>
+                                    </div>
+                                </div>
+                                <!-- Sidebar Menu -->
+                                <nav class="mt-2">
+                                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class="nav-icon fa fa-image"></i>
+                                                <p>
+                                                    輪播維護
+                                                    <i class="fas fa-angle-left right"></i>
+                                                </p>
+                                            </a>
+                                            <ul class="nav nav-treeview">
+                                                <li class="nav-item">
+                                                    <a href="~/Admin/NewsAdmin/List" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>最新消息</p>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        @*<li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class="nav-icon fas fa-newspaper"></i>
+                                                <p>
+                                                    相關文章維護
+                                                    <i class="fas fa-angle-left right"></i>
+                                                </p>
+                                            </a>
+                                           
+                                        </li>*@
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class="nav-icon fas fa-newspaper"></i>
+                                                <p>
+                                                    文章維護
+                                                    <i class="fas fa-angle-left right"></i>
+                                                </p>
+                                            </a>
+                                            <ul class="nav nav-treeview">
+                                                <li class="nav-item">
+                                                    <a href="~/Admin/AdvertiseAdmin/List" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>相關文章</p>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                            <ul class="nav nav-treeview">
+                                                <li class="nav-item">
+                                                    <a href="~/Admin/ArticleAdmin/List" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>衛教文章</p>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                            <ul class="nav nav-treeview">
+                                                <li class="nav-item">
+                                                    <a href="~/Admin/QandAs/List" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>常見問題</p>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class="nav-icon fas fa-user"></i>
+                                                <p>
+                                                    會員維護
+                                                    <i class="fas fa-angle-left right"></i>
+                                                </p>
+                                            </a>
+                                            <ul class="nav nav-treeview">
+                                                <li class="nav-item">
+                                                    <a href="~/Admin/AdminMemberList/AdminMemberList" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>會員資料</p>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a href="~/Admin/AdminDoctor/Index" class="nav-link">
+                                                <i class="nav-icon fas fa-address-card"></i>
+                                                <p>
+                                                    醫生維護
+                                                    <i class="fas fa-angle-left right"></i>
+                                                </p>
+                                            </a>
+                                            <ul class="nav nav-treeview">
+                                                <li class="nav-item">
+                                                    <a href="~/Admin/AdminDoctor/Index" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>醫生資料</p>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class="nav-icon fas fa-calendar"></i>
+                                                <p>
+                                                    門診維護
+                                                    <i class="fas fa-angle-left right"></i>
+                                                </p>
+                                            </a>
+                                            <ul class="nav nav-treeview">
+                                                <li class="nav-item">
+                                                    <a href="~/Admin/AdminClinicDetail/AddClinic" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>
+                                                            門診資料
+                                                        </p>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class="nav-icon fas fa-shopping-cart"></i>
+                                                <p>
+                                                    商城維護
+                                                    <i class="fas fa-angle-left right"></i>
+                                                </p>
+                                            </a>
+                                            <ul class="nav nav-treeview">
+                                                <li class="nav-item">
+                                                    <a href="~/Admin/AdminProduct/ChooseView" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>管理</p>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                            <ul class="nav nav-treeview">
+                                                <li class="nav-item">
+                                                    <a href="~/Admin/AdminProduct/productManage" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>產品管理</p>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                            <ul class="nav nav-treeview">
+                                                <li class="nav-item">
+                                                    <a href="~/Admin/AdminProduct/QueryAllOrders" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>訂單管理</p>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                            <ul class="nav nav-treeview">
+                                                <li class="nav-item">
+                                                    <a href="~/Admin/AdminProduct/DeleteReviews" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>評價管理</p>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                            <ul class="nav nav-treeview">
+                                                <li class="nav-item">
+                                                    <a href="~/Admin/AdminProduct/CouponList" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>優惠卷管理</p>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+
+
+
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class="nav-icon fas fa-chart-pie"></i>
+                                                <p>
+                                                    報表分析
+                                                    <i class="fas fa-angle-left right"></i>
+                                                </p>
+                                            </a>
+                                            <ul class="nav nav-treeview">
+                                                <li class="nav-item">
+                                                    <a href="~/Admin/AdminProduct/PowerB" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>PowerBi 商城分析</p>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+                                        <li class="nav-item menu-is-opening menu-open">
+                                            <a href="#" class="nav-link">
+                                                <i class="nav-icon fas fa-hashtag"></i>
+                                                <p>
+                                                    其他動作
+                                                    <i class="fas fa-angle-left right"></i>
+                                                </p>
+                                            </a>
+                                            <ul class="nav nav-treeview">
+                                                <li class="nav-item">
+                                                    <a href="~/Home/Index" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>前往官網</p>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                            <ul class="nav nav-treeview">
+                                                <li class="nav-item">
+                                                    <a href="~/Login/Login" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>登出</p>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                    @*<a href="https://localhost:44302/"><img class="backButton" src="~/img/dentist-icon.jpg" width="50" /></a>*@
+                                    @*使用絕對路徑*@
+                                </nav>
+                                <!-- /.sidebar-menu -->
+                            </div>
+                            <!-- /.sidebar -->
                         </div>
                     </div>
-                </div>*@
-
-                <!-- Sidebar Menu -->
-                <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-
-
-                        <li class="nav-item menu-open">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
-
-
-                                <p>
-                                    門診維護
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="~/Admin/AdminClinicDetail/AddClinic" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>
-                                            新增門診
-                                        </p>
-                                    </a>
-                                </li>
-                                @*<li class="nav-item">
-                                <a href="~/Admin/AdminClinicDetail/Index" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>
-                                        編輯門診
-                                    </p>
-                                </a>
-                            </li>*@
-                            </ul>
-
-
-                        </li>
-                    </ul>
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <li class="nav-item">
-                            <a href="~/Admin/AdminDoctor/Index" class="nav-link">
-                                <i class="nav-icon fas fa-edit"></i>
-                                <p>
-                                    醫生維護
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="~/Admin/AdminDoctor/Index" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>醫生資料管理</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-edit"></i>
-                                <p>
-                                    商城維護
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="~/Admin/AdminProduct/ChooseView" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>管理</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-edit"></i>
-                                <p>
-                                    文章維護
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="~/Admin/ArticleAdmin/List" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>衛教文章</p>
-                                    </a>
-                                </li>
-                            </ul>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="~/Admin/QandAs/List" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Q&A常見問題</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-edit"></i>
-                                <p>
-                                    相關文章維護
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="~/Admin/AdvertiseAdmin/List" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>相關文章內容</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-edit"></i>
-                                <p>
-                                    最新消息維護
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="~/Admin/NewsAdmin/List" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>最新消息內容</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-edit"></i>
-                                <p>
-                                    會員維護
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="~/Admin/AdminMemberList/AdminMemberList" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>會員管理</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-edit"></i>
-                                <p>
-                                    報表分析
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>列表1</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-
-                    <a href="https://localhost:44302/"><img class="backButton" src="~/img/dentist-icon.jpg" width="50" /></a>
-                    @*使用絕對路徑*@
-
-
-
-                </nav>
-                <!-- /.sidebar-menu -->
-            </div>
-            <!-- /.sidebar -->
+                </div>
         </aside>
 
         <!-- Content Wrapper. Contains page content -->

@@ -35,8 +35,6 @@
         <div class="col-md-2 h-100">
 
             <form id="myform" action="productList" method="post">
-                <input type="range" class="form-range" min="0" max="2000" id="customRange2">
-
                 <label>關鍵字搜尋</label>
                 <input type="text" id="mySearch" class="form-control rounded mt-1" placeholder="搜尋.." style="margin-left: 0;" />
                 <span id="spShow"></span>
@@ -66,18 +64,6 @@
         @*=============== Right--Part--Start ================*@
         <div class="col-md-10" padding:0;>
 
-            @*========== 標題 ==========*@
-            <!--<div>
-                <h2>產品列表</h2>
-            </div>
-
-            <br />-->
-            @*========== 廣告圖片 ==========*@
-            <!--<div style="max-width:600px ; height:80px; max-height:80px">
-                <img src="~/images/+5c5f05f3-cf37-406a-b407-ad6fbdbed055.jpg" alt="Alternate Text" style="height: 100%; width: 100%" />
-            </div>
-
-            <br />-->
             @*========== 條件選擇 ==========*@
             <div>
                 &nbsp;
@@ -211,7 +197,7 @@
             }
         </script>*@
 
-    <script>
+<script>
 
         console.log($("#myMemid").val())
 
@@ -244,16 +230,13 @@
 
         $(".myhover").hover(
             function () {
-                //$(this).children("div:first-child").children("div").children("button").prop("hidden", false);
                 $(this).find("button").first().prop("hidden", false);
                 $(this).find("a").first().prop("hidden", false);
             },
             function () {
-                //$(this).children("div:first-child").children("div").children("button").prop("hidden", true);
                 $(this).find("button").first().prop("hidden", true);
                 $(this).find("a").first().prop("hidden", true);
             }
-
         )
 
 
@@ -349,6 +332,70 @@
                 function sortBySpan(sortBy) {
                     var sortEle = $('#prodRow>div').sort(sortBy);
                     $("#prodRow").empty().append(sortEle);
+                    $(".myhover").hover(
+                        function () {
+                            $(this).find("button").first().prop("hidden", false);
+                            $(this).find("a").first().prop("hidden", false);
+                        },
+                        function () {
+                            $(this).find("button").first().prop("hidden", true);
+                            $(this).find("a").first().prop("hidden", true);
+                        }
+                    )
+                     $(".btnAddToCart").click(() => {
+
+                    let myform = $(event.target).parents("form");
+                    $.ajax({
+                            url: "@Url.Content("~/Product/AddToCart")",
+                            type: 'POST',
+                            enctype: "multipart/form-data",
+                            data: myform.serialize(),
+
+
+                            success: function (message) {
+                                console.log(message);
+                                if (message.includes("成功")) {
+                                    let word = message.split('+');
+                                    let memberId= word[1];
+
+                                    let timerInterval
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: '成功',
+                                        html: '已將商品加入至購物車',
+                                        timer: 1000,
+                                        timerProgressBar: true,
+                                        didOpen: () => {
+                                            Swal.showLoading()
+                                            const b = Swal.getHtmlContainer().querySelector('b')
+                                            timerInterval = setInterval(() => {
+                                                b.textContent = Swal.getTimerLeft()
+                                            }, 100)
+                                        },
+                                        willClose: () => {
+                                            clearInterval(timerInterval)
+                                        }
+                                    }).then((result) => {
+                                        /* Read more about handling dismissals below */
+                                        if (result.dismiss === Swal.DismissReason.timer) {
+                                            console.log('I was closed by the timer')
+                                        }
+                                        loadCartData(memberId);
+                                    })
+                                }
+
+                                else if (message === "失敗")
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Oops...',
+                                        text: '請確認購物車商品總數是否超出庫存!',
+                                    })
+                                else
+                                    window.alert("請先登入會員");
+                                    //window.location.href = message;  todo 為什麼成功也跳轉
+                            }
+                        })
+                    });
                 }
 
 
@@ -414,6 +461,6 @@
         }
 
 
-    </script>
+</script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 }

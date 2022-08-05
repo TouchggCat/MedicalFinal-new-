@@ -148,9 +148,9 @@
     <script>
         var client = new signalR.HubConnectionBuilder().withUrl("/callHub").build();
 
-        var now = 0, finish = 0, pre = -1, waiting = 0;
+        var now = 0, pre = -1, finish = 0, pass = 0, waiting = 0;
         let ResrveID = $('#ReserveId').value, trAll = $('#tbPatient').find('tr'), max = trAll.length;
-        
+
 
         //進入後載入病患歷史紀錄
         $(function () {
@@ -172,7 +172,7 @@
             {
                 if ($.trim($("textarea#inputMessage").val()) != null)
                 {
-                    if (finish < max)
+                    if (now < max)
                     {
                         let patientId = $('#tbPatient').children().children().eq(pre).children().eq(1).children().val();
                         $('#nextNum').attr({ "value": "叫號" });
@@ -180,11 +180,11 @@
                         $('textarea#inputMessage').removeAttr("disabled").val('');
                         $('#tbPatient').children().children().eq(now).css("background-color", "pink").find('button').removeClass('btn-info').addClass('btn-danger').eq(0).html('看診中');;
                         $('#tbPatient').children().children().eq(pre).css("background-color", "white");
-            
+
                         removeData();
                         loadPatientDetial(patientId);
                         updateNo();
-                        now++; pre++;                    
+                        now++; pre++;
                     }
                     else
                     {
@@ -219,7 +219,7 @@
                 tr.find('button').removeClass('btn-info').addClass('btn-warning').eq(0).html('過號候補');
                 tr.fadeOut().fadeIn();
 
-                if (now < max - 1){
+                if (now < max){
                     tr.parent().children().eq(pre).next().next().after(tr);
                 }
                 else{
@@ -238,7 +238,7 @@
             tr.eq(now).css("background-color", "Pink");
             tr.eq(now).css("background-color", "pink").find('button').removeClass('btn-info').addClass('btn-danger').eq(0).html('看診中');
 
-            pre++; now++;
+            pre++; now++; pass++;
 
             let patientId = $('#tbPatient').children().children().eq(pre).children().eq(1).children().val();
             removeData();
@@ -278,7 +278,7 @@
                     finish++;
                 });
 
-                if (finish > 4) {
+                if (now == max) {
                     $.post('@Url.Content("~/Doctors/Consultation/Finish")', { id: $('span#ClinicDetailId').html() });
                     $('#nextNum').attr({ "value": "結束看診" }).removeClass("btn-info").addClass("btn-danger");
                 }
@@ -291,6 +291,9 @@
         async function updateNo() {
             let clinicId = await $('span#ClinicDetailId').html();
             let paitentId = await $('input[name="item.Member.MemberId"]').eq(pre).val();
+
+            $.post('@Url.Content("~/Doctors/Consultation/sendSquNo")', { id: $('span#ClinicDetailId').html(), paitentId: paitentId });
+
             await client.invoke("SendRooomNo", clinicId, paitentId).catch(function (err) {
                 return console.error(err.toString());
             });

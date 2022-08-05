@@ -101,6 +101,7 @@ namespace Medical.Controllers
             }
 
 
+
             if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USE))
             {
                 CMemberAdminViewModel vm = null;
@@ -113,21 +114,26 @@ namespace Medical.Controllers
 
             
 
-                List<ClinicSearch> list = new List<ClinicSearch>();
+            List<ClinicSearch> list = new List<ClinicSearch>();
+
             foreach (var item in id.OrderBy(n=>n.ClinicDate))
             {
-                ClinicSearch t = new ClinicSearch(_context)
-                {
-                    doctorid = item.DoctorId,
-                    departmentid = item.DepartmentId,
-                    periodid = item.PeriodId,
-                    roomid = item.RoomId,
-                    date = item.ClinicDate,
-                    clinicDetailid = item.ClinicDetailId,
-                    memberid = member
-                };
+                //if (_context.Reserves.Where(n => n.ClinicDetailId == item.ClinicDetailId && n.MemberId==member).Count()>0)
+                //{
+                    ClinicSearch t = new ClinicSearch(_context)
+                    {
+                        doctorid = item.DoctorId,
+                        departmentid = item.DepartmentId,
+                        periodid = item.PeriodId,
+                        roomid = item.RoomId,
+                        date = item.ClinicDate,
+                        clinicDetailid = item.ClinicDetailId,
+                        memberid = member
+                    };
                 
                 list.Add(t);
+                //}
+                
 
             }
             
@@ -213,7 +219,7 @@ namespace Medical.Controllers
             {
                 MailMessage mmsg = new MailMessage();
                 
-                mmsg.From = new MailAddress("hankseyes@gmail.com", "漢克斯眼科");
+                mmsg.From = new MailAddress("wangbo841019@gmail.com", "漢克斯眼科");
 
                 mmsg.To.Add(new MailAddress("c121474790@gmail.com"));//應該要抓會員的email
                 mmsg.Subject = "漢克斯眼科|預約通知信 ";

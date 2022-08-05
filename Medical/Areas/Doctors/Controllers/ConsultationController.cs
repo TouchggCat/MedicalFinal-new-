@@ -66,9 +66,6 @@ namespace Medical.Areas.Doctors.Controllers
                     list.Add(cr);
                 }
             }
-
-            //TempData["ClinicDetailId"] = result.FirstOrDefault().ClinicDetailId;
-
             
             return View(list.ToList());
         }
@@ -123,14 +120,21 @@ namespace Medical.Areas.Doctors.Controllers
                 _medicalContext.SaveChanges();
             }
 
+            ClinicRoom clinicRoom = _medicalContext.ClinicRooms.Where(x => x.ClinicDetails.Equals(id)).SingleOrDefault();
+            if (clinicRoom != null)
+            {
+                clinicRoom.Number = 0;
+                _medicalContext.SaveChanges();
+            }
+
             return RedirectToAction("List", "Consultation");
         }
 
 
-        public void sendSquNo(int id, int squNo) 
+        public void sendSquNo(int id, int paitentId)
         {
             var qry = _medicalContext.ClinicDetails.Include(x => x.Room).Where(x => x.ClinicDetailId.Equals(id)).SingleOrDefault();
-            var qry2 = _medicalContext.Reserves.Where(x => x.MemberId.Equals(squNo)).SingleOrDefault().SequenceNumber;
+            var qry2 = _medicalContext.Reserves.Where(x => x.MemberId.Equals(paitentId)&&x.ClinicDetailId.Equals(id)).SingleOrDefault().SequenceNumber;
             if (qry!=null & qry2!=null)
             {
                 ClinicRoom clinicRoom = _medicalContext.ClinicRooms.Where(x => x.RoomId.Equals(qry.RoomId)).FirstOrDefault();
