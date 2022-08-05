@@ -66,9 +66,6 @@ namespace Medical.Areas.Doctors.Controllers
                     list.Add(cr);
                 }
             }
-
-            //TempData["ClinicDetailId"] = result.FirstOrDefault().ClinicDetailId;
-
             
             return View(list.ToList());
         }
@@ -120,6 +117,13 @@ namespace Medical.Areas.Doctors.Controllers
             if (clinicDetail!=null)
             {
                 clinicDetail.Online = 1;
+                _medicalContext.SaveChanges();
+            }
+
+            ClinicRoom clinicRoom = _medicalContext.ClinicRooms.Where(x => x.ClinicDetails.Equals(id)).SingleOrDefault();
+            if (clinicRoom != null)
+            {
+                clinicRoom.Number = 0;
                 _medicalContext.SaveChanges();
             }
 

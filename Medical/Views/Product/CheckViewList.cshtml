@@ -28,6 +28,7 @@
                 <table class="table" style="width: 100%; text-align: center;">
                     <thead>
                         <tr>
+                            <th></th>
                             <th>圖示</th>
                             <th>產品名稱</th>
                             <th>數量</th>
@@ -89,7 +90,7 @@
         <div class="card" style="width: 100%;">
             <div class="card-header">2.取貨方式</div>
             <div class="card-body">
-                <span>收件人 : &nbsp;</span> <input type="text" name="custName" placeholder="收件人姓名" value="" id="myCustName" required><span style="color:red;margin-left:5px;" hidden id="SPName">(此為必填欄位)</span>
+                <span>收件人 : &nbsp;</span> <input type="text" name="custName" placeholder="收件人姓名" value="@ViewBag.MemberName" id="myCustName" required><span style="color:red;margin-left:5px;" hidden id="SPName">(此為必填欄位)</span>
                 <hr>
                 <div class="row">
                     <div class="col-md-6">
