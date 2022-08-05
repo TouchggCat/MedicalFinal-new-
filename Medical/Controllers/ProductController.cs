@@ -436,6 +436,7 @@ namespace Medical.Controllers
             {
                 vm = System.Text.Json.JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
                 showID2 = vm.MemberId;
+                ViewBag.MemberName = vm.MemberName;
             }
 
             if (showID2 == 0)
