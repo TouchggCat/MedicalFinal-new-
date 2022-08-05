@@ -76,7 +76,9 @@
     <!-- SweetAlert style -->
 
     <link rel="stylesheet" href="~/plugins/sweetalert2/sweetalert2.css">
-    
+    <!-- 智能機器人 -->
+    <link rel="stylesheet" href="~/css/RobotStyleSheet.css">
+
     @await RenderSectionAsync("css", required: false)
     @await RenderSectionAsync("reserve", required: false)
 </head>
@@ -146,12 +148,12 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">智能資訊</a>
                         @*有更改，獨立到上面*@
-                    <div class="dropdown-menu m-0">
-                        <a href="~/clinicdetail/listajax" class="dropdown-item">門診時間表</a>
-                        @*取消這行*@
-                        @*<a href="~/SignalR/index" class="dropdown-item">智能客服</a>*@
-                        <a href="~/QandA/List" class="dropdown-item">Q&A常見問題</a>
-                    </div>
+                        <div class="dropdown-menu m-0">
+                            <a href="~/clinicdetail/listajax" class="dropdown-item">門診時間表</a>
+                            @*取消這行*@
+                            @*<a href="~/SignalR/index" class="dropdown-item">智能客服</a>*@
+                            <a href="~/QandA/List" class="dropdown-item">Q&A常見問題</a>
+                        </div>
                     </div>
                     <div class="nav-item dropdown">
                         <a href="~/Doctor/ListTest" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">醫療團隊</a>
@@ -183,7 +185,7 @@
                             <a href="/Login/EditMember" class="dropdown-item">會員修改</a>
                             <a href="/PatientRecord/List" class="dropdown-item">診療紀錄</a>
                             <a href="/Product/CartViewList" class="dropdown-item">我的購物車</a>
-                            <a href="/Product/OrderList" class="dropdown-item">歷史訂單</a>                        
+                            <a href="/Product/OrderList" class="dropdown-item">歷史訂單</a>
                         </div>
                     </div>
                 </div>
@@ -262,7 +264,7 @@
             </div>
         </div>
     </div>
-    </div>
+
     <div class="container-fluid text-light py-4" style="background: #051225;">
         <div class="container">
             <div class="row g-0">
@@ -279,7 +281,56 @@
         </div>
     </div>
     <!-- Footer End -->
-
+    <button class="btn btn-light message_btn" data-open="false" onclick="show()"><span>?</span>找不到醫生</button>
+    <div class="upDialogue">
+        <div class="topDialogue">
+            <div class="dialogue">
+                <div class="user remote">
+                    <div class="avatar">
+                        <div class="pic">
+                            <img src="https://picsum.photos/100/100?random=12" />
+                        </div>
+                        <div class="name">漢克斯</div>
+                    </div>
+                    <div class="text">
+                        您好，需要甚麼幫忙嗎？
+                    </div>
+                </div>
+                <div class="user remote">
+                    <div class="avatar">
+                        <div class="pic">
+                            <img src="https://picsum.photos/100/100?random=12" />
+                        </div>
+                        <div class="name">漢克斯</div>
+                    </div>
+                    <div class="text">
+                        <input class="btn" type="button" value="加入會員" onclick="Register()">
+                        <input class="btn" type="button" value="我要掛號" onclick="Register()">
+                        </br><input class="btn" type="button" value="交通指引" onclick="Register()">
+                        <input class="btn" type="button" value="衛教健保" onclick="Register()">
+                        </br><input class="btn" type="button" value="該掛哪科" onclick="WhichDep()">
+                        <input class="btn" type="button" value="線上購物" onclick="Register()">
+                    </div>
+                </div>
+                @*<div class="user local">
+                        <div class="avatar">
+                            <div class="pic">
+                                <img src="https://picsum.photos/100/100?random=16" />
+                            </div>
+                            <div class="name">Me</div>
+                        </div>
+                        <div class="text">這是我的對話文字</div>
+                    </div>*@
+            </div>
+            <div class="inputText">
+                <input id="txtBox" type="text" value="" />
+                <input class="btn btn-primary" type="button" value="輸入" onclick="Insert()" />
+                <input class="btn btn-warning" type="button" value="不知道問甚麼" onclick="QuestionButton()" />
+                <input class="btn btn-sm" type="button" value="Demo" onclick="demo()" />
+                <input class="btn btn-sm" type="button" value="Demo2" onclick="demo2()" />
+            </div>
+        </div>
+    </div>
 
 
     <div id="fb-title" style="position: fixed; bottom: 2px; bottom:100px; right: 45px; color: black; font-weight: bold; z-index: 999;">
@@ -371,7 +422,8 @@
     <!-- SweetAlert -->
     <script src="~/plugins/sweetalert2/sweetalert2.all.min.js"></script>
 
-    
+    <!-- 智能機器人 -->
+    <script src="~/js/Robot.js"></script>
     <!-- SignalR聊天室 -->
     @*Demo鍵*@
     <script>

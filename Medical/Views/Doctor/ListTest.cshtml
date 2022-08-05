@@ -141,7 +141,7 @@
             object-fit: contain;
         }
         @*以下皆為聊天機器人*@
-        .upDialogue {
+/*        .upDialogue {
             position: fixed;
             bottom: -100%;
             right: 200px;
@@ -283,7 +283,7 @@
         }
         .teach {
             background-color:#8406da;
-        }
+        }*/
     </style>
 
 }
@@ -335,7 +335,7 @@
 @*Ajax醫生加載*@
 <div class="webShow row"></div>
 @*聊天機器人視窗*@
-<button class="btn btn-light message_btn" data-open="false" onclick="show()"><span>?</span>找不到醫生</button>
+<!--<button class="btn btn-light message_btn" data-open="false" onclick="show()"><span>?</span>找不到醫生</button>
 <div class="upDialogue">
     <div class="topDialogue">
         <div class="dialogue">
@@ -365,7 +365,7 @@
                 </br><input class="btn" type="button" value="該掛哪科" onclick="WhichDep()">
                 <input class="btn" type="button" value="線上購物" onclick="Register()">
             </div>
-            </div>
+            </div>-->
         @*<div class="user local">
                 <div class="avatar">
                     <div class="pic">
@@ -375,7 +375,7 @@
                 </div>
                 <div class="text">這是我的對話文字</div>
             </div>*@
-        </div>
+        <!--</div>
         <div class="inputText">
             <input id="txtBox" type="text" value="" />
             <input class="btn btn-primary" type="button" value="輸入" onclick="Insert()" />
@@ -384,7 +384,7 @@
             <input class="btn btn-sm" type="button" value="Demo2" onclick="demo2()" />
         </div>
     </div>
-</div>
+</div>-->
 @*查看醫師評論*@
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -563,7 +563,7 @@
         }
         
     @*機器人*@
-        const dialogue = document.querySelector(".dialogue")
+        @*const dialogue = document.querySelector(".dialogue")
         function Register() {
             txt = $(event.target).attr("value")
             GetA(txt);
@@ -715,19 +715,19 @@
                               </div>`
             dialogue.innerHTML += Remotetext;
             dialogue.scrollTop = dialogue.scrollHeight;
-        }
+        }*@
 
     @*機器人隱藏/展開*@
-        var x = false;
-        function show() {
-            if (x == false) {
-                document.querySelector('.upDialogue').style.bottom = "0%"
-                x = true;
-            }
-            else {
-                document.querySelector('.upDialogue').style.bottom = "-100%"
-                x = false;
-            }
-        }
+        //var x = false;
+        //function show() {
+        //    if (x == false) {
+        //        document.querySelector('.upDialogue').style.bottom = "0%"
+        //        x = true;
+        //    }
+        //    else {
+        //        document.querySelector('.upDialogue').style.bottom = "-100%"
+        //        x = false;
+        //    }
+        //}
     </script>
 }
