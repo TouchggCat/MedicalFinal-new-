@@ -148,7 +148,7 @@
     <script>
         var client = new signalR.HubConnectionBuilder().withUrl("/callHub").build();
 
-        var now = 0, finish = 0, pre = -1, waiting = 0;
+        var now = 0, pre = -1, finish = 0, pass = 0, waiting = 0;
         let ResrveID = $('#ReserveId').value, trAll = $('#tbPatient').find('tr'), max = trAll.length;
 
 
@@ -172,7 +172,7 @@
             {
                 if ($.trim($("textarea#inputMessage").val()) != null)
                 {
-                    if (finish < max)
+                    if (now < max)
                     {
                         let patientId = $('#tbPatient').children().children().eq(pre).children().eq(1).children().val();
                         $('#nextNum').attr({ "value": "叫號" });
@@ -238,7 +238,7 @@
             tr.eq(now).css("background-color", "Pink");
             tr.eq(now).css("background-color", "pink").find('button').removeClass('btn-info').addClass('btn-danger').eq(0).html('看診中');
 
-            pre++; now++;
+            pre++; now++; pass++;
 
             let patientId = $('#tbPatient').children().children().eq(pre).children().eq(1).children().val();
             removeData();
@@ -278,7 +278,7 @@
                     finish++;
                 });
 
-                if (finish > 4) {
+                if (now == max) {
                     $.post('@Url.Content("~/Doctors/Consultation/Finish")', { id: $('span#ClinicDetailId').html() });
                     $('#nextNum').attr({ "value": "結束看診" }).removeClass("btn-info").addClass("btn-danger");
                 }
