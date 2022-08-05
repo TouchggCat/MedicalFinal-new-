@@ -44,7 +44,7 @@
         </div>
     </div>
     <div class="col-3 wow zoomIn" data-wow-delay="0.5s" style="float: left; border: solid 2px black; margin: 20px; border-radius: 15%; width: 300px; ">
-            <div id="502" class="bg-primary d-flex flex-column p-5" style="height: 300px; width: auto; border-radius: 15%">
+            <div id="Room502" class="bg-primary d-flex flex-column p-5" style="height: 300px; width: auto; border-radius: 15%">
                 <h2>診間:502</h2>
                 <div class="d-flex justify-content-between text-white mb-3">
                     <h4 class="text-white mb-3">
@@ -72,7 +72,7 @@
             </div>
         </div>
     <div class="col-3 wow zoomIn" data-wow-delay="0.5s" style="float: left; border: solid 2px black; margin: 20px; border-radius: 15%; width: 300px; ">
-            <div id="503" class="bg-primary d-flex flex-column p-5" style="height: 300px; width: auto; border-radius: 15%">
+            <div id="Room503" class="bg-primary d-flex flex-column p-5" style="height: 300px; width: auto; border-radius: 15%">
                 <h2>診間:503</h2>
                 <div class="d-flex justify-content-between text-white mb-3">
                     <h4 class="text-white mb-3">
@@ -101,7 +101,7 @@
             </div>
         </div>
     <div class="col-3 wow zoomIn" data-wow-delay="0.5s" style="float: left; border: solid 2px black; margin: 20px; border-radius: 15%; width: 300px; ">
-            <div id="504" class="bg-primary d-flex flex-column p-5" style="height: 300px; width: auto; border-radius: 15%">
+            <div id="Room504" class="bg-primary d-flex flex-column p-5" style="height: 300px; width: auto; border-radius: 15%">
                 <h2>診間:504</h2>
                 <div class="d-flex justify-content-between text-white mb-3">
                     <h4 class="text-white mb-3">
@@ -130,7 +130,7 @@
             </div>
         </div>
     <div class="col-3 wow zoomIn" data-wow-delay="0.5s" style="float: left; border: solid 2px black; margin: 20px; border-radius: 15%; width: 300px; ">
-            <div id="505" class="bg-primary d-flex flex-column p-5" style="height: 300px; width: auto; border-radius: 15%">
+            <div id="Room505" class="bg-primary d-flex flex-column p-5" style="height: 300px; width: auto; border-radius: 15%">
                 <h2>診間:505</h2>
                 <div class="d-flex justify-content-between text-white mb-3">
                     <h4 class="text-white mb-3">
@@ -159,7 +159,7 @@
             </div>
         </div>
     <div class="col-3 wow zoomIn" data-wow-delay="0.5s" style="float: left; border: solid 2px black; margin: 20px; border-radius: 15%; width: 300px; ">
-            <div id="506" class="bg-primary d-flex flex-column p-5" style="height: 300px; width: auto; border-radius: 15%">
+            <div id="Room506" class="bg-primary d-flex flex-column p-5" style="height: 300px; width: auto; border-radius: 15%">
                 <h2>診間:506</h2>
                 <div class="d-flex justify-content-between text-white mb-3">
                     <h4 class="text-white mb-3">
@@ -187,7 +187,6 @@
 
             </div>
         </div>
-    
 </div>
 
 
@@ -256,7 +255,7 @@
     <script>
 
         $(function () {
-           /* Loadroom();*/
+           Loadroom();
         })
 
         function Loadroom() {
@@ -298,7 +297,7 @@
                                                 ${item.number}
                                            </h1>
                                         </div>`
-
+                        $("#Room501").html(room501);
                     }
                     if (item.roomName == 502 && item.online == 0) {
                         room502 += `        <h2>診間:${item.roomName}</h2>
@@ -325,7 +324,7 @@
                                            </h4>
                                            <h1 class="mb-0" style="color:red;font-size:50px" name="roomNO"> ${item.number}</h1>
                                         </div>`
-
+                        $("#Room502").html(room502);
                     }
                     if (item.roomName == 503 && item.online == 0) {
                         room503 += `        <h2>診間:${item.roomName}</h2>
@@ -352,7 +351,7 @@
                                            </h4>
                                            <h1 class="mb-0" style="color:red;font-size:50px" name="roomNO"> ${item.number}</h1>
                                         </div>`
-
+                        $("#Room503").html(room503);
                     }
                     if (item.roomName == 504 && item.online == 0) {
                         room504 += `        <h2>診間:${item.roomName}</h2>
@@ -380,7 +379,7 @@
                                            <h1 class="mb-0" style="color:red;font-size:50px" name="roomNO"> ${item.number}
                                            </h1>
                                         </div>`
-
+                        $("#Room504").html(room504);
                     }
                     if (item.roomName == 505 && item.online == 0) {
                         room505 += `        <h2>診間:${item.roomName}</h2>
@@ -408,7 +407,7 @@
                                            <h1 class="mb-0" style="color:red;font-size:50px" name="roomNO">
                                            </h1>
                                         </div>`
-
+                        $("#Room505").html(room505);
                     }
                     if (item.roomName == 506 && item.online==0) {
                         room506 += `        <h2>診間:${item.roomName}</h2>
@@ -436,16 +435,9 @@
                                            <h1 class="mb-0" style="color:red;font-size:50px" name="roomNO"> ${item.number}
                                            </h1>
                                         </div>`
-
+                        $("#Room506").html(room506);
                     }
                 })
-
-                $("#501").html(room501);
-                $("#502").html(room502);
-                $("#503").html(room503);
-                $("#504").html(room504);
-                $("#505").html(room505);
-                $("#506").html(room506);
             })
         };
 
