@@ -60,17 +60,36 @@ namespace Medical.Controllers
 
 
         public IActionResult Listjson()
-        {           
+        {
+            int hour = DateTime.Now.Hour;
+            int Period = 0;
+
+            if (hour <= 12)
+            {
+                Period = 1; //上午時段
+            }
+            if (hour > 12 && hour < 17)
+            {
+                Period = 2; //下午時段
+            }
+            if (hour > 17 && hour < 21)
+            {
+                Period = 3; //晚上時段
+            }
             var result = _context.ClinicDetails.Where(a => a.ClinicDate.Value.Date.Equals(DateTime.Today.Date));
             List<Clinictime> list = new List<Clinictime>();
             foreach (var item in result)
             {
-                Clinictime t = new Clinictime(_context)
+                if (item.PeriodId == Period)
                 {
-                    clinicDetailid=item.ClinicDetailId
+                       Clinictime t = new Clinictime(_context)
+                    {
+                        clinicDetailid=item.ClinicDetailId
 
-                };
-                list.Add(t);
+                    };
+                    list.Add(t); 
+                }
+                
 
             }
  
@@ -80,13 +99,16 @@ namespace Medical.Controllers
         {
             return View();
         }
-        public IActionResult loadClinicDetail(int period)
+        public IActionResult loadClinicDetail(int period,int addday)
         {
+            
+            DateTime nowday = DateTime.Now;
             var details = from c in _context.ClinicDetails
                           join d in _context.Doctors on c.DoctorId equals d.DoctorId
                           join p in _context.Periods on c.PeriodId equals p.PeriodId
-                          where c.PeriodId == period
-                          select new { c.ClinicDetailId,c.DoctorId,d.DoctorName, p.PeriodDetail,c.ClinicDate};
+                          join r in _context.ClinicRooms on c.RoomId equals r.RoomId
+                          where c.PeriodId == period && c.ClinicDate.Value.Date <= nowday.AddDays(addday+7) && c.ClinicDate.Value.Date>=DateTime.Now.Date.AddDays(addday)
+                          select new { c.ClinicDetailId,c.DoctorId,d.DoctorName, p.PeriodDetail,c.ClinicDate,r.RoomName};
             return Json(details);
         }
 
