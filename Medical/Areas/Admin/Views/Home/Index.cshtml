@@ -2,12 +2,12 @@
     Layout = "~/Areas/Admin/Admin_Layout.cshtml";
 }
 
-@*<div class="row">
+<div class="row">
     <div class="col-lg-3 col-6">
         <div class="small-box bg-info">
-            <div class="inner">
-                <h3>150</h3>
-                <p>New Orders</p>
+            <div class="inner" id="order">
+                <h3></h3>
+                <p>訂單筆數</p>
             </div>
             <div class="icon">
                 <i class="ion ion-bag"></i>
@@ -19,9 +19,9 @@
     <div class="col-lg-3 col-6">
 
         <div class="small-box bg-success">
-            <div class="inner">
-                <h3>53<sup style="font-size: 20px">%</sup></h3>
-                <p>Bounce Rate</p>
+            <div class="inner" id="reserve">
+                <h3></h3>
+                <p>預約數</p>
             </div>
             <div class="icon">
                 <i class="ion ion-stats-bars"></i>
@@ -31,11 +31,10 @@
     </div>
 
     <div class="col-lg-3 col-6">
-
         <div class="small-box bg-warning">
-            <div class="inner">
-                <h3>44</h3>
-                <p>User Registrations</p>
+            <div class="inner" id="user">
+                <h3></h3>
+                <p>會員數</p>
             </div>
             <div class="icon">
                 <i class="ion ion-person-add"></i>
@@ -47,9 +46,9 @@
     <div class="col-lg-3 col-6">
 
         <div class="small-box bg-danger">
-            <div class="inner">
-                <h3>65</h3>
-                <p>Unique Visitors</p>
+            <div class="inner" id="rating">
+                <h3></h3>
+                <p>醫生滿意度</p>
             </div>
             <div class="icon">
                 <i class="ion ion-pie-graph"></i>
@@ -64,7 +63,7 @@
     <div class="col-6">
         <div class="card">
             <div class="card-header border-0">
-                <h3 class="card-title">商品庫存檢視</h3>
+                <h3 class="card-title">商品庫存警示</h3>
                 <div class="card-tools">
                     <a href="#" class="btn btn-tool btn-sm">
                         <i class="fas fa-download"></i>
@@ -81,7 +80,6 @@
                             <th>#</th>
                             <th>Name</th>
                             <th>Stock</th>
-                            <th>Price</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -90,19 +88,17 @@
             </div>
         </div>
     </div>
-</div>*@
+    <div class="col-6">
+        <div data-v-365c20ab="" class="chart-view">
+            <canvas id="myChart" style="display: block; box-sizing: border-box; height: 287px; width: 575px;" width="575" height="287">
+            </canvas>
+        </div>
+    </div>
+</div>
 
-
-
-
-
-
-
-
-<h1>商城數據分析</h1>
-<iframe title="Medical_Product_PowerBI" width="1024" height="1060" src="https://app.powerbi.com/view?r=eyJrIjoiYjY0NzEwZTgtYjA5Zi00MWRjLWI3MWMtOGM0ZDA4NDcxMzU5IiwidCI6IjdkZmNkY2YxLWI1NWMtNGYyOS1iNTcxLTUwNThlNjNiNjZkZCIsImMiOjEwfQ%3D%3D&pageName=ReportSection" frameborder="0" allowFullScreen="true"></iframe>
-
-@section Scripts{ 
-    <script src="~/js/signalr/dist/browser/signalr.js"></script>
-    <script src="~/js/dashboard.js"></script>
+@section Scripts
+{ 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/dashboard.js"></script>
 }

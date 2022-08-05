@@ -15,8 +15,8 @@ namespace Medical.Areas.Admin.Controllers
     [Area(areaName: "Admin")]
     public class HomeController : Controller
     {
-        private readonly IDashboard dashboard;
-        public HomeController(IDashboard dashboard)
+        private readonly Dashboard dashboard;
+        public HomeController(Dashboard dashboard)
         {
             this.dashboard = dashboard;
         }

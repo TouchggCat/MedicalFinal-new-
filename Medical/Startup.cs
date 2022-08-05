@@ -36,7 +36,7 @@ namespace Medical
             {
                 options.UseSqlServer(Configuration.GetConnectionString("MedicalConnection"));
             });
-            services.AddTransient<IDashboard, Dashboard>();
+            services.AddTransient<Dashboard, Dashboard>();
             services.AddControllersWithViews().AddNewtonsoftJson(options => {
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
