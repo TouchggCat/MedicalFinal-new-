@@ -104,12 +104,15 @@
         .rotate180 {
             transform: rotate(180deg);
         }
-
+        
         .detail {
-            background-color: #4F518C !important;
-            border-color: #4F518C !important;
+            background-color: #4F518C ;
+            border-color: #4F518C ;
         }
-
+        .reserve {
+            background-color: #7b7ed5;
+            border-color: #7b7ed5;
+        }
         .slideInUp {
             background-color: #FE938C;
             border: 0.2px #666;
@@ -138,7 +141,7 @@
             object-fit: contain;
         }
         @*以下皆為聊天機器人*@
-        .upDialogue {
+/*        .upDialogue {
             position: fixed;
             bottom: -100%;
             right: 200px;
@@ -247,7 +250,7 @@
             width: 100%;
         }
         .user a {
-            color: #ffc107;
+            color: #ffffff;
         }
         #txtBox{
             height:38px;
@@ -263,11 +266,24 @@
             color: #255bbd;
         }
         .trt {
-            color: #43e110;
+            color: #52dd96;
+            
         }
         .text .reserve {
             color: #9b609f;
         }
+        .shopping {
+            background-color: #df8686;
+        }
+        .login {
+            background-color: #da9e06;
+        }
+        .reservelink {
+            background-color: #00d1c3;
+        }
+        .teach {
+            background-color:#8406da;
+        }*/
     </style>
 
 }
@@ -319,7 +335,7 @@
 @*Ajax醫生加載*@
 <div class="webShow row"></div>
 @*聊天機器人視窗*@
-<button class="btn btn-light message_btn" data-open="false" onclick="show()"><span>?</span>找不到醫生</button>
+<!--<button class="btn btn-light message_btn" data-open="false" onclick="show()"><span>?</span>找不到醫生</button>
 <div class="upDialogue">
     <div class="topDialogue">
         <div class="dialogue">
@@ -349,7 +365,7 @@
                 </br><input class="btn" type="button" value="該掛哪科" onclick="WhichDep()">
                 <input class="btn" type="button" value="線上購物" onclick="Register()">
             </div>
-            </div>
+            </div>-->
         @*<div class="user local">
                 <div class="avatar">
                     <div class="pic">
@@ -359,7 +375,7 @@
                 </div>
                 <div class="text">這是我的對話文字</div>
             </div>*@
-        </div>
+        <!--</div>
         <div class="inputText">
             <input id="txtBox" type="text" value="" />
             <input class="btn btn-primary" type="button" value="輸入" onclick="Insert()" />
@@ -368,7 +384,7 @@
             <input class="btn btn-sm" type="button" value="Demo2" onclick="demo2()" />
         </div>
     </div>
-</div>
+</div>-->
 @*查看醫師評論*@
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -530,7 +546,7 @@
                                     <button type="button" id="buttonLoad" onclick="buttonLoad()" class="btn btn-primary buttonLoad" data-bs-toggle="modal" data-bs-target="#exampleModal" data-docid="${doctors[0].doctorId}">
                                     查看評價
                                     </button>
-                                    <a href="/Reserve/ReserveList?id=${doctors[0].doctorId}" class="btn btn-outline-success detail">我要掛號</a>
+                                    <a href="/Reserve/ReserveList?id=${doctors[0].doctorId}" class="btn btn-outline-success detail reserve">我要掛號</a>
                                 </div>
                             </div>
                         </div>
@@ -547,7 +563,7 @@
         }
         
     @*機器人*@
-        const dialogue = document.querySelector(".dialogue")
+        @*const dialogue = document.querySelector(".dialogue")
         function Register() {
             txt = $(event.target).attr("value")
             GetA(txt);
@@ -685,7 +701,7 @@
             for (let i = 0; i < trts.length; i++) {
                 Remotetext += `${trts[i].treatmentDetail1}</br>`
             }
-            Usertext = `</div><div class="user local">
+            Usertext = `<div class="user local">
                             <div class="avatar">
                                 <div class="pic">
                                     <img src="https://picsum.photos/100/100?random=16" />
@@ -694,24 +710,24 @@
                             </div>
                             <div class="text">${dcID}</div>
                         </div>`;
-            Remotetext += `</br><a href="/Reserve/ReserveList?id=${trts[0].doctorId}" class="btn reserve">我要掛號</a>`+
+            Remotetext += `</div><a href="/Reserve/ReserveList?id=${trts[0].doctorId}" class="btn">我要掛號</a>`+
                                 `</div>
                               </div>`
             dialogue.innerHTML += Remotetext;
             dialogue.scrollTop = dialogue.scrollHeight;
-        }
+        }*@
 
     @*機器人隱藏/展開*@
-        var x = false;
-        function show() {
-            if (x == false) {
-                document.querySelector('.upDialogue').style.bottom = "0%"
-                x = true;
-            }
-            else {
-                document.querySelector('.upDialogue').style.bottom = "-100%"
-                x = false;
-            }
-        }
+        //var x = false;
+        //function show() {
+        //    if (x == false) {
+        //        document.querySelector('.upDialogue').style.bottom = "0%"
+        //        x = true;
+        //    }
+        //    else {
+        //        document.querySelector('.upDialogue').style.bottom = "-100%"
+        //        x = false;
+        //    }
+        //}
     </script>
 }
