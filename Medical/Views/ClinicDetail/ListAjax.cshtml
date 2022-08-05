@@ -155,7 +155,6 @@
            
         @*網頁開始*@
         document.querySelector(".today").innerHTML += daynow                  ////標題日期
-        console.log(nowperiod)
         $(`tbody .day${datenow.getDay()}`).css("background-color", "#79dfd3")  ////改變今天顏色
         $(`tbody .period${nowperiod} .day${datenow.getDay()}`).css("background-color", "#dfaf79") ////早午晚顏色
         ref();                                                                ////刷新門診
@@ -197,11 +196,18 @@
                     document.querySelector(`.period${period} .day${new Date(details[i].clinicDate).getDay()}`).innerHTML = "";
                 }
                 for (let i = 0; i < details.length; i++) {
-                    td = ` <a href="/doctor/detail?id=${details[i].doctorId}">
-                          <b>${details[i].doctorName}(${details[i].roomName}診間)</b>
+                    let 目前人數 = 0
+                    var promise = getReserve(details[i].clinicDetailId)
+                    promise.then(function (value) {
+                        目前人數 = value
+                        let 剩餘名額 = 6 - 目前人數
+                        td = ` <a href="/doctor/detail?id=${details[i].doctorId}">
+                          <b>${details[i].doctorName}(${details[i].roomName}診間)</b><br />
+                          <b>(剩餘名額:${剩餘名額})</b>
                         </a><br />`
-
-                    document.querySelector(`.period${period} .day${new Date(details[i].clinicDate).getDay()}`).innerHTML += td;
+                        document.querySelector(`.period${period} .day${new Date(details[i].clinicDate).getDay()}`).innerHTML += td;
+                    })
+                    
                 }
             }
             else
@@ -216,6 +222,12 @@
                 else
                     document.querySelector(`.tr .day${datenow.getDay() + i} div`).innerHTML = div
             }
+        }
+        @*抓預約人數是否額滿*@
+        async function getReserve(ClinicId) {
+            const reserves = await fetch('/ClinicDetail/loadReserve' + `?ClinicID=${ClinicId}`).then(response => response.json());
+            let 預約人數 = reserves.length
+            return 預約人數;
         }
     </script>
 }

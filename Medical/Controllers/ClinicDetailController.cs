@@ -101,7 +101,8 @@ namespace Medical.Controllers
         {
             return View();
         }
-        public IActionResult loadClinicDetail(int period, int addday)
+        
+        public IActionResult loadClinicDetail(int period, int addday)   //抓診間 ClinicDetail
         {
 
             DateTime nowday = DateTime.Now;
@@ -115,7 +116,14 @@ namespace Medical.Controllers
                 return Json(details); 
             
         }
-
+        public IActionResult loadReserve(int ClinicID)
+        {
+            var reserves = from r in _context.Reserves
+                           join c in _context.ClinicDetails on r.ClinicDetailId equals c.ClinicDetailId
+                           where c.ClinicDetailId == ClinicID
+                           select r;
+            return Json(reserves);
+        }
         
 
 
