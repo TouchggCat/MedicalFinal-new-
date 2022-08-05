@@ -32,22 +32,22 @@
     <div class="row">
         <div class="data_div">
             <div class="data_detail">
-                <h1 class="data_title text-center datenow">門診時間</h1>
+                <h1 class="data_title text-center today"></h1>
                 <div data_content>
-                    <button onclick="minus()">上一周</button>
-                    <input id="addday" value=""/>
-                    <button onclick="add()">下一周</button>
+                    <button class="btn btn-outline-primary" onclick="minus()">上一周</button>
+                    <input hidden id="addday" value=""/>
+                    <button class="btn btn-outline-primary" onclick="add()">下一周</button>
                     <table class="table table-bordered table-hover">
                         <thead class="thead-light">
                             <tr class="tr">
                                 <th>時間</th>
-                                <th class="day1 th">星期一</th>
-                                <th class="day2 th">星期二</th>
-                                <th class="day3 th">星期三</th>
-                                <th class="day4 th">星期四</th>
-                                <th class="day5 th">星期五</th>
-                                <th class="day6 th">星期六</th>
-                                <th class="day0 th">星期日</th>
+                                <th class="day1 th">星期一<div></div></th>
+                                <th class="day2 th">星期二<div></div></th>
+                                <th class="day3 th">星期三<div></div></th>
+                                <th class="day4 th">星期四<div></div></th>
+                                <th class="day5 th">星期五<div></div></th>
+                                <th class="day6 th">星期六<div></div></th>
+                                <th class="day0 th">星期日<div></div></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -140,15 +140,35 @@
     <script>
         let datenow = new Date()
         let daynow = datenow.toLocaleDateString()
-        document.querySelector(".datenow").innerHTML += daynow
         let week = 0
-        ref();
-            
+        let hournow = datenow.getHours()
+        
+            if (hournow >= 8 && hournow < 13) {
+                nowperiod = 1
+            }
+            if (hournow >= 13 && hournow < 17) {
+                nowperiod = 2
+            }
+            if (hournow >= 17 && hournow < 20) {
+                nowperiod = 3
+            }
+           
+        @*網頁開始*@
+        document.querySelector(".today").innerHTML += daynow                  ////標題日期
+        console.log(nowperiod)
+        $(`tbody .day${datenow.getDay()}`).css("background-color", "#79dfd3")  ////改變今天顏色
+        $(`tbody .period${nowperiod} .day${datenow.getDay()}`).css("background-color", "#dfaf79") ////早午晚顏色
+        ref();                                                                ////刷新門診
+        getweek();                                                            ////刷新星期日期
+        ///////
+        @*下一周*@
         function add() {
             week +=7
             document.getElementById("addday").value = week
             ref()
+            getweek()
         }
+        @*上一周*@
         function minus() {
             if (week == 0) {
                 $(this).hidden
@@ -157,16 +177,18 @@
                 week -= 7
                 document.getElementById("addday").value = week
                 ref()
+                getweek()
             }
             
         }
+        @*換周&刷新*@
         function ref() {
             $("td").html("休診");
             loadClinicDetail(1,week)
             loadClinicDetail(2,week)
             loadClinicDetail(3,week)
         }
-        
+        @*換周*@
         async function loadClinicDetail(period, week) {
             const details = await fetch('@Url.Content("~/ClinicDetail/loadClinicDetail")' + `?period=${period}` +`&&addday=${week}`).then(response => response.json());
             console.log(details)
@@ -175,7 +197,7 @@
                     document.querySelector(`.period${period} .day${new Date(details[i].clinicDate).getDay()}`).innerHTML = "";
                 }
                 for (let i = 0; i < details.length; i++) {
-                    td = ` <a href="/reserve/reservelist?id=${details[i].doctorId}">
+                    td = ` <a href="/doctor/detail?id=${details[i].doctorId}">
                           <b>${details[i].doctorName}(${details[i].roomName}診間)</b>
                         </a><br />`
 
@@ -185,12 +207,14 @@
             else
                 return
         }
-        getweek()
+        @*抓日期*@
         function getweek() {
-            for (let i = 0; i < 7 - datenow.getDay(); i++) {
-                console.log(datenow.getDay() + i)
-                div = `<div>${datenow.getMonth()+1}/${datenow.getDate() + i}</div>`
-                document.querySelector(`.tr .day${datenow.getDay() + i}`).innerHTML += div
+            for (let i = 0; i < 7; i++) {
+                div = `<div>${datenow.getMonth() + 1}/${datenow.getDate() + i+week}</div>`
+                if (datenow.getDay() + i > 6)
+                    document.querySelector(`.tr .day${i-7+datenow.getDay()} div`).innerHTML = div
+                else
+                    document.querySelector(`.tr .day${datenow.getDay() + i} div`).innerHTML = div
             }
         }
     </script>

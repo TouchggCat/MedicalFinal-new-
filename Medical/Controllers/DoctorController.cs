@@ -149,7 +149,7 @@ namespace Medical.Controllers
             {
                 Question = "掛號",
                 Answer = "目前我們採用線上和現場掛號\n"+
-                "<a href='/Reserve/ReserveList/' class='reserve'>掛號連結</a>"
+                "<a href='/Reserve/ReserveList/' class='reservelink'>掛號連結</a>"
             };
             var Aws2 = new DocJsonViewModel
             {
@@ -160,8 +160,8 @@ namespace Medical.Controllers
             var Aws3 = new DocJsonViewModel
             {
                 Question = "衛教",
-                Answer = "這是我們的衛教文章區\n"+"<a href='/FrontArticle/List'>衛教專區</a>"+"\n這是我們推薦的知識型YouTube頻道\n" +
-                "<a href='https://www.youtube.com/c/TheEyedoctorTube/featured'>大學眼科YT頻道</a>"
+                Answer = "這是我們的衛教文章區\n"+"<a href='/FrontArticle/List' class='teach'>衛教專區</a>"+"\n這是我們推薦的知識型YouTube頻道\n" +
+                "<a href='https://www.youtube.com/c/TheEyedoctorTube/featured' class='teach'>大學眼科YT頻道</a>"
                 
             };
             var Aws4 = new DocJsonViewModel
@@ -206,12 +206,12 @@ namespace Medical.Controllers
             {
                 Question = "加入會員",
                 Answer = "加入會員能讓我們為您提供更多服務，" +
-                "<a href='/Login/Register' class='reserve'>歡迎加入</a>"
+                "<a href='/Login/Register' class='login'>歡迎加入</a>"
             };
             var Aws12 = new DocJsonViewModel
             {
                 Question = "線上購物",
-                Answer = "<a href='/Product/ProductList' class='reserve'>漢克斯線上商城</a>"
+                Answer = "<a href='/Product/ProductList' class='shopping'>漢克斯線上商城</a>"
             };
             if (Qs.Contains(Aws1.Question))
                 return Json(Aws1);
