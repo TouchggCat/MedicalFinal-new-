@@ -34,20 +34,20 @@
             <div class="data_detail">
                 <h1 class="data_title text-center datenow">門診時間</h1>
                 <div data_content>
-                    <button onclick="minus()"></button>
+                    <button onclick="minus()">上一周</button>
                     <input id="addday" value=""/>
-                    <button onclick="add()"></button>
+                    <button onclick="add()">下一周</button>
                     <table class="table table-bordered table-hover">
                         <thead class="thead-light">
-                            <tr>
+                            <tr class="tr">
                                 <th>時間</th>
-                                <th>星期一</th>
-                                <th>星期二</th>
-                                <th>星期三</th>
-                                <th>星期四</th>
-                                <th>星期五</th>
-                                <th>星期六</th>
-                                <th>星期日</th>
+                                <th class="day1 th">星期一</th>
+                                <th class="day2 th">星期二</th>
+                                <th class="day3 th">星期三</th>
+                                <th class="day4 th">星期四</th>
+                                <th class="day5 th">星期五</th>
+                                <th class="day6 th">星期六</th>
+                                <th class="day0 th">星期日</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -55,25 +55,25 @@
                                 <th>
                                     上午<br />08:00<br />|<br />13:00
                                 </th>
-                                <td class="day1">
+                                <td class="day1 td">
                                     休診
                                 </td>
-                                <td class="day2">
+                                <td class="day2 td">
                                     休診
                                 </td>
-                                <td class="day3">
+                                <td class="day3 td">
                                     休診
                                 </td>
-                                <td class="day4">
+                                <td class="day4 td">
                                     休診
                                 </td>
-                                <td class="day5">
+                                <td class="day5 td">
                                     休診
                                 </td>
-                                <td class="day6">
+                                <td class="day6 td">
                                     休診
                                 </td>
-                                <td class="day0">
+                                <td class="day0 td">
                                     休診
                                 </td>
                             </tr>
@@ -81,25 +81,25 @@
                                 <th>
                                     下午<br />13:00<br />|<br />17:00
                                 </th>
-                                <td class="day1">
+                                <td class="day1 td">
                                     休診
                                 </td>
-                                <td class="day2">
+                                <td class="day2 td">
                                     休診
                                 </td>
-                                <td class="day3">
+                                <td class="day3 td">
                                     休診
                                 </td>
-                                <td class="day4">
+                                <td class="day4 td">
                                     休診
                                 </td>
-                                <td class="day5">
+                                <td class="day5 td">
                                     休診
                                 </td>
-                                <td class="day6">
+                                <td class="day6 td">
                                     休診
                                 </td>
-                                <td class="day0">
+                                <td class="day0 td">
                                     休診
                                 </td>
                             </tr>
@@ -107,25 +107,25 @@
                                 <th>
                                     晚上<br />17:00<br />|<br />20:00
                                 </th>
-                                <td class="day1">
+                                <td class="day1 td">
                                     休診
                                 </td>
-                                <td class="day2">
+                                <td class="day2 td">
                                     休診
                                 </td>
-                                <td class="day3">
+                                <td class="day3 td">
                                     休診
                                 </td>
-                                <td class="day4">
+                                <td class="day4 td">
                                     休診
                                 </td>
-                                <td class="day5">
+                                <td class="day5 td">
                                     休診
                                 </td>
-                                <td class="day6">
+                                <td class="day6 td">
                                     休診
                                 </td>
-                                <td class="day0">
+                                <td class="day0 td">
                                     休診
                                 </td>
                             </tr>
@@ -139,28 +139,35 @@
 @section Scripts{ 
     <script>
         let datenow = new Date()
-        
-        document.querySelector(".datenow").innerHTML += datenow.toLocaleDateString()
+        let daynow = datenow.toLocaleDateString()
+        document.querySelector(".datenow").innerHTML += daynow
         let week = 0
         ref();
+            
         function add() {
             week +=7
             document.getElementById("addday").value = week
             ref()
         }
         function minus() {
-            week -=7
-            document.getElementById("addday").value = week
-            ref()
+            if (week == 0) {
+                $(this).hidden
+            }
+            else {
+                week -= 7
+                document.getElementById("addday").value = week
+                ref()
+            }
+            
         }
         function ref() {
+            $("td").html("休診");
             loadClinicDetail(1,week)
             loadClinicDetail(2,week)
             loadClinicDetail(3,week)
         }
         
         async function loadClinicDetail(period, week) {
-            document.querySelector('td').innerHTML = "休診";
             const details = await fetch('@Url.Content("~/ClinicDetail/loadClinicDetail")' + `?period=${period}` +`&&addday=${week}`).then(response => response.json());
             console.log(details)
             if (details.length != 0) {
@@ -169,19 +176,22 @@
                 }
                 for (let i = 0; i < details.length; i++) {
                     td = ` <a href="/reserve/reservelist?id=${details[i].doctorId}">
-                          <b>${details[i].doctorName}(${details[i].roomName}診間${details[i].clinicDate})</b>
+                          <b>${details[i].doctorName}(${details[i].roomName}診間)</b>
                         </a><br />`
 
                     document.querySelector(`.period${period} .day${new Date(details[i].clinicDate).getDay()}`).innerHTML += td;
                 }
             }
             else
-                return;
+                return
         }
-        function rest() {
-            td = "休診";
-            $(`td[text==""]`).textContent = td;
-           
+        getweek()
+        function getweek() {
+            for (let i = 0; i < 7 - datenow.getDay(); i++) {
+                console.log(datenow.getDay() + i)
+                div = `<div>${datenow.getMonth()+1}/${datenow.getDate() + i}</div>`
+                document.querySelector(`.tr .day${datenow.getDay() + i}`).innerHTML += div
+            }
         }
     </script>
 }
