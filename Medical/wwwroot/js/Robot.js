@@ -164,3 +164,10 @@ function show() {
         x = false;
     }
 }
+////Demo
+function demoone() {
+     document.getElementById("txtBox").value = "眼睛痠痛"
+}
+function demotwo() {
+    document.getElementById("txtBox").value = "乾眼症"
+}
