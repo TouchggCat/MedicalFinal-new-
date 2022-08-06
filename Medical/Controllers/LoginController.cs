@@ -274,13 +274,13 @@ namespace Medical.Controllers
                     mail.Dispose();
                     client.Dispose();//釋放資源
                 }
-                //return Content("<script>alert('信件已送出，請至信箱查看');window.location.href='https://localhost:44302/'</script>", "text/html", System.Text.Encoding.UTF8);    //localhost版本
-                return Content("<script>alert('信件已送出，請至信箱查看');window.location.href='http://localhost/Home/index'</script>", "text/html", System.Text.Encoding.UTF8);  //IIS版本
+                return Content("<script>alert('信件已送出，請至信箱查看');window.location.href='https://localhost:44302/'</script>", "text/html", System.Text.Encoding.UTF8);    //localhost版本
+                //return Content("<script>alert('信件已送出，請至信箱查看');window.location.href='http://localhost/Home/index'</script>", "text/html", System.Text.Encoding.UTF8);  //IIS版本
                 //window.location.href跳轉業面
             }
             else
-                //return Content("<script>alert('未註冊的帳號，請確認輸入是否正確');window.location.href='https://localhost:44302/Login/ForgetPassword'</script>", "text/html", System.Text.Encoding.UTF8);
-            return Content("<script>alert('未註冊的帳號，請確認輸入是否正確');window.location.href='http://localhost/Login/ForgetPassword'</script>", "text/html", System.Text.Encoding.UTF8);
+                return Content("<script>alert('未註冊的帳號，請確認輸入是否正確');window.location.href='https://localhost:44302/Login/ForgetPassword'</script>", "text/html", System.Text.Encoding.UTF8);
+            //return Content("<script>alert('未註冊的帳號，請確認輸入是否正確');window.location.href='http://localhost/Login/ForgetPassword'</script>", "text/html", System.Text.Encoding.UTF8);
 
         }
 
@@ -307,8 +307,8 @@ namespace Medical.Controllers
                 Member mem = _context.Members.Where(n => n.Email == LogVM.txtAccount).FirstOrDefault();
                 mem.Password = LogVM.txtPassword;
                 _context.SaveChanges();
-                //return Content("<script>alert('修改密碼成功');window.location.href='https://localhost:44302/';</script>", "text/html", System.Text.Encoding.UTF8);
-                return Content("<script>alert('修改密碼成功');window.location.href='http://localhost/Home/index';</script>", "text/html", System.Text.Encoding.UTF8);
+                return Content("<script>alert('修改密碼成功');window.location.href='https://localhost:44302/';</script>", "text/html", System.Text.Encoding.UTF8);
+                //return Content("<script>alert('修改密碼成功');window.location.href='http://localhost/Home/index';</script>", "text/html", System.Text.Encoding.UTF8);
             }
             return RedirectToAction("Index", "Home");
         }
