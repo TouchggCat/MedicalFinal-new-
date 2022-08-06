@@ -258,8 +258,8 @@ namespace Medical.Controllers
                 mail.Subject = "[漢斯眼科]一密碼重設通知信";  //標題
                 mail.SubjectEncoding = System.Text.Encoding.UTF8;   //標題使用UTF8編碼
                 mail.IsBodyHtml = true;   //內容使用html
-                //mail.Body = $"<h1>漢斯眼科會員一{member.MemberName}，您好:</h1><br><h2>如欲重新設定密碼<a href='https://localhost:44302/Login/ResetPassword?email={vModel.txtAccount}'>請點我</a></h2>";
-                mail.Body = $"<h1>漢斯眼科會員一{member.MemberName}，您好:</h1><br><h2>如欲重新設定密碼<a href='http://localhost/Login/ResetPassword?email={vModel.txtAccount}'>請點我</a></h2>";
+                mail.Body = $"<h1>漢斯眼科會員一{member.MemberName}，您好:</h1><br><h2>如欲重新設定密碼<a href='https://localhost:44302/Login/ResetPassword?email={vModel.txtAccount}'>請點我</a></h2>";
+                //mail.Body = $"<h1>漢斯眼科會員一{member.MemberName}，您好:</h1><br><h2>如欲重新設定密碼<a href='http://localhost/Login/ResetPassword?email={vModel.txtAccount}'>請點我</a></h2>";
                 mail.BodyEncoding = System.Text.Encoding.UTF8;       //內文使用UTF8編碼
                 try
                 {
