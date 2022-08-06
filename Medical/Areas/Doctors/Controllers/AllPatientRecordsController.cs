@@ -27,6 +27,7 @@ namespace Medical.Controllers
             logJson = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USE);
             vm = JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
             var id = vm.Member.MemberId;
+            TempData["DoctorName"] = vm.MemberName;
             var doctorID = _context.Doctors.Where(m => m.MemberId == id ).Select(m => m.DoctorId).FirstOrDefault();
             var reserveID = _context.CaseRecords.Include(x => x.TreatmentDetail).Include(x => x.Member).Include(x => x.Reserve).ThenInclude(x => x.ClinicDetail).ThenInclude(x => x.Doctor).
                Where(x => x.Reserve.ClinicDetail.DoctorId == doctorID);

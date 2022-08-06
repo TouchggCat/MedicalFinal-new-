@@ -145,16 +145,6 @@
                                                 </li>
                                             </ul>
                                         </li>
-                                        @*<li class="nav-item">
-                                            <a href="#" class="nav-link">
-                                                <i class="nav-icon fas fa-newspaper"></i>
-                                                <p>
-                                                    相關文章維護
-                                                    <i class="fas fa-angle-left right"></i>
-                                                </p>
-                                            </a>
-                                           
-                                        </li>*@
                                         <li class="nav-item">
                                             <a href="#" class="nav-link">
                                                 <i class="nav-icon fas fa-newspaper"></i>
@@ -331,7 +321,7 @@
                                             </ul>
                                             <ul class="nav nav-treeview">
                                                 <li class="nav-item">
-                                                    <a href="~/Login/Login" class="nav-link">
+                                                    <a asp-action="Logout" asp-controller="Home" class="nav-link">
                                                         <i class="far fa-circle nav-icon"></i>
                                                         <p>登出</p>
                                                     </a>
@@ -339,8 +329,6 @@
                                             </ul>
                                         </li>
                                     </ul>
-                                    @*<a href="https://localhost:44302/"><img class="backButton" src="~/img/dentist-icon.jpg" width="50" /></a>*@
-                                    @*使用絕對路徑*@
                                 </nav>
                                 <!-- /.sidebar-menu -->
                             </div>

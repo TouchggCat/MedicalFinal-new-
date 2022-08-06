@@ -13,14 +13,11 @@ namespace Medical.Class
 {
     public class Dashboard
     {
-        private readonly IConfiguration config;
         private readonly MedicalContext medicalContext;
         private readonly IHubContext<DashboardHub> context;
-        string connectionString = "";
-        public Dashboard(IConfiguration configuration, IHubContext<DashboardHub> context, MedicalContext medicalContext)
+        public Dashboard(IHubContext<DashboardHub> context, MedicalContext medicalContext)
         {
             this.medicalContext = medicalContext;
-            this.config = configuration;
             this.context = context;
         }
         
@@ -40,6 +37,10 @@ namespace Medical.Class
             context.Clients.All.SendAsync("refreshProducts", GetAllProducts());
         }
 
+        public string GetTime()
+        {
+            return DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+        }
         public int GetMembers()
         {
             var qry = medicalContext.Members.CountAsync();
@@ -75,24 +76,25 @@ namespace Medical.Class
         public int[] GetMonthsOrders()
         {
             int[] array = new int[6];
+            int count = 0;
             DateTime dt = DateTime.Now;
-            int a = dt.AddMonths(-5).Month;
             var qry = medicalContext.Orders.Where(x => x.OrderDate.Value <= dt && x.OrderDate.Value > dt.AddMonths(-5))
                 .GroupBy(x => new { x.OrderDate.Value.Month })
                 .Select(x => new { count = x.Count(), month = x.Key.Month }).ToList();
 
 
-           for(int i= 3; i<= 8; i++)
-            {
-                array[i - 3] = 0;
+           for(int i= dt.AddMonths(-5).Month; i<= dt.AddMonths(0).Month; i++)
+           {
+                array[count] = 0;
                 foreach (var j in qry)
                 {
                     if(j.month == i)
                     {
-                        array[i - 3] = j.count;
+                        array[count] = j.count;
                     }
-                } 
-            }
+                }
+                count++;
+           }
             return array;
         }
 

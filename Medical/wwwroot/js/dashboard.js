@@ -16,15 +16,13 @@ function InvokeProducts() {
     });
 }
 
-client.on("refreshProducts", function (products) {
-	BindProductsToGrid(products);
-});
 
-client.on("ReceivedAll", function (data, order, reserve, rating, products, charts) {
+client.on("ReceivedAll", function (data, order, reserve, rating, products, charts, time) {
     $('#user').find('h3').html(`${data}`);
     $('#order').find('h3').html(`${order}`);
     $('#reserve').find('h3').html(`${reserve}`);
-    $('#rating').find('h3').html(`${rating}<sup style="font-size: 20px">%</sup>`);
+    $('#rating').find('h3').html(`${Math.round(rating)}<sup style="font-size: 20px">%</sup>`);
+    $('#time').html(`最後更新時間: ${time}`);
     BindProductsToGrid(products);
     BindProductsToChart(charts);
 });
@@ -42,46 +40,43 @@ function BindProductsToGrid(products) {
 		$('#tblProduct').append(tr);
 	});
 }
-
-
 function BindProductsToChart(chart) {
     const MONTHS = [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December'
+        '一月',
+        '二月',
+        '三月',
+        '四月',
+        '五月',
+        '六月',
+        '七月',
+        '八月',
+        '九月',
+        '十月',
+        '十一月',
+        '十二月'
     ];
-
-    /*var currentMonth = new Date().getMonth() + 1;*/
-    var currentMonth = new Date(2022, 4, 22);
 
     function months(config) {
         var cfg = config || {};
         var section = cfg.section;
         var values = [];
-        var i, value;
+        var value;
 
-        for (i = currentMonth-6; i <= currentMonth; i++) {
-            value = MONTHS[Math.ceil(Math.abs(i)) % 12];
+        for (let i = 0; i <6; i++) {
+            value = MONTHS[moment().add(1-i, 'months').date(0).startOf('month').month()];
             values.push(value.substring(0, section));
         }
-        return values;
+
+        return values.reverse();
     }
 
     var $Chart = $('#myChart');
-    var labels = months({ count: 6 });
+    var labels = months({ count:6});
     var data = {
         labels: labels,
         datasets: [
             {
+                label: "每月訂單數量",
                 data: chart,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
@@ -90,7 +85,7 @@ function BindProductsToChart(chart) {
                     'rgba(75, 192, 192, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
                     'rgba(153, 102, 255, 0.2)',
-                    'rgba(201, 203, 207, 0.2)', 'rgba(201, 203, 207, 0.2)'
+                    'rgba(201, 203, 207, 0.2)'
                 ],
                 borderColor: [
                     'rgb(255, 99, 132)',
@@ -99,7 +94,7 @@ function BindProductsToChart(chart) {
                     'rgb(75, 192, 192)',
                     'rgb(54, 162, 235)',
                     'rgb(153, 102, 255)',
-                    'rgb(201, 203, 207)', 'rgb(201, 203, 207)'
+                    'rgb(201, 203, 207)'
                 ],
                 borderWidth: 1
             }]
@@ -113,34 +108,9 @@ function BindProductsToChart(chart) {
                 y: {
                     beginAtZero: true
                 }
-            }
-        }
-    })
-}
-
-
-
-
-
-function loadData() {
-    var tr = ''
-
-    $.ajax({
-        url: '/Admin/Home/GetEmployees',
-        method: 'GET',
-        success: (result) => {
-            $.each(result, (k, v) => {
-                tr = tr + `<tr>
-                        <td>${v.productName}</td>
-                        <td>${v.stock}</td>
-                        <td>${v.shelfdate}</td>
-                    </tr>`
-            })
-
-            $("#tblProduct").html(tr)
-        },
-        error: (error) => {
-            console.log(error)
+            },
+            responsive: true,
+            maintainAspectRatio: false
         }
     })
 }

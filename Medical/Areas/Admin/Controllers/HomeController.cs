@@ -30,5 +30,20 @@ namespace Medical.Areas.Admin.Controllers
         {
             return Ok(dashboard.GetAllProducts());
         }
+
+        public IActionResult Logout()
+        {
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USE))
+            {
+                HttpContext.Session.Remove(CDictionary.SK_LOGINED_USE);
+                return  RedirectToAction("Index", "Home", new { Area = "" });
+            }
+            else if (HttpContext.Session.Keys.Contains(CDictionary.SK_GOOGLELOGINED_USE))
+            {
+                HttpContext.Session.Remove(CDictionary.SK_GOOGLELOGINED_USE);
+                return  RedirectToAction("Index", "Home", new { Area = "" });
+            }
+            return  RedirectToAction("Index", "Home", new { Area = "" });
+        }
     }
 }

@@ -93,8 +93,6 @@
                                 </p>
                             </a>
                         </li>
-                    </ul>
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <li class="nav-item">
                             <a href="~/Doctors/AllPatientRecords/List" class="nav-link">
                                 <i class="nav-icon fas fa-edit"></i>
@@ -104,13 +102,14 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a asp-action="Logout" asp-controller="Consultation" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>登出</p>
+                            </a>
+                        </li>
                     </ul>
-                </nav>
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <li class="nav-item">
-                        <a href="https://localhost:44302/"><img class="backButton" src="~/img/dentist-icon.jpg" width="50" /></a>
-                    </li>
-                </ul>
+                </nav>           
                 <!-- /.sidebar-menu -->
             </div>
             <!-- /.sidebar -->
