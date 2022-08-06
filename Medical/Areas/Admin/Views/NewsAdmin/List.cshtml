@@ -67,7 +67,7 @@
                                             <td class="dtr-control sorting_1 font-weight-bold" tabindex="0" style="width:5%">@count</td>
                                             <td style="width:20%" class="font-weight-bold">@Html.DisplayFor(modelItem => item.PublishDate)</td>
                                             <td style="width:40%" class="font-weight-bold">@Html.DisplayFor(modelItem => item.NewsTitle)</td>
-                                            
+
                                             <td class="font-weight-bold"><img src="~/uploads/@item.NewsPicturePath" style="width:150px;height:150px"></td>
                                             <td style="width:10%">
                                                 <div class="fas fa-pencil-alt" style="color: dodgerblue; margin-block: 3px">
@@ -91,3 +91,6 @@
         </div>
     }
 </div>
+@section Scripts {
+    <script src="https://cdn.ckeditor.com/ckeditor5/34.2.0/classic/ckeditor.js"></script>
+}

@@ -7,7 +7,17 @@ $(function () {
         window.setInterval((() => InvokeProducts()), 1000);	
     }).catch(function () {
 		return console.error(err.toString());
-	});
+    });
+
+    client.on("ReceivedAll", function (data, order, reserve, rating, products, charts, time) {
+        $('#user').find('h3').html(`${data}`);
+        $('#order').find('h3').html(`${order}`);
+        $('#reserve').find('h3').html(`${reserve}`);
+        $('#rating').find('h3').html(`${Math.round(rating)}<sup style="font-size: 20px">%</sup>`);
+        $('#time').html(`最後更新時間: ${time}`);
+        BindProductsToGrid(products);
+        BindProductsToChart(charts);
+    });
 });
 
 function InvokeProducts() {
@@ -15,19 +25,6 @@ function InvokeProducts() {
         return console.error(err.toString());
     });
 }
-
-
-client.on("ReceivedAll", function (data, order, reserve, rating, products, charts, time) {
-    $('#user').find('h3').html(`${data}`);
-    $('#order').find('h3').html(`${order}`);
-    $('#reserve').find('h3').html(`${reserve}`);
-    $('#rating').find('h3').html(`${Math.round(rating)}<sup style="font-size: 20px">%</sup>`);
-    $('#time').html(`最後更新時間: ${time}`);
-    BindProductsToGrid(products);
-    BindProductsToChart(charts);
-});
-
-
 function BindProductsToGrid(products) {
 	$('#tblProduct tbody').empty();
 
