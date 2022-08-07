@@ -41,22 +41,22 @@
 
             <div class="form-group">
                 <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" />
+                <input asp-for="Phone" class="form-control" id="phone"/>
                 <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="BirthDay" class="control-label"></label>
-                <input asp-for="BirthDay" class="form-control" type="date" />
+                <input asp-for="BirthDay" class="form-control" type="date" readonly/>
                 <span asp-validation-for="BirthDay" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="GenderId" class="control-label"></label>
                 <br />
-                <select asp-for="GenderId" disabled>
+                <select asp-for="GenderId" onfocus="defaultValue=this.value" onchange="this.value=defaultValue">
                     <option>性別</option>
                     @foreach (var item in Model.MemGender)
                     {
-                        <option value="@item.GenderId">@item.Gender1</option>
+                        <option value="@item.GenderId" >@item.Gender1</option>
                     }
                 </select>
             </div>
@@ -73,7 +73,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
+                <input asp-for="Address" class="form-control" id="address"/>
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -92,7 +92,14 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
         $("#pwDemo").click(() => {
-            $("#pass").val("abcd1234")
+            $("#pass").val("abcde12345");
+            $("#newPass").val("aaaa1111");
+            $("#passCheck").val("aaaa1111");
+            $("#phone").val("123");
+            $("#address").val("資策會")
+            $("#pass").blur();
+            $("#newPass").blur();
+
         })
         //舊密碼錯誤錯誤顯示
         $("#pass").blur(function () {
@@ -157,6 +164,10 @@
                         console.log("驗證不通過");
                         $("#pwcheckAlert").text("輸入錯誤，請重新輸入");
                         window.event.returnValue = false;  //應該也沒用，主要依靠onclick="verification(); return false;
+                    }
+                    else if (data != "true")
+                    {
+                        //啥都不做，required屬性會做事
                     }
                     else {
                         console.log("驗證大便");

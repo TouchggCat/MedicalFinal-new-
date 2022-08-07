@@ -15,7 +15,7 @@
     <form class="form-signin" asp-action="Register" id="demo-form" method="POST">
         @*在這邊寫callback，submit時會先驗證required屬性*@
         <div class="g-recaptcha"
-             data-sitekey="6Lfk2AkhAAAAAOtIbeGmRkHUqjne2XfLYmM21Kg3"
+             @*data-sitekey="6Lfk2AkhAAAAAOtIbeGmRkHUqjne2XfLYmM21Kg3"*@
              data-size="invisible"
              data-callback="formSubmit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -106,25 +106,24 @@
             $("#passCheck").val("abcd1234")
 
             $("#idid").val("LC23426789")
-            $("#memName").val("陪落溪")
-
-
+            $("#phone").val("0900717717")
+            $("#memName").val("李小美")
+            $('#bday').val("2005-07-17");
+            $("#address").val("")
             //====================自動跳出下拉選單!!!   
             $('#citySelect').val("1");
             $('#genSelect').val("2");
-            //生日值顯示
-            $('#bday').val("2022-08-02");
             $("#txtEmail").blur();
             $("#passCheck").blur();
         })
 
         $("#regiDemo2").click(() => {
             $("#txtEmail").val("giraffegod@gmail.com");
-            $("#pass").val("abcd1234")
-            $("#passCheck").val("abcd1234")
+            $("#pass").val("abcde12345")
+            $("#passCheck").val("abcde12345")
 
             $("#idid").val("A123456789")
-            $("#memName").val("湛士華")
+            $("#memName").val("陳小名")
             $("#phone").val("0900999999")
             $("#address").val("新店區中正路1號1樓")
 
