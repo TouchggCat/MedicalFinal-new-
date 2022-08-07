@@ -5,11 +5,18 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace Medical.ViewModel
 {
     public class CMemberViewModel
     {
+        //=====================for PageedList使用
+        public IPagedList<Member> mempage { set; get; }
+        public IPagedList<RoleType> roleTypespage { set; get; }
+        public IPagedList<Gender> MemGenderpage { set; get; }
+        public IPagedList<City> MemCitypage { set; get; }
+        //=================================
         public static string gmail { get; set; }
         public List<Member> mem { get; set; }
         public List<RoleType> roleTypes { get; set; }

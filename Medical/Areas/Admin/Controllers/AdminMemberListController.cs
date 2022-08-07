@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace Medical.Areas.Admin.Controllers
 {[Area(areaName: "Admin")]
@@ -19,8 +20,10 @@ namespace Medical.Areas.Admin.Controllers
             _context = context;
         }
         //======================================================================
-        public IActionResult AdminMemberList(CKeyWordViewModel keyVModel,int? Role)   //管理員帳號登入=>會員清單管理
+        int pageSize = 10;  //1頁10筆
+        public IActionResult AdminMemberList(CKeyWordViewModel keyVModel,int? Role,int page=1)   //管理員帳號登入=>會員清單管理
         {
+            int currentPage = page < 1 ? 1 : page;
             if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USE))  
             {
                 if (string.IsNullOrEmpty(keyVModel.txtKeyword))    //沒關鍵字時
@@ -28,23 +31,43 @@ namespace Medical.Areas.Admin.Controllers
                     if (Role!=null&&Role!=-1)   //使用下拉選單時
                     {
                         CMemberViewModel memVModel = new CMemberViewModel();
-                   
-                        memVModel.mem = _context.Members.Where(n => n.Role == Role).ToList();  //清單篩選顯示!!
-                        memVModel.roleTypes = _context.RoleTypes.ToList();  //下拉選單&表格權限顯示
-                        memVModel.MemGender = _context.Genders.ToList();
-                        //性別名稱顯示，因為view有關連Model.MemGender所以要傳入(否則viewModel的MemGender為null)，無關聯則不需要
-                        memVModel.MemCity = _context.Cities.ToList();
+
+                        //memVModel.mem = _context.Members.Where(n => n.Role == Role).ToList();  //清單篩選顯示!!
+                        //memVModel.roleTypes = _context.RoleTypes.ToList();  //下拉選單&表格權限顯示
+                        //memVModel.MemGender = _context.Genders.ToList();
+                        ////性別名稱顯示，因為view有關連Model.MemGender所以要傳入(否則viewModel的MemGender為null)，無關聯則不需要
+                        //memVModel.MemCity = _context.Cities.ToList();
+                        //return View(memVModel);
+                        //=====================改為pagedlist分頁(viewModel建立IPagedList物件)
+                        var mempagelist =_context.Members.Where(n => n.Role == Role).ToList();  //清單篩選顯示!!
+                        var roletypeslist= _context.RoleTypes.ToList();  //下拉選單&表格權限顯示
+                        var memgenderlist = _context.Genders.ToList();
+                        var memcitylist= _context.Cities.ToList();
+                        memVModel.mempage = mempagelist.ToPagedList(currentPage, pageSize);
+                        memVModel.roleTypespage=roletypeslist.ToPagedList(currentPage, pageSize);
+                        memVModel.MemGenderpage = memgenderlist.ToPagedList(currentPage, pageSize);
+                        memVModel.MemCitypage = memcitylist.ToPagedList(currentPage, pageSize);
                         return View(memVModel);
                     }
                     else
                     {
-                        CMemberViewModel memVModel = new CMemberViewModel()
-                        {
-                            mem = _context.Members.ToList(),
-                            roleTypes = _context.RoleTypes.ToList(),
-                            MemGender = _context.Genders.ToList(),
-                            MemCity = _context.Cities.ToList()
-                    };  
+                        //    CMemberViewModel memVModel = new CMemberViewModel()
+                        //    {
+                        //        mem = _context.Members.ToList(),
+                        //        roleTypes = _context.RoleTypes.ToList(),
+                        //        MemGender = _context.Genders.ToList(),
+                        //        MemCity = _context.Cities.ToList()
+                        //};  
+                        //    return View(memVModel);
+                        CMemberViewModel memVModel = new CMemberViewModel();
+                        var mempagelist = _context.Members.ToList();  //清單篩選顯示!!
+                        var roletypeslist = _context.RoleTypes.ToList();  //下拉選單&表格權限顯示
+                        var memgenderlist = _context.Genders.ToList();
+                        var memcitylist = _context.Cities.ToList();
+                        memVModel.mempage = mempagelist.ToPagedList(currentPage, pageSize);
+                        memVModel.roleTypespage = roletypeslist.ToPagedList(currentPage, pageSize);
+                        memVModel.MemGenderpage = memgenderlist.ToPagedList(currentPage, pageSize);
+                        memVModel.MemCitypage = memcitylist.ToPagedList(currentPage, pageSize);
                         return View(memVModel);
                     }
                  
