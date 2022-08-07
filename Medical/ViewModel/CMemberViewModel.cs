@@ -11,7 +11,7 @@ namespace Medical.ViewModel
 {
     public class CMemberViewModel
     {
-        //=====================for PageedList使用
+        //=====================for PagedList使用
         public IPagedList<Member> mempage { set; get; }
         public IPagedList<RoleType> roleTypespage { set; get; }
         public IPagedList<Gender> MemGenderpage { set; get; }
