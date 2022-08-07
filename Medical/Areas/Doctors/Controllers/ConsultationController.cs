@@ -21,12 +21,12 @@ namespace Medical.Areas.Doctors.Controllers
             _medicalContext = medicalContext;
         }
 
+        CMemberAdminViewModel vm = null;
+        string logJson = "";
+
         public IActionResult List()
         {
             int doctorId = 1;
-
-            CMemberAdminViewModel vm = null;
-            string logJson = "";
 
             if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USE))
             {
@@ -53,21 +53,30 @@ namespace Medical.Areas.Doctors.Controllers
 
         public IActionResult WorkSpace(int id)
         {
-            List<CReserveViewModel> list = new List<CReserveViewModel>();
-            TempData["ClinicDetailId"] = id;
-            var result = _medicalContext.Reserves.Include(x => x.Member).Where(x => x.ClinicDetailId.Equals(id));
-
-            if (result.Count() > 0)
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USE))
             {
-                foreach (var c in result)
+                logJson = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USE);
+                vm = System.Text.Json.JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
+                TempData["DoctorName"] = vm.MemberName;
+
+                List<CReserveViewModel> list = new List<CReserveViewModel>();
+                TempData["ClinicDetailId"] = id;
+                var result = _medicalContext.Reserves.Include(x => x.Member).Where(x => x.ClinicDetailId.Equals(id));
+
+                if (result.Count() > 0)
                 {
-                    CReserveViewModel cr = new CReserveViewModel();
-                    cr.reserve = c;
-                    list.Add(cr);
+                    foreach (var c in result)
+                    {
+                        CReserveViewModel cr = new CReserveViewModel();
+                        cr.reserve = c;
+                        list.Add(cr);
+                    }
                 }
+                return View(list.ToList());
             }
-            
-            return View(list.ToList());
+            else
+                return RedirectToAction("Index", "Home", new { Area = "" });
+         
         }
 
         public IActionResult History()
@@ -144,6 +153,22 @@ namespace Medical.Areas.Doctors.Controllers
                     _medicalContext.SaveChanges();
                 }
             }
+        }
+
+
+        public IActionResult Logout()
+        {
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USE))
+            {
+                HttpContext.Session.Remove(CDictionary.SK_LOGINED_USE);
+                return RedirectToAction("Index", "Home", new { Area = "" });
+            }
+            else if (HttpContext.Session.Keys.Contains(CDictionary.SK_GOOGLELOGINED_USE))
+            {
+                HttpContext.Session.Remove(CDictionary.SK_GOOGLELOGINED_USE);
+                return RedirectToAction("Index", "Home", new { Area = "" });
+            }
+            return RedirectToAction("Index", "Home", new { Area = "" });
         }
     }
 }

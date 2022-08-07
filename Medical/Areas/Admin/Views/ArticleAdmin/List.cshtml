@@ -69,27 +69,27 @@
                                     @foreach (var item in Model)
                                     {
                                         count++;
-                                    <tr class="odd">
-                                        <td class="dtr-control sorting_1 font-weight-bold" tabindex="0" style="width:5%">@count</td>
-                                        <td style="width:5%" class="font-weight-bold">@Html.DisplayFor(modelItem => item.CreateDate)</td>
-                                        <td style="width:5%" class="font-weight-bold">@Html.DisplayFor(modelItem => item.Doctor.DoctorName)</td>
-                                        <td style="width:10%" class="font-weight-bold">@Html.DisplayFor(modelItem => item.Articeltitle)</td>
-                                        <td style="width:50%" class="font-weight-bold">
-                                            @item.ArticleContent.Substring(0, Math.Min(item.ArticleContent.Length, 100)).Replace("<h2>", "").Replace("</h2>", "").Replace("<br>", "").Replace("<p>", "").Replace("<strong>", "").Replace("</strong>", "").Replace("<h4>", "").Replace("</h4>", "").Replace("<br/>", "").Replace("</p>", "")........
-                                        </td>
-                                        <td class="font-weight-bold"><img src="~/uploads/@item.ArPicturePath" style="width:100px;height:100px"></td>
-                                        @*修改*@
-                                        <td style="width: 10%;">
-                                            <div class="fas fa-pencil-alt" style="color: dodgerblue; margin-block: 3px">
-                                                @Html.ActionLink("修改", "Edit", "ArticleAdmin", new { id = item.ArticleId }, new { @class = "btn bg-gradient-primary btn-sm" })
-                                            </div>
-                                            <br />
-                                            <div class="fas fa-trash" style="color: orangered; margin-top: 3px">
-                                                @Html.ActionLink("刪除", "Delete", "ArticleAdmin", new { id = item.ArticleId },
-new { onclick = "return confirm('確定要刪除此筆資料嗎??')", @class = "btn btn-danger btn-sm", @style = "margin-left:1px" })
-                                            </div>
-                                        </td>
-                                    </tr>
+                                        <tr class="odd">
+                                            <td class="dtr-control sorting_1 font-weight-bold" tabindex="0" style="width:5%">@count</td>
+                                            <td style="width:5%" class="font-weight-bold">@Html.DisplayFor(modelItem => item.CreateDate)</td>
+                                            <td style="width:5%" class="font-weight-bold">@Html.DisplayFor(modelItem => item.Doctor.DoctorName)</td>
+                                            <td style="width:10%" class="font-weight-bold">@Html.DisplayFor(modelItem => item.Articeltitle)</td>
+                                            <td style="width:50%" class="font-weight-bold">
+                                                @item.ArticleContent.Substring(0, Math.Min(item.ArticleContent.Length, 100)).Replace("<h2>", "").Replace("</h2>", "").Replace("<br>", "").Replace("<p>", "").Replace("<strong>", "").Replace("</strong>", "").Replace("<h4>", "").Replace("</h4>", "").Replace("<br/>", "").Replace("</p>", "")........
+                                            </td>
+                                            <td class="font-weight-bold"><img src="~/uploads/@item.ArPicturePath" style="width:100px;height:100px"></td>
+                                            @*修改*@
+                                            <td style="width: 10%;">
+                                                <div class="fas fa-pencil-alt" style="color: dodgerblue; margin-block: 3px">
+                                                    @Html.ActionLink("修改", "Edit", "ArticleAdmin", new { id = item.ArticleId }, new { @class = "btn bg-gradient-primary btn-sm" })
+                                                </div>
+                                                <br />
+                                                <div class="fas fa-trash" style="color: orangered; margin-top: 3px">
+                                                    @Html.ActionLink("刪除", "Delete", "ArticleAdmin", new { id = item.ArticleId },
+    new { onclick = "return confirm('確定要刪除此筆資料嗎??')", @class = "btn btn-danger btn-sm", @style = "margin-left:1px" })
+                                                </div>
+                                            </td>
+                                        </tr>
                                     }
                                 </tbody>
 
@@ -104,3 +104,6 @@ new { onclick = "return confirm('確定要刪除此筆資料嗎??')", @class = "
 
 </div>
 
+@section Scripts {
+    <script src="https://cdn.ckeditor.com/ckeditor5/34.2.0/classic/ckeditor.js"></script>
+}

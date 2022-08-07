@@ -136,7 +136,21 @@ namespace Medical.Controllers
         [HttpPost]
         public void Update(CClinicDetailViewModel cVM)
         {
+            int hour = cVM.ClinicDate.Value.Hour;
             ClinicDetail clinicDetail = _medicalContext.ClinicDetails.Where(x => x.ClinicDetailId.Equals(cVM.clinicDetailId)).FirstOrDefault();
+
+            if (hour == 9)
+            { 
+                cVM.periodID = 1; 
+            }
+            else if (hour == 13)
+            { 
+                cVM.PeriodId = 2; 
+            }
+            else
+            { 
+                cVM.periodID = 3; 
+            }
 
             if (clinicDetail != null)
             {

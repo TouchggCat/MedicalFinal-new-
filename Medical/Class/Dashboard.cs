@@ -6,62 +6,97 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-
-
+using System.Linq;
+using System.Timers;
 
 namespace Medical.Class
 {
-    public class Dashboard : IDashboard
+    public class Dashboard
     {
-        private readonly IConfiguration _config;
-        private readonly IHubContext<DashboardHub> _context;
-        string connectionString = "";
-        public Dashboard(IConfiguration configuration, IHubContext<DashboardHub> context)
+        private readonly MedicalContext medicalContext;
+        private readonly IHubContext<DashboardHub> context;
+        public Dashboard(IHubContext<DashboardHub> context, MedicalContext medicalContext)
         {
-            _config = configuration;
-            _context = context;
+            this.medicalContext = medicalContext;
+            this.context = context;
         }
+        
         public List<Product> GetAllProducts()
         {
-            var products = new List<Product>();
+            List<Product> products = new List<Product>();
+            var product = medicalContext.Products.Where(x => x.Stock < 5).ToList();
 
-            connectionString = _config.GetConnectionString("MedicalConnection");
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                conn.Open();
-
-                SqlDependency.Start(connectionString);
-
-                string commandText = "select ProductName, Stock, Shelfdate from dbo.Product";
-
-                SqlCommand cmd = new SqlCommand(commandText, conn);
-
-                SqlDependency dependency = new SqlDependency(cmd);
-
-                dependency.OnChange += new OnChangeEventHandler(dbChangeNotification);
-
-                var reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    var product = new Product
-                    {
-                        ProductName = reader["ProductName"].ToString(),
-                        Stock = Convert.ToInt32(reader["Stock"]),
-                        Shelfdate = Convert.ToInt32(reader["Shelfdate"])
-                    };
-
-                    products.Add(product);
-                }
-            }
+            foreach(var i in product)
+                products.Add(i);
 
             return products;
         }
 
         private void dbChangeNotification(object sender, SqlNotificationEventArgs e)
         {
-            _context.Clients.All.SendAsync("refreshProducts", GetAllProducts());
+            context.Clients.All.SendAsync("refreshProducts", GetAllProducts());
         }
+
+        public string GetTime()
+        {
+            return DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+        }
+        public int GetMembers()
+        {
+            var qry = medicalContext.Members.CountAsync();
+            return qry.Result;
+        }
+        public int GetOrders()
+        {
+            var qry = medicalContext.Orders.CountAsync();
+            return qry.Result;
+        }
+        public int GetReserves()
+        {
+            var qry = medicalContext.Reserves.CountAsync();
+            return qry.Result;
+        }
+        public double GetRatings()
+        {
+            double total = 0;
+            double count = 0; 
+            double avg = 0;
+
+            var qry = medicalContext.RatingDoctors;
+            foreach(var i in qry)
+            {
+                count++;
+                total += i.RatingTypeId;
+            }
+
+            avg = ( total / (count * 5) )*100;
+            return avg;
+        }
+
+        public int[] GetMonthsOrders()
+        {
+            int[] array = new int[6];
+            int count = 0;
+            DateTime dt = DateTime.Now;
+            var qry = medicalContext.Orders.Where(x => x.OrderDate.Value <= dt && x.OrderDate.Value > dt.AddMonths(-5))
+                .GroupBy(x => new { x.OrderDate.Value.Month })
+                .Select(x => new { count = x.Count(), month = x.Key.Month }).ToList();
+
+
+           for(int i= dt.AddMonths(-5).Month; i<= dt.AddMonths(0).Month; i++)
+           {
+                array[count] = 0;
+                foreach (var j in qry)
+                {
+                    if(j.month == i)
+                    {
+                        array[count] = j.count;
+                    }
+                }
+                count++;
+           }
+            return array;
+        }
+
     }
 }
