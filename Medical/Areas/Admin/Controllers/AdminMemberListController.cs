@@ -28,25 +28,26 @@ namespace Medical.Areas.Admin.Controllers
             {
                 if (string.IsNullOrEmpty(keyVModel.txtKeyword))    //沒關鍵字時
                 {
-                    if (Role!=null&&Role!=-1)   //使用下拉選單時
+                    if (Role!=null&&Role!=-1)   //使用下拉選單時  
                     {
+                        ViewBag.lu = Role;  //使用ViewBag來回call解決選分頁時Roll為null的情形
                         CMemberViewModel memVModel = new CMemberViewModel();
 
-                        //memVModel.mem = _context.Members.Where(n => n.Role == Role).ToList();  //清單篩選顯示!!
+                        memVModel.mem = _context.Members.Where(n => n.Role == Role).ToList();  //清單篩選顯示!!
                         memVModel.roleTypes = _context.RoleTypes.ToList();  //下拉選單&表格權限顯示
-                        //memVModel.MemGender = _context.Genders.ToList();
+                        memVModel.MemGender = _context.Genders.ToList();
                         ////性別名稱顯示，因為view有關連Model.MemGender所以要傳入(否則viewModel的MemGender為null)，無關聯則不需要
-                        //memVModel.MemCity = _context.Cities.ToList();
+                        memVModel.MemCity = _context.Cities.ToList();
                         //return View(memVModel);
                         //=====================改為pagedlist分頁(viewModel建立IPagedList物件)
-                        var mempagelist =_context.Members.Where(n => n.Role == Role).ToList();  //清單篩選顯示!!
-                        var roletypeslist= _context.RoleTypes.ToList();  //下拉選單&表格權限顯示
-                        var memgenderlist = _context.Genders.ToList();
-                        var memcitylist= _context.Cities.ToList();
-                        memVModel.mempage = mempagelist.ToPagedList(currentPage, pageSize);
-                        memVModel.roleTypespage=roletypeslist.ToPagedList(currentPage, pageSize);
-                        memVModel.MemGenderpage = memgenderlist.ToPagedList(currentPage, pageSize);
-                        memVModel.MemCitypage = memcitylist.ToPagedList(currentPage, pageSize);
+                        var mempagelist =_context.Members.Where(n => n.Role == Role).ToList().ToPagedList(currentPage, pageSize);  //清單篩選顯示!!
+                        var roletypeslist= _context.RoleTypes.ToList().ToPagedList(currentPage, pageSize);  //下拉選單&表格權限顯示
+                        var memgenderlist = _context.Genders.ToList().ToPagedList(currentPage, pageSize);
+                        var memcitylist= _context.Cities.ToList().ToPagedList(currentPage, pageSize);
+                        memVModel.mempage = mempagelist;
+                        memVModel.roleTypespage=roletypeslist;
+                        memVModel.MemGenderpage = memgenderlist;
+                        memVModel.MemCitypage = memcitylist;
                         return View(memVModel);
                     }
                     else
@@ -60,6 +61,10 @@ namespace Medical.Areas.Admin.Controllers
                         //};  
                         //    return View(memVModel);
                         CMemberViewModel memVModel = new CMemberViewModel();
+                        memVModel.mem = _context.Members.ToList();  //清單篩選顯示!!
+                        memVModel.MemGender = _context.Genders.ToList();
+                        ////性別名稱顯示，因為view有關連Model.MemGender所以要傳入(否則viewModel的MemGender為null)，無關聯則不需要
+                        memVModel.MemCity = _context.Cities.ToList();
                         memVModel.roleTypes = _context.RoleTypes.ToList();
 
                         var mempagelist = _context.Members.ToList();  //清單篩選顯示!!

@@ -33,6 +33,7 @@
                     @*@foreach (var item in Model.roleTypespage)*@
                     @foreach (var item in Model.roleTypes)
                     {
+
                         <option value="@item.Role">@item.RoleName</option>
                     }
                 </select>
@@ -99,24 +100,24 @@
                 count++;
 
                 //前端篩選value=============================================================
-                //var ro = Model.roleTypes.Where(t => t.Role == item.Role).Select(n => n.RoleName);  //篩選權限
-                var ro = Model.roleTypespage.Where(t => t.Role == item.Role).Select(n => n.RoleName);  //篩選權限  //分頁IPagedList
+                var ro = Model.roleTypes.Where(t => t.Role == item.Role).Select(n => n.RoleName);  //篩選權限
+                //var ro = Model.roleTypespage.Where(t => t.Role == item.Role).Select(n => n.RoleName);  //篩選權限  //分頁IPagedList
                 string showRole = "";
                 foreach (var r in ro)
                 {
                     showRole = r;          //只會有一個
                 }
                 //========================
-                //var gen = Model.MemGender.Where(t => t.GenderId == item.GenderId).Select(n => n.Gender1);
-                var gen = Model.MemGenderpage.Where(t => t.GenderId == item.GenderId).Select(n => n.Gender1);  //分頁IPagedList
+                var gen = Model.MemGender.Where(t => t.GenderId == item.GenderId).Select(n => n.Gender1);
+                //var gen = Model.MemGenderpage.Where(t => t.GenderId == item.GenderId).Select(n => n.Gender1);  //分頁IPagedList
                 string showGen = "";
                 foreach (var g in gen)
                 {
                     showGen = g;
                 }
                 //========================
-                //var ci = Model.MemCity.Where(t => t.CityId == item.CityId).Select(n => n.CityName);
-                var ci = Model.MemCitypage.Where(t => t.CityId == item.CityId).Select(n => n.CityName);  //分頁IPagedList
+                var ci = Model.MemCity.Where(t => t.CityId == item.CityId).Select(n => n.CityName);
+                //var ci = Model.MemCitypage.Where(t => t.CityId == item.CityId).Select(n => n.CityName);  //分頁IPagedList
                 string showCity = "";
                 foreach (var c in ci)
                 {
@@ -175,8 +176,10 @@
 
 <br />
 <div style="align-content:center" id="pagelistShow">
-
-    @Html.PagedListPager(Model.mempage, page => Url.Action("AdminMemberList", new { page }), new PagedListRenderOptions
+    @*把Controller送回來的Role轉交(無法直接用變數)*@
+    @{ ViewBag.nowRole = ViewBag.lu;}
+    @*再把Role傳回Controller記錄*@
+    @Html.PagedListPager(Model.mempage, page => Url.Action("AdminMemberList", new { page, Role = ViewBag.nowRole }), new PagedListRenderOptions
 {
     LinkToFirstPageFormat = "首頁",
     LinkToNextPageFormat = "下一頁",
@@ -188,7 +191,7 @@
 
 
 
- UlElementClasses = new[] { "pagination" },  // 為ul li a 元素添加鏈接，使用ContainerDivClasses = new[] { "pagination" }替換 UlElementClasses = new[] { "pagination"},也是相同的效果。也可以不要此行代碼，因為Bootstrap4與3相比，ul的class名沒有變化，li 元素和a 元素加了page-item和page-link的類名。
+    UlElementClasses = new[] { "pagination" },  // 為ul li a 元素添加鏈接，使用ContainerDivClasses = new[] { "pagination" }替換 UlElementClasses = new[] { "pagination"},也是相同的效果。也可以不要此行代碼，因為Bootstrap4與3相比，ul的class名沒有變化，li 元素和a 元素加了page-item和page-link的類名。
 
     LiElementClasses = new[] { "page-item" },
     PageClasses = new[] { "page-link" },
