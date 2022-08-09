@@ -29,8 +29,9 @@
                 <select asp-for="Role" id="roleSelect">
                     @*-1時回controller搜全部會員*@
                     <option value="-1">全部會員</option>
-                    @*@foreach (var item in Model.roleTypes)*@
-                    @foreach (var item in Model.roleTypespage)
+
+                    @*@foreach (var item in Model.roleTypespage)*@
+                    @foreach (var item in Model.roleTypes)
                     {
                         <option value="@item.Role">@item.RoleName</option>
                     }
